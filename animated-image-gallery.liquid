@@ -1,0 +1,770 @@
+<style>
+  /* ─── Section ─── */
+  .gallery-section {
+    padding: {{ section.settings.section_padding_top }}px 0 {{ section.settings.section_padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    overflow-x: auto;
+  }
+
+  .gallery-section__heading {
+    text-align: center;
+    font-size: {{ section.settings.heading_size_desk }}px;
+    color: {{ section.settings.heading_color }};
+    margin-bottom: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  /* ─── Horizontal Scroll Grid Container ─── */
+  .gallery-grid {
+    display: flex;
+    flex-direction: row;
+    gap: {{ section.settings.gap }}px;
+    padding: 0 {{ section.settings.side_padding }}px;
+    max-width: 100%;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+  }
+
+  .gallery-grid:active {
+    cursor: grabbing;
+  }
+
+  .gallery-grid::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .gallery-grid::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.05);
+    border-radius: 4px;
+  }
+
+  .gallery-grid::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 4px;
+  }
+
+  /* ─── Gallery Item: Fixed width based on columns ─── */
+  .gallery-item {
+    flex: 0 0 calc((100% / {{ section.settings.columns_desktop }}) - {{ section.settings.gap }}px * ({{ section.settings.columns_desktop }} - 1) / {{ section.settings.columns_desktop }});
+    min-width: 180px;
+    border-radius: {{ section.settings.border_radius }}px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Upcoming cards (appended later) start with lower opacity and scale */
+  .gallery-item.upcoming-card {
+    opacity: 0;
+    transform: scale(0.92);
+    pointer-events: none;
+  }
+
+  .gallery-item.upcoming-card-visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ─── Image styling ─── */
+  .gallery-item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ─── Hover effect ─── */
+  .gallery-item:hover img {
+    transform: scale(1.055);
+  }
+
+  /* ─── Overlay ─── */
+  .gallery-item__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.42) 100%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    border-radius: {{ section.settings.border_radius }}px;
+    pointer-events: none;
+  }
+  .gallery-item:hover .gallery-item__overlay { opacity: 1; }
+
+  /* ─── Loader / Spinner ─── */
+  .gallery-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 48px 0 24px;
+    min-height: 60px;
+  }
+
+  .gallery-spinner {
+    width: 34px;
+    height: 34px;
+    border: 3px solid rgba(0,0,0,0.1);
+    border-top-color: {{ section.settings.heading_color }};
+    border-radius: 50%;
+    animation: gallery-spin 0.7s linear infinite;
+    display: none;
+  }
+  .gallery-spinner.is-active { display: block; }
+
+  @keyframes gallery-spin { to { transform: rotate(360deg); } }
+
+  /* ─── Lightbox ─── */
+  .gallery-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+  }
+  .gallery-lightbox.is-open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .gallery-lightbox img {
+    max-width: 90vw;
+    max-height: 88vh;
+    object-fit: contain;
+    border-radius: 6px;
+    transform: scale(0.88);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.65);
+  }
+  .gallery-lightbox.is-open img { transform: scale(1); }
+
+  .gallery-lightbox__close {
+    position: absolute;
+    top: 20px; right: 24px;
+    background: none; border: none;
+    color: #fff; font-size: 36px;
+    cursor: pointer; line-height: 1;
+    opacity: 0.8; padding: 0;
+    transition: opacity 0.2s, transform 0.25s;
+  }
+  .gallery-lightbox__close:hover { opacity: 1; transform: rotate(90deg); }
+
+  .gallery-lightbox__nav {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    background: rgba(255,255,255,0.12);
+    border: none; color: #fff;
+    font-size: 28px;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+    backdrop-filter: blur(6px);
+  }
+  .gallery-lightbox__nav:hover { background: rgba(255,255,255,0.26); }
+  .gallery-lightbox__prev { left: 20px; }
+  .gallery-lightbox__next { right: 20px; }
+
+  /* ─── Responsive Column Overrides ─── */
+  @media (max-width: 1024px) {
+    .gallery-item {
+      flex: 0 0 calc((100% / {{ section.settings.columns_tablet }}) - {{ section.settings.gap }}px * ({{ section.settings.columns_tablet }} - 1) / {{ section.settings.columns_tablet }});
+    }
+  }
+  @media (max-width: 640px) {
+    .gallery-item {
+      flex: 0 0 calc((100% / {{ section.settings.columns_mobile }}) - {{ section.settings.gap }}px * ({{ section.settings.columns_mobile }} - 1) / {{ section.settings.columns_mobile }});
+      min-width: 140px;
+    }
+    .gallery-section__heading {
+      font-size: {{ section.settings.heading_size_mob }}px;
+    }
+  }
+
+  /* ─── Optional: Container fade edges for smooth scrolling ─── */
+  .gallery-grid-wrapper {
+    position: relative;
+  }
+  .gallery-grid-wrapper::before,
+  .gallery-grid-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .gallery-grid-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, {{ section.settings.bg_color }}, transparent);
+  }
+  .gallery-grid-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, {{ section.settings.bg_color }}, transparent);
+  }
+  @media (max-width: 768px) {
+    .gallery-grid-wrapper::before,
+    .gallery-grid-wrapper::after {
+      width: 20px;
+    }
+  }
+</style>
+
+<section class="gallery-section" id="gallery-{{ section.id }}" data-section-id="{{ section.id }}">
+  {% if section.settings.heading != blank %}
+    <h2 class="gallery-section__heading">{{ section.settings.heading }}</h2>
+  {% endif %}
+
+  <div class="gallery-grid-wrapper">
+    <div class="gallery-grid" id="galleryGrid-{{ section.id }}">
+      {% assign initial_count = section.settings.initial_load %}
+      {% for block in section.blocks %}
+        {% if forloop.index <= initial_count %}
+          <div
+            class="gallery-item"
+            data-index="{{ forloop.index0 }}"
+            data-lazy="false"
+            {{ block.shopify_attributes }}
+          >
+            {% if block.settings.image != blank %}
+              <img
+                src="{{ block.settings.image | image_url: width: 600 }}"
+                alt="{{ block.settings.alt | default: section.settings.heading | escape }}"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                loading="eager"
+              >
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+            <div class="gallery-item__overlay"></div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="gallery-loader" id="galleryLoader-{{ section.id }}" aria-hidden="true">
+    <div class="gallery-spinner" id="gallerySpinner-{{ section.id }}"></div>
+  </div>
+</section>
+
+<div class="gallery-lightbox" id="galleryLightbox-{{ section.id }}" role="dialog" aria-modal="true" aria-label="Image lightbox">
+  <button class="gallery-lightbox__close" aria-label="Close">&times;</button>
+  <button class="gallery-lightbox__nav gallery-lightbox__prev" aria-label="Previous">&#8249;</button>
+  <img src="" alt="">
+  <button class="gallery-lightbox__nav gallery-lightbox__next" aria-label="Next">&#8250;</button>
+</div>
+
+<script>
+(function () {
+  const sectionId   = '{{ section.id }}';
+  const grid        = document.getElementById('galleryGrid-'    + sectionId);
+  const loader      = document.getElementById('galleryLoader-'  + sectionId);
+  const spinner     = document.getElementById('gallerySpinner-' + sectionId);
+  const lightbox    = document.getElementById('galleryLightbox-'+ sectionId);
+  const lbImg       = lightbox.querySelector('img');
+  const lbClose     = lightbox.querySelector('.gallery-lightbox__close');
+  const lbPrev      = lightbox.querySelector('.gallery-lightbox__prev');
+  const lbNext      = lightbox.querySelector('.gallery-lightbox__next');
+
+  // Get all blocks data from Shopify
+  const allBlocks = [
+    {% for block in section.blocks %}
+      {
+        id: {{ forloop.index0 }},
+        imageUrl: '{{ block.settings.image | image_url: width: 600 }}',
+        imageUrlLarge: '{{ block.settings.image | image_url: width: 1600 }}',
+        alt: '{{ block.settings.alt | default: section.settings.heading | escape }}',
+        width: {{ block.settings.image.width | default: 800 }},
+        height: {{ block.settings.image.height | default: 600 }}
+      },
+    {% endfor %}
+  ];
+
+  const BATCH_SIZE  = {{ section.settings.batch_size }};
+  const INITIAL_COUNT = {{ section.settings.initial_load }};
+  let currentCount = INITIAL_COUNT;
+  let isLoading = false;
+  let allLoaded = (currentCount >= allBlocks.length);
+
+  // Keep track of all gallery items for lightbox
+  let allItems = Array.from(grid.querySelectorAll('.gallery-item'));
+
+  /* ─────────────────────────────────────────────
+     1. INFINITE SCROLL OBSERVER (Horizontal)
+     Watches the right edge of the grid
+  ───────────────────────────────────────────── */
+  const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      // When the loader (right edge sentinel) becomes visible
+      if (entry.isIntersecting && !isLoading && !allLoaded && currentCount < allBlocks.length) {
+        loadNextBatch();
+      }
+    });
+  }, {
+    root: grid,
+    rootMargin: '0px 0px 0px 200px', // Trigger 200px before the right edge
+    threshold: 0
+  });
+
+  // Create a sentinel element at the right edge of the grid
+  function createSentinel() {
+    let sentinel = document.getElementById('grid-sentinel-' + sectionId);
+    if (!sentinel) {
+      sentinel = document.createElement('div');
+      sentinel.id = 'grid-sentinel-' + sectionId;
+      sentinel.style.flex = '0 0 1px';
+      sentinel.style.width = '1px';
+      sentinel.style.height = '1px';
+      sentinel.style.opacity = '0';
+      sentinel.style.pointerEvents = 'none';
+      grid.appendChild(sentinel);
+    }
+    return sentinel;
+  }
+
+  let sentinel = createSentinel();
+  scrollObserver.observe(sentinel);
+
+  /* ─── Load next batch and PREPEND to left side ─── */
+  function loadNextBatch() {
+    if (isLoading || allLoaded) return;
+    isLoading = true;
+    spinner.classList.add('is-active');
+
+    // Simulate network delay
+    setTimeout(() => {
+      const startIdx = currentCount;
+      const endIdx = Math.min(currentCount + BATCH_SIZE, allBlocks.length);
+      const newItems = [];
+
+      // Remove sentinel temporarily
+      if (sentinel && sentinel.parentNode) {
+        sentinel.remove();
+      }
+
+      // Create new items in reverse order so they appear left-to-right correctly after prepend
+      for (let i = endIdx - 1; i >= startIdx; i--) {
+        const block = allBlocks[i];
+        const item = document.createElement('div');
+        item.className = 'gallery-item upcoming-card';
+        item.setAttribute('data-index', i);
+        item.setAttribute('data-lazy', 'false');
+
+        if (block.imageUrl) {
+          const img = document.createElement('img');
+          img.src = block.imageUrl;
+          img.alt = block.alt;
+          img.width = block.width;
+          img.height = block.height;
+          img.loading = 'lazy';
+          item.appendChild(img);
+        } else {
+          const placeholder = document.createElement('div');
+          placeholder.className = 'placeholder-svg';
+          placeholder.innerHTML = '{{ "image" | placeholder_svg_tag }}';
+          item.appendChild(placeholder);
+        }
+
+        const overlay = document.createElement('div');
+        overlay.className = 'gallery-item__overlay';
+        item.appendChild(overlay);
+
+        // Add click handler
+        item.addEventListener('click', (function(idx) {
+          return function() { openLightbox(idx); };
+        })(i));
+
+        newItems.push(item);
+      }
+
+      // Prepend all new items to the grid (maintaining correct order)
+      newItems.reverse().forEach(item => {
+        grid.insertBefore(item, grid.firstChild);
+      });
+
+      // Re-attach sentinel at the end
+      sentinel = createSentinel();
+      scrollObserver.observe(sentinel);
+
+      // Trigger entrance animation for upcoming cards
+      setTimeout(() => {
+        newItems.forEach(item => {
+          item.classList.remove('upcoming-card');
+          item.classList.add('upcoming-card-visible');
+        });
+      }, 50);
+
+      currentCount = endIdx;
+      allLoaded = (currentCount >= allBlocks.length);
+
+      // Update allItems reference for lightbox
+      allItems = Array.from(grid.querySelectorAll('.gallery-item'));
+
+      spinner.classList.remove('is-active');
+      isLoading = false;
+
+      if (allLoaded) {
+        finalize();
+      }
+
+      // Optional: Auto-scroll slightly to maintain visual continuity
+      // Since new cards appear on the left, we might want to adjust scroll position
+      if (newItems.length > 0 && grid.scrollLeft === 0) {
+        // If at left edge, stay there to show new cards naturally
+      } else {
+        // Otherwise, shift scroll to keep previous view position
+        const addedWidth = newItems.reduce((sum, item) => sum + item.offsetWidth + {{ section.settings.gap }}, 0);
+        grid.scrollLeft += addedWidth;
+      }
+    }, 300);
+  }
+
+  function finalize() {
+    if (sentinel && sentinel.parentNode) {
+      sentinel.remove();
+    }
+    scrollObserver.disconnect();
+    // Fade out loader
+    loader.style.transition = 'opacity 0.4s ease';
+    loader.style.opacity    = '0';
+    setTimeout(() => { loader.style.display = 'none'; }, 400);
+  }
+
+  /* ─────────────────────────────────────────────
+     2. LIGHTBOX (unchanged but works with updated allItems)
+  ───────────────────────────────────────────── */
+  let currentIdx = 0;
+
+  function openLightbox(idx) {
+    currentIdx = idx;
+    // Find the actual index in current allItems (since indices may shift after prepend)
+    const actualItem = allItems.find(item => parseInt(item.dataset.index) === idx);
+    if (!actualItem) return;
+    const imgEl = actualItem.querySelector('img');
+    if (!imgEl) return;
+    
+    // Use larger image URL from stored data
+    const blockData = allBlocks.find(b => b.id === idx);
+    if (blockData && blockData.imageUrlLarge) {
+      lbImg.src = blockData.imageUrlLarge;
+    } else {
+      lbImg.src = imgEl.src.replace(/width=\d+/, 'width=1600');
+    }
+    lbImg.alt = imgEl.alt || '';
+    lightbox.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  function showPrev() {
+    const visibleItems = allItems.filter(item => !item.classList.contains('upcoming-card'));
+    const currentVisibleItem = visibleItems.find(item => parseInt(item.dataset.index) === currentIdx);
+    if (!currentVisibleItem) return;
+    const currentVisibleIndex = visibleItems.indexOf(currentVisibleItem);
+    const prevVisibleItem = visibleItems[(currentVisibleIndex - 1 + visibleItems.length) % visibleItems.length];
+    if (prevVisibleItem) {
+      currentIdx = parseInt(prevVisibleItem.dataset.index);
+      openLightbox(currentIdx);
+    }
+  }
+
+  function showNext() {
+    const visibleItems = allItems.filter(item => !item.classList.contains('upcoming-card'));
+    const currentVisibleItem = visibleItems.find(item => parseInt(item.dataset.index) === currentIdx);
+    if (!currentVisibleItem) return;
+    const currentVisibleIndex = visibleItems.indexOf(currentVisibleItem);
+    const nextVisibleItem = visibleItems[(currentVisibleIndex + 1) % visibleItems.length];
+    if (nextVisibleItem) {
+      currentIdx = parseInt(nextVisibleItem.dataset.index);
+      openLightbox(currentIdx);
+    }
+  }
+
+  // Attach click handlers to initial items
+  function attachClickHandlers() {
+    allItems.forEach(item => {
+      const idx = parseInt(item.dataset.index);
+      item.removeEventListener('click', item._clickHandler);
+      const handler = () => openLightbox(idx);
+      item.addEventListener('click', handler);
+      item._clickHandler = handler;
+    });
+  }
+
+  attachClickHandlers();
+
+  // Lightbox controls
+  lbClose.addEventListener('click', closeLightbox);
+  lbPrev.addEventListener('click', showPrev);
+  lbNext.addEventListener('click', showNext);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape')      closeLightbox();
+    if (e.key === 'ArrowLeft')   showPrev();
+    if (e.key === 'ArrowRight')  showNext();
+  });
+
+  // Drag to scroll functionality
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  grid.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX - grid.offsetLeft;
+    scrollLeft = grid.scrollLeft;
+    grid.style.cursor = 'grabbing';
+  });
+
+  grid.addEventListener('mouseleave', () => {
+    isDown = false;
+    grid.style.cursor = 'grab';
+  });
+
+  grid.addEventListener('mouseup', () => {
+    isDown = false;
+    grid.style.cursor = 'grab';
+  });
+
+  grid.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - grid.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    grid.scrollLeft = scrollLeft - walk;
+  });
+
+  // Touch support
+  grid.addEventListener('touchstart', (e) => {
+    isDown = true;
+    startX = e.touches[0].pageX - grid.offsetLeft;
+    scrollLeft = grid.scrollLeft;
+  });
+
+  grid.addEventListener('touchend', () => {
+    isDown = false;
+  });
+
+  grid.addEventListener('touchmove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.touches[0].pageX - grid.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    grid.scrollLeft = scrollLeft - walk;
+  });
+
+  // Initial cursor style
+  grid.style.cursor = 'grab';
+
+  // Update allItems when dynamically added
+  const observer = new MutationObserver(() => {
+    allItems = Array.from(grid.querySelectorAll('.gallery-item'));
+    attachClickHandlers();
+  });
+  observer.observe(grid, { childList: true });
+
+  // Handle Shopify editor reload
+  if (window.Shopify && Shopify.designMode) {
+    document.addEventListener('shopify:section:load', () => {
+      allItems = Array.from(grid.querySelectorAll('.gallery-item'));
+      attachClickHandlers();
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Image Gallery",
+  "tag": "div",
+  "class": "section-image-gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Our Gallery"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desk",
+      "min": 18,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mob",
+      "min": 18,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f9f6f0"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Section Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Section Padding Bottom",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "side_padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Side Padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 4,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Images",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Image Border Radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Columns (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Columns (Tablet)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Columns (Mobile)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "initial_load",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "label": "Initial Images to Show",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "batch_size",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "label": "Images per Scroll Batch",
+      "default": 6
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Engraving Gallery",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

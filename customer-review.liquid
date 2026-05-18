@@ -1,0 +1,612 @@
+{%- liquid
+  assign heading_size_class = 'heading--medium'
+  if section.settings.heading_size == 'large'
+    assign heading_size_class = 'heading--large'
+  endif
+
+  assign text_align_class = 'text-align--' | append: section.settings.text_alignment
+
+  assign container_class = 'container--default'
+  if section.settings.container_type == 'full_width'
+    assign container_class = 'container--full-width'
+  elsif section.settings.container_type == 'container_box'
+    assign container_class = 'container--box'
+  endif
+
+  assign animation_class = ''
+  if section.settings.animation != 'inherit'
+    assign animation_class = 'animate--' | append: section.settings.animation
+  endif
+
+  assign block_count = section.blocks | where: 'type', 'testimonial' | size
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --stars-color: {{ section.settings.stars_color }};
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+    --bg-color: {{ section.settings.bg_color }};
+    
+    /* Font Size Controls */
+    --desktop-heading-size: {{ section.settings.desktop_heading_size }}px;
+    --mobile-heading-size: {{ section.settings.mobile_heading_size }}px;
+    --desktop-quote-size: {{ section.settings.desktop_quote_size }}px;
+    --mobile-quote-size: {{ section.settings.mobile_quote_size }}px;
+  }
+
+  .testi-{{ section.id }} {
+    padding-top: var(--pt);
+    padding-bottom: var(--pb);
+    background-color: var(--bg-color);
+    overflow: hidden;
+  }
+
+  /* Container types */
+  .testi-{{ section.id }} .container--default   { max-width: 1440px; margin: 0 auto; }
+  .testi-{{ section.id }} .container--full-width { max-width: 100%; }
+  .testi-{{ section.id }} .container--box       { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+
+  /* Header */
+  .testi-{{ section.id }} .section-header { padding: 0 48px; margin-bottom: 20px; }
+  .testi-{{ section.id }} .text-align--left   { text-align: left; }
+  .testi-{{ section.id }} .text-align--center { text-align: center; }
+
+  .testi-{{ section.id }} .section-heading {
+    color: #2C1A0E; line-height: 1.15; font-weight: 400; margin: 0 0 12px;
+    font-size: var(--desktop-heading-size);
+  }
+  .testi-{{ section.id }} .section-heading .highlight { color: #C17A36; font-style: italic; }
+
+  .testi-{{ section.id }} .section-subheading {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #C17A36; margin-bottom: 14px;
+  }
+  .testi-{{ section.id }} .section-description {
+    font-size: 18px; color: #6b6b6b; line-height: 1.7;
+    margin-top: 14px; max-width: 560px;
+  }
+  .testi-{{ section.id }} .text-align--center .section-description { margin-left: auto; margin-right: auto; }
+
+  /* Carousel */
+  .testi-{{ section.id }} .carousel-outer { position: relative; }
+
+  .testi-{{ section.id }} .carousel-viewport {
+    overflow: hidden; cursor: grab;
+    user-select: none; -webkit-user-select: none;
+  }
+  .testi-{{ section.id }} .carousel-viewport:active { cursor: grabbing; }
+
+  .testi-{{ section.id }} .carousel-track {
+    display: flex; gap: 24px;
+    padding: 20px 0 28px;
+    will-change: transform;
+  }
+
+  /* Cards */
+  .testi-{{ section.id }} .testimonial-card {
+    flex: 0 0 clamp(260px, 28vw, 330px);
+    background: hsl(0 0% 100%);
+    border: 1.5px solid rgba(193,122,54,0.22);
+    border-radius: 8px; padding: 36px 28px 30px;
+    transition: transform 0.4s ease, opacity 0.4s ease, box-shadow 0.4s ease;
+    opacity: 0.5; transform: scale(0.96); flex-shrink: 0;
+  }
+  .testi-{{ section.id }} .testimonial-card.is-active {
+    opacity: 1; transform: scale(1);
+    box-shadow: 0 4px 24px -4px hsla(150, 30%, 12%, 0.06);
+  }
+  .testi-{{ section.id }} .testimonial-card.is-near { opacity: 0.82; transform: scale(0.98); }
+
+  /* Stars */
+  .testi-{{ section.id }} .card-stars { display: flex; gap: 3px; margin-bottom: 20px; }
+  .testi-{{ section.id }} .star-icon  { width: 16px; height: 16px; fill: var(--stars-color); }
+  .testi-{{ section.id }} .star-icon.dim { fill: rgba(193,122,54,0.2); }
+
+  /* Quote */
+  .testi-{{ section.id }} .card-quote {
+    font-size: var(--desktop-quote-size); line-height: 1.4; color: #2c2c2c;
+    font-weight: 300; margin-bottom: 28px; min-height: 90px;
+  }
+
+  /* Author */
+  .testi-{{ section.id }} .card-author {
+    border-top: 1px solid rgba(0,0,0,0.07); padding-top: 20px; }
+  .testi-{{ section.id }} .author-name {
+    font-style: italic; font-size: 16px; color: #1E3A2F; margin-bottom: 3px;
+  }
+  .testi-{{ section.id }} .author-location {
+    font-size: 14px; font-weight: 600; letter-spacing: 0.05em;
+    color: #8a8a8a; text-transform: uppercase;
+  }
+
+  /* Nav */
+  .testi-{{ section.id }} .carousel-nav {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; margin-top: 36px;
+  }
+  .testi-{{ section.id }} .nav-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1.5px solid rgba(193,122,54,0.4); background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.25s, border-color 0.25s, transform 0.2s;
+    color: #C17A36;
+  }
+  .testi-{{ section.id }} .nav-btn:hover {
+    background: #C17A36; color: #fff; border-color: #C17A36; transform: scale(1.08);
+  }
+  .testi-{{ section.id }} .nav-btn svg {
+    width: 18px; height: 18px; stroke: currentColor; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  /* Pagination */
+  .testi-{{ section.id }} .carousel-pagination {
+    display: flex; align-items: center; gap: 8px;
+    justify-content: center; margin-top: 24px;
+  }
+  .testi-{{ section.id }} .pagination-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: rgba(193,122,54,0.25); cursor: pointer; border: none;
+    transition: background 0.25s, transform 0.25s; padding: 0;
+  }
+  .testi-{{ section.id }} .pagination-dot.is-active { background: #C17A36; transform: scale(1.4); }
+
+  /* Animations */
+  .animate--fade-in       { opacity:0; animation: tmFadeIn      0.7s ease forwards; }
+  .animate--fade-in-up    { opacity:0; animation: tmFadeInUp    0.7s ease forwards; }
+  .animate--fade-in-left  { opacity:0; animation: tmFadeInLeft  0.7s ease forwards; }
+  .animate--fade-in-right { opacity:0; animation: tmFadeInRight 0.7s ease forwards; }
+  @keyframes tmFadeIn      { to { opacity:1; transform:none; } }
+  @keyframes tmFadeInUp    { from { transform:translateY(30px); } to { opacity:1; transform:none; } }
+  @keyframes tmFadeInLeft  { from { transform:translateX(-30px); } to { opacity:1; transform:none; } }
+  @keyframes tmFadeInRight { from { transform:translateX(30px); } to { opacity:1; transform:none; } }
+
+  @media (max-width: 768px) {
+    .testi-{{ section.id }} .section-heading { font-size: var(--mobile-heading-size); }
+    .testi-{{ section.id }} .card-quote { font-size: var(--mobile-quote-size); }
+    .testi-{{ section.id }} .section-header { padding: 0 20px; margin-bottom: 10px; }
+    
+    /* Lock viewport width to a neat content box and hide overlapping side cards completely */
+    .testi-{{ section.id }} .carousel-viewport { max-width: calc(100% - 40px); margin: 0 auto; }
+    .testi-{{ section.id }} .carousel-track { gap: 24px; padding: 20px 0 28px; }
+    .testi-{{ section.id }} .testimonial-card { flex: 0 0 100%; opacity: 1; transform: none; }
+    
+    .testi-{{ section.id }} .carousel-nav { padding: 0 20px; }
+  }
+
+  {% if section.settings.custom_css != blank %}{{ section.settings.custom_css }}{% endif %}
+</style>
+
+<section
+  id="shopify-section-testi-{{ section.id }}"
+  class="testi-{{ section.id }} {{ section.settings.custom_classes }} {{ animation_class }}"
+  data-section-id="{{ section.id }}"
+  {% if section.settings.custom_attributes != blank %}{{ section.settings.custom_attributes }}{% endif %}
+>
+  <div class="{{ container_class }}">
+
+    {%- comment -%}── Section Header ──{%- endcomment -%}
+    <div class="section-header {{ text_align_class }}">
+      {%- if section.settings.subheading != blank -%}
+        <p class="section-subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="section-heading {{ heading_size_class }}">{{- section.settings.heading -}}</h2>
+      {%- endif -%}
+      {%- if section.settings.description != blank -%}
+        <p class="section-description">{{ section.settings.description }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%}── Carousel ──{%- endcomment -%}
+    <div
+      class="carousel-outer"
+      data-autoplay="{{ section.settings.auto_rotate }}"
+      data-autoplay-speed="4000"
+      data-section="{{ section.id }}"
+    >
+      <div class="carousel-viewport" id="testi-vp-{{ section.id }}">
+        <div class="carousel-track" id="testi-track-{{ section.id }}">
+
+          <script type="application/json" id="testi-data-{{ section.id }}">
+            [
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'testimonial' -%}
+                  {
+                    "rating": {{ block.settings.rating | default: 5 }},
+                    "quote":  {{ block.settings.quote    | json }},
+                    "author": {{ block.settings.author   | json }},
+                    "location": {{ block.settings.location | json }},
+                    "show_stars": {{ section.settings.show_stars }}
+                  }{% unless forloop.last %},{% endunless %}
+                {%- endif -%}
+              {%- endfor -%}
+            ]
+          </script>
+
+        </div>
+      </div>
+
+      {%- if section.settings.show_navigation -%}
+        <div class="carousel-nav">
+          <button class="nav-btn nav-prev-{{ section.id }}" aria-label="Previous testimonial">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="nav-btn nav-next-{{ section.id }}" aria-label="Next testimonial">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_pagination -%}
+        <div class="carousel-pagination" id="testi-pag-{{ section.id }}" role="tablist"></div>
+      {%- endif -%}
+
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  var SID     = '{{ section.id }}';
+  var CLONES  = 3;
+
+  /* ── Grab elements ── */
+  var dataEl  = document.getElementById('testi-data-' + SID);
+  var track   = document.getElementById('testi-track-' + SID);
+  var viewport= document.getElementById('testi-vp-' + SID);
+  var pagEl   = document.getElementById('testi-pag-' + SID);
+  var prevBtn = document.querySelector('.nav-prev-' + SID);
+  var nextBtn = document.querySelector('.nav-next-' + SID);
+
+  if (!track || !viewport || !dataEl) return;
+
+  var DATA = JSON.parse(dataEl.textContent);
+  var N    = DATA.length;
+  if (N === 0) return;
+
+  /* ── State ── */
+  var currentExt   = CLONES;
+  var realIdx      = 0;
+  var isAnimating  = false;
+  var isDragging   = false;
+  var dragStartX   = 0;
+  var dragCurrentX = 0;
+  var startTx      = 0;
+  var autoTimer    = null;
+  var autoplay     = track.closest('[data-autoplay]').dataset.autoplay === 'true';
+  var autoSpeed    = parseInt(track.closest('[data-autoplay]').dataset.autoplaySpeed, 10) || 4000;
+
+  /* ── Build one card DOM node ── */
+  function makeCard(item) {
+    var stars = '';
+    if (item.show_stars) {
+      for (var i = 1; i <= 5; i++) {
+        stars += '<svg class="star-icon' + (i > item.rating ? ' dim' : '') + '" viewBox="0 0 20 20" aria-hidden="true">' +
+          '<path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.51.91-5.33L2.27 6.62l5.34-.78z"' +
+          (i > item.rating ? ' opacity="0.2"' : '') + '/></svg>';
+      }
+    }
+    var el = document.createElement('div');
+    el.className = 'testimonial-card';
+    el.innerHTML =
+      (stars ? '<div class="card-stars">' + stars + '</div>' : '') +
+      '<p class="card-quote">' + item.quote + '</p>' +
+      '<div class="card-author">' +
+        (item.author   ? '<div class="author-name">'     + item.author   + '</div>' : '') +
+        (item.location ? '<div class="author-location">' + item.location + '</div>' : '') +
+      '</div>';
+    return el;
+  }
+
+  /* ── Populate track with clones + reals + clones ── */
+  function buildTrack() {
+    if (dataEl && dataEl.parentNode === track) track.removeChild(dataEl);
+    track.innerHTML = '';
+    var frag = document.createDocumentFragment();
+    for (var c = N - CLONES; c < N; c++)   frag.appendChild(makeCard(DATA[c]));
+    for (var r = 0; r < N; r++)            frag.appendChild(makeCard(DATA[r]));
+    for (var t = 0; t < CLONES; t++)       frag.appendChild(makeCard(DATA[t]));
+    track.appendChild(frag);
+  }
+
+  /* ── Pagination ── */
+  function buildPagination() {
+    if (!pagEl) return;
+    pagEl.innerHTML = '';
+    for (var i = 0; i < N; i++) {
+      var dot = document.createElement('button');
+      dot.className = 'pagination-dot' + (i === 0 ? ' is-active' : '');
+      dot.setAttribute('role', 'tab');
+      dot.setAttribute('aria-label', 'Testimonial ' + (i + 1));
+      dot.setAttribute('data-ri', i);
+      pagEl.appendChild(dot);
+    }
+    pagEl.addEventListener('click', function (e) {
+      var dot = e.target.closest('.pagination-dot');
+      if (!dot) return;
+      jumpToReal(parseInt(dot.getAttribute('data-ri'), 10), true);
+      resetAuto();
+    });
+  }
+
+  /* ── Measure helpers ── */
+  function cw()  { var c = track.querySelector('.testimonial-card'); return c ? c.getBoundingClientRect().width : 320; }
+  function cgap(){ return parseFloat(window.getComputedStyle(track).columnGap) || 24; }
+
+  /* ── Translate for an extended index — centres card in viewport ── */
+  function txFor(extIdx) {
+    var pos = extIdx * (cw() + cgap()) - viewport.getBoundingClientRect().width / 2 + cw() / 2;
+    return -pos;
+  }
+
+  /* ── Instant snap ── */
+  function snapTo(extIdx) {
+    track.style.transition = 'none';
+    track.style.transform  = 'translateX(' + txFor(extIdx) + 'px)';
+    track.offsetHeight;
+  }
+
+  /* ── Animated slide ── */
+  function slideTo(extIdx, cb) {
+    isAnimating = true;
+    track.style.transition = 'transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94)';
+    track.style.transform  = 'translateX(' + txFor(extIdx) + 'px)';
+    function done(ev) {
+      if (ev && ev.propertyName !== 'transform') return;
+      track.removeEventListener('transitionend', done);
+      isAnimating = false;
+      if (cb) cb();
+    }
+    track.addEventListener('transitionend', done);
+  }
+
+  /* ── Extended → real index ── */
+  function e2r(ext) { return ((ext - CLONES) % N + N) % N; }
+
+  /* ── Refresh card classes ── */
+  function refreshCards(centerExt) {
+    var cards = track.querySelectorAll('.testimonial-card');
+    cards.forEach(function (card, i) {
+      card.classList.remove('is-active', 'is-near');
+      var d = Math.abs(i - centerExt);
+      if (d === 0)      card.classList.add('is-active');
+      else if (d === 1) card.classList.add('is-near');
+    });
+  }
+
+  /* ── Refresh dots ── */
+  function refreshPag(ri) {
+    if (!pagEl) return;
+    pagEl.querySelectorAll('.pagination-dot').forEach(function (dot, i) {
+      var on = i === ri;
+      dot.classList.toggle('is-active', on);
+      dot.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  }
+
+  /* ── Step ±1 with seamless loop ── */
+  function step(dir) {
+    if (isAnimating) return;
+    var targetExt  = currentExt + dir;
+    var targetReal = e2r(targetExt);
+    refreshCards(targetExt);
+    refreshPag(targetReal);
+    slideTo(targetExt, function () {
+      var inCloneZone = targetExt < CLONES || targetExt >= CLONES + N;
+      if (inCloneZone) {
+        var jumpExt = CLONES + targetReal;
+        snapTo(jumpExt);
+        refreshCards(jumpExt);
+        currentExt = jumpExt;
+      } else {
+        currentExt = targetExt;
+      }
+      realIdx = e2r(currentExt);
+      refreshPag(realIdx);
+    });
+  }
+
+  /* ── Jump to real index (e.g. from pagination) ── */
+  function jumpToReal(ri, animated) {
+    realIdx    = ri;
+    currentExt = CLONES + ri;
+    refreshCards(currentExt);
+    refreshPag(realIdx);
+    if (animated) slideTo(currentExt, null);
+    else          snapTo(currentExt);
+  }
+
+  /* ── Auto-rotate ── */
+  function startAuto() { if (!autoplay) return; autoTimer = setInterval(function () { step(1); }, autoSpeed); }
+  function stopAuto()  { clearInterval(autoTimer); }
+  function resetAuto() { stopAuto(); startAuto(); }
+
+  /* ── Drag / touch ── */
+  function onStart(e) {
+    if (isAnimating) return;
+    isDragging = true;
+    track.style.transition = 'none';
+    dragStartX   = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+    dragCurrentX = dragStartX;
+    var m = new DOMMatrix(window.getComputedStyle(track).transform);
+    startTx = m.m41;
+    stopAuto();
+  }
+  function onMove(e) {
+    if (!isDragging) return;
+    dragCurrentX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+    track.style.transform = 'translateX(' + (startTx + dragCurrentX - dragStartX) + 'px)';
+    if (e.type === 'touchmove') e.preventDefault();
+  }
+  function onEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    var diff = dragCurrentX - dragStartX;
+    var thr  = cw() * 0.22;
+    if      (diff < -thr) step(1);
+    else if (diff >  thr) step(-1);
+    else          slideTo(currentExt, null);
+    resetAuto();
+  }
+
+  viewport.addEventListener('mousedown',  onStart, { passive: true });
+  window.addEventListener  ('mousemove',  onMove,  { passive: true });
+  window.addEventListener  ('mouseup',    onEnd,   { passive: true });
+  viewport.addEventListener('touchstart', onStart, { passive: true });
+  viewport.addEventListener('touchmove',  onMove,  { passive: false });
+  viewport.addEventListener('touchend',   onEnd,   { passive: true });
+
+  if (prevBtn) prevBtn.addEventListener('click', function () { step(-1); resetAuto(); });
+  if (nextBtn) nextBtn.addEventListener('click', function () { step(1);  resetAuto(); });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft')  { step(-1); resetAuto(); }
+    if (e.key === 'ArrowRight') { step(1);  resetAuto(); }
+  });
+
+  var rzTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(rzTimer);
+    rzTimer = setTimeout(function () { snapTo(currentExt); }, 150);
+  });
+
+  /* ── Init ── */
+  buildTrack();
+  buildPagination();
+  snapTo(currentExt);
+  refreshCards(currentExt);
+  refreshPag(realIdx);
+  startAuto();
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Testimonials_custom",
+  "tag": "section",
+  "class": "section-testimonials",
+  "settings": [
+    { "type": "header", "content": "Section header" },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Happens When <span class=\"highlight\">You Get It Right</span>"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "medium", "label": "Medium" },
+        { "value": "large",  "label": "Large"  }
+      ],
+      "default": "medium"
+    },
+    { "type": "text",     "id": "subheading",   "label": "Subheading" },
+    { "type": "richtext", "id": "description",  "label": "Description" },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left",   "label": "Left"   },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    { "type": "header", "content": "Font Size Control" },
+    { "type": "range", "id": "desktop_heading_size", "label": "Desktop Heading Size", "min": 20, "max": 80, "step": 2, "unit": "px", "default": 40 },
+    { "type": "range", "id": "mobile_heading_size", "label": "Mobile Heading Size", "min": 16, "max": 50, "step": 2, "unit": "px", "default": 30 },
+    { "type": "range", "id": "desktop_quote_size", "label": "Desktop Quote Size", "min": 12, "max": 28, "step": 1, "unit": "px", "default": 18 },
+    { "type": "range", "id": "mobile_quote_size", "label": "Mobile Quote Size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 16 },
+    { "type": "header", "content": "General" },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container type",
+      "options": [
+        { "value": "default",       "label": "Default"           },
+        { "value": "full_width",    "label": "Full width"        },
+        { "value": "container_box", "label": "Use container box" }
+      ],
+      "default": "full_width"
+    },
+    { "type": "color", "id": "bg_color", "label": "Background Color", "default": "#ffffff" },
+    { "type": "checkbox",     "id": "show_stars",        "label": "Show stars",        "default": true  },
+    { "type": "checkbox",     "id": "auto_rotate",       "label": "Auto-rotate content","default": true },
+    { "type": "checkbox",     "id": "show_navigation",   "label": "Show navigation",   "default": true  },
+    { "type": "checkbox",     "id": "show_pagination",   "label": "Show pagination",   "default": true  },
+    { "type": "color",        "id": "stars_color",       "label": "Stars color",       "default": "#C17A36" },
+    { "type": "header",  "content": "Section padding" },
+    { "type": "range", "id": "padding_top",    "label": "Padding top",    "min": 0, "max": 120, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 80 },
+    { "type": "header",   "content": "Custom attributes" },
+    { "type": "text",     "id": "custom_classes",     "label": "Custom classes"     },
+    { "type": "text",     "id": "custom_attributes",  "label": "Custom attributes"  },
+    { "type": "header",   "content": "Animations" },
+    {
+      "type": "select",
+      "id": "animation",
+      "label": "Visible in the view animation",
+      "options": [
+        { "value": "inherit",       "label": "Inherit global setting" },
+        { "value": "fade-in",       "label": "Fade in"                },
+        { "value": "fade-in-up",    "label": "Fade in up"             },
+        { "value": "fade-in-left",  "label": "Fade in left"           },
+        { "value": "fade-in-right", "label": "Fade in right"          }
+      ],
+      "default": "inherit"
+    },
+    { "type": "header",   "content": "Theme settings" },
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS" }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "select",
+          "id": "rating",
+          "label": "Star rating",
+          "options": [
+            { "value": "5", "label": "★★★★★ 5 stars" },
+            { "value": "4", "label": "★★★★☆ 4 stars" },
+            { "value": "3", "label": "★★★☆☆ 3 stars" },
+            { "value": "2", "label": "★★☆☆☆ 2 stars" },
+            { "value": "1", "label": "★☆☆☆☆ 1 star"  }
+          ],
+          "default": "5"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "Not gonna lie, I expected some generic advice. But a lot of things were explained very honestly, especially about costs and property."
+        },
+        { "type": "text", "id": "author",   "label": "Name",     "default": "James"          },
+        { "type": "text", "id": "location", "label": "Location", "default": "Los Angeles, CA" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials_custom",
+      "blocks": [
+        { "type": "testimonial", "settings": { "rating": "5", "quote": "Not gonna lie, I expected some generic advice. But a lot of things were explained very honestly, especially about costs and property.", "author": "James", "location": "Los Angeles, CA" } },
+        { "type": "testimonial", "settings": { "rating": "5", "quote": "Speaking to Naz before flying in saved me real confusion. Some agent information wasn't completely clear until it was properly explained.", "author": "Mark", "location": "Los Angeles, CA" } },
+        { "type": "testimonial", "settings": { "rating": "5", "quote": "Bought the guide first, then did the call. Didn't feel salesy at all. More like someone telling you what to watch out for.", "author": "Sofia", "location": "Los Angeles, CA" } },
+        { "type": "testimonial", "settings": { "rating": "5", "quote": "I was stuck between a few areas everyone keeps talking about. After reading and talking, I realised there are better options for how I actually live.", "author": "Rachel", "location": "Los Angeles, CA" } },
+        { "type": "testimonial", "settings": { "rating": "5", "quote": "Never thought I'd find a resource this honest about the actual process. Everything was clearly laid out and the call felt personal.", "author": "David", "location": "Los Angeles, CA" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

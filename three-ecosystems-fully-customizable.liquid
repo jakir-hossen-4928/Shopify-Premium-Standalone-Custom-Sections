@@ -1,0 +1,1050 @@
+{% comment %}
+  TGCD Studios / Collection Cards Section — FULLY CUSTOMIZABLE
+  Compatible with: Shopify Impulse Theme
+  Features: Complete theme-editor control over every dimension, color, spacing, and breakpoint
+{% endcomment %}
+
+<style>
+  /* ============================================
+     CSS CUSTOM PROPERTIES (DYNAMIC)
+     ============================================ */
+  .three-ecosystems[data-section-id="{{ section.id }}"] {
+    /* Container */
+    --tgc-max-width: {{ section.settings.container_max_width }}px;
+    --tgc-container-pad-desktop: {{ section.settings.container_padding_desktop }}px;
+    --tgc-container-pad-mobile: {{ section.settings.container_padding_mobile }}px;
+
+    /* Section spacing */
+    --tgc-pad-top: {{ section.settings.padding_top }}px;
+    --tgc-pad-bottom: {{ section.settings.padding_bottom }}px;
+    --tgc-pad-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --tgc-pad-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+
+    /* Colors */
+    --tgc-section-bg: {{ section.settings.section_bg }};
+    --tgc-heading-color: {{ section.settings.heading_color }};
+    --tgc-subheading-color: {{ section.settings.subheading_color }};
+    --tgc-desc-color: {{ section.settings.desc_color }};
+    --tgc-label-color: {{ section.settings.label_color }};
+
+    /* Desktop header typography */
+    --tgc-eyebrow-size-desktop: {{ section.settings.eyebrow_font_size_desktop }}px;
+    --tgc-eyebrow-ls-desktop: {{ section.settings.eyebrow_letter_spacing_desktop }}em;
+    --tgc-eyebrow-line-desktop: {{ section.settings.eyebrow_line_width_desktop }}px;
+    --tgc-heading-min-desktop: {{ section.settings.heading_font_size_min_desktop }}px;
+    --tgc-heading-max-desktop: {{ section.settings.heading_font_size_max_desktop }}px;
+    --tgc-heading-lh-desktop: {{ section.settings.heading_line_height_desktop }};
+    --tgc-heading-ls-desktop: {{ section.settings.heading_letter_spacing_desktop }}em;
+    --tgc-header-desc-size-desktop: {{ section.settings.header_desc_font_size_desktop }}px;
+    --tgc-header-desc-lh-desktop: {{ section.settings.header_desc_line_height_desktop }};
+    --tgc-header-desc-max-desktop: {{ section.settings.header_desc_max_width_desktop }}px;
+
+    /* Mobile header typography */
+    --tgc-eyebrow-size-mobile: {{ section.settings.eyebrow_font_size_mobile }}px;
+    --tgc-heading-min-mobile: {{ section.settings.heading_font_size_min_mobile }}px;
+    --tgc-heading-max-mobile: {{ section.settings.heading_font_size_max_mobile }}px;
+    --tgc-header-desc-size-mobile: {{ section.settings.header_desc_font_size_mobile }}px;
+
+    /* Desktop header layout */
+    --tgc-header-gap-desktop: {{ section.settings.header_gap_desktop }}px;
+    --tgc-header-mb-desktop: {{ section.settings.header_margin_bottom_desktop }}px;
+    --tgc-header-left-max-desktop: {{ section.settings.header_left_max_width_desktop }}px;
+    --tgc-header-right-pb-desktop: {{ section.settings.header_right_padding_bottom_desktop }}px;
+
+    /* Mobile header layout */
+    --tgc-header-gap-mobile: {{ section.settings.header_gap_mobile }}px;
+    --tgc-header-mb-mobile: {{ section.settings.header_margin_bottom_mobile }}px;
+
+    /* Desktop grid */
+    --tgc-grid-cols-desktop: {{ section.settings.grid_columns_desktop }};
+    --tgc-grid-gap-desktop: {{ section.settings.grid_gap_desktop }}px;
+
+    /* Tablet grid */
+    --tgc-grid-cols-tablet: {{ section.settings.grid_columns_tablet }};
+    --tgc-grid-gap-tablet: {{ section.settings.grid_gap_tablet }}px;
+
+    /* Desktop card dimensions */
+    --tgc-card-ar-w-desktop: {{ section.settings.card_aspect_ratio_w_desktop }};
+    --tgc-card-ar-h-desktop: {{ section.settings.card_aspect_ratio_h_desktop }};
+    --tgc-card-radius-desktop: {{ section.settings.card_border_radius_desktop }}px;
+
+    /* Tablet card dimensions */
+    --tgc-card-ar-w-tablet: {{ section.settings.card_aspect_ratio_w_tablet }};
+    --tgc-card-ar-h-tablet: {{ section.settings.card_aspect_ratio_h_tablet }};
+
+    /* Mobile card dimensions (stacked) */
+    --tgc-card-ar-w-mobile: {{ section.settings.card_aspect_ratio_w_mobile }};
+    --tgc-card-ar-h-mobile: {{ section.settings.card_aspect_ratio_h_mobile }};
+    --tgc-card-radius-mobile: {{ section.settings.card_border_radius_mobile }}px;
+
+    /* Desktop card typography */
+    --tgc-card-title-min-desktop: {{ section.settings.card_title_font_size_min_desktop }}px;
+    --tgc-card-title-max-desktop: {{ section.settings.card_title_font_size_max_desktop }}px;
+    --tgc-card-title-lh-desktop: {{ section.settings.card_title_line_height_desktop }};
+    --tgc-card-title-ls-desktop: {{ section.settings.card_title_letter_spacing_desktop }}em;
+    --tgc-card-title-mb-desktop: {{ section.settings.card_title_margin_bottom_desktop }}px;
+    --tgc-card-desc-size-desktop: {{ section.settings.card_desc_font_size_desktop }}px;
+    --tgc-card-desc-lh-desktop: {{ section.settings.card_desc_line_height_desktop }};
+    --tgc-card-desc-mb-desktop: {{ section.settings.card_desc_margin_bottom_desktop }}px;
+    --tgc-card-cta-size-desktop: {{ section.settings.card_cta_font_size_desktop }}px;
+    --tgc-card-cta-ls-desktop: {{ section.settings.card_cta_letter_spacing_desktop }}em;
+    --tgc-card-number-size-desktop: {{ section.settings.card_number_font_size_desktop }}px;
+    --tgc-card-number-ls-desktop: {{ section.settings.card_number_letter_spacing_desktop }}em;
+
+    /* Mobile card typography */
+    --tgc-card-title-size-mobile: {{ section.settings.card_title_font_size_mobile }}px;
+    --tgc-card-desc-size-mobile: {{ section.settings.card_desc_font_size_mobile }}px;
+    --tgc-card-cta-size-mobile: {{ section.settings.card_cta_font_size_mobile }}px;
+    --tgc-card-number-size-mobile: {{ section.settings.card_number_font_size_mobile }}px;
+
+    /* Desktop card spacing */
+    --tgc-card-top-pad-desktop: {{ section.settings.card_top_padding_desktop }}px;
+    --tgc-card-top-pad-x-desktop: {{ section.settings.card_top_padding_horizontal_desktop }}px;
+    --tgc-card-content-pad-x-desktop: {{ section.settings.card_content_padding_horizontal_desktop }}px;
+    --tgc-card-content-pad-bottom-desktop: {{ section.settings.card_content_padding_bottom_desktop }}px;
+
+    /* Mobile card spacing */
+    --tgc-card-top-pad-mobile: {{ section.settings.card_top_padding_mobile }}px;
+    --tgc-card-top-pad-x-mobile: {{ section.settings.card_top_padding_horizontal_mobile }}px;
+    --tgc-card-content-pad-x-mobile: {{ section.settings.card_content_padding_horizontal_mobile }}px;
+    --tgc-card-content-pad-bottom-mobile: {{ section.settings.card_content_padding_bottom_mobile }}px;
+
+    /* Arrow button */
+    --tgc-arrow-size-desktop: {{ section.settings.arrow_size_desktop }}px;
+    --tgc-arrow-size-mobile: {{ section.settings.arrow_size_mobile }}px;
+    --tgc-arrow-border-width: {{ section.settings.arrow_border_width }}px;
+    --tgc-arrow-border-opacity: {{ section.settings.arrow_border_opacity }};
+    --tgc-arrow-backdrop-blur: {{ section.settings.arrow_backdrop_blur }}px;
+    --tgc-arrow-bg-default: {{ section.settings.arrow_bg_default }};
+    --tgc-arrow-bg-hover: {{ section.settings.arrow_bg_hover }};
+    --tgc-arrow-border-color: {{ section.settings.arrow_border_color }};
+    --tgc-arrow-icon-color: {{ section.settings.arrow_icon_color }};
+
+    /* Hover effects */
+    --tgc-hover-lift: {{ section.settings.hover_lift_amount }}px;
+    --tgc-hover-shadow-x: {{ section.settings.hover_shadow_x }}px;
+    --tgc-hover-shadow-y: {{ section.settings.hover_shadow_y }}px;
+    --tgc-hover-shadow-blur: {{ section.settings.hover_shadow_blur }}px;
+    --tgc-hover-shadow-spread: {{ section.settings.hover_shadow_spread }}px;
+    --tgc-hover-shadow-opacity: {{ section.settings.hover_shadow_opacity }};
+    --tgc-hover-image-scale: {{ section.settings.hover_image_scale }};
+    --tgc-hover-duration: {{ section.settings.hover_transition_duration }}s;
+    --tgc-hover-easing: {{ section.settings.hover_transition_easing }};
+
+    /* Overlay */
+    --tgc-overlay-top: {{ section.settings.overlay_opacity_top }};
+    --tgc-overlay-mid: {{ section.settings.overlay_opacity_mid }};
+    --tgc-overlay-lower: {{ section.settings.overlay_opacity_lower }};
+    --tgc-overlay-bottom: {{ section.settings.overlay_opacity_bottom }};
+    --tgc-overlay-hover-top: {{ section.settings.overlay_hover_opacity_top }};
+    --tgc-overlay-hover-mid: {{ section.settings.overlay_hover_opacity_mid }};
+    --tgc-overlay-hover-lower: {{ section.settings.overlay_hover_opacity_lower }};
+    --tgc-overlay-hover-bottom: {{ section.settings.overlay_hover_opacity_bottom }};
+
+    /* Animation */
+    --tgc-anim-duration: {{ section.settings.animation_duration }}s;
+    --tgc-anim-stagger: {{ section.settings.animation_stagger }}s;
+    --tgc-anim-translate: {{ section.settings.animation_translate_y }}px;
+
+    /* Mobile scroll */
+    --tgc-mobile-card-width: {{ section.settings.mobile_card_width }}vw;
+    --tgc-mobile-card-gap: {{ section.settings.mobile_card_gap }}px;
+  }
+
+  /* ============================================
+     BASE SECTION STYLES
+     ============================================ */
+  .three-ecosystems {
+    background-color: var(--tgc-section-bg);
+    width: 100%;
+    padding-top: var(--tgc-pad-top);
+    padding-bottom: var(--tgc-pad-bottom);
+  }
+
+  .ecosystems-container {
+    max-width: var(--tgc-max-width);
+    margin: 0 auto;
+    padding: 0 var(--tgc-container-pad-desktop);
+  }
+
+  /* ============================================
+     HEADER AREA
+     ============================================ */
+  .ecosystems-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--tgc-header-gap-desktop);
+    align-items: flex-end;
+    margin-bottom: var(--tgc-header-mb-desktop);
+  }
+
+  .ecosystems-header__left {
+    max-width: var(--tgc-header-left-max-desktop);
+  }
+
+  .ecosystems-header__right {
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: var(--tgc-header-right-pb-desktop);
+  }
+
+  /* Eyebrow */
+  .ecosystems-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: var(--tgc-eyebrow-size-desktop);
+    font-weight: 600;
+    letter-spacing: var(--tgc-eyebrow-ls-desktop);
+    text-transform: uppercase;
+    color: var(--tgc-subheading-color);
+    margin: 0 0 18px 0;
+    font-family: inherit;
+  }
+
+  .eyebrow-line {
+    display: inline-block;
+    width: var(--tgc-eyebrow-line-desktop);
+    height: 1.5px;
+    background-color: var(--tgc-subheading-color);
+    flex-shrink: 0;
+  }
+
+  /* Main Heading */
+  .ecosystems-heading {
+    font-size: clamp(var(--tgc-heading-min-desktop), 4.5vw, var(--tgc-heading-max-desktop));
+    font-weight: 800;
+    line-height: var(--tgc-heading-lh-desktop);
+    color: var(--tgc-heading-color);
+    margin: 0;
+    letter-spacing: var(--tgc-heading-ls-desktop);
+    font-family: inherit;
+    white-space: pre-line;
+  }
+
+  /* Header Description */
+  .ecosystems-header-desc {
+    font-size: var(--tgc-header-desc-size-desktop);
+    line-height: var(--tgc-header-desc-lh-desktop);
+    color: var(--tgc-desc-color);
+    margin: 0;
+    max-width: var(--tgc-header-desc-max-desktop);
+    font-family: inherit;
+  }
+
+  /* ============================================
+     CARDS GRID
+     ============================================ */
+  .ecosystems-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--tgc-grid-cols-desktop), 1fr);
+    gap: var(--tgc-grid-gap-desktop);
+  }
+
+  /* ============================================
+     SINGLE CARD
+     ============================================ */
+  .ecosystem-card {
+    position: relative;
+    border-radius: var(--tgc-card-radius-desktop);
+    overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: var(--tgc-card-ar-w-desktop) / var(--tgc-card-ar-h-desktop);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--card-bg, #1a1a1a);
+    border: var(--card-border-width, 0px) solid var(--card-border-color, transparent);
+
+    transform: translateY(0);
+    transition:
+      transform var(--tgc-hover-duration) var(--tgc-hover-easing),
+      box-shadow var(--tgc-hover-duration) var(--tgc-hover-easing);
+  }
+
+  .ecosystem-card:hover {
+    transform: translateY(calc(var(--tgc-hover-lift) * -1));
+    box-shadow:
+      var(--tgc-hover-shadow-x) var(--tgc-hover-shadow-y) var(--tgc-hover-shadow-blur) var(--tgc-hover-shadow-spread) rgba(0, 0, 0, var(--tgc-hover-shadow-opacity)),
+      0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  /* ---- Background Image ---- */
+  .card-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .card-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: var(--card-img-fit, cover);
+    object-position: var(--card-img-pos, center);
+    display: block;
+    transform: scale(1);
+    transition: transform 0.65s var(--tgc-hover-easing);
+  }
+
+  .ecosystem-card:hover .card-bg img {
+    transform: scale(var(--tgc-hover-image-scale));
+  }
+
+  .card-bg-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  }
+
+  /* ---- Overlay ---- */
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, var(--tgc-overlay-top)) 0%,
+      rgba(0, 0, 0, var(--tgc-overlay-mid)) 30%,
+      rgba(0, 0, 0, var(--tgc-overlay-lower)) 65%,
+      rgba(0, 0, 0, var(--tgc-overlay-bottom)) 100%
+    );
+    transition: background var(--tgc-hover-duration) ease;
+  }
+
+  .ecosystem-card:hover .card-overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, var(--tgc-overlay-hover-top)) 0%,
+      rgba(0, 0, 0, var(--tgc-overlay-hover-mid)) 25%,
+      rgba(0, 0, 0, var(--tgc-overlay-hover-lower)) 60%,
+      rgba(0, 0, 0, var(--tgc-overlay-hover-bottom)) 100%
+    );
+  }
+
+  /* ---- Top Bar (Number + Arrow) ---- */
+  .card-top {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--tgc-card-top-pad-desktop) var(--tgc-card-top-pad-x-desktop) 0 var(--tgc-card-top-pad-x-desktop);
+  }
+
+  .card-number-label {
+    font-size: var(--tgc-card-number-size-desktop);
+    font-weight: 600;
+    letter-spacing: var(--tgc-card-number-ls-desktop);
+    text-transform: uppercase;
+    color: var(--card-number-color, rgba(255,255,255,0.85));
+    font-family: inherit;
+  }
+
+  .card-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--tgc-arrow-size-desktop);
+    height: var(--tgc-arrow-size-desktop);
+    border-radius: 50%;
+    background-color: var(--card-arrow-bg, var(--tgc-arrow-bg-default));
+    color: var(--card-arrow-icon, var(--tgc-arrow-icon-color));
+    text-decoration: none;
+    border: var(--tgc-arrow-border-width) solid var(--tgc-arrow-border-color);
+    backdrop-filter: blur(var(--tgc-arrow-backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--tgc-arrow-backdrop-blur));
+    transition:
+      background-color 0.3s ease,
+      transform 0.3s ease,
+      border-color 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .card-arrow:hover,
+  .ecosystem-card:hover .card-arrow {
+    background-color: var(--tgc-arrow-bg-hover);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: rotate(45deg) scale(1.05);
+  }
+
+  .card-arrow svg {
+    transition: transform 0.3s ease;
+  }
+
+  /* ---- Bottom Content ---- */
+  .card-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 var(--tgc-card-content-pad-x-desktop) var(--tgc-card-content-pad-bottom-desktop) var(--tgc-card-content-pad-x-desktop);
+    transform: translateY(0);
+    transition: transform 0.4s var(--tgc-hover-easing);
+  }
+
+  .ecosystem-card:hover .card-content {
+    transform: translateY(-4px);
+  }
+
+  .card-title {
+    font-size: clamp(var(--tgc-card-title-min-desktop), 2.2vw, var(--tgc-card-title-max-desktop));
+    font-weight: 800;
+    line-height: var(--tgc-card-title-lh-desktop);
+    color: var(--card-title-color, #ffffff);
+    margin: 0 0 var(--tgc-card-title-mb-desktop) 0;
+    letter-spacing: var(--tgc-card-title-ls-desktop);
+    font-family: inherit;
+  }
+
+  .card-desc {
+    font-size: var(--tgc-card-desc-size-desktop);
+    line-height: var(--tgc-card-desc-lh-desktop);
+    color: var(--card-desc-color, rgba(255,255,255,0.82));
+    margin: 0 0 var(--tgc-card-desc-mb-desktop) 0;
+    font-family: inherit;
+    opacity: 0.85;
+    transform: translateY(0);
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+
+  .ecosystem-card:hover .card-desc {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+
+  /* CTA Link */
+  .card-cta {
+    display: inline-block;
+    font-size: var(--tgc-card-cta-size-desktop);
+    font-weight: 700;
+    letter-spacing: var(--tgc-card-cta-ls-desktop);
+    text-transform: uppercase;
+    color: var(--card-accent, #c0392b);
+    text-decoration: none;
+    position: relative;
+    font-family: inherit;
+    transition: 
+      color 0.3s ease,
+      letter-spacing 0.3s ease;
+  }
+
+  .card-cta:hover {
+    color: var(--card-accent-hover, #f38d43);
+  }
+
+  .card-cta::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background-color: var(--card-accent, #c0392b);
+    transition: width 0.35s var(--tgc-hover-easing);
+  }
+
+  .ecosystem-card:hover .card-cta::after {
+    width: 100%;
+  }
+
+  .ecosystem-card:hover .card-cta {
+    letter-spacing: calc(var(--tgc-card-cta-ls-desktop) + 0.03em);
+  }
+
+  /* ============================================
+     ENTER ANIMATION (Scroll Reveal)
+     ============================================ */
+  @keyframes fadeUpIn {
+    from {
+      opacity: 0;
+      transform: translateY(var(--tgc-anim-translate));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  {% if section.settings.enable_scroll_animation %}
+  .ecosystem-card {
+    animation: fadeUpIn var(--tgc-anim-duration) var(--tgc-hover-easing) both;
+  }
+
+  {% for block in section.blocks %}
+    {% if block.type == 'card' %}
+  .ecosystem-card:nth-child({{ forloop.index }}) { animation-delay: calc(var(--tgc-anim-stagger) * {{ forloop.index0 }}); }
+    {% endif %}
+  {% endfor %}
+  {% endif %}
+
+  /* ============================================
+     RESPONSIVE — TABLET (max 1024px)
+     ============================================ */
+  @media screen and (max-width: 1024px) {
+    .ecosystems-header {
+      grid-template-columns: 1fr;
+      gap: var(--tgc-header-gap-mobile);
+      margin-bottom: var(--tgc-header-mb-mobile);
+    }
+
+    .ecosystems-header__right {
+      align-items: flex-start;
+      padding-bottom: 0;
+    }
+
+    .ecosystems-header-desc {
+      max-width: 560px;
+    }
+
+    .ecosystems-grid {
+      grid-template-columns: repeat(var(--tgc-grid-cols-tablet), 1fr);
+      gap: var(--tgc-grid-gap-tablet);
+    }
+
+    .ecosystem-card {
+      aspect-ratio: var(--tgc-card-ar-w-tablet) / var(--tgc-card-ar-h-tablet);
+    }
+  }
+
+  /* ============================================
+     RESPONSIVE — MOBILE (max 768px)
+     ============================================ */
+  @media screen and (max-width: 768px) {
+    .three-ecosystems {
+      padding-top: var(--tgc-pad-top-mobile);
+      padding-bottom: var(--tgc-pad-bottom-mobile);
+    }
+
+    .ecosystems-container {
+      padding: 0 var(--tgc-container-pad-mobile);
+    }
+
+    .ecosystems-header {
+      margin-bottom: var(--tgc-header-mb-mobile);
+    }
+
+    .ecosystems-heading {
+      font-size: clamp(var(--tgc-heading-min-mobile), 8vw, var(--tgc-heading-max-mobile));
+    }
+
+    .ecosystems-eyebrow {
+      font-size: var(--tgc-eyebrow-size-mobile);
+    }
+
+    .ecosystems-header-desc {
+      font-size: var(--tgc-header-desc-size-mobile);
+    }
+
+    /* Default mobile: stacked single column */
+    .ecosystems-grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .ecosystem-card {
+      aspect-ratio: var(--tgc-card-ar-w-mobile) / var(--tgc-card-ar-h-mobile);
+      border-radius: var(--tgc-card-radius-mobile);
+    }
+
+    .card-top {
+      padding: var(--tgc-card-top-pad-mobile) var(--tgc-card-top-pad-x-mobile) 0 var(--tgc-card-top-pad-x-mobile);
+    }
+
+    .card-content {
+      padding: 0 var(--tgc-card-content-pad-x-mobile) var(--tgc-card-content-pad-bottom-mobile) var(--tgc-card-content-pad-x-mobile);
+    }
+
+    .card-title {
+      font-size: var(--tgc-card-title-size-mobile);
+    }
+
+    .card-desc {
+      font-size: var(--tgc-card-desc-size-mobile);
+    }
+
+    .card-cta {
+      font-size: var(--tgc-card-cta-size-mobile);
+    }
+
+    .card-number-label {
+      font-size: var(--tgc-card-number-size-mobile);
+    }
+
+    .card-arrow {
+      width: var(--tgc-arrow-size-mobile);
+      height: var(--tgc-arrow-size-mobile);
+    }
+
+    /* Disable hover lift on touch devices */
+    .ecosystem-card:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .ecosystem-card:hover .card-bg img {
+      transform: scale(1);
+    }
+
+    .ecosystem-card:hover .card-content {
+      transform: none;
+    }
+  }
+
+  /* ============================================
+     MOBILE HORIZONTAL SCROLL (when enabled)
+     ============================================ */
+  @media screen and (max-width: 768px) {
+    .ecosystems-grid--scroll {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      gap: var(--tgc-mobile-card-gap);
+      padding-bottom: 16px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-snap-type: x mandatory;
+      scroll-padding-left: var(--tgc-container-pad-mobile);
+      scroll-padding-right: var(--tgc-container-pad-mobile);
+    }
+
+    .ecosystems-grid--scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ecosystems-grid--scroll .ecosystem-card {
+      flex: 0 0 auto;
+      width: var(--tgc-mobile-card-width);
+      max-width: 320px;
+      aspect-ratio: var(--tgc-card-ar-w-desktop) / var(--tgc-card-ar-h-desktop);
+      scroll-snap-align: start;
+      margin-right: 4px;
+    }
+
+    .ecosystems-grid--scroll .ecosystem-card:last-child {
+      margin-right: var(--tgc-container-pad-mobile);
+    }
+
+    /* Scroll indicator dots */
+    .ecosystems-scroll-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 16px;
+      padding-bottom: 8px;
+    }
+
+    .scroll-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .scroll-dot.active {
+      background-color: var(--tgc-subheading-color);
+      transform: scale(1.3);
+    }
+  }
+
+  /* ============================================
+     RESPONSIVE — SMALL MOBILE (max 480px)
+     ============================================ */
+  @media screen and (max-width: 480px) {
+    .ecosystem-card {
+      aspect-ratio: 3 / 2.5;
+    }
+
+    .ecosystems-grid--scroll .ecosystem-card {
+      aspect-ratio: var(--tgc-card-ar-w-desktop) / var(--tgc-card-ar-h-desktop);
+    }
+  }
+</style>
+
+<section class="three-ecosystems" data-section-id="{{ section.id }}" id="shopify-section-{{ section.id }}">
+  <div class="ecosystems-container">
+
+    <!-- Top Header Area -->
+    <div class="ecosystems-header">
+      <div class="ecosystems-header__left">
+        {% if section.settings.eyebrow != blank %}
+          <p class="ecosystems-eyebrow">
+            <span class="eyebrow-line"></span>
+            {{ section.settings.eyebrow }}
+          </p>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 class="ecosystems-heading">{{ section.settings.heading }}</h2>
+        {% endif %}
+      </div>
+      <div class="ecosystems-header__right">
+        {% if section.settings.header_desc != blank %}
+          <p class="ecosystems-header-desc">{{ section.settings.header_desc }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="ecosystems-grid {% if section.settings.enable_mobile_scroll %}ecosystems-grid--scroll{% endif %}">
+      {% for block in section.blocks %}
+        {% if block.type == 'card' %}
+          <div class="ecosystem-card" {{ block.shopify_attributes }}
+            style="
+              --card-accent: {{ block.settings.accent_color }};
+              --card-accent-hover: {{ block.settings.accent_hover_color }};
+              --card-title-color: {{ block.settings.title_color }};
+              --card-desc-color: {{ block.settings.desc_color }};
+              --card-number-color: {{ block.settings.number_color }};
+              --card-arrow-bg: {{ block.settings.arrow_bg }};
+              --card-arrow-icon: {{ block.settings.arrow_icon_color }};
+              --card-bg: {{ block.settings.card_bg_color }};
+              --card-border-width: {{ block.settings.card_border_width }}px;
+              --card-border-color: {{ block.settings.card_border_color | color_modify: 'alpha', block.settings.card_border_opacity }};
+              --card-img-fit: {{ block.settings.image_object_fit }};
+              --card-img-pos: {{ block.settings.image_object_position }};
+            ">
+
+            <!-- Background Image -->
+            <div class="card-bg">
+              {% if block.settings.image != blank %}
+                <img 
+                  src="{{ block.settings.image | image_url: width: block.settings.image_width }}"
+                  alt="{{ block.settings.title }}"
+                  loading="lazy"
+                  width="{{ block.settings.image_width }}"
+                  height="{{ block.settings.image_height }}"
+                >
+              {% else %}
+                <div class="card-bg-placeholder"></div>
+              {% endif %}
+            </div>
+
+            <!-- Overlay -->
+            <div class="card-overlay"></div>
+
+            <!-- Top Bar -->
+            <div class="card-top">
+              <span class="card-number-label">
+                {{ block.settings.number_label }}
+              </span>
+              <a 
+                href="{{ block.settings.card_link }}" 
+                class="card-arrow"
+                aria-label="Go to {{ block.settings.title }}"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+
+            <!-- Bottom Content -->
+            <div class="card-content">
+              {% if block.settings.title != blank %}
+                <h3 class="card-title">{{ block.settings.title }}</h3>
+              {% endif %}
+              {% if block.settings.description != blank %}
+                <p class="card-desc">{{ block.settings.description }}</p>
+              {% endif %}
+              {% if block.settings.link_text != blank %}
+                <a href="{{ block.settings.card_link }}" class="card-cta">
+                  {{ block.settings.link_text }} &rarr;
+                </a>
+              {% endif %}
+            </div>
+
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if section.settings.enable_mobile_scroll and section.blocks.size > 0 %}
+      <div class="ecosystems-scroll-indicator">
+        {% for block in section.blocks %}
+          {% if block.type == 'card' %}
+            <span class="scroll-dot {% if forloop.first %}active{% endif %}"></span>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% if section.settings.enable_mobile_scroll %}
+<script>
+  (function() {
+    var sectionId = "{{ section.id }}";
+    var grid = document.querySelector('#shopify-section-' + sectionId + ' .ecosystems-grid--scroll');
+    if (!grid) return;
+    var dots = document.querySelectorAll('#shopify-section-' + sectionId + ' .scroll-dot');
+    var cards = grid.querySelectorAll('.ecosystem-card');
+    if (!dots.length || !cards.length) return;
+
+    function updateDots() {
+      var scrollLeft = grid.scrollLeft;
+      var cardWidth = cards[0].offsetWidth + parseInt(getComputedStyle(grid).gap || 12);
+      var index = Math.round(scrollLeft / cardWidth);
+      if (index >= dots.length) index = dots.length - 1;
+      if (index < 0) index = 0;
+      dots.forEach(function(dot, i) {
+        dot.classList.toggle('active', i === index);
+      });
+    }
+
+    grid.addEventListener('scroll', updateDots, { passive: true });
+  })();
+</script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Three Ecosystems",
+  "tag": "section",
+  "class": "three-ecosystems-section",
+  "settings": [
+    {"type": "header", "content": "Section Header"},
+    {"type": "text", "id": "eyebrow", "label": "Eyebrow Text", "default": "THREE ECOSYSTEMS"},
+    {"type": "textarea", "id": "heading", "label": "Main Heading", "default": "One studio.\nThree worlds we live in."},
+    {"type": "textarea", "id": "header_desc", "label": "Header Description", "default": "Pick your ecosystem. Each has its own design language, materials, and decoration style — built for the people who wear it."},
+
+    {"type": "header", "content": "Container & Max Width"},
+    {"type": "range", "id": "container_max_width", "label": "Container Max Width", "min": 800, "max": 1800, "step": 20, "default": 1420, "unit": "px"},
+    {"type": "range", "id": "container_padding_desktop", "label": "Container Horizontal Padding (Desktop)", "min": 0, "max": 100, "step": 4, "default": 20, "unit": "px"},
+    {"type": "range", "id": "container_padding_mobile", "label": "Container Horizontal Padding (Mobile)", "min": 0, "max": 60, "step": 4, "default": 16, "unit": "px"},
+
+    {"type": "header", "content": "Mobile Layout"},
+    {"type": "checkbox", "id": "enable_mobile_scroll", "label": "Enable horizontal scroll on mobile", "default": false, "info": "When enabled, cards scroll horizontally on mobile instead of stacking vertically."},
+    {"type": "range", "id": "mobile_card_width", "label": "Mobile Card Width", "min": 60, "max": 95, "step": 5, "default": 78, "unit": "%"},
+    {"type": "range", "id": "mobile_card_gap", "label": "Mobile Card Gap", "min": 0, "max": 32, "step": 2, "default": 12, "unit": "px"},
+
+    {"type": "header", "content": "Desktop — Header Typography"},
+    {"type": "range", "id": "eyebrow_font_size_desktop", "label": "Eyebrow Font Size", "min": 10, "max": 24, "step": 1, "default": 12, "unit": "px"},
+    {"type": "range", "id": "eyebrow_letter_spacing_desktop", "label": "Eyebrow Letter Spacing", "min": 0, "max": 0.5, "step": 0.01, "default": 0.15, "unit": "em"},
+    {"type": "range", "id": "eyebrow_line_width_desktop", "label": "Eyebrow Line Width", "min": 0, "max": 80, "step": 2, "default": 28, "unit": "px"},
+    {"type": "range", "id": "heading_font_size_min_desktop", "label": "Heading Font Size (Min)", "min": 20, "max": 60, "step": 2, "default": 36, "unit": "px"},
+    {"type": "range", "id": "heading_font_size_max_desktop", "label": "Heading Font Size (Max)", "min": 30, "max": 100, "step": 2, "default": 62, "unit": "px"},
+    {"type": "range", "id": "heading_line_height_desktop", "label": "Heading Line Height", "min": 0.8, "max": 2.0, "step": 0.05, "default": 1.1, "unit": ""},
+    {"type": "range", "id": "heading_letter_spacing_desktop", "label": "Heading Letter Spacing", "min": -0.1, "max": 0.2, "step": 0.01, "default": -0.02, "unit": "em"},
+    {"type": "range", "id": "header_desc_font_size_desktop", "label": "Header Description Font Size", "min": 12, "max": 24, "step": 1, "default": 15, "unit": "px"},
+    {"type": "range", "id": "header_desc_line_height_desktop", "label": "Header Description Line Height", "min": 1.0, "max": 2.5, "step": 0.05, "default": 1.65, "unit": ""},
+    {"type": "range", "id": "header_desc_max_width_desktop", "label": "Header Description Max Width", "min": 200, "max": 600, "step": 20, "default": 380, "unit": "px"},
+
+    {"type": "header", "content": "Mobile — Header Typography"},
+    {"type": "range", "id": "eyebrow_font_size_mobile", "label": "Eyebrow Font Size", "min": 8, "max": 20, "step": 1, "default": 11, "unit": "px"},
+    {"type": "range", "id": "heading_font_size_min_mobile", "label": "Heading Font Size (Min)", "min": 16, "max": 40, "step": 2, "default": 28, "unit": "px"},
+    {"type": "range", "id": "heading_font_size_max_mobile", "label": "Heading Font Size (Max)", "min": 24, "max": 60, "step": 2, "default": 42, "unit": "px"},
+    {"type": "range", "id": "header_desc_font_size_mobile", "label": "Header Description Font Size", "min": 10, "max": 20, "step": 1, "default": 14, "unit": "px"},
+
+    {"type": "header", "content": "Desktop — Header Layout"},
+    {"type": "range", "id": "header_gap_desktop", "label": "Header Column Gap", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px"},
+    {"type": "range", "id": "header_margin_bottom_desktop", "label": "Header Margin Bottom", "min": 0, "max": 100, "step": 5, "default": 50, "unit": "px"},
+    {"type": "range", "id": "header_left_max_width_desktop", "label": "Left Column Max Width", "min": 300, "max": 900, "step": 20, "default": 680, "unit": "px"},
+    {"type": "range", "id": "header_right_padding_bottom_desktop", "label": "Right Column Padding Bottom", "min": 0, "max": 30, "step": 2, "default": 8, "unit": "px"},
+
+    {"type": "header", "content": "Mobile — Header Layout"},
+    {"type": "range", "id": "header_gap_mobile", "label": "Header Row Gap", "min": 0, "max": 40, "step": 2, "default": 20, "unit": "px"},
+    {"type": "range", "id": "header_margin_bottom_mobile", "label": "Header Margin Bottom", "min": 0, "max": 60, "step": 5, "default": 30, "unit": "px"},
+
+    {"type": "header", "content": "Desktop — Card Grid"},
+    {"type": "range", "id": "grid_columns_desktop", "label": "Grid Columns", "min": 1, "max": 6, "step": 1, "default": 3, "unit": ""},
+    {"type": "range", "id": "grid_gap_desktop", "label": "Grid Gap", "min": 0, "max": 60, "step": 2, "default": 16, "unit": "px"},
+
+    {"type": "header", "content": "Tablet — Card Grid (max 1024px)"},
+    {"type": "range", "id": "grid_columns_tablet", "label": "Grid Columns", "min": 1, "max": 4, "step": 1, "default": 2, "unit": ""},
+    {"type": "range", "id": "grid_gap_tablet", "label": "Grid Gap", "min": 0, "max": 40, "step": 2, "default": 14, "unit": "px"},
+
+    {"type": "header", "content": "Desktop — Card Dimensions"},
+    {"type": "range", "id": "card_aspect_ratio_w_desktop", "label": "Card Aspect Ratio (Width)", "min": 1, "max": 10, "step": 1, "default": 3, "unit": ""},
+    {"type": "range", "id": "card_aspect_ratio_h_desktop", "label": "Card Aspect Ratio (Height)", "min": 1, "max": 10, "step": 1, "default": 4, "unit": ""},
+    {"type": "range", "id": "card_border_radius_desktop", "label": "Card Border Radius", "min": 0, "max": 40, "step": 2, "default": 6, "unit": "px"},
+
+    {"type": "header", "content": "Tablet — Card Dimensions"},
+    {"type": "range", "id": "card_aspect_ratio_w_tablet", "label": "Card Aspect Ratio (Width)", "min": 1, "max": 10, "step": 1, "default": 4, "unit": ""},
+    {"type": "range", "id": "card_aspect_ratio_h_tablet", "label": "Card Aspect Ratio (Height)", "min": 1, "max": 10, "step": 1, "default": 5, "unit": ""},
+
+    {"type": "header", "content": "Mobile — Card Dimensions (Stacked)"},
+    {"type": "range", "id": "card_aspect_ratio_w_mobile", "label": "Card Aspect Ratio (Width)", "min": 1, "max": 10, "step": 1, "default": 4, "unit": ""},
+    {"type": "range", "id": "card_aspect_ratio_h_mobile", "label": "Card Aspect Ratio (Height)", "min": 1, "max": 10, "step": 1, "default": 3, "unit": ""},
+    {"type": "range", "id": "card_border_radius_mobile", "label": "Card Border Radius", "min": 0, "max": 40, "step": 2, "default": 6, "unit": "px"},
+
+    {"type": "header", "content": "Desktop — Card Typography"},
+    {"type": "range", "id": "card_title_font_size_min_desktop", "label": "Title Font Size (Min)", "min": 14, "max": 40, "step": 2, "default": 20, "unit": "px"},
+    {"type": "range", "id": "card_title_font_size_max_desktop", "label": "Title Font Size (Max)", "min": 20, "max": 60, "step": 2, "default": 28, "unit": "px"},
+    {"type": "range", "id": "card_title_line_height_desktop", "label": "Title Line Height", "min": 0.8, "max": 2.0, "step": 0.05, "default": 1.2, "unit": ""},
+    {"type": "range", "id": "card_title_letter_spacing_desktop", "label": "Title Letter Spacing", "min": -0.05, "max": 0.1, "step": 0.01, "default": -0.01, "unit": "em"},
+    {"type": "range", "id": "card_title_margin_bottom_desktop", "label": "Title Margin Bottom", "min": 0, "max": 30, "step": 2, "default": 12, "unit": "px"},
+    {"type": "range", "id": "card_desc_font_size_desktop", "label": "Description Font Size", "min": 10, "max": 20, "step": 1, "default": 14, "unit": "px"},
+    {"type": "range", "id": "card_desc_line_height_desktop", "label": "Description Line Height", "min": 1.0, "max": 2.5, "step": 0.05, "default": 1.6, "unit": ""},
+    {"type": "range", "id": "card_desc_margin_bottom_desktop", "label": "Description Margin Bottom", "min": 0, "max": 30, "step": 2, "default": 18, "unit": "px"},
+    {"type": "range", "id": "card_cta_font_size_desktop", "label": "CTA Font Size", "min": 8, "max": 18, "step": 1, "default": 11, "unit": "px"},
+    {"type": "range", "id": "card_cta_letter_spacing_desktop", "label": "CTA Letter Spacing", "min": 0, "max": 0.5, "step": 0.01, "default": 0.15, "unit": "em"},
+    {"type": "range", "id": "card_number_font_size_desktop", "label": "Number Label Font Size", "min": 8, "max": 18, "step": 1, "default": 11, "unit": "px"},
+    {"type": "range", "id": "card_number_letter_spacing_desktop", "label": "Number Label Letter Spacing", "min": 0, "max": 0.5, "step": 0.01, "default": 0.12, "unit": "em"},
+
+    {"type": "header", "content": "Mobile — Card Typography"},
+    {"type": "range", "id": "card_title_font_size_mobile", "label": "Title Font Size", "min": 12, "max": 32, "step": 2, "default": 22, "unit": "px"},
+    {"type": "range", "id": "card_desc_font_size_mobile", "label": "Description Font Size", "min": 10, "max": 18, "step": 1, "default": 13, "unit": "px"},
+    {"type": "range", "id": "card_cta_font_size_mobile", "label": "CTA Font Size", "min": 8, "max": 16, "step": 1, "default": 10, "unit": "px"},
+    {"type": "range", "id": "card_number_font_size_mobile", "label": "Number Label Font Size", "min": 8, "max": 16, "step": 1, "default": 10, "unit": "px"},
+
+    {"type": "header", "content": "Desktop — Card Spacing"},
+    {"type": "range", "id": "card_top_padding_desktop", "label": "Top Padding", "min": 10, "max": 50, "step": 2, "default": 22, "unit": "px"},
+    {"type": "range", "id": "card_top_padding_horizontal_desktop", "label": "Top Padding Horizontal", "min": 10, "max": 50, "step": 2, "default": 22, "unit": "px"},
+    {"type": "range", "id": "card_content_padding_horizontal_desktop", "label": "Content Padding Horizontal", "min": 10, "max": 50, "step": 2, "default": 22, "unit": "px"},
+    {"type": "range", "id": "card_content_padding_bottom_desktop", "label": "Content Padding Bottom", "min": 10, "max": 50, "step": 2, "default": 26, "unit": "px"},
+
+    {"type": "header", "content": "Mobile — Card Spacing"},
+    {"type": "range", "id": "card_top_padding_mobile", "label": "Top Padding", "min": 8, "max": 40, "step": 2, "default": 18, "unit": "px"},
+    {"type": "range", "id": "card_top_padding_horizontal_mobile", "label": "Top Padding Horizontal", "min": 8, "max": 40, "step": 2, "default": 18, "unit": "px"},
+    {"type": "range", "id": "card_content_padding_horizontal_mobile", "label": "Content Padding Horizontal", "min": 8, "max": 40, "step": 2, "default": 18, "unit": "px"},
+    {"type": "range", "id": "card_content_padding_bottom_mobile", "label": "Content Padding Bottom", "min": 8, "max": 40, "step": 2, "default": 22, "unit": "px"},
+
+    {"type": "header", "content": "Arrow Button"},
+    {"type": "range", "id": "arrow_size_desktop", "label": "Arrow Size (Desktop)", "min": 24, "max": 60, "step": 2, "default": 38, "unit": "px"},
+    {"type": "range", "id": "arrow_size_mobile", "label": "Arrow Size (Mobile)", "min": 20, "max": 50, "step": 2, "default": 34, "unit": "px"},
+    {"type": "range", "id": "arrow_border_width", "label": "Arrow Border Width", "min": 0, "max": 4, "step": 0.5, "default": 1, "unit": "px"},
+    {"type": "range", "id": "arrow_border_opacity", "label": "Arrow Border Opacity", "min": 0, "max": 1, "step": 0.05, "default": 0.25, "unit": ""},
+    {"type": "range", "id": "arrow_backdrop_blur", "label": "Arrow Backdrop Blur", "min": 0, "max": 20, "step": 1, "default": 4, "unit": "px"},
+    {"type": "color", "id": "arrow_bg_default", "label": "Arrow Background (Default)", "default": "rgba(255,255,255,0.15)"},
+    {"type": "color", "id": "arrow_bg_hover", "label": "Arrow Background (Hover)", "default": "rgba(255,255,255,0.25)"},
+    {"type": "color", "id": "arrow_border_color", "label": "Arrow Border Color", "default": "rgba(255,255,255,0.25)"},
+    {"type": "color", "id": "arrow_icon_color", "label": "Arrow Icon Color", "default": "#ffffff"},
+
+    {"type": "header", "content": "Hover Effects"},
+    {"type": "range", "id": "hover_lift_amount", "label": "Card Lift Amount", "min": 0, "max": 20, "step": 1, "default": 8, "unit": "px"},
+    {"type": "range", "id": "hover_shadow_x", "label": "Shadow X Offset", "min": 0, "max": 50, "step": 2, "default": 0, "unit": "px"},
+    {"type": "range", "id": "hover_shadow_y", "label": "Shadow Y Offset", "min": 0, "max": 80, "step": 2, "default": 30, "unit": "px"},
+    {"type": "range", "id": "hover_shadow_blur", "label": "Shadow Blur", "min": 0, "max": 100, "step": 2, "default": 60, "unit": "px"},
+    {"type": "range", "id": "hover_shadow_spread", "label": "Shadow Spread", "min": -20, "max": 20, "step": 2, "default": 0, "unit": "px"},
+    {"type": "range", "id": "hover_shadow_opacity", "label": "Shadow Opacity", "min": 0, "max": 1, "step": 0.05, "default": 0.25, "unit": ""},
+    {"type": "range", "id": "hover_image_scale", "label": "Image Scale on Hover", "min": 1.0, "max": 1.2, "step": 0.01, "default": 1.06, "unit": ""},
+    {"type": "range", "id": "hover_transition_duration", "label": "Transition Duration", "min": 0.1, "max": 1.0, "step": 0.05, "default": 0.45, "unit": "s"},
+    {"type": "text", "id": "hover_transition_easing", "label": "Transition Easing", "default": "cubic-bezier(0.25, 0.46, 0.45, 0.94)"},
+
+    {"type": "header", "content": "Card Overlay"},
+    {"type": "range", "id": "overlay_opacity_top", "label": "Overlay Opacity (Top)", "min": 0, "max": 1, "step": 0.05, "default": 0.15, "unit": ""},
+    {"type": "range", "id": "overlay_opacity_mid", "label": "Overlay Opacity (Mid)", "min": 0, "max": 1, "step": 0.05, "default": 0.05, "unit": ""},
+    {"type": "range", "id": "overlay_opacity_lower", "label": "Overlay Opacity (Lower)", "min": 0, "max": 1, "step": 0.05, "default": 0.55, "unit": ""},
+    {"type": "range", "id": "overlay_opacity_bottom", "label": "Overlay Opacity (Bottom)", "min": 0, "max": 1, "step": 0.05, "default": 0.82, "unit": ""},
+    {"type": "range", "id": "overlay_hover_opacity_top", "label": "Hover Overlay Opacity (Top)", "min": 0, "max": 1, "step": 0.05, "default": 0.2, "unit": ""},
+    {"type": "range", "id": "overlay_hover_opacity_mid", "label": "Hover Overlay Opacity (Mid)", "min": 0, "max": 1, "step": 0.05, "default": 0.1, "unit": ""},
+    {"type": "range", "id": "overlay_hover_opacity_lower", "label": "Hover Overlay Opacity (Lower)", "min": 0, "max": 1, "step": 0.05, "default": 0.6, "unit": ""},
+    {"type": "range", "id": "overlay_hover_opacity_bottom", "label": "Hover Overlay Opacity (Bottom)", "min": 0, "max": 1, "step": 0.05, "default": 0.88, "unit": ""},
+
+    {"type": "header", "content": "Scroll Animation"},
+    {"type": "checkbox", "id": "enable_scroll_animation", "label": "Enable scroll reveal animation", "default": true},
+    {"type": "range", "id": "animation_duration", "label": "Animation Duration", "min": 0.2, "max": 2.0, "step": 0.1, "default": 0.7, "unit": "s"},
+    {"type": "range", "id": "animation_stagger", "label": "Animation Stagger Delay", "min": 0, "max": 0.5, "step": 0.02, "default": 0.12, "unit": "s"},
+    {"type": "range", "id": "animation_translate_y", "label": "Animation Translate Y", "min": 0, "max": 100, "step": 5, "default": 40, "unit": "px"},
+
+    {"type": "header", "content": "Colors"},
+    {"type": "color", "id": "section_bg", "label": "Section Background", "default": "#f5f0eb"},
+    {"type": "color", "id": "heading_color", "label": "Heading Color", "default": "#0f0f0f"},
+    {"type": "color", "id": "subheading_color", "label": "Eyebrow Color", "default": "#8B4A2E"},
+    {"type": "color", "id": "desc_color", "label": "Description Color", "default": "#3a3a3a"},
+    {"type": "color", "id": "label_color", "label": "Label Color", "default": "#ffffff"},
+
+    {"type": "header", "content": "Section Spacing"},
+    {"type": "range", "id": "padding_top", "label": "Padding Top", "min": 0, "max": 150, "step": 5, "default": 80, "unit": "px"},
+    {"type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 0, "max": 150, "step": 5, "default": 80, "unit": "px"},
+    {"type": "range", "id": "padding_top_mobile", "label": "Padding Top (Mobile)", "min": 0, "max": 100, "step": 5, "default": 50, "unit": "px"},
+    {"type": "range", "id": "padding_bottom_mobile", "label": "Padding Bottom (Mobile)", "min": 0, "max": 100, "step": 5, "default": 50, "unit": "px"}
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Ecosystem Card",
+      "settings": [
+        {"type": "header", "content": "Card Content"},
+        {"type": "text", "id": "number_label", "label": "Number / Label", "default": "01 / ATHLETIC"},
+        {"type": "image_picker", "id": "image", "label": "Card Image"},
+        {"type": "text", "id": "title", "label": "Card Title", "default": "Spirit Wear & Team Stores"},
+        {"type": "textarea", "id": "description", "label": "Card Description", "default": "Energetic, bold uniforms and fan gear that turn loyalty into identity."},
+        {"type": "text", "id": "link_text", "label": "CTA Link Text", "default": "OUTFIT YOUR TEAM"},
+        {"type": "url", "id": "card_link", "label": "Card Link"},
+
+        {"type": "header", "content": "Card Colors"},
+        {"type": "color", "id": "accent_color", "label": "Accent / CTA Color", "default": "#c0392b"},
+        {"type": "color", "id": "accent_hover_color", "label": "Accent Hover Color", "default": "#f38d43"},
+        {"type": "color", "id": "title_color", "label": "Title Color", "default": "#ffffff"},
+        {"type": "color", "id": "desc_color", "label": "Description Color", "default": "rgba(255,255,255,0.82)"},
+        {"type": "color", "id": "number_color", "label": "Number Label Color", "default": "rgba(255,255,255,0.85)"},
+        {"type": "color", "id": "arrow_bg", "label": "Arrow Button Background", "default": "rgba(255,255,255,0.15)"},
+        {"type": "color", "id": "arrow_icon_color", "label": "Arrow Icon Color", "default": "#ffffff"},
+
+        {"type": "header", "content": "Card Border"},
+        {"type": "range", "id": "card_border_width", "label": "Border Width", "min": 0, "max": 10, "step": 1, "default": 0, "unit": "px"},
+        {"type": "color", "id": "card_border_color", "label": "Border Color", "default": "transparent"},
+        {"type": "range", "id": "card_border_opacity", "label": "Border Opacity", "min": 0, "max": 1, "step": 0.05, "default": 1, "unit": ""},
+
+        {"type": "header", "content": "Card Background (fallback)"},
+        {"type": "color", "id": "card_bg_color", "label": "Card Background Color", "default": "#1a1a1a"},
+
+        {"type": "header", "content": "Image Settings"},
+        {"type": "range", "id": "image_width", "label": "Image Width", "min": 400, "max": 1600, "step": 50, "default": 800, "unit": "px"},
+        {"type": "range", "id": "image_height", "label": "Image Height", "min": 300, "max": 1200, "step": 50, "default": 600, "unit": "px"},
+        {"type": "select", "id": "image_object_fit", "label": "Image Object Fit", "options": [
+          {"value": "cover", "label": "Cover"},
+          {"value": "contain", "label": "Contain"},
+          {"value": "fill", "label": "Fill"},
+          {"value": "none", "label": "None"},
+          {"value": "scale-down", "label": "Scale Down"}
+        ], "default": "cover"},
+        {"type": "select", "id": "image_object_position", "label": "Image Object Position", "options": [
+          {"value": "center", "label": "Center"},
+          {"value": "top", "label": "Top"},
+          {"value": "bottom", "label": "Bottom"},
+          {"value": "left", "label": "Left"},
+          {"value": "right", "label": "Right"},
+          {"value": "top left", "label": "Top Left"},
+          {"value": "top right", "label": "Top Right"},
+          {"value": "bottom left", "label": "Bottom Left"},
+          {"value": "bottom right", "label": "Bottom Right"}
+        ], "default": "center"},
+        {"type": "range", "id": "image_scale_hover", "label": "Image Scale on Hover", "min": 1.0, "max": 1.2, "step": 0.01, "default": 1.06, "unit": ""}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Three Ecosystems",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "number_label": "01 / ATHLETIC",
+            "title": "Spirit Wear & Team Stores",
+            "description": "Energetic, bold uniforms and fan gear that turn loyalty into identity.",
+            "link_text": "OUTFIT YOUR TEAM",
+            "accent_color": "#c0392b"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "number_label": "02 / CORPORATE",
+            "title": "Business Branding",
+            "description": "Refined, restrained merchandise that signals quality before a word is said.",
+            "link_text": "BUILD YOUR KIT",
+            "accent_color": "#c0392b"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "number_label": "03 / COMMUNITY",
+            "title": "Fundraising & Community",
+            "description": "Warm, story-driven apparel that rallies people around a shared cause.",
+            "link_text": "START A CAMPAIGN",
+            "accent_color": "#c0392b"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
