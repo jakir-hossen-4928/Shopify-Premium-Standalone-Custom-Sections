@@ -146,6 +146,10 @@
     --tgc-anim-stagger: {{ section.settings.animation_stagger }}s;
     --tgc-anim-translate: {{ section.settings.animation_translate_y }}px;
 
+    /* Mobile grid */
+    --tgc-grid-cols-mobile: {{ section.settings.mobile_columns }};
+    --tgc-grid-gap-mobile: {{ section.settings.mobile_card_gap }}px;
+
     /* Mobile scroll */
     --tgc-mobile-card-width: {{ section.settings.mobile_card_width }}vw;
     --tgc-mobile-card-gap: {{ section.settings.mobile_card_gap }}px;
@@ -236,19 +240,18 @@
      CARDS GRID
      ============================================ */
   .ecosystems-grid {
-    display: grid;
-    grid-template-columns: repeat(var(--tgc-grid-cols-desktop), 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: var(--tgc-grid-gap-desktop);
   }
 
-  /* ============================================
-     SINGLE CARD
-     ============================================ */
   .ecosystem-card {
     position: relative;
     border-radius: var(--tgc-card-radius-desktop);
     overflow: hidden;
     cursor: pointer;
+    width: calc((100% - (var(--tgc-grid-cols-desktop) - 1) * var(--tgc-grid-gap-desktop)) / var(--tgc-grid-cols-desktop));
     aspect-ratio: var(--tgc-card-ar-w-desktop) / var(--tgc-card-ar-h-desktop);
     display: flex;
     flex-direction: column;
@@ -498,11 +501,14 @@
     }
 
     .ecosystems-grid {
-      grid-template-columns: repeat(var(--tgc-grid-cols-tablet), 1fr);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: var(--tgc-grid-gap-tablet);
     }
 
     .ecosystem-card {
+      width: calc((100% - (var(--tgc-grid-cols-tablet) - 1) * var(--tgc-grid-gap-tablet)) / var(--tgc-grid-cols-tablet));
       aspect-ratio: var(--tgc-card-ar-w-tablet) / var(--tgc-card-ar-h-tablet);
     }
   }
@@ -536,11 +542,36 @@
       font-size: var(--tgc-header-desc-size-mobile);
     }
 
-    /* Default mobile: stacked single column */
+    /* Default mobile grid structure */
     .ecosystems-grid {
-      grid-template-columns: 1fr;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 14px;
     }
+
+    /* Mobile Layout: Stacked */
+    .ecosystems-grid--mobile-stacked {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .ecosystems-grid--mobile-stacked .ecosystem-card {
+      width: 100%;
+    }
+
+    /* Mobile Layout: Grid */
+    .ecosystems-grid--mobile-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--tgc-grid-gap-mobile);
+    }
+    .ecosystems-grid--mobile-grid .ecosystem-card {
+      width: calc((100% - (var(--tgc-grid-cols-mobile) - 1) * var(--tgc-grid-gap-mobile)) / var(--tgc-grid-cols-mobile));
+    }
+
+    /* Mobile Layout: Horizontal Scroll handled by .ecosystems-grid--mobile-horizontal */
 
     .ecosystem-card {
       aspect-ratio: var(--tgc-card-ar-w-mobile) / var(--tgc-card-ar-h-mobile);
@@ -595,7 +626,7 @@
      MOBILE HORIZONTAL SCROLL (when enabled)
      ============================================ */
   @media screen and (max-width: 768px) {
-    .ecosystems-grid--scroll {
+    .ecosystems-grid--mobile-horizontal {
       display: flex;
       flex-wrap: nowrap;
       overflow-x: auto;
@@ -610,11 +641,11 @@
       scroll-padding-right: var(--tgc-container-pad-mobile);
     }
 
-    .ecosystems-grid--scroll::-webkit-scrollbar {
+    .ecosystems-grid--mobile-horizontal::-webkit-scrollbar {
       display: none;
     }
 
-    .ecosystems-grid--scroll .ecosystem-card {
+    .ecosystems-grid--mobile-horizontal .ecosystem-card {
       flex: 0 0 auto;
       width: var(--tgc-mobile-card-width);
       max-width: 320px;
@@ -623,7 +654,7 @@
       margin-right: 4px;
     }
 
-    .ecosystems-grid--scroll .ecosystem-card:last-child {
+    .ecosystems-grid--mobile-horizontal .ecosystem-card:last-child {
       margin-right: var(--tgc-container-pad-mobile);
     }
 
@@ -688,7 +719,7 @@
     </div>
 
     <!-- Cards Grid -->
-    <div class="ecosystems-grid {% if section.settings.enable_mobile_scroll %}ecosystems-grid--scroll{% endif %}">
+    <div class="ecosystems-grid ecosystems-grid--mobile-{{ section.settings.mobile_layout }}">
       {% for block in section.blocks %}
         {% if block.type == 'card' %}
           <div class="ecosystem-card" {{ block.shopify_attributes }}
@@ -761,7 +792,7 @@
       {% endfor %}
     </div>
 
-    {% if section.settings.enable_mobile_scroll and section.blocks.size > 0 %}
+    {% if section.settings.mobile_layout == 'horizontal' and section.blocks.size > 0 %}
       <div class="ecosystems-scroll-indicator">
         {% for block in section.blocks %}
           {% if block.type == 'card' %}
@@ -774,11 +805,11 @@
   </div>
 </section>
 
-{% if section.settings.enable_mobile_scroll %}
+{% if section.settings.mobile_layout == 'horizontal' %}
 <script>
   (function() {
     var sectionId = "{{ section.id }}";
-    var grid = document.querySelector('#shopify-section-' + sectionId + ' .ecosystems-grid--scroll');
+    var grid = document.querySelector('#shopify-section-' + sectionId + ' .ecosystems-grid--mobile-horizontal');
     if (!grid) return;
     var dots = document.querySelectorAll('#shopify-section-' + sectionId + ' .scroll-dot');
     var cards = grid.querySelectorAll('.ecosystem-card');
@@ -817,20 +848,40 @@
     {"type": "range", "id": "container_padding_mobile", "label": "Container Horizontal Padding (Mobile)", "min": 0, "max": 60, "step": 4, "default": 16, "unit": "px"},
 
     {"type": "header", "content": "Mobile Layout"},
-    {"type": "checkbox", "id": "enable_mobile_scroll", "label": "Enable horizontal scroll on mobile", "default": false, "info": "When enabled, cards scroll horizontally on mobile instead of stacking vertically."},
-    {"type": "range", "id": "mobile_card_width", "label": "Mobile Card Width", "min": 60, "max": 95, "step": 5, "default": 78, "unit": "%"},
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile Layout",
+      "options": [
+        { "value": "stacked", "label": "Stacked (Full Width)" },
+        { "value": "grid", "label": "Grid (Columns)" },
+        { "value": "horizontal", "label": "Horizontal Scroll" }
+      ],
+      "default": "stacked"
+    },
+    {
+      "type": "range",
+      "id": "mobile_columns",
+      "label": "Mobile Grid Columns",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1,
+      "info": "Only applies when 'Grid' layout is selected."
+    },
+    {"type": "range", "id": "mobile_card_width", "label": "Mobile Card Width", "min": 60, "max": 95, "step": 5, "default": 80, "unit": "%"},
     {"type": "range", "id": "mobile_card_gap", "label": "Mobile Card Gap", "min": 0, "max": 32, "step": 2, "default": 12, "unit": "px"},
 
     {"type": "header", "content": "Desktop — Header Typography"},
     {"type": "range", "id": "eyebrow_font_size_desktop", "label": "Eyebrow Font Size", "min": 10, "max": 24, "step": 1, "default": 12, "unit": "px"},
-    {"type": "range", "id": "eyebrow_letter_spacing_desktop", "label": "Eyebrow Letter Spacing", "min": 0, "max": 0.5, "step": 0.01, "default": 0.15, "unit": "em"},
+    {"type": "range", "id": "eyebrow_letter_spacing_desktop", "label": "Eyebrow Letter Spacing", "min": 0, "max": 0.5, "step": 0.1, "default": 0.1, "unit": "em"},
     {"type": "range", "id": "eyebrow_line_width_desktop", "label": "Eyebrow Line Width", "min": 0, "max": 80, "step": 2, "default": 28, "unit": "px"},
     {"type": "range", "id": "heading_font_size_min_desktop", "label": "Heading Font Size (Min)", "min": 20, "max": 60, "step": 2, "default": 36, "unit": "px"},
     {"type": "range", "id": "heading_font_size_max_desktop", "label": "Heading Font Size (Max)", "min": 30, "max": 100, "step": 2, "default": 62, "unit": "px"},
-    {"type": "range", "id": "heading_line_height_desktop", "label": "Heading Line Height", "min": 0.8, "max": 2.0, "step": 0.05, "default": 1.1, "unit": ""},
-    {"type": "range", "id": "heading_letter_spacing_desktop", "label": "Heading Letter Spacing", "min": -0.1, "max": 0.2, "step": 0.01, "default": -0.02, "unit": "em"},
+    {"type": "range", "id": "heading_line_height_desktop", "label": "Heading Line Height", "min": 0.8, "max": 2.0, "step": 0.1, "default": 1.1},
+    {"type": "range", "id": "heading_letter_spacing_desktop", "label": "Heading Letter Spacing", "min": -0.5, "max": 0.5, "step": 0.1, "default": 0, "unit": "em"},
     {"type": "range", "id": "header_desc_font_size_desktop", "label": "Header Description Font Size", "min": 12, "max": 24, "step": 1, "default": 15, "unit": "px"},
-    {"type": "range", "id": "header_desc_line_height_desktop", "label": "Header Description Line Height", "min": 1.0, "max": 2.5, "step": 0.05, "default": 1.65, "unit": ""},
+    {"type": "range", "id": "header_desc_line_height_desktop", "label": "Header Description Line Height", "min": 1.0, "max": 2.5, "step": 0.1, "default": 1.6},
     {"type": "range", "id": "header_desc_max_width_desktop", "label": "Header Description Max Width", "min": 200, "max": 600, "step": 20, "default": 380, "unit": "px"},
 
     {"type": "header", "content": "Mobile — Header Typography"},
@@ -850,40 +901,40 @@
     {"type": "range", "id": "header_margin_bottom_mobile", "label": "Header Margin Bottom", "min": 0, "max": 60, "step": 5, "default": 30, "unit": "px"},
 
     {"type": "header", "content": "Desktop — Card Grid"},
-    {"type": "range", "id": "grid_columns_desktop", "label": "Grid Columns", "min": 1, "max": 6, "step": 1, "default": 3, "unit": ""},
+    {"type": "range", "id": "grid_columns_desktop", "label": "Grid Columns", "min": 1, "max": 6, "step": 1, "default": 6},
     {"type": "range", "id": "grid_gap_desktop", "label": "Grid Gap", "min": 0, "max": 60, "step": 2, "default": 16, "unit": "px"},
 
     {"type": "header", "content": "Tablet — Card Grid (max 1024px)"},
-    {"type": "range", "id": "grid_columns_tablet", "label": "Grid Columns", "min": 1, "max": 4, "step": 1, "default": 2, "unit": ""},
+    {"type": "range", "id": "grid_columns_tablet", "label": "Grid Columns", "min": 1, "max": 4, "step": 1, "default": 2},
     {"type": "range", "id": "grid_gap_tablet", "label": "Grid Gap", "min": 0, "max": 40, "step": 2, "default": 14, "unit": "px"},
 
     {"type": "header", "content": "Desktop — Card Dimensions"},
-    {"type": "range", "id": "card_aspect_ratio_w_desktop", "label": "Card Aspect Ratio (Width)", "min": 1, "max": 10, "step": 1, "default": 3, "unit": ""},
-    {"type": "range", "id": "card_aspect_ratio_h_desktop", "label": "Card Aspect Ratio (Height)", "min": 1, "max": 10, "step": 1, "default": 4, "unit": ""},
+    {"type": "range", "id": "card_aspect_ratio_w_desktop", "label": "Card Aspect Ratio (Width)", "min": 1, "max": 10, "step": 1, "default": 3},
+    {"type": "range", "id": "card_aspect_ratio_h_desktop", "label": "Card Aspect Ratio (Height)", "min": 1, "max": 10, "step": 1, "default": 4},
     {"type": "range", "id": "card_border_radius_desktop", "label": "Card Border Radius", "min": 0, "max": 40, "step": 2, "default": 6, "unit": "px"},
 
     {"type": "header", "content": "Tablet — Card Dimensions"},
-    {"type": "range", "id": "card_aspect_ratio_w_tablet", "label": "Card Aspect Ratio (Width)", "min": 1, "max": 10, "step": 1, "default": 4, "unit": ""},
-    {"type": "range", "id": "card_aspect_ratio_h_tablet", "label": "Card Aspect Ratio (Height)", "min": 1, "max": 10, "step": 1, "default": 5, "unit": ""},
+    {"type": "range", "id": "card_aspect_ratio_w_tablet", "label": "Card Aspect Ratio (Width)", "min": 1, "max": 10, "step": 1, "default": 4},
+    {"type": "range", "id": "card_aspect_ratio_h_tablet", "label": "Card Aspect Ratio (Height)", "min": 1, "max": 10, "step": 1, "default": 5},
 
     {"type": "header", "content": "Mobile — Card Dimensions (Stacked)"},
-    {"type": "range", "id": "card_aspect_ratio_w_mobile", "label": "Card Aspect Ratio (Width)", "min": 1, "max": 10, "step": 1, "default": 4, "unit": ""},
-    {"type": "range", "id": "card_aspect_ratio_h_mobile", "label": "Card Aspect Ratio (Height)", "min": 1, "max": 10, "step": 1, "default": 3, "unit": ""},
+    {"type": "range", "id": "card_aspect_ratio_w_mobile", "label": "Card Aspect Ratio (Width)", "min": 1, "max": 10, "step": 1, "default": 4},
+    {"type": "range", "id": "card_aspect_ratio_h_mobile", "label": "Card Aspect Ratio (Height)", "min": 1, "max": 10, "step": 1, "default": 3},
     {"type": "range", "id": "card_border_radius_mobile", "label": "Card Border Radius", "min": 0, "max": 40, "step": 2, "default": 6, "unit": "px"},
 
     {"type": "header", "content": "Desktop — Card Typography"},
     {"type": "range", "id": "card_title_font_size_min_desktop", "label": "Title Font Size (Min)", "min": 14, "max": 40, "step": 2, "default": 20, "unit": "px"},
     {"type": "range", "id": "card_title_font_size_max_desktop", "label": "Title Font Size (Max)", "min": 20, "max": 60, "step": 2, "default": 28, "unit": "px"},
-    {"type": "range", "id": "card_title_line_height_desktop", "label": "Title Line Height", "min": 0.8, "max": 2.0, "step": 0.05, "default": 1.2, "unit": ""},
-    {"type": "range", "id": "card_title_letter_spacing_desktop", "label": "Title Letter Spacing", "min": -0.05, "max": 0.1, "step": 0.01, "default": -0.01, "unit": "em"},
+    {"type": "range", "id": "card_title_line_height_desktop", "label": "Title Line Height", "min": 0.8, "max": 2.0, "step": 0.1, "default": 1.2},
+    {"type": "range", "id": "card_title_letter_spacing_desktop", "label": "Title Letter Spacing", "min": -0.5, "max": 0.5, "step": 0.1, "default": 0, "unit": "em"},
     {"type": "range", "id": "card_title_margin_bottom_desktop", "label": "Title Margin Bottom", "min": 0, "max": 30, "step": 2, "default": 12, "unit": "px"},
     {"type": "range", "id": "card_desc_font_size_desktop", "label": "Description Font Size", "min": 10, "max": 20, "step": 1, "default": 14, "unit": "px"},
-    {"type": "range", "id": "card_desc_line_height_desktop", "label": "Description Line Height", "min": 1.0, "max": 2.5, "step": 0.05, "default": 1.6, "unit": ""},
+    {"type": "range", "id": "card_desc_line_height_desktop", "label": "Description Line Height", "min": 1.0, "max": 2.5, "step": 0.1, "default": 1.6},
     {"type": "range", "id": "card_desc_margin_bottom_desktop", "label": "Description Margin Bottom", "min": 0, "max": 30, "step": 2, "default": 18, "unit": "px"},
     {"type": "range", "id": "card_cta_font_size_desktop", "label": "CTA Font Size", "min": 8, "max": 18, "step": 1, "default": 11, "unit": "px"},
-    {"type": "range", "id": "card_cta_letter_spacing_desktop", "label": "CTA Letter Spacing", "min": 0, "max": 0.5, "step": 0.01, "default": 0.15, "unit": "em"},
+    {"type": "range", "id": "card_cta_letter_spacing_desktop", "label": "CTA Letter Spacing", "min": 0, "max": 1, "step": 0.1, "default": 0.2, "unit": "em"},
     {"type": "range", "id": "card_number_font_size_desktop", "label": "Number Label Font Size", "min": 8, "max": 18, "step": 1, "default": 11, "unit": "px"},
-    {"type": "range", "id": "card_number_letter_spacing_desktop", "label": "Number Label Letter Spacing", "min": 0, "max": 0.5, "step": 0.01, "default": 0.12, "unit": "em"},
+    {"type": "range", "id": "card_number_letter_spacing_desktop", "label": "Number Label Letter Spacing", "min": 0, "max": 1, "step": 0.1, "default": 0.1, "unit": "em"},
 
     {"type": "header", "content": "Mobile — Card Typography"},
     {"type": "range", "id": "card_title_font_size_mobile", "label": "Title Font Size", "min": 12, "max": 32, "step": 2, "default": 22, "unit": "px"},
@@ -907,7 +958,7 @@
     {"type": "range", "id": "arrow_size_desktop", "label": "Arrow Size (Desktop)", "min": 24, "max": 60, "step": 2, "default": 38, "unit": "px"},
     {"type": "range", "id": "arrow_size_mobile", "label": "Arrow Size (Mobile)", "min": 20, "max": 50, "step": 2, "default": 34, "unit": "px"},
     {"type": "range", "id": "arrow_border_width", "label": "Arrow Border Width", "min": 0, "max": 4, "step": 0.5, "default": 1, "unit": "px"},
-    {"type": "range", "id": "arrow_border_opacity", "label": "Arrow Border Opacity", "min": 0, "max": 1, "step": 0.05, "default": 0.25, "unit": ""},
+    {"type": "range", "id": "arrow_border_opacity", "label": "Arrow Border Opacity", "min": 0, "max": 1, "step": 0.1, "default": 0.3},
     {"type": "range", "id": "arrow_backdrop_blur", "label": "Arrow Backdrop Blur", "min": 0, "max": 20, "step": 1, "default": 4, "unit": "px"},
     {"type": "color", "id": "arrow_bg_default", "label": "Arrow Background (Default)", "default": "rgba(255,255,255,0.15)"},
     {"type": "color", "id": "arrow_bg_hover", "label": "Arrow Background (Hover)", "default": "rgba(255,255,255,0.25)"},
@@ -920,25 +971,25 @@
     {"type": "range", "id": "hover_shadow_y", "label": "Shadow Y Offset", "min": 0, "max": 80, "step": 2, "default": 30, "unit": "px"},
     {"type": "range", "id": "hover_shadow_blur", "label": "Shadow Blur", "min": 0, "max": 100, "step": 2, "default": 60, "unit": "px"},
     {"type": "range", "id": "hover_shadow_spread", "label": "Shadow Spread", "min": -20, "max": 20, "step": 2, "default": 0, "unit": "px"},
-    {"type": "range", "id": "hover_shadow_opacity", "label": "Shadow Opacity", "min": 0, "max": 1, "step": 0.05, "default": 0.25, "unit": ""},
-    {"type": "range", "id": "hover_image_scale", "label": "Image Scale on Hover", "min": 1.0, "max": 1.2, "step": 0.01, "default": 1.06, "unit": ""},
-    {"type": "range", "id": "hover_transition_duration", "label": "Transition Duration", "min": 0.1, "max": 1.0, "step": 0.05, "default": 0.45, "unit": "s"},
+    {"type": "range", "id": "hover_shadow_opacity", "label": "Shadow Opacity", "min": 0, "max": 1, "step": 0.1, "default": 0.3},
+    {"type": "range", "id": "hover_image_scale", "label": "Image Scale on Hover", "min": 1.0, "max": 1.5, "step": 0.1, "default": 1.1},
+    {"type": "range", "id": "hover_transition_duration", "label": "Transition Duration", "min": 0.1, "max": 1.0, "step": 0.1, "default": 0.5, "unit": "s"},
     {"type": "text", "id": "hover_transition_easing", "label": "Transition Easing", "default": "cubic-bezier(0.25, 0.46, 0.45, 0.94)"},
 
     {"type": "header", "content": "Card Overlay"},
-    {"type": "range", "id": "overlay_opacity_top", "label": "Overlay Opacity (Top)", "min": 0, "max": 1, "step": 0.05, "default": 0.15, "unit": ""},
-    {"type": "range", "id": "overlay_opacity_mid", "label": "Overlay Opacity (Mid)", "min": 0, "max": 1, "step": 0.05, "default": 0.05, "unit": ""},
-    {"type": "range", "id": "overlay_opacity_lower", "label": "Overlay Opacity (Lower)", "min": 0, "max": 1, "step": 0.05, "default": 0.55, "unit": ""},
-    {"type": "range", "id": "overlay_opacity_bottom", "label": "Overlay Opacity (Bottom)", "min": 0, "max": 1, "step": 0.05, "default": 0.82, "unit": ""},
-    {"type": "range", "id": "overlay_hover_opacity_top", "label": "Hover Overlay Opacity (Top)", "min": 0, "max": 1, "step": 0.05, "default": 0.2, "unit": ""},
-    {"type": "range", "id": "overlay_hover_opacity_mid", "label": "Hover Overlay Opacity (Mid)", "min": 0, "max": 1, "step": 0.05, "default": 0.1, "unit": ""},
-    {"type": "range", "id": "overlay_hover_opacity_lower", "label": "Hover Overlay Opacity (Lower)", "min": 0, "max": 1, "step": 0.05, "default": 0.6, "unit": ""},
-    {"type": "range", "id": "overlay_hover_opacity_bottom", "label": "Hover Overlay Opacity (Bottom)", "min": 0, "max": 1, "step": 0.05, "default": 0.88, "unit": ""},
+    {"type": "range", "id": "overlay_opacity_top", "label": "Overlay Opacity (Top)", "min": 0, "max": 1, "step": 0.1, "default": 0.2},
+    {"type": "range", "id": "overlay_opacity_mid", "label": "Overlay Opacity (Mid)", "min": 0, "max": 1, "step": 0.1, "default": 0.1},
+    {"type": "range", "id": "overlay_opacity_lower", "label": "Overlay Opacity (Lower)", "min": 0, "max": 1, "step": 0.1, "default": 0.6},
+    {"type": "range", "id": "overlay_opacity_bottom", "label": "Overlay Opacity (Bottom)", "min": 0, "max": 1, "step": 0.1, "default": 0.8},
+    {"type": "range", "id": "overlay_hover_opacity_top", "label": "Hover Overlay Opacity (Top)", "min": 0, "max": 1, "step": 0.1, "default": 0.2},
+    {"type": "range", "id": "overlay_hover_opacity_mid", "label": "Hover Overlay Opacity (Mid)", "min": 0, "max": 1, "step": 0.1, "default": 0.1},
+    {"type": "range", "id": "overlay_hover_opacity_lower", "label": "Hover Overlay Opacity (Lower)", "min": 0, "max": 1, "step": 0.1, "default": 0.6},
+    {"type": "range", "id": "overlay_hover_opacity_bottom", "label": "Hover Overlay Opacity (Bottom)", "min": 0, "max": 1, "step": 0.1, "default": 0.9},
 
     {"type": "header", "content": "Scroll Animation"},
     {"type": "checkbox", "id": "enable_scroll_animation", "label": "Enable scroll reveal animation", "default": true},
     {"type": "range", "id": "animation_duration", "label": "Animation Duration", "min": 0.2, "max": 2.0, "step": 0.1, "default": 0.7, "unit": "s"},
-    {"type": "range", "id": "animation_stagger", "label": "Animation Stagger Delay", "min": 0, "max": 0.5, "step": 0.02, "default": 0.12, "unit": "s"},
+    {"type": "range", "id": "animation_stagger", "label": "Animation Stagger Delay", "min": 0, "max": 1.0, "step": 0.1, "default": 0.1, "unit": "s"},
     {"type": "range", "id": "animation_translate_y", "label": "Animation Translate Y", "min": 0, "max": 100, "step": 5, "default": 40, "unit": "px"},
 
     {"type": "header", "content": "Colors"},
@@ -979,7 +1030,7 @@
         {"type": "header", "content": "Card Border"},
         {"type": "range", "id": "card_border_width", "label": "Border Width", "min": 0, "max": 10, "step": 1, "default": 0, "unit": "px"},
         {"type": "color", "id": "card_border_color", "label": "Border Color", "default": "transparent"},
-        {"type": "range", "id": "card_border_opacity", "label": "Border Opacity", "min": 0, "max": 1, "step": 0.05, "default": 1, "unit": ""},
+        {"type": "range", "id": "card_border_opacity", "label": "Border Opacity", "min": 0, "max": 1, "step": 0.1, "default": 1},
 
         {"type": "header", "content": "Card Background (fallback)"},
         {"type": "color", "id": "card_bg_color", "label": "Card Background Color", "default": "#1a1a1a"},
@@ -1005,41 +1056,62 @@
           {"value": "bottom left", "label": "Bottom Left"},
           {"value": "bottom right", "label": "Bottom Right"}
         ], "default": "center"},
-        {"type": "range", "id": "image_scale_hover", "label": "Image Scale on Hover", "min": 1.0, "max": 1.2, "step": 0.01, "default": 1.06, "unit": ""}
+        {"type": "range", "id": "image_scale_hover", "label": "Image Scale on Hover", "min": 1.0, "max": 1.5, "step": 0.1, "default": 1.1}
       ]
     }
   ],
   "presets": [
     {
       "name": "Three Ecosystems",
+      "settings": {
+        "grid_columns_desktop": 6
+      },
       "blocks": [
         {
           "type": "card",
           "settings": {
-            "number_label": "01 / ATHLETIC",
-            "title": "Spirit Wear & Team Stores",
-            "description": "Energetic, bold uniforms and fan gear that turn loyalty into identity.",
-            "link_text": "OUTFIT YOUR TEAM",
+            "number_label": "01",
+            "title": "Athletic",
             "accent_color": "#c0392b"
           }
         },
         {
           "type": "card",
           "settings": {
-            "number_label": "02 / CORPORATE",
-            "title": "Business Branding",
-            "description": "Refined, restrained merchandise that signals quality before a word is said.",
-            "link_text": "BUILD YOUR KIT",
+            "number_label": "02",
+            "title": "Corporate",
             "accent_color": "#c0392b"
           }
         },
         {
           "type": "card",
           "settings": {
-            "number_label": "03 / COMMUNITY",
-            "title": "Fundraising & Community",
-            "description": "Warm, story-driven apparel that rallies people around a shared cause.",
-            "link_text": "START A CAMPAIGN",
+            "number_label": "03",
+            "title": "Community",
+            "accent_color": "#c0392b"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "number_label": "04",
+            "title": "Lifestyle",
+            "accent_color": "#c0392b"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "number_label": "05",
+            "title": "Events",
+            "accent_color": "#c0392b"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "number_label": "06",
+            "title": "Design",
             "accent_color": "#c0392b"
           }
         }

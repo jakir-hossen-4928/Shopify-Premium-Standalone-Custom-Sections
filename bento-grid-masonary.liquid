@@ -75,13 +75,38 @@
       grid-auto-flow: dense;
     }
 
-    /* Auto Bento Pattern */
-    .gallery-item-{{ section.id }}:nth-child(5n + 1) {
+    /* Auto Bento Pattern (Perfectly Balanced 8-Item Repeating Pattern) */
+    .gallery-item-{{ section.id }}:nth-child(8n + 1) {
       grid-column: span 2;
       grid-row: span 2;
     }
-    .gallery-item-{{ section.id }}:nth-child(5n + 3) {
+    .gallery-item-{{ section.id }}:nth-child(8n + 2) {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+    .gallery-item-{{ section.id }}:nth-child(8n + 3) {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+    .gallery-item-{{ section.id }}:nth-child(8n + 4) {
+      grid-column: span 2;
+      grid-row: span 1;
+    }
+    .gallery-item-{{ section.id }}:nth-child(8n + 5) {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+    .gallery-item-{{ section.id }}:nth-child(8n + 6) {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+    .gallery-item-{{ section.id }}:nth-child(8n + 7) {
+      grid-column: span 2;
       grid-row: span 2;
+    }
+    .gallery-item-{{ section.id }}:nth-child(8n + 8) {
+      grid-column: span 2;
+      grid-row: span 1;
     }
   }
 

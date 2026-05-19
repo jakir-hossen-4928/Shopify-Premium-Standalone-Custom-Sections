@@ -1,0 +1,1001 @@
+
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-faq-section-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding-top: {{ block.settings.section_padding_top }}px;
+    padding-bottom: {{ block.settings.section_padding_bottom }}px;
+    background: {{ block.settings.section_background_gradient_start }};
+    {% if block.settings.enable_gradient %}
+      background: linear-gradient(
+        {{ block.settings.gradient_angle }}deg,
+        {{ block.settings.section_background_gradient_start }} 0%,
+        {{ block.settings.section_background_gradient_end }} 100%
+      );
+    {% endif %}
+  }
+
+  .ai-faq-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.container_max_width }}px;
+    margin: 0 auto;
+    padding-left: {{ block.settings.container_padding_horizontal }}px;
+    padding-right: {{ block.settings.container_padding_horizontal }}px;
+  }
+
+  .ai-faq-header-{{ ai_gen_id }} {
+    text-align: {{ block.settings.header_text_align }};
+    margin-bottom: {{ block.settings.header_margin_bottom }}px;
+  }
+
+  .ai-faq-eyebrow-{{ ai_gen_id }} {
+    font-size: {{ block.settings.eyebrow_font_size }}px;
+    font-weight: {{ block.settings.eyebrow_font_weight }};
+    text-transform: {{ block.settings.eyebrow_text_transform }};
+    letter-spacing: {{ block.settings.eyebrow_letter_spacing }};
+    color: {{ block.settings.eyebrow_color }};
+    margin-bottom: {{ block.settings.eyebrow_margin_bottom }}px;
+    line-height: {{ block.settings.eyebrow_line_height }};
+  }
+
+  .ai-faq-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_font_size }}px;
+    font-weight: {{ block.settings.heading_font_weight }};
+    color: {{ block.settings.heading_color }};
+    line-height: {{ block.settings.heading_line_height }};
+    letter-spacing: {{ block.settings.heading_letter_spacing }};
+    margin: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-faq-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_font_size_desktop }}px;
+    }
+  }
+
+  .ai-faq-accordion-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.accordion_item_spacing }}px;
+  }
+
+  .ai-faq-item-{{ ai_gen_id }} {
+    background-color: {{ block.settings.item_background_color }};
+    border: {{ block.settings.item_border_width }}px {{ block.settings.item_border_style }} {{ block.settings.item_border_color }};
+    border-radius: {{ block.settings.item_border_radius }}px;
+    padding-left: {{ block.settings.item_padding_horizontal }}px;
+    padding-right: {{ block.settings.item_padding_horizontal }}px;
+    box-shadow: {{ block.settings.item_shadow_x }}px {{ block.settings.item_shadow_y }}px {{ block.settings.item_shadow_blur }}px {{ block.settings.item_shadow_spread }}px {{ block.settings.item_shadow_color }};
+    overflow: hidden;
+  }
+
+  .ai-faq-question-{{ ai_gen_id }} {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    background: none;
+    border: none;
+    padding-top: {{ block.settings.question_padding_vertical }}px;
+    padding-bottom: {{ block.settings.question_padding_vertical }}px;
+    cursor: pointer;
+    font-size: {{ block.settings.question_font_size }}px;
+    font-weight: {{ block.settings.question_font_weight }};
+    color: {{ block.settings.question_color }};
+    line-height: {{ block.settings.question_line_height }};
+    letter-spacing: {{ block.settings.question_letter_spacing }};
+    transition: color 0.3s ease;
+  }
+
+  .ai-faq-question-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.question_hover_color }};
+  }
+
+  .ai-faq-question-text-{{ ai_gen_id }} {
+    flex: 1;
+    padding-right: 16px;
+  }
+
+  .ai-faq-icon-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-faq-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    stroke: {{ block.settings.icon_color }};
+    stroke-width: {{ block.settings.icon_stroke_width }};
+  }
+
+  .ai-faq-item-{{ ai_gen_id }}.active .ai-faq-icon-{{ ai_gen_id }} {
+    transform: rotate({{ block.settings.icon_rotation_active }}deg);
+  }
+  .ai-faq-answer-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: {{ block.settings.answer_font_size }}px;
+    font-weight: {{ block.settings.answer_font_weight }};
+    color: {{ block.settings.answer_color }};
+    line-height: {{ block.settings.answer_line_height }};
+    letter-spacing: {{ block.settings.answer_letter_spacing }};
+  }
+
+  .ai-faq-answer-content-{{ ai_gen_id }} {
+    overflow: hidden;
+    padding-bottom: 0;
+    transition: padding-bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ai-faq-item-{{ ai_gen_id }}.active .ai-faq-answer-{{ ai_gen_id }} {
+    grid-template-rows: 1fr;
+  }
+
+  .ai-faq-item-{{ ai_gen_id }}.active .ai-faq-answer-content-{{ ai_gen_id }} {
+    padding-bottom: {{ block.settings.answer_padding_bottom }}px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-faq-section-{{ ai_gen_id }} {
+      padding-top: {{ block.settings.section_padding_top_mobile }}px;
+      padding-bottom: {{ block.settings.section_padding_bottom_mobile }}px;
+    }
+
+    .ai-faq-container-{{ ai_gen_id }} {
+      padding-left: {{ block.settings.container_padding_horizontal_mobile }}px;
+      padding-right: {{ block.settings.container_padding_horizontal_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<faq-accordion-{{ ai_gen_id }} class="ai-faq-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-faq-container-{{ ai_gen_id }}">
+    <div class="ai-faq-header-{{ ai_gen_id }}">
+      {% if block.settings.eyebrow_text != blank %}
+        <p class="ai-faq-eyebrow-{{ ai_gen_id }}">{{ block.settings.eyebrow_text }}</p>
+      {% endif %}
+      {% if block.settings.heading_text != blank %}
+        <h2 class="ai-faq-heading-{{ ai_gen_id }}">{{ block.settings.heading_text }}</h2>
+      {% endif %}
+    </div>
+
+    <div class="ai-faq-accordion-{{ ai_gen_id }}">
+      {% for i in (1..10) %}
+        {% assign question_key = 'faq_question_' | append: i %}
+        {% assign answer_key = 'faq_answer_' | append: i %}
+        {% assign question = block.settings[question_key] %}
+        {% assign answer = block.settings[answer_key] %}
+
+        {% if question != blank and answer != blank %}
+          <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+            <button class="ai-faq-question-{{ ai_gen_id }}" aria-expanded="false" data-faq-trigger>
+              <span class="ai-faq-question-text-{{ ai_gen_id }}">{{ question }}</span>
+              <span class="ai-faq-icon-{{ ai_gen_id }}">
+                {% if block.settings.icon_style == 'plus' %}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <line x1="12" y1="5" x2="12" y2="19" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="5" y1="12" x2="19" y2="12" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                {% elsif block.settings.icon_style == 'chevron' %}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <polyline points="6 9 12 15 18 9" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                {% elsif block.settings.icon_style == 'arrow' %}
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <line x1="12" y1="5" x2="12" y2="19" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="19 12 12 19 5 12" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                {% endif %}
+              </span>
+            </button>
+            <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-content>
+              <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+                {{ answer }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</faq-accordion-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class FaqAccordion{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.items = this.querySelectorAll('[data-faq-item]');
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.items.forEach((item) => {
+          const trigger = item.querySelector('[data-faq-trigger]');
+          const content = item.querySelector('[data-faq-content]');
+
+          trigger.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+
+            {% if block.settings.allow_multiple_open == false %}
+              this.items.forEach((otherItem) => {
+                if (otherItem !== item) {
+                  otherItem.classList.remove('active');
+                  const otherTrigger = otherItem.querySelector('[data-faq-trigger]');
+                  otherTrigger.setAttribute('aria-expanded', 'false');
+                }
+              });
+            {% endif %}
+
+            if (isActive) {
+              item.classList.remove('active');
+              trigger.setAttribute('aria-expanded', 'false');
+            } else {
+              item.classList.add('active');
+              trigger.setAttribute('aria-expanded', 'true');
+            }
+          });
+        });
+
+        {% if block.settings.open_first_item %}
+          if (this.items.length > 0) {
+            const firstItem = this.items[0];
+            const firstTrigger = firstItem.querySelector('[data-faq-trigger]');
+            firstItem.classList.add('active');
+            firstTrigger.setAttribute('aria-expanded', 'true');
+          }
+        {% endif %}
+      }
+    }
+
+    customElements.define('faq-accordion-{{ ai_gen_id }}', FaqAccordion{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ accordion",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section layout"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_mobile",
+      "label": "Padding top (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_mobile",
+      "label": "Padding bottom (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Section background"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_gradient",
+      "label": "Enable gradient background",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_background_gradient_start",
+      "label": "Background start color",
+      "default": "#e0f7fa"
+    },
+    {
+      "type": "color",
+      "id": "section_background_gradient_end",
+      "label": "Background end color",
+      "default": "#b2ebf2"
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle",
+      "label": "Gradient angle",
+      "min": 0,
+      "max": 360,
+      "step": 15,
+      "unit": "deg",
+      "default": 180
+    },
+    {
+      "type": "header",
+      "content": "Container"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Max width",
+      "min": 600,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "default": 900
+    },
+    {
+      "type": "range",
+      "id": "container_padding_horizontal",
+      "label": "Horizontal padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "container_padding_horizontal_mobile",
+      "label": "Horizontal padding (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "select",
+      "id": "header_text_align",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "header_margin_bottom",
+      "label": "Margin bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Eyebrow text"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow text",
+      "default": "Questions"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_font_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_text_transform",
+      "label": "Text transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_letter_spacing",
+      "label": "Letter spacing",
+      "default": "0.2em"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_line_height",
+      "label": "Line height",
+      "default": "1.5"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Color",
+      "default": "#00796b"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_margin_bottom",
+      "label": "Margin bottom",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading text",
+      "default": "Everything you need to know."
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Font size (mobile)",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "label": "Font size (desktop)",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_height",
+      "label": "Line height",
+      "default": "1.2"
+    },
+    {
+      "type": "text",
+      "id": "heading_letter_spacing",
+      "label": "Letter spacing",
+      "default": "-0.02em"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Color",
+      "default": "#004d40"
+    },
+    {
+      "type": "header",
+      "content": "Accordion settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_multiple_open",
+      "label": "Allow multiple items open",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first_item",
+      "label": "Open first item by default",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "accordion_item_spacing",
+      "label": "Item spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Accordion item style"
+    },
+    {
+      "type": "color",
+      "id": "item_background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "item_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "item_border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "item_border_style",
+      "label": "Border style",
+      "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "dashed", "label": "Dashed" },
+        { "value": "dotted", "label": "Dotted" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "color",
+      "id": "item_border_color",
+      "label": "Border color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "range",
+      "id": "item_padding_horizontal",
+      "label": "Horizontal padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Item shadow"
+    },
+    {
+      "type": "range",
+      "id": "item_shadow_x",
+      "label": "Shadow X offset",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "item_shadow_y",
+      "label": "Shadow Y offset",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "item_shadow_blur",
+      "label": "Shadow blur",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "item_shadow_spread",
+      "label": "Shadow spread",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "item_shadow_color",
+      "label": "Shadow color",
+      "default": "rgba(0, 0, 0, 0.1)"
+    },
+    {
+      "type": "header",
+      "content": "Question style"
+    },
+    {
+      "type": "range",
+      "id": "question_font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "question_font_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "text",
+      "id": "question_line_height",
+      "label": "Line height",
+      "default": "1.4"
+    },
+    {
+      "type": "text",
+      "id": "question_letter_spacing",
+      "label": "Letter spacing",
+      "default": "0"
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Color",
+      "default": "#004d40"
+    },
+    {
+      "type": "color",
+      "id": "question_hover_color",
+      "label": "Hover color",
+      "default": "#00796b"
+    },
+    {
+      "type": "range",
+      "id": "question_padding_vertical",
+      "label": "Vertical padding",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Answer style"
+    },
+    {
+      "type": "range",
+      "id": "answer_font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "answer_font_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "text",
+      "id": "answer_line_height",
+      "label": "Line height",
+      "default": "1.6"
+    },
+    {
+      "type": "text",
+      "id": "answer_letter_spacing",
+      "label": "Letter spacing",
+      "default": "0"
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "answer_padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Icon style"
+    },
+    {
+      "type": "select",
+      "id": "icon_style",
+      "label": "Icon type",
+      "options": [
+        { "value": "plus", "label": "Plus" },
+        { "value": "chevron", "label": "Chevron" },
+        { "value": "arrow", "label": "Arrow" }
+      ],
+      "default": "plus"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size",
+      "min": 12,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "icon_stroke_width",
+      "label": "Icon stroke width",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#004d40"
+    },
+    {
+      "type": "range",
+      "id": "icon_rotation_active",
+      "label": "Rotation when active",
+      "min": 0,
+      "max": 360,
+      "step": 45,
+      "unit": "deg",
+      "default": 45
+    },
+    {
+      "type": "header",
+      "content": "FAQ 1"
+    },
+    {
+      "type": "text",
+      "id": "faq_question_1",
+      "label": "Question",
+      "default": "How do I take MossVida gummies?"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_1",
+      "label": "Answer",
+      "default": "Take 2 gummies daily, any time of day. Consistency is key — most customers feel the difference within 2–3 weeks."
+    },
+    {
+      "type": "header",
+      "content": "FAQ 2"
+    },
+    {
+      "type": "text",
+      "id": "faq_question_2",
+      "label": "Question",
+      "default": "Are they really vegan and organic?"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_2",
+      "label": "Answer",
+      "default": "Yes. 100% vegan, certified-organic ingredients, non-GMO, gluten-free, with zero artificial colors or flavors."
+    },
+    {
+      "type": "header",
+      "content": "FAQ 3"
+    },
+    {
+      "type": "text",
+      "id": "faq_question_3",
+      "label": "Question",
+      "default": "What does it taste like?"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_3",
+      "label": "Answer",
+      "default": "Naturally apple-flavored — sweet, soft, and genuinely enjoyable. No fishy or seaweed aftertaste."
+    },
+    {
+      "type": "header",
+      "content": "FAQ 4"
+    },
+    {
+      "type": "text",
+      "id": "faq_question_4",
+      "label": "Question",
+      "default": "How long does one bottle last?"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_4",
+      "label": "Answer",
+      "default": "Each bottle contains 60 gummies — a full 30-day supply at the recommended 2-per-day serving."
+    },
+    {
+      "type": "header",
+      "content": "FAQ 5"
+    },
+    {
+      "type": "text",
+      "id": "faq_question_5",
+      "label": "Question",
+      "default": "When can I expect to see results?"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_5",
+      "label": "Answer",
+      "default": "Most people notice steadier energy and improved digestion within the first 2 weeks of consistent use."
+    },
+    {
+      "type": "header",
+      "content": "FAQ 6"
+    },
+    {
+      "type": "text",
+      "id": "faq_question_6",
+      "label": "Question"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_6",
+      "label": "Answer"
+    },
+    {
+      "type": "header",
+      "content": "FAQ 7"
+    },
+    {
+      "type": "text",
+      "id": "faq_question_7",
+      "label": "Question"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_7",
+      "label": "Answer"
+    },
+    {
+      "type": "header",
+      "content": "FAQ 8"
+    },
+    {
+      "type": "text",
+      "id": "faq_question_8",
+      "label": "Question"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_8",
+      "label": "Answer"
+    },
+    {
+      "type": "header",
+      "content": "FAQ 9"
+    },
+    {
+      "type": "text",
+      "id": "faq_question_9",
+      "label": "Question"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_9",
+      "label": "Answer"
+    },
+    {
+      "type": "header",
+      "content": "FAQ 10"
+    },
+    {
+      "type": "text",
+      "id": "faq_question_10",
+      "label": "Question"
+    },
+    {
+      "type": "textarea",
+      "id": "faq_answer_10",
+      "label": "Answer"
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ accordion"
+    }
+  ]
+}
+{% endschema %}
