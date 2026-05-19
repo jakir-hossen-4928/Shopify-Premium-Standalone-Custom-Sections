@@ -99,7 +99,7 @@ Below is a visual guide to the premium custom sections in this repository. Each 
 ### 7. Custom Shop By Category (Circle)
 *Intuitive navigation section using modern circular image frames.*
 
-![Shop By Occasion](./images/gallry-and-collection-multiple-section.png)
+![Shop By Occasion](./images/custom-collection-circle.png)
 
 👉 **Source Code:** [`custome-collection-circle.liquid`](./custome-collection-circle.liquid)
 
