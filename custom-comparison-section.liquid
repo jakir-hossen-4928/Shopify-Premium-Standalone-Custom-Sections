@@ -1,0 +1,266 @@
+{%- style -%}
+  .daywi-comp-section-{{ section.id }} {
+    padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .daywi-comp-container {
+    max-width: {{ section.settings.container_width }}px;
+    width: 100%;
+    display: flex;
+    flex-direction: {% if section.settings.layout_order == 'text_first' %}row{% else %}row-reverse{% endif %};
+    align-items: center;
+    gap: 40px;
+  }
+
+  .daywi-comp-content {
+    flex: 1;
+    text-align: {{ section.settings.text_align }};
+  }
+
+  .daywi-comp-content h2 {
+    font-size: {{ section.settings.h_size_mb }}px;
+    margin-bottom: 20px;
+    color: {{ section.settings.text_color }};
+    line-height: 1.2;
+    margin-top: 0;
+  }
+
+  .daywi-comp-content p {
+    font-size: {{ section.settings.p_size_mb }}px;
+    color: {{ section.settings.text_color }};
+    opacity: 0.8;
+    line-height: 1.5;
+  }
+
+  .daywi-comp-table-column {
+    flex: 1.2;
+    position: relative;
+    width: 100%;
+  }
+
+  .daywi-comp-floating-headers {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+  }
+
+  .daywi-comp-header-item {
+    width: 80px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: {{ section.settings.text_color }};
+  }
+
+  .daywi-comp-header-item img {
+    max-width: 70px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .daywi-comp-card-main {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.07);
+    width: 100%;
+  }
+
+  .daywi-comp-row {
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid #f2f2f2;
+  }
+
+  .daywi-comp-row:last-child {
+    border-bottom: none;
+  }
+
+  .daywi-comp-feature-cell {
+    background-color: {{ section.settings.table_pink }};
+    flex: 2;
+    padding: 15px 20px;
+    color: white;
+    font-weight: 500;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: {{ section.settings.feat_size_mb }}px;
+  }
+
+  .daywi-comp-icon-cell {
+    width: 80px;
+    min-width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border-left: 1px solid #f2f2f2;
+  }
+
+  .daywi-comp-icon-check { color: #5dbb63; font-size: 20px; font-weight: bold; }
+  .daywi-comp-icon-cross { color: #d14d4d; font-size: 20px; font-weight: bold; }
+
+  @media (min-width: 769px) {
+    .daywi-comp-content h2 { font-size: {{ section.settings.h_size_dt }}px; }
+    .daywi-comp-content p { font-size: {{ section.settings.p_size_dt }}px; }
+    .daywi-comp-feature-cell { font-size: {{ section.settings.feat_size_dt }}px; min-height: 85px; }
+    .daywi-comp-icon-cell { width: 100px; min-width: 100px; min-height: 85px; }
+    .daywi-comp-header-item { width: 100px; font-size: 18px; }
+  }
+
+  @media (max-width: 768px) {
+    .daywi-comp-container { flex-direction: column; gap: 30px; }
+    .daywi-comp-content { width: 100%; order: 1; }
+    .daywi-comp-table-column { width: 100%; order: 2; }
+  }
+{%- endstyle -%}
+
+<section class="daywi-comp-section-{{ section.id }}">
+  <div class="daywi-comp-container">
+    
+    <div class="daywi-comp-content">
+      <h2>{{ section.settings.title }}</h2>
+      <p>{{ section.settings.description }}</p>
+    </div>
+
+    <div class="daywi-comp-table-column">
+      <div class="daywi-comp-floating-headers">
+        <div class="daywi-comp-header-item">
+          {% if section.settings.brand_logo != blank %}
+            <img src="{{ section.settings.brand_logo | img_url: '200x' }}" alt="Brand Logo">
+          {% else %}
+            <span>{{ section.settings.brand_name }}</span>
+          {% endif %}
+        </div>
+        <div class="daywi-comp-header-item">
+          <span>{{ section.settings.others_name }}</span>
+        </div>
+      </div>
+
+      <div class="daywi-comp-card-main">
+        {% for block in section.blocks %}
+          <div class="daywi-comp-row" {{ block.shopify_attributes }}>
+            <div class="daywi-comp-feature-cell">
+              {{ block.settings.feature_text }}
+            </div>
+            <div class="daywi-comp-icon-cell">
+              <span class="daywi-comp-icon-check">✓</span>
+            </div>
+            <div class="daywi-comp-icon-cell">
+              <span class="daywi-comp-icon-cross">✕</span>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Comparison Table V2",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Width"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 800,
+      "max": 1800,
+      "step": 50,
+      "unit": "px",
+      "label": "Section Max Width",
+      "default": 1200
+    },
+    {
+      "type": "select",
+      "id": "layout_order",
+      "label": "Column Order (Desktop)",
+      "options": [
+        { "value": "text_first", "label": "Text Left, Table Right" },
+        { "value": "table_first", "label": "Table Left, Text Right" }
+      ],
+      "default": "text_first"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    { "type": "color", "id": "bg_color", "label": "Section Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text Color", "default": "#333333" },
+    { "type": "color", "id": "table_pink", "label": "Table Row Background", "default": "#e9a1c6" },
+    {
+      "type": "header",
+      "content": "Floating Headers"
+    },
+    { "type": "image_picker", "id": "brand_logo", "label": "Brand Logo (Left Header)" },
+    { "type": "text", "id": "brand_name", "label": "Brand Text (Fallback)", "default": "DAYWI" },
+    { "type": "text", "id": "others_name", "label": "Others Column Text", "default": "Others" },
+    {
+      "type": "header",
+      "content": "Typography Control"
+    },
+    { "type": "text", "id": "title", "label": "Heading Text", "default": "Quality, Always" },
+    { "type": "range", "id": "h_size_dt", "min": 20, "max": 80, "step": 1, "unit": "px", "label": "Heading Size (Desktop)", "default": 40 },
+    { "type": "range", "id": "h_size_mb", "min": 16, "max": 50, "step": 1, "unit": "px", "label": "Heading Size (Mobile)", "default": 28 },
+    { "type": "textarea", "id": "description", "label": "Description Text", "default": "Describe your brand's unique value proposition here." },
+    { "type": "range", "id": "p_size_dt", "min": 12, "max": 24, "step": 1, "unit": "px", "label": "Paragraph Size (Desktop)", "default": 18 },
+    { "type": "range", "id": "p_size_mb", "min": 10, "max": 20, "step": 1, "unit": "px", "label": "Paragraph Size (Mobile)", "default": 16 },
+    { "type": "range", "id": "feat_size_dt", "min": 12, "max": 22, "step": 1, "unit": "px", "label": "Table Row Font Size (Desktop)", "default": 16 },
+    { "type": "range", "id": "feat_size_mb", "min": 10, "max": 18, "step": 1, "unit": "px", "label": "Table Row Font Size (Mobile)", "default": 14 },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Padding Top", "default": 60 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Padding Bottom", "default": 60 }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Row",
+      "settings": [
+        { "type": "text", "id": "feature_text", "label": "Feature Description", "default": "Designed for Gym, Pilates & Travel" }
+      ]
+    }
+  ],
+  "presets": [
+    { 
+      "name": "Comparison Table",
+      "blocks": [
+        { "type": "feature" },
+        { "type": "feature" },
+        { "type": "feature" }
+      ]
+    }
+  ]
+}
+{% endschema %}

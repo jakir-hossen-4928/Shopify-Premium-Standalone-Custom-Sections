@@ -1,0 +1,744 @@
+{% comment %}
+  MossVida — Benefits Section
+  4-column benefits grid — fully dynamic, zero hardcoded values
+  Font family inherits from theme global settings (settings.type_body_font / type_header_font)
+  Mobile: Horizontal scroll with 1 card visible at a time
+{% endcomment %}
+
+<style>
+{{ settings.type_body_font | font_face: font_display: 'swap' }}
+{{ settings.type_header_font | font_face: font_display: 'swap' }}
+
+.mv-benefits-section *,
+.mv-benefits-section *::before,
+.mv-benefits-section *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.mv-benefits-section {
+  /* ── Color tokens ── */
+  --mv-primary:          {{ section.settings.primary_color }};
+  --mv-primary-glow:     {{ section.settings.primary_glow_color }};
+  --mv-background:       {{ section.settings.background_color }};
+  --mv-card:             {{ section.settings.card_color }};
+  --mv-border:           {{ section.settings.border_color }};
+  --mv-icon-fg:          {{ section.settings.icon_fg_color }};
+  --mv-kicker-color:     {{ section.settings.kicker_color }};
+  --mv-h2-color:         {{ section.settings.heading_color }};
+  --mv-h3-color:         {{ section.settings.benefit_title_color }};
+  --mv-desc-color:       {{ section.settings.benefit_desc_color }};
+
+  /* ── Section spacing ── */
+  --mv-section-pt:       {{ section.settings.section_padding_top }}px;
+  --mv-section-pb:       {{ section.settings.section_padding_bottom }}px;
+  --mv-container-max:    {{ section.settings.container_max_width }}px;
+  --mv-container-px:     {{ section.settings.container_padding_x }}px;
+
+  /* ── Grid ── */
+  --mv-grid-gap:         {{ section.settings.grid_gap }}px;
+
+  /* ── Card ── */
+  --mv-card-pt:          {{ section.settings.card_padding_top }}px;
+  --mv-card-pr:          {{ section.settings.card_padding_right }}px;
+  --mv-card-pb:          {{ section.settings.card_padding_bottom }}px;
+  --mv-card-pl:          {{ section.settings.card_padding_left }}px;
+  --mv-card-radius:      {{ section.settings.card_border_radius }}px;
+  --mv-card-bw:          {{ section.settings.card_border_width }}px;
+  --mv-card-bs:          {{ section.settings.card_border_style }};
+  --mv-card-shadow:      {{ section.settings.card_shadow }};
+  --mv-card-hover-sh:    {{ section.settings.card_hover_shadow }};
+  --mv-card-lift:        -{{ section.settings.card_hover_lift }}px;
+  --mv-transition:       {{ section.settings.transition_duration }}ms;
+
+  /* ── Icon ── */
+  --mv-icon-size:        {{ section.settings.icon_container_size }}px;
+  --mv-icon-radius:      {{ section.settings.icon_border_radius }}px;
+  --mv-icon-mb:          {{ section.settings.icon_margin_bottom }}px;
+  --mv-icon-svg:         {{ section.settings.icon_svg_size }}px;
+  --mv-icon-deg:         {{ section.settings.icon_gradient_direction }}deg;
+
+  /* ── Kicker typography ── */
+  --mv-kicker-size:      {{ section.settings.kicker_font_size }}px;
+  --mv-kicker-weight:    {{ section.settings.kicker_font_weight }};
+  --mv-kicker-mb:        {{ section.settings.kicker_margin_bottom }}px;
+
+  /* ── Heading typography ── */
+  --mv-h2-min:           {{ section.settings.heading_font_size_min }}px;
+  --mv-h2-max:           {{ section.settings.heading_font_size_max }}px;
+  --mv-h2-weight:        {{ section.settings.heading_font_weight }};
+  --mv-h2-lh:            {{ section.settings.heading_line_height | divided_by: 10.0 }};
+  --mv-header-max:       {{ section.settings.header_max_width }}px;
+  --mv-header-mb:        {{ section.settings.header_margin_bottom }}px;
+
+  /* ── Benefit title typography ── */
+  --mv-h3-size:          {{ section.settings.benefit_title_font_size }}px;
+  --mv-h3-weight:        {{ section.settings.benefit_title_font_weight }};
+  --mv-h3-mb:            {{ section.settings.benefit_title_margin_bottom }}px;
+
+  /* ── Benefit desc typography ── */
+  --mv-desc-size:        {{ section.settings.benefit_desc_font_size }}px;
+  --mv-desc-lh:          {{ section.settings.benefit_desc_line_height | divided_by: 10.0 }};
+
+  padding-top:    var(--mv-section-pt);
+  padding-bottom: var(--mv-section-pb);
+  background:     var(--mv-background);
+  font-family:    {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+}
+
+/* ─── Container ─── */
+.mv-benefits-container {
+  max-width: var(--mv-container-max);
+  margin: 0 auto;
+  padding: 0 var(--mv-container-px);
+}
+
+/* ─── Header ─── */
+.mv-benefits-header {
+  max-width: var(--mv-header-max);
+  margin: 0 auto var(--mv-header-mb);
+  text-align: {{ section.settings.header_text_align }};
+}
+
+.mv-benefits-kicker {
+  display: block;
+  font-size:      var(--mv-kicker-size);
+  font-weight:    var(--mv-kicker-weight);
+  text-transform: {{ section.settings.kicker_text_transform }};
+  letter-spacing: 0.{{ section.settings.kicker_letter_spacing }}em;
+  color:          var(--mv-kicker-color);
+  margin-bottom:  var(--mv-kicker-mb);
+  font-family:    {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+}
+
+.mv-benefits-h2 {
+  font-size:      clamp(var(--mv-h2-min), 4vw, var(--mv-h2-max));
+  font-weight:    var(--mv-h2-weight);
+  line-height:    var(--mv-h2-lh);
+  color:          var(--mv-h2-color);
+  font-family:    {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+}
+
+/* ─── Grid ─── */
+.mv-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat({{ section.settings.grid_cols_mobile }}, 1fr);
+  gap: var(--mv-grid-gap);
+}
+@media (min-width: 640px) {
+  .mv-benefits-grid { grid-template-columns: repeat({{ section.settings.grid_cols_tablet }}, 1fr); }
+}
+@media (min-width: 1024px) {
+  .mv-benefits-grid { grid-template-columns: repeat({{ section.settings.grid_cols_desktop }}, 1fr); }
+}
+
+/* ─── Card ─── */
+.mv-benefit-card {
+  padding:       var(--mv-card-pt) var(--mv-card-pr) var(--mv-card-pb) var(--mv-card-pl);
+  border-radius: var(--mv-card-radius);
+  background:    var(--mv-card);
+  border:        var(--mv-card-bw) var(--mv-card-bs) var(--mv-border);
+  box-shadow:    var(--mv-card-shadow);
+  transition:    all var(--mv-transition) cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mv-benefit-card:hover {
+  transform:  translateY(var(--mv-card-lift));
+  box-shadow: var(--mv-card-hover-sh);
+}
+
+/* ─── Icon ─── */
+.mv-benefit-icon {
+  width:         var(--mv-icon-size);
+  height:        var(--mv-icon-size);
+  border-radius: var(--mv-icon-radius);
+  background:    var(--mv-icon-bg, linear-gradient(var(--mv-icon-deg), var(--mv-primary), var(--mv-primary-glow)));
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+  margin-bottom: var(--mv-icon-mb);
+  transition:    transform {{ section.settings.icon_hover_transition_duration }}ms ease;
+  flex-shrink:   0;
+}
+.mv-benefit-card:hover .mv-benefit-icon {
+  transform: scale({{ section.settings.icon_hover_scale | divided_by: 100.0 }});
+}
+.mv-benefit-icon svg {
+  width:        var(--mv-icon-svg);
+  height:       var(--mv-icon-svg);
+  color:        var(--mv-icon-fg);
+  stroke-width: {{ section.settings.icon_stroke_width | divided_by: 10.0 }};
+}
+
+/* ─── Benefit title ─── */
+.mv-benefit-h3 {
+  font-size:     var(--mv-h3-size);
+  font-weight:   var(--mv-h3-weight);
+  color:         var(--mv-h3-color);
+  margin-bottom: var(--mv-h3-mb);
+  font-family:   {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+}
+
+/* ─── Benefit desc ─── */
+.mv-benefit-desc {
+  font-size:   var(--mv-desc-size);
+  line-height: var(--mv-desc-lh);
+  color:       var(--mv-desc-color);
+}
+
+
+/* ─── Mobile Horizontal Scroll Styles ─── */
+@media (max-width: 768px) {
+  .mv-benefits-section {
+    --mv-section-pt: {{ section.settings.section_padding_top_mobile }}px;
+    --mv-section-pb: {{ section.settings.section_padding_bottom_mobile }}px;
+    position: relative;
+  }
+  .mv-benefits-container { 
+    padding: 0 {{ section.settings.container_padding_x_mobile }}px;
+    overflow: visible;
+  }
+
+  /* Mobile scroll container */
+  .mv-benefits-scroll-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Scroll buttons - positioned absolutely at middle of section */
+  .mv-scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--mv-primary, #1d7869);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    opacity: 0.9;
+  }
+  
+  .mv-scroll-btn:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.05);
+    background: var(--mv-primary-glow, #22c99e);
+  }
+  
+  .mv-scroll-btn:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+  
+  .mv-scroll-btn-left {
+    left: 4px;
+  }
+  
+  .mv-scroll-btn-right {
+    right: 4px;
+  }
+  
+  .mv-scroll-btn svg {
+    width: 20px;
+    height: 20px;
+    color: white;
+    stroke: white;
+    stroke-width: 2;
+  }
+  
+  /* Hide scrollbar but keep functionality */
+  .mv-benefits-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: var(--mv-grid-gap);
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .mv-benefits-grid::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Each card takes full width for scrolling */
+  .mv-benefits-grid .mv-benefit-card {
+    flex: 0 0 calc(100% - {{ section.settings.container_padding_x_mobile | times: 0 }}px);
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+
+  /* Mobile Content Toggling */
+  .mv-desktop-only { display: none !important; }
+  .mv-mobile-only { display: block !important; }
+}
+
+/* Desktop styles for scroll buttons hidden */
+@media (min-width: 769px) {
+  .mv-scroll-btn {
+    display: none !important;
+  }
+  .mv-mobile-only { display: none !important; }
+  .mv-desktop-only { display: block !important; }
+}
+
+.mv-benefit-icon img {
+  width: var(--mv-icon-svg);
+  height: var(--mv-icon-svg);
+  object-fit: contain;
+}
+</style>
+
+<section
+  class="mv-benefits-section"
+  aria-label="{{ section.settings.aria_label | default: 'MossVida Benefits' }}"
+  id="{{ section.settings.section_id | default: 'mv-benefits' }}"
+>
+  <div class="mv-benefits-container">
+    {%- if section.settings.kicker != blank or section.settings.heading != blank -%}
+      <div class="mv-benefits-header">
+        {%- if section.settings.kicker != blank -%}
+          <span class="mv-benefits-kicker">{{ section.settings.kicker }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <{{ section.settings.heading_tag }} class="mv-benefits-h2">{{ section.settings.heading | newline_to_br }}</{{ section.settings.heading_tag }}>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <!-- Mobile scroll wrapper with buttons -->
+    <div class="mv-benefits-scroll-wrapper">
+      <!-- Left Scroll Button (Mobile Only) -->
+      <button class="mv-scroll-btn mv-scroll-btn-left mv-mobile-only" aria-label="Scroll left">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+      
+      <div class="mv-benefits-grid" id="mv-benefits-scroll-{{ section.id }}">
+        {%- for i in (1..4) -%}
+          {%- assign title_key   = 'benefit_title_'        | append: i -%}
+          {%- assign desc_key    = 'benefit_desc_'         | append: i -%}
+          {%- assign icon_key    = 'benefit_icon_'         | append: i -%}
+          {%- assign img_icon_key = 'benefit_image_icon_'  | append: i -%}
+          {%- assign bg_key      = 'benefit_card_bg_'      | append: i -%}
+          {%- assign icon_c1_key = 'benefit_icon_color1_'  | append: i -%}
+          {%- assign icon_c2_key = 'benefit_icon_color2_'  | append: i -%}
+          {%- assign title       = section.settings[title_key]   -%}
+          {%- assign desc        = section.settings[desc_key]    -%}
+          {%- assign icon_choice = section.settings[icon_key]    -%}
+          {%- assign img_icon    = section.settings[img_icon_key] -%}
+          {%- assign icon_bg_key  = 'benefit_icon_bg_color_' | append: i -%}
+          {%- assign icon_bg      = section.settings[icon_bg_key] -%}
+          {%- assign card_bg     = section.settings[bg_key]      -%}
+          {%- assign icon_c1     = section.settings[icon_c1_key] -%}
+          {%- assign icon_c2     = section.settings[icon_c2_key] -%}
+
+          {%- if title != blank or desc != blank -%}
+            <div
+              class="mv-benefit-card"
+              style="{%- if card_bg != blank -%}background:{{ card_bg }};{%- endif -%}{% if icon_bg != blank %}--mv-icon-bg:{{ icon_bg }};{% elsif icon_c1 != blank and icon_c2 != blank %}--mv-primary:{{ icon_c1 }};--mv-primary-glow:{{ icon_c2 }};{% endif %}"
+            >
+              <div class="mv-benefit-icon" aria-hidden="true">
+                {%- if img_icon != blank -%}
+                  {{ img_icon | image_url: width: 100 | image_tag: loading: 'lazy' }}
+                {%- else -%}
+                  {%- case icon_choice -%}
+                  {%- when 'zap' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    </svg>
+                  {%- when 'shield' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                  {%- when 'heart' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                    </svg>
+                  {%- when 'leaf' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                      <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+                    </svg>
+                  {%- when 'star' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                  {%- when 'sun' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="4"/>
+                      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                  {%- when 'droplet' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
+                    </svg>
+                  {%- when 'award' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="8" r="6"/>
+                      <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+                    </svg>
+                  {%- when 'check-circle' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                      <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                  {%- when 'package' -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M16.5 9.4 7.55 4.24"/>
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                      <polyline points="3.29 7 12 12 20.71 7"/>
+                      <line x1="12" x2="12" y1="22" y2="12"/>
+                    </svg>
+                  {%- else -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    </svg>
+                  {%- endcase -%}
+                {%- endif -%}
+              </div>
+              {%- if title != blank -%}<h3 class="mv-benefit-h3">{{ title }}</h3>{%- endif -%}
+              {%- if desc != blank -%}<p class="mv-benefit-desc">{{ desc }}</p>{%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      
+      <!-- Right Scroll Button (Mobile Only) -->
+      <button class="mv-scroll-btn mv-scroll-btn-right mv-mobile-only" aria-label="Scroll right">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function() {
+  // Mobile scroll functionality
+  const sectionId = '{{ section.id }}';
+  const scrollContainer = document.getElementById('mv-benefits-scroll-' + sectionId);
+  const leftBtn = document.querySelector('.mv-scroll-btn-left');
+  const rightBtn = document.querySelector('.mv-scroll-btn-right');
+  
+  if (!scrollContainer) return;
+  
+  // Get card width including gap
+  function getScrollAmount() {
+    const firstCard = scrollContainer.querySelector('.mv-benefit-card');
+    if (!firstCard) return 200;
+    const cardWidth = firstCard.offsetWidth;
+    const gap = parseInt(getComputedStyle(scrollContainer).gap) || 24;
+    return cardWidth + gap;
+  }
+  
+  // Scroll left function
+  function scrollLeft() {
+    const amount = getScrollAmount();
+    scrollContainer.scrollBy({
+      left: -amount,
+      behavior: 'smooth'
+    });
+  }
+  
+  // Scroll right function
+  function scrollRight() {
+    const amount = getScrollAmount();
+    scrollContainer.scrollBy({
+      left: amount,
+      behavior: 'smooth'
+    });
+  }
+  
+  // Update button visibility based on scroll position
+  function updateButtonsVisibility() {
+    if (!leftBtn || !rightBtn) return;
+    
+    const scrollLeft = scrollContainer.scrollLeft;
+    const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+    
+    // Hide left button if at start
+    if (scrollLeft <= 5) {
+      leftBtn.style.opacity = '0.3';
+      leftBtn.style.cursor = 'not-allowed';
+    } else {
+      leftBtn.style.opacity = '0.9';
+      leftBtn.style.cursor = 'pointer';
+    }
+    
+    // Hide right button if at end
+    if (scrollLeft >= maxScrollLeft - 5) {
+      rightBtn.style.opacity = '0.3';
+      rightBtn.style.cursor = 'not-allowed';
+    } else {
+      rightBtn.style.opacity = '0.9';
+      rightBtn.style.cursor = 'pointer';
+    }
+  }
+  
+  // Attach event listeners
+  if (leftBtn) {
+    leftBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const scrollLeftVal = scrollContainer.scrollLeft;
+      if (scrollLeftVal > 5) {
+        scrollLeft();
+      }
+    });
+  }
+  
+  if (rightBtn) {
+    rightBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      const scrollLeftVal = scrollContainer.scrollLeft;
+      if (scrollLeftVal < maxScroll - 5) {
+        scrollRight();
+      }
+    });
+  }
+  
+  // Update button visibility on scroll
+  scrollContainer.addEventListener('scroll', function() {
+    updateButtonsVisibility();
+  });
+  
+  // Initial button visibility
+  setTimeout(updateButtonsVisibility, 100);
+  
+  // Update on window resize
+  window.addEventListener('resize', function() {
+    setTimeout(updateButtonsVisibility, 100);
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "MossVida — Benefits",
+  "tag": "section",
+  "class": "mv-benefits-section-wrap",
+  "settings": [
+
+    { "type": "header", "content": "🔤 Section Identity" },
+    { "type": "text", "id": "section_id", "label": "Section HTML id",  "default": "mv-benefits" },
+    { "type": "text", "id": "aria_label", "label": "Section ARIA label","default": "MossVida Benefits" },
+
+    { "type": "header", "content": "📐 Section Spacing" },
+    { "type": "range", "id": "section_padding_top",           "label": "Padding top — desktop (px)",    "min": 0,   "max": 200, "step": 4,  "default": 96 },
+    { "type": "range", "id": "section_padding_bottom",        "label": "Padding bottom — desktop (px)", "min": 0,   "max": 200, "step": 4,  "default": 96 },
+    { "type": "range", "id": "section_padding_top_mobile",    "label": "Padding top — mobile (px)",     "min": 0,   "max": 120, "step": 4,  "default": 64 },
+    { "type": "range", "id": "section_padding_bottom_mobile", "label": "Padding bottom — mobile (px)",  "min": 0,   "max": 120, "step": 4,  "default": 64 },
+    { "type": "range", "id": "container_max_width",           "label": "Container max width (px)",      "min": 800, "max": 1800,"step": 40, "default": 1280 },
+    { "type": "range", "id": "container_padding_x",          "label": "Side padding — desktop (px)",   "min": 8,   "max": 80,  "step": 4,  "default": 32 },
+    { "type": "range", "id": "container_padding_x_mobile",   "label": "Side padding — mobile (px)",    "min": 8,   "max": 48,  "step": 4,  "default": 24 },
+
+    { "type": "header", "content": "📋 Header Block" },
+    { "type": "text",     "id": "kicker",          "label": "Kicker text",     "default": "Why MossVida" },
+    { "type": "textarea", "id": "heading",         "label": "Section heading", "default": "The ocean's most complete superfood — in one delicious gummy." },
+    { "type": "select",   "id": "heading_tag",     "label": "Heading HTML tag","default": "h2",
+      "options": [
+        {"value":"h1","label":"H1"},{"value":"h2","label":"H2"},
+        {"value":"h3","label":"H3"},{"value":"h4","label":"H4"}
+      ]
+    },
+    { "type": "select", "id": "header_text_align", "label": "Header text alignment", "default": "center",
+      "options": [
+        {"value":"left","label":"Left"},
+        {"value":"center","label":"Center"},
+        {"value":"right","label":"Right"}
+      ]
+    },
+    { "type": "range", "id": "header_max_width",     "label": "Header max width (px)",     "min": 400, "max": 1200, "step": 40, "default": 680 },
+    { "type": "range", "id": "header_margin_bottom", "label": "Header margin bottom (px)", "min": 16,  "max": 120,  "step": 4,  "default": 64 },
+
+    { "type": "header", "content": "✏️ Kicker Typography" },
+    { "type": "range",  "id": "kicker_font_size",      "label": "Font size (px)",          "min": 10, "max": 24, "step": 1, "default": 14 },
+    { "type": "select", "id": "kicker_font_weight",    "label": "Font weight",             "default": "600",
+      "options": [
+        {"value":"400","label":"Regular 400"},{"value":"500","label":"Medium 500"},
+        {"value":"600","label":"SemiBold 600"},{"value":"700","label":"Bold 700"}
+      ]
+    },
+    { "type": "select", "id": "kicker_text_transform", "label": "Text transform",          "default": "uppercase",
+      "options": [
+        {"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"},
+        {"value":"lowercase","label":"Lowercase"},{"value":"capitalize","label":"Capitalize"}
+      ]
+    },
+    { "type": "range", "id": "kicker_letter_spacing", "label": "Letter spacing (0.XX em)", "min": 0, "max": 50, "step": 1, "default": 20,
+      "info": "Rendered as 0.XX em — e.g. 20 → 0.20em" },
+    { "type": "range", "id": "kicker_margin_bottom",  "label": "Margin bottom (px)",       "min": 4, "max": 40, "step": 2, "default": 16 },
+    { "type": "color", "id": "kicker_color",           "label": "Kicker color",             "default": "#1d7869" },
+
+    { "type": "header", "content": "✏️ Heading Typography" },
+    { "type": "range",  "id": "heading_font_size_min", "label": "Min font size — mobile (px)", "min": 18, "max": 48, "step": 2, "default": 32 },
+    { "type": "range",  "id": "heading_font_size_max", "label": "Max font size — desktop (px)","min": 28, "max": 80, "step": 2, "default": 48 },
+    { "type": "select", "id": "heading_font_weight",   "label": "Font weight",                 "default": "700",
+      "options": [
+        {"value":"400","label":"Regular"},{"value":"500","label":"Medium"},
+        {"value":"600","label":"SemiBold"},{"value":"700","label":"Bold"},{"value":"800","label":"ExtraBold"}
+      ]
+    },
+    { "type": "range", "id": "heading_line_height", "label": "Line height (÷10 = value)", "min": 8, "max": 20, "step": 1, "default": 11,
+      "info": "e.g. 11 → 1.1, 16 → 1.6" },
+    { "type": "color", "id": "heading_color",        "label": "Heading color",             "default": "#0c313d" },
+
+    { "type": "header", "content": "🔲 Grid Layout" },
+    { "type": "range",  "id": "grid_gap",         "label": "Grid gap (px)",               "min": 4, "max": 60, "step": 2, "default": 24 },
+    { "type": "select", "id": "grid_cols_mobile", "label": "Columns — mobile (<640px)",   "default": "1",
+      "options": [{"value":"1","label":"1"},{"value":"2","label":"2"}]
+    },
+    { "type": "select", "id": "grid_cols_tablet", "label": "Columns — tablet (≥640px)",   "default": "2",
+      "options": [
+        {"value":"1","label":"1"},{"value":"2","label":"2"},
+        {"value":"3","label":"3"},{"value":"4","label":"4"}
+      ]
+    },
+    { "type": "select", "id": "grid_cols_desktop","label": "Columns — desktop (≥1024px)", "default": "4",
+      "options": [
+        {"value":"1","label":"1"},{"value":"2","label":"2"},
+        {"value":"3","label":"3"},{"value":"4","label":"4"}
+      ]
+    },
+
+    { "type": "header", "content": "🃏 Card Styling" },
+    { "type": "range",  "id": "card_padding_top",    "label": "Padding top (px)",        "min": 8,   "max": 80,   "step": 4,  "default": 32 },
+    { "type": "range",  "id": "card_padding_right",  "label": "Padding right (px)",      "min": 8,   "max": 80,   "step": 4,  "default": 32 },
+    { "type": "range",  "id": "card_padding_bottom", "label": "Padding bottom (px)",     "min": 8,   "max": 80,   "step": 4,  "default": 32 },
+    { "type": "range",  "id": "card_padding_left",   "label": "Padding left (px)",       "min": 8,   "max": 80,   "step": 4,  "default": 32 },
+    { "type": "range",  "id": "card_border_radius",  "label": "Border radius (px)",      "min": 0,   "max": 48,   "step": 2,  "default": 24 },
+    { "type": "range",  "id": "card_border_width",   "label": "Border width (px)",       "min": 0,   "max": 8,    "step": 1,  "default": 1 },
+    { "type": "select", "id": "card_border_style",   "label": "Border style",            "default": "solid",
+      "options": [
+        {"value":"solid","label":"Solid"},{"value":"dashed","label":"Dashed"},
+        {"value":"dotted","label":"Dotted"},{"value":"none","label":"None"}
+      ]
+    },
+    { "type": "text",  "id": "card_shadow",       "label": "Card shadow (CSS)",       "default": "0 4px 20px -4px rgba(0,0,0,0.08)" },
+    { "type": "text",  "id": "card_hover_shadow", "label": "Hover shadow (CSS)",      "default": "0 20px 60px -20px rgba(0,0,0,0.35)" },
+    { "type": "range", "id": "card_hover_lift",   "label": "Hover lift distance (px)","min": 0,   "max": 20,   "step": 1,  "default": 4 },
+    { "type": "range", "id": "transition_duration","label": "Transition speed (ms)",  "min": 100, "max": 1000, "step": 50, "default": 500 },
+
+    { "type": "header", "content": "🎨 Icon Styling" },
+    { "type": "range", "id": "icon_container_size",            "label": "Container size (px)",         "min": 32,  "max": 120, "step": 4,  "default": 56 },
+    { "type": "range", "id": "icon_border_radius",             "label": "Border radius (px)",          "min": 0,   "max": 60,  "step": 2,  "default": 16 },
+    { "type": "range", "id": "icon_margin_bottom",             "label": "Margin below icon (px)",      "min": 4,   "max": 48,  "step": 2,  "default": 20 },
+    { "type": "range", "id": "icon_svg_size",                  "label": "SVG size (px)",               "min": 12,  "max": 60,  "step": 2,  "default": 28 },
+    { "type": "range", "id": "icon_stroke_width",              "label": "Stroke width (÷10 = value)",  "min": 5,   "max": 40,  "step": 5,  "default": 20,
+      "info": "e.g. 20 → 2.0, 15 → 1.5" },
+    { "type": "range", "id": "icon_gradient_direction",        "label": "Gradient angle (deg)",        "min": 0,   "max": 360, "step": 15, "default": 135 },
+    { "type": "range", "id": "icon_hover_scale",               "label": "Hover scale (÷100 = value)",  "min": 100, "max": 150, "step": 5,  "default": 110,
+      "info": "e.g. 110 → scale(1.10)" },
+    { "type": "range", "id": "icon_hover_transition_duration", "label": "Hover transition speed (ms)", "min": 100, "max": 800, "step": 50, "default": 300 },
+    { "type": "color", "id": "icon_fg_color",                  "label": "Icon foreground color",       "default": "#ffffff" },
+
+    { "type": "header", "content": "✏️ Benefit Title Typography" },
+    { "type": "range",  "id": "benefit_title_font_size",     "label": "Font size (px)",     "min": 12, "max": 36, "step": 1, "default": 20 },
+    { "type": "select", "id": "benefit_title_font_weight",   "label": "Font weight",        "default": "700",
+      "options": [
+        {"value":"400","label":"Regular"},{"value":"500","label":"Medium"},
+        {"value":"600","label":"SemiBold"},{"value":"700","label":"Bold"},{"value":"800","label":"ExtraBold"}
+      ]
+    },
+    { "type": "color", "id": "benefit_title_color",         "label": "Title color",        "default": "#0c313d" },
+    { "type": "range", "id": "benefit_title_margin_bottom", "label": "Margin bottom (px)", "min": 0,  "max": 24, "step": 2, "default": 8 },
+
+    { "type": "header", "content": "✏️ Description Typography" },
+    { "type": "range", "id": "benefit_desc_font_size",  "label": "Font size (px)",            "min": 10, "max": 24, "step": 1, "default": 16 },
+    { "type": "range", "id": "benefit_desc_line_height","label": "Line height (÷10 = value)", "min": 10, "max": 24, "step": 1, "default": 16,
+      "info": "e.g. 16 → 1.6" },
+    { "type": "color", "id": "benefit_desc_color",       "label": "Description color",        "default": "#5a7a7f" },
+
+    { "type": "header", "content": "🎨 Global Colors" },
+    { "type": "color", "id": "primary_color",      "label": "Primary (gradient start)",  "default": "#1d7869" },
+    { "type": "color", "id": "primary_glow_color", "label": "Primary glow (gradient end)","default": "#22c99e" },
+    { "type": "color", "id": "background_color",   "label": "Section background",        "default": "#f9f7f2" },
+    { "type": "color", "id": "card_color",         "label": "Card background",           "default": "#ffffff" },
+    { "type": "color", "id": "border_color",       "label": "Border color",              "default": "#d8e9eb" },
+
+    { "type": "header", "content": "📦 Benefit 1" },
+    { "type": "text",     "id": "benefit_title_1", "label": "Title",       "default": "Boosts Energy" },
+    { "type": "textarea", "id": "benefit_desc_1",  "label": "Description", "default": "Natural sustained vitality from ocean-sourced minerals." },
+    { "type": "select",   "id": "benefit_icon_1",  "label": "Icon",        "default": "zap",
+      "options": [
+        {"value":"zap","label":"⚡ Zap"},{"value":"shield","label":"🛡 Shield"},
+        {"value":"heart","label":"❤️ Heart"},{"value":"leaf","label":"🌿 Leaf"},
+        {"value":"star","label":"⭐ Star"},{"value":"sun","label":"☀️ Sun"},
+        {"value":"droplet","label":"💧 Droplet"},{"value":"award","label":"🏆 Award"},
+        {"value":"check-circle","label":"✅ Check Circle"},{"value":"package","label":"📦 Package"}
+      ]
+    },
+    { "type": "image_picker", "id": "benefit_image_icon_1", "label": "Custom image icon", "info": "Optional. If uploaded, replaces the SVG icon selected above." },
+    { "type": "color", "id": "benefit_card_bg_1",     "label": "Card bg override",          "info": "Blank = use global card color." },
+    { "type": "color", "id": "benefit_icon_bg_color_1", "label": "Icon background color override", "info": "If set, replaces the gradient with a solid color." },
+    { "type": "color", "id": "benefit_icon_color1_1", "label": "Icon gradient start override","info": "Blank = use global primary." },
+    { "type": "color", "id": "benefit_icon_color2_1", "label": "Icon gradient end override",  "info": "Blank = use global glow." },
+
+    { "type": "header", "content": "📦 Benefit 2" },
+    { "type": "text",     "id": "benefit_title_2", "label": "Title",       "default": "Immune Support" },
+    { "type": "textarea", "id": "benefit_desc_2",  "label": "Description", "default": "92 of 102 essential minerals your body needs daily." },
+    { "type": "select",   "id": "benefit_icon_2",  "label": "Icon",        "default": "shield",
+      "options": [
+        {"value":"zap","label":"⚡ Zap"},{"value":"shield","label":"🛡 Shield"},
+        {"value":"heart","label":"❤️ Heart"},{"value":"leaf","label":"🌿 Leaf"},
+        {"value":"star","label":"⭐ Star"},{"value":"sun","label":"☀️ Sun"},
+        {"value":"droplet","label":"💧 Droplet"},{"value":"award","label":"🏆 Award"},
+        {"value":"check-circle","label":"✅ Check Circle"},{"value":"package","label":"📦 Package"}
+      ]
+    },
+    { "type": "image_picker", "id": "benefit_image_icon_2", "label": "Custom image icon" },
+    { "type": "color", "id": "benefit_card_bg_2",     "label": "Card bg override" },
+    { "type": "color", "id": "benefit_icon_bg_color_2", "label": "Icon background color override" },
+    { "type": "color", "id": "benefit_icon_color1_2", "label": "Icon gradient start override" },
+    { "type": "color", "id": "benefit_icon_color2_2", "label": "Icon gradient end override" },
+
+    { "type": "header", "content": "📦 Benefit 3" },
+    { "type": "text",     "id": "benefit_title_3", "label": "Title",       "default": "Better Digestion" },
+    { "type": "textarea", "id": "benefit_desc_3",  "label": "Description", "default": "Prebiotic fiber that nurtures a balanced gut." },
+    { "type": "select",   "id": "benefit_icon_3",  "label": "Icon",        "default": "heart",
+      "options": [
+        {"value":"zap","label":"⚡ Zap"},{"value":"shield","label":"🛡 Shield"},
+        {"value":"heart","label":"❤️ Heart"},{"value":"leaf","label":"🌿 Leaf"},
+        {"value":"star","label":"⭐ Star"},{"value":"sun","label":"☀️ Sun"},
+        {"value":"droplet","label":"💧 Droplet"},{"value":"award","label":"🏆 Award"},
+        {"value":"check-circle","label":"✅ Check Circle"},{"value":"package","label":"📦 Package"}
+      ]
+    },
+    { "type": "image_picker", "id": "benefit_image_icon_3", "label": "Custom image icon" },
+    { "type": "color", "id": "benefit_card_bg_3",     "label": "Card bg override" },
+    { "type": "color", "id": "benefit_icon_bg_color_3", "label": "Icon background color override" },
+    { "type": "color", "id": "benefit_icon_color1_3", "label": "Icon gradient start override" },
+    { "type": "color", "id": "benefit_icon_color2_3", "label": "Icon gradient end override" },
+
+    { "type": "header", "content": "📦 Benefit 4" },
+    { "type": "text",     "id": "benefit_title_4", "label": "Title",       "default": "Clean Ingredients" },
+    { "type": "textarea", "id": "benefit_desc_4",  "label": "Description", "default": "Vegan, organic, non-GMO. Zero artificial junk." },
+    { "type": "select",   "id": "benefit_icon_4",  "label": "Icon",        "default": "leaf",
+      "options": [
+        {"value":"zap","label":"⚡ Zap"},{"value":"shield","label":"🛡 Shield"},
+        {"value":"heart","label":"❤️ Heart"},{"value":"leaf","label":"🌿 Leaf"},
+        {"value":"star","label":"⭐ Star"},{"value":"sun","label":"☀️ Sun"},
+        {"value":"droplet","label":"💧 Droplet"},{"value":"award","label":"🏆 Award"},
+        {"value":"check-circle","label":"✅ Check Circle"},{"value":"package","label":"📦 Package"}
+      ]
+    },
+    { "type": "image_picker", "id": "benefit_image_icon_4", "label": "Custom image icon" },
+    { "type": "color", "id": "benefit_card_bg_4",     "label": "Card bg override" },
+    { "type": "color", "id": "benefit_icon_bg_color_4", "label": "Icon background color override" },
+    { "type": "color", "id": "benefit_icon_color1_4", "label": "Icon gradient start override" },
+    { "type": "color", "id": "benefit_icon_color2_4", "label": "Icon gradient end override" }
+
+  ],
+  "presets": [
+    { "name": "Custom_Trustbar" }
+  ]
+}
+{% endschema %}

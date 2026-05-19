@@ -124,6 +124,81 @@ Below is a visual guide to the premium custom sections in this repository. Each 
 
 ---
 
+### 9. Premium Custom Features
+*A feature-rich showcase section with floating testimonials and modern icons.*
+
+![Premium Features](./images/custome-premium-feautres.png)
+
+👉 **Source Code:** [`custom-premium-features.liquid`](./custom-premium-features.liquid)
+
+*   **Key Features**:
+    *   **Floating Testimonial**: Interactive quote card that overlaps the main image.
+    *   **Gradient Typography**: Beautifully styled gradient titles for high-end branding.
+    *   **Feature Stack**: Clean list of benefits with customizable icons and backgrounds.
+    *   **Modern Aesthetics**: Large border radii and soft shadows for a contemporary look.
+
+---
+
+### 10. Interactive Progress Pointer
+*A scroll-animated process section to guide customers through your brand journey.*
+
+![Progress Pointer](./images/progress-pointer-section.png)
+
+👉 **Source Code:** [`progress-pointer-section.liquid`](./progress-pointer-section.liquid)
+
+*   **Key Features**:
+    *   **Scroll Animation**: Progress line that fills as the user scrolls through the section.
+    *   **Numbered Milestones**: Circular step indicators with customizable styles.
+    *   **Process Visualization**: Ideal for "How it Works" or "Our Story" narratives.
+    *   **Responsive Flow**: Switches to a clean vertical stack on mobile devices.
+
+---
+
+### 11. Custom Premium Hero
+*A versatile, high-impact hero section designed for maximum conversion.*
+
+![Custom Hero](./images/custom-hero-section.png)
+
+👉 **Source Code:** [`custom-hero.liquid`](./custom-hero.liquid)
+
+*   **Key Features**:
+    *   **Dynamic Overlays**: Control background opacity and text contrast easily.
+    *   **Dual CTA Support**: Two primary call-to-action buttons with distinct styles.
+    *   **Full-Height Option**: Toggle between viewport height or content-based height.
+    *   **Parallax Background**: Optional smooth parallax effect for background images.
+
+---
+
+### 12. Comparison & Pricing Table
+*A professional grid to showcase product differences or subscription plans.*
+
+![Comparison Table](./images/comparison-table-section.png)
+
+👉 **Source Code:** [`custom-comparison-section.liquid`](./custom-comparison-section.liquid)
+
+*   **Key Features**:
+    *   **Highlighted Column**: Feature a specific plan or product as "Recommended".
+    *   **Status Icons**: Integrated checkmarks and crossmarks for feature lists.
+    *   **Sticky Headers**: Keep plan names visible while scrolling (on supported devices).
+    *   **Comparison Logic**: Clean, easy-to-read layout for decision-making.
+
+---
+
+### 13. Dynamic Brand Trustbar
+*Build instant credibility with a scrolling bar of logos or trust badges.*
+
+![Trustbar](./images/custom-trustbar-section.png)
+
+👉 **Source Code:** [`custom-trustbar.liquid`](./custom-trustbar.liquid)
+
+*   **Key Features**:
+    *   **Auto-Scroll Animation**: Seamless looping animation for brand logos.
+    *   **SVG Integration**: Supports direct SVG code or image files for logos.
+    *   **Flexible Layout**: Adjust logo size, spacing, and scrolling speed.
+    *   **Merchant Controls**: Pause on hover and mobile-specific display options.
+
+---
+
 ## 🛠️ Step-by-Step Installation Guide
 
 Implementing any of these custom sections on your Shopify store is quick and completely code-free:
