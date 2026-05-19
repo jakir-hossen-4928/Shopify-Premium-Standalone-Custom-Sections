@@ -199,6 +199,51 @@ Below is a visual guide to the premium custom sections in this repository. Each 
 
 ---
 
+### 14. MossVida Premium FAQ
+*A clean, card-based FAQ section with smooth grid-row animations.*
+
+![MossVida FAQ](./images/custom-faq-section.png)
+
+👉 **Source Code:** [`custome-fqa.liquid`](./custome-fqa.liquid)
+
+*   **Key Features**:
+    *   **Grid-Row Transitions**: Ultra-smooth opening/closing animations using modern CSS grid techniques.
+    *   **Card-Based Layout**: Each question is housed in a distinct, styled card for clarity.
+    *   **Icon Customization**: Choose between plus, chevron, or arrow icons with rotation effects.
+    *   **Fully Responsive**: Optimized for mobile with adjustable padding and font sizes.
+
+---
+
+### 15. Animated Image Gallery
+*A smooth, interactive slider gallery for showcasing products or brand imagery.*
+
+![Animated Gallery](./images/animated-gallry-and-collection-multiple-section.png)
+
+👉 **Source Code:** [`animated-image-gallery.liquid`](./animated-image-gallery.liquid)
+
+*   **Key Features**:
+    *   **Interactive Slider**: Smooth navigation through images with arrow controls.
+    *   **Customizable Layouts**: Support for both grid and slider modes.
+    *   **Versatile Shapes**: Toggle between rectangular or circular card styles.
+    *   **Responsive Design**: Automatically adjusts column counts for mobile, tablet, and desktop.
+
+---
+
+### 16. MossVida "How It Works"
+*A numbered process grid designed for brand storytelling.*
+
+![MossVida How It Works](./images/how-it-works-section.png)
+
+👉 **Source Code:** [`how-it-works-section.liquid`](./how-it-works-section.liquid)
+
+*   **Key Features**:
+    *   **Overlay Numbering**: Large, semi-transparent background numbers for a modern editorial feel.
+    *   **Staggered Card Design**: Beautifully balanced grid of process steps with subtle gradients.
+    *   **Typography Focused**: Fine-tuned control over kicker, heading, and description styles.
+    *   **Lightweight**: Zero dependencies, optimized for fast loading and mobile responsiveness.
+
+---
+
 ## 🛠️ Step-by-Step Installation Guide
 
 Implementing any of these custom sections on your Shopify store is quick and completely code-free:
