@@ -247,7 +247,7 @@ Below is a visual guide to the premium custom sections in this repository. Each 
 ### 17. Before/After Image with Text
 *An interactive image comparison slider paired with compelling copy and feature cards for product transformations.*
 
-![Before/After Slider](./images/before-after-image-section.png)
+![Before/After Slider](./images/before-after-image-with-text.jpg)
 
 👉 **Source Code:** [`before-after-image-with-text.liquid`](./before-after-image-with-text.liquid)
 
