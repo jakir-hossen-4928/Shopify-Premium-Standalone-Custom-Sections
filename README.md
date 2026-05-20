@@ -244,6 +244,25 @@ Below is a visual guide to the premium custom sections in this repository. Each 
 
 ---
 
+### 17. Before/After Image with Text
+*An interactive image comparison slider paired with compelling copy and feature cards for product transformations.*
+
+![Before/After Slider](./images/before-after-image-section.png)
+
+👉 **Source Code:** [`before-after-image-with-text.liquid`](./before-after-image-with-text.liquid)
+
+*   **Key Features**:
+    *   **Interactive Comparison Slider**: Drag-to-compare before and after images with smooth mouse and touch support.
+    *   **Scroll Reveal Animations**: Fade-in and slide-up effects for text elements as the section comes into view.
+    *   **Left Content Block**: Customizable label, heading with optional italic accent, subheading, and divider.
+    *   **Feature Cards**: Up to 3 numbered feature cards with titles and descriptions, automatic slide animation on scroll.
+    *   **Dynamic Slider Handle**: Gold accent circle with SVG arrow icons for clear interaction cues.
+    *   **Custom Typography Control**: Fine-tuned font sizes for headings, subheadings, and card text.
+    *   **Responsive Design**: Stacks vertically on mobile with maintained aspect ratio for images.
+    *   **Full Customization**: Control colors for background, text, accent, cards, and more via theme editor.
+
+---
+
 ## 🛠️ Step-by-Step Installation Guide
 
 Implementing any of these custom sections on your Shopify store is quick and completely code-free:
