@@ -63,8 +63,6 @@
     background-color: {{ section.settings.item_background_color }};
     border: {{ section.settings.item_border_width }}px {{ section.settings.item_border_style }} {{ section.settings.item_border_color }};
     border-radius: {{ section.settings.item_border_radius }}px;
-    padding-left: {{ section.settings.item_padding_horizontal }}px;
-    padding-right: {{ section.settings.item_padding_horizontal }}px;
     box-shadow: {{ section.settings.item_shadow_x }}px {{ section.settings.item_shadow_y }}px {{ section.settings.item_shadow_blur }}px {{ section.settings.item_shadow_spread }}px {{ section.settings.item_shadow_color }};
     overflow: hidden;
   }
@@ -77,6 +75,8 @@
     text-align: left;
     background: none;
     border: none;
+    padding-left: {{ section.settings.item_padding_horizontal }}px;
+    padding-right: {{ section.settings.item_padding_horizontal }}px;
     padding-top: {{ section.settings.question_padding_vertical }}px;
     padding-bottom: {{ section.settings.question_padding_vertical }}px;
     cursor: pointer;
@@ -84,11 +84,12 @@
     font-weight: {{ section.settings.question_font_weight }};
     color: {{ section.settings.question_color }};
     line-height: 1.2;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
   }
 
   .ai-faq-question-{{ ai_gen_id }}:hover {
     color: {{ section.settings.question_hover_color }};
+    background-color: {{ section.settings.question_bg_hover_color }};
   }
 
   .ai-faq-question-text-{{ ai_gen_id }} {
@@ -128,6 +129,8 @@
 
   .ai-faq-answer-content-{{ ai_gen_id }} {
     overflow: hidden;
+    padding-left: {{ section.settings.item_padding_horizontal }}px;
+    padding-right: {{ section.settings.item_padding_horizontal }}px;
     padding-bottom: 0;
     transition: padding-bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -164,7 +167,7 @@
     </div>
 
     <div class="ai-faq-accordion-{{ ai_gen_id }}">
-      {% for i in (1..12) %}
+      {% for i in (1..15) %}
         {% assign question_key = 'faq_question_' | append: i %}
         {% assign answer_key = 'faq_answer_' | append: i %}
         {% assign question = section.settings[question_key] %}
@@ -328,6 +331,7 @@
     { "type": "range", "id": "question_font_size", "label": "Question size", "min": 12, "max": 40, "default": 18 },
     { "type": "color", "id": "question_color", "label": "Question color", "default": "#004d40" },
     { "type": "color", "id": "question_hover_color", "label": "Question hover color", "default": "#00796b" },
+    { "type": "color", "id": "question_bg_hover_color", "label": "Question background hover color", "default": "transparent" },
     { "type": "range", "id": "question_padding_vertical", "label": "Question vertical padding", "min": 0, "max": 60, "default": 20 },
     { "type": "range", "id": "answer_font_size", "label": "Answer size", "min": 12, "max": 30, "default": 16 },
     { "type": "color", "id": "answer_color", "label": "Answer color", "default": "#666666" },
@@ -344,40 +348,49 @@
     { "type": "range", "id": "icon_rotation_active", "label": "Rotation (Active)", "min": 0, "max": 360, "step": 45, "default": 45 },
     { "type": "header", "content": "FAQ 1" },
     { "type": "text", "id": "faq_question_1", "label": "Question", "default": "How do I take MossVida gummies?" },
-    { "type": "textarea", "id": "faq_answer_1", "label": "Answer", "default": "Take 2 gummies daily, any time of day." },
+    { "type": "richtext", "id": "faq_answer_1", "label": "Answer", "default": "<p>Take 2 gummies daily, any time of day.</p>" },
     { "type": "header", "content": "FAQ 2" },
     { "type": "text", "id": "faq_question_2", "label": "Question", "default": "Are they really vegan and organic?" },
-    { "type": "textarea", "id": "faq_answer_2", "label": "Answer", "default": "Yes. 100% vegan, certified-organic." },
+    { "type": "richtext", "id": "faq_answer_2", "label": "Answer", "default": "<p>Yes. 100% vegan, certified-organic.</p>" },
     { "type": "header", "content": "FAQ 3" },
     { "type": "text", "id": "faq_question_3", "label": "Question", "default": "What does it taste like?" },
-    { "type": "textarea", "id": "faq_answer_3", "label": "Answer", "default": "Naturally apple-flavored." },
+    { "type": "richtext", "id": "faq_answer_3", "label": "Answer", "default": "<p>Naturally apple-flavored.</p>" },
     { "type": "header", "content": "FAQ 4" },
     { "type": "text", "id": "faq_question_4", "label": "Question", "default": "How long does one bottle last?" },
-    { "type": "textarea", "id": "faq_answer_4", "label": "Answer", "default": "Each bottle contains 60 gummies." },
+    { "type": "richtext", "id": "faq_answer_4", "label": "Answer", "default": "<p>Each bottle contains 60 gummies.</p>" },
     { "type": "header", "content": "FAQ 5" },
     { "type": "text", "id": "faq_question_5", "label": "Question", "default": "When can I expect results?" },
-    { "type": "textarea", "id": "faq_answer_5", "label": "Answer", "default": "Within the first 2 weeks." },
+    { "type": "richtext", "id": "faq_answer_5", "label": "Answer", "default": "<p>Within the first 2 weeks.</p>" },
     { "type": "header", "content": "FAQ 6" },
     { "type": "text", "id": "faq_question_6", "label": "Question" },
-    { "type": "textarea", "id": "faq_answer_6", "label": "Answer" },
+    { "type": "richtext", "id": "faq_answer_6", "label": "Answer" },
     { "type": "header", "content": "FAQ 7" },
     { "type": "text", "id": "faq_question_7", "label": "Question" },
-    { "type": "textarea", "id": "faq_answer_7", "label": "Answer" },
+    { "type": "richtext", "id": "faq_answer_7", "label": "Answer" },
     { "type": "header", "content": "FAQ 8" },
     { "type": "text", "id": "faq_question_8", "label": "Question" },
-    { "type": "textarea", "id": "faq_answer_8", "label": "Answer" },
+    { "type": "richtext", "id": "faq_answer_8", "label": "Answer" },
     { "type": "header", "content": "FAQ 9" },
     { "type": "text", "id": "faq_question_9", "label": "Question" },
-    { "type": "textarea", "id": "faq_answer_9", "label": "Answer" },
+    { "type": "richtext", "id": "faq_answer_9", "label": "Answer" },
     { "type": "header", "content": "FAQ 10" },
     { "type": "text", "id": "faq_question_10", "label": "Question" },
-    { "type": "textarea", "id": "faq_answer_10", "label": "Answer" },
+    { "type": "richtext", "id": "faq_answer_10", "label": "Answer" },
     { "type": "header", "content": "FAQ 11" },
     { "type": "text", "id": "faq_question_11", "label": "Question" },
-    { "type": "textarea", "id": "faq_answer_11", "label": "Answer" },
+    { "type": "richtext", "id": "faq_answer_11", "label": "Answer" },
     { "type": "header", "content": "FAQ 12" },
     { "type": "text", "id": "faq_question_12", "label": "Question" },
-    { "type": "textarea", "id": "faq_answer_12", "label": "Answer" }
+    { "type": "richtext", "id": "faq_answer_12", "label": "Answer" },
+    { "type": "header", "content": "FAQ 13" },
+    { "type": "text", "id": "faq_question_13", "label": "Question" },
+    { "type": "richtext", "id": "faq_answer_13", "label": "Answer" },
+    { "type": "header", "content": "FAQ 14" },
+    { "type": "text", "id": "faq_question_14", "label": "Question" },
+    { "type": "richtext", "id": "faq_answer_14", "label": "Answer" },
+    { "type": "header", "content": "FAQ 15" },
+    { "type": "text", "id": "faq_question_15", "label": "Question" },
+    { "type": "richtext", "id": "faq_answer_15", "label": "Answer" }
   ],
   "presets": [{ "name": "Custom FAQ Accordion" }]
 }

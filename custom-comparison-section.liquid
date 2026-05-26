@@ -1,68 +1,89 @@
 {%- style -%}
   .daywi-comp-section-{{ section.id }} {
-    padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
+    padding: {{ section.settings.padding_top }}px {{ section.settings.mobile_padding_horizontal }}px {{ section.settings.padding_bottom }}px;
     background-color: {{ section.settings.bg_color }};
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    color: {{ section.settings.text_color }};
   }
 
   .daywi-comp-container {
     max-width: {{ section.settings.container_width }}px;
     width: 100%;
     display: flex;
-    flex-direction: {% if section.settings.layout_order == 'text_first' %}row{% else %}row-reverse{% endif %};
+    flex-direction: column;
     align-items: center;
     gap: 40px;
   }
 
   .daywi-comp-content {
-    flex: 1;
-    text-align: {{ section.settings.text_align }};
+    width: 100%;
+    max-width: {{ section.settings.content_max_width }}px;
+    text-align: {{ section.settings.content_text_align_mobile }};
+    margin-bottom: {{ section.settings.content_margin_bottom_mobile }}px;
   }
 
   .daywi-comp-content h2 {
     font-size: {{ section.settings.h_size_mb }}px;
-    margin-bottom: 20px;
+    margin-bottom: {{ section.settings.title_margin_bottom }}px;
     color: {{ section.settings.text_color }};
     line-height: 1.2;
     margin-top: 0;
+    font-weight: 700;
   }
 
-  .daywi-comp-content p {
+  .daywi-comp-content h2 span {
+    color: {{ section.settings.accent_color }};
+  }
+
+  .daywi-comp-description {
     font-size: {{ section.settings.p_size_mb }}px;
     color: {{ section.settings.text_color }};
-    opacity: 0.8;
-    line-height: 1.5;
+    opacity: 0.9;
+    line-height: 1.6;
+    max-width: {{ section.settings.description_max_width }}px;
+    margin-left: {% if section.settings.content_text_align_mobile == 'center' %}auto{% elsif section.settings.content_text_align_mobile == 'right' %}auto{% else %}0{% endif %};
+    margin-right: {% if section.settings.content_text_align_mobile == 'center' %}auto{% elsif section.settings.content_text_align_mobile == 'left' %}auto{% else %}0{% endif %};
   }
 
   .daywi-comp-table-column {
-    flex: 1.2;
     position: relative;
     width: 100%;
+    padding: 20px 0;
   }
 
   .daywi-comp-floating-headers {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 12px;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 2;
   }
 
   .daywi-comp-header-item {
-    width: 80px;
+    width: 70px;
     text-align: center;
     font-weight: 800;
-    font-size: 14px;
+    font-size: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     color: {{ section.settings.text_color }};
+    padding-bottom: 15px;
+  }
+
+  .daywi-comp-header-item.highlight-header {
+    background-color: {{ section.settings.highlight_bg_color }};
+    border-radius: 20px 20px 0 0;
+    margin-bottom: -1px;
+    padding-top: 20px;
   }
 
   .daywi-comp-header-item img {
-    max-width: 70px;
+    max-width: 50px;
     height: auto;
     object-fit: contain;
   }
@@ -70,17 +91,16 @@
   .daywi-comp-card-main {
     display: flex;
     flex-direction: column;
-    background: white;
-    border-radius: 25px;
-    overflow: hidden;
-    box-shadow: 0 15px 45px rgba(0,0,0,0.07);
+    background: transparent;
     width: 100%;
+    position: relative;
   }
 
   .daywi-comp-row {
     display: flex;
     width: 100%;
-    border-bottom: 1px solid #f2f2f2;
+    border-bottom: 1px solid {{ section.settings.row_separator_color }};
+    align-items: stretch;
   }
 
   .daywi-comp-row:last-child {
@@ -88,44 +108,97 @@
   }
 
   .daywi-comp-feature-cell {
-    background-color: {{ section.settings.table_pink }};
     flex: 2;
-    padding: 15px 20px;
-    color: white;
+    padding: 15px 10px;
+    color: {{ section.settings.text_color }};
     font-weight: 500;
-    min-height: 70px;
+    min-height: 60px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
+    justify-content: {{ section.settings.table_text_align_mobile }};
+    text-align: {{ section.settings.table_text_align_mobile }};
     font-size: {{ section.settings.feat_size_mb }}px;
   }
 
   .daywi-comp-icon-cell {
-    width: 80px;
-    min-width: 80px;
+    width: 70px;
+    min-width: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #ffffff;
-    border-left: 1px solid #f2f2f2;
+    position: relative;
   }
 
-  .daywi-comp-icon-check { color: #5dbb63; font-size: 20px; font-weight: bold; }
-  .daywi-comp-icon-cross { color: #d14d4d; font-size: 20px; font-weight: bold; }
+  .daywi-comp-icon-cell.highlight-cell {
+    background-color: {{ section.settings.highlight_bg_color }};
+  }
+
+  .daywi-comp-row:last-child .daywi-comp-icon-cell.highlight-cell {
+    border-radius: 0 0 20px 20px;
+  }
+
+  .daywi-comp-icon-wrapper {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .daywi-comp-icon-check {
+    background-color: {{ section.settings.check_bg_color }};
+    color: {{ section.settings.check_icon_color }};
+  }
+
+  .daywi-comp-icon-cross {
+    background-color: {{ section.settings.cross_bg_color }};
+    color: {{ section.settings.cross_icon_color }};
+  }
 
   @media (min-width: 769px) {
-    .daywi-comp-content h2 { font-size: {{ section.settings.h_size_dt }}px; }
-    .daywi-comp-content p { font-size: {{ section.settings.p_size_dt }}px; }
-    .daywi-comp-feature-cell { font-size: {{ section.settings.feat_size_dt }}px; min-height: 85px; }
-    .daywi-comp-icon-cell { width: 100px; min-width: 100px; min-height: 85px; }
-    .daywi-comp-header-item { width: 100px; font-size: 18px; }
-  }
+    .daywi-comp-section-{{ section.id }} {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
 
-  @media (max-width: 768px) {
-    .daywi-comp-container { flex-direction: column; gap: 30px; }
-    .daywi-comp-content { width: 100%; order: 1; }
-    .daywi-comp-table-column { width: 100%; order: 2; }
+    .daywi-comp-container {
+      flex-direction: {% if section.settings.layout_order == 'text_first' %}row{% else %}row-reverse{% endif %};
+      gap: {{ section.settings.gap_desktop }}px;
+      align-items: flex-start;
+    }
+
+    .daywi-comp-content {
+      flex: 1;
+      text-align: {{ section.settings.content_text_align }};
+      margin-bottom: 0;
+      padding-top: 40px;
+    }
+
+    .daywi-comp-description {
+      margin-left: {% if section.settings.content_text_align == 'center' %}auto{% elsif section.settings.content_text_align == 'right' %}auto{% else %}0{% endif %};
+      margin-right: {% if section.settings.content_text_align == 'center' %}auto{% elsif section.settings.content_text_align == 'left' %}auto{% else %}0{% endif %};
+    }
+
+    .daywi-comp-table-column {
+      flex: 1.2;
+    }
+
+    .daywi-comp-content h2 { font-size: {{ section.settings.h_size_dt }}px; }
+    .daywi-comp-description { font-size: {{ section.settings.p_size_dt }}px; }
+    .daywi-comp-feature-cell { 
+      font-size: {{ section.settings.feat_size_dt }}px; 
+      min-height: 80px; 
+      padding: 15px 20px;
+      justify-content: {{ section.settings.table_text_align }};
+      text-align: {{ section.settings.table_text_align }};
+    }
+    .daywi-comp-icon-cell { width: 100px; min-width: 100px; }
+    .daywi-comp-header-item { width: 100px; font-size: 16px; }
+    .daywi-comp-icon-wrapper { width: 28px; height: 28px; font-size: 16px; }
+    .daywi-comp-header-item img { max-width: 60px; }
   }
 {%- endstyle -%}
 
@@ -133,13 +206,15 @@
   <div class="daywi-comp-container">
     
     <div class="daywi-comp-content">
-      <h2>{{ section.settings.title }}</h2>
-      <p>{{ section.settings.description }}</p>
+      <h2>{{ section.settings.title | replace: '[', '<span>' | replace: ']', '</span>' }}</h2>
+      <div class="daywi-comp-description">
+        {{ section.settings.description }}
+      </div>
     </div>
 
     <div class="daywi-comp-table-column">
       <div class="daywi-comp-floating-headers">
-        <div class="daywi-comp-header-item">
+        <div class="daywi-comp-header-item highlight-header">
           {% if section.settings.brand_logo != blank %}
             <img src="{{ section.settings.brand_logo | img_url: '200x' }}" alt="Brand Logo">
           {% else %}
@@ -157,11 +232,11 @@
             <div class="daywi-comp-feature-cell">
               {{ block.settings.feature_text }}
             </div>
-            <div class="daywi-comp-icon-cell">
-              <span class="daywi-comp-icon-check">✓</span>
+            <div class="daywi-comp-icon-cell highlight-cell">
+              <div class="daywi-comp-icon-wrapper daywi-comp-icon-check">✓</div>
             </div>
             <div class="daywi-comp-icon-cell">
-              <span class="daywi-comp-icon-cross">✕</span>
+              <div class="daywi-comp-icon-wrapper daywi-comp-icon-cross">✕</div>
             </div>
           </div>
         {% endfor %}
@@ -175,6 +250,51 @@
 {
   "name": "Comparison Table V2",
   "settings": [
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    { 
+      "type": "text", 
+      "id": "title", 
+      "label": "Heading Text", 
+      "default": "Why does [BRAND.COM] give you an advantage?",
+      "info": "Use [ ] to highlight text with the accent color."
+    },
+    { "type": "range", "id": "title_margin_bottom", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Title Margin Bottom", "default": 20 },
+    { 
+      "type": "richtext", 
+      "id": "description", 
+      "label": "Description Text", 
+      "default": "<p>Most people trying to break into the industry are doing it blindly – they search hundreds of websites, send CVs that get lost in the system, and wait weeks for a response. We provide you with a proven system that <strong>saves time, eliminates errors, and leads you straight to your destination.</strong></p>" 
+    },
+    { "type": "range", "id": "content_max_width", "min": 300, "max": 1000, "step": 10, "unit": "px", "label": "Content Area Max Width", "default": 600 },
+    { "type": "range", "id": "description_max_width", "min": 300, "max": 1000, "step": 10, "unit": "px", "label": "Description Max Width", "default": 550 },
+    { "type": "select", "id": "content_text_align", "label": "Content Alignment (Desktop)", "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ], "default": "left" },
+    { "type": "select", "id": "content_text_align_mobile", "label": "Content Alignment (Mobile)", "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ], "default": "center" },
+    { "type": "range", "id": "content_margin_bottom_mobile", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Content Margin Bottom (Mobile)", "default": 40 },
+    {
+      "type": "header",
+      "content": "Table Settings"
+    },
+    { "type": "select", "id": "table_text_align", "label": "Table Text Alignment (Desktop)", "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ], "default": "flex-end" },
+    { "type": "select", "id": "table_text_align_mobile", "label": "Table Text Alignment (Mobile)", "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ], "default": "center" },
     {
       "type": "header",
       "content": "Layout & Width"
@@ -214,9 +334,15 @@
       "type": "header",
       "content": "Colors"
     },
-    { "type": "color", "id": "bg_color", "label": "Section Background", "default": "#ffffff" },
-    { "type": "color", "id": "text_color", "label": "Text Color", "default": "#333333" },
-    { "type": "color", "id": "table_pink", "label": "Table Row Background", "default": "#e9a1c6" },
+    { "type": "color", "id": "bg_color", "label": "Section Background", "default": "#0b0f13" },
+    { "type": "color", "id": "text_color", "label": "Text Color", "default": "#ffffff" },
+    { "type": "color", "id": "accent_color", "label": "Accent Text Color", "default": "#ff6b00" },
+    { "type": "color", "id": "highlight_bg_color", "label": "Highlight Column Background", "default": "#2d2a3d" },
+    { "type": "color", "id": "row_separator_color", "label": "Row Separator Color", "default": "#1a1e23" },
+    { "type": "color", "id": "check_bg_color", "label": "Check Background Color", "default": "#5dbb63" },
+    { "type": "color", "id": "check_icon_color", "label": "Check Icon Color", "default": "#ffffff" },
+    { "type": "color", "id": "cross_bg_color", "label": "Cross Background Color", "default": "#d14d4d" },
+    { "type": "color", "id": "cross_icon_color", "label": "Cross Icon Color", "default": "#ffffff" },
     {
       "type": "header",
       "content": "Floating Headers"
@@ -228,10 +354,8 @@
       "type": "header",
       "content": "Typography Control"
     },
-    { "type": "text", "id": "title", "label": "Heading Text", "default": "Quality, Always" },
-    { "type": "range", "id": "h_size_dt", "min": 20, "max": 80, "step": 1, "unit": "px", "label": "Heading Size (Desktop)", "default": 40 },
-    { "type": "range", "id": "h_size_mb", "min": 16, "max": 50, "step": 1, "unit": "px", "label": "Heading Size (Mobile)", "default": 28 },
-    { "type": "textarea", "id": "description", "label": "Description Text", "default": "Describe your brand's unique value proposition here." },
+    { "type": "range", "id": "h_size_dt", "min": 20, "max": 80, "step": 1, "unit": "px", "label": "Heading Size (Desktop)", "default": 48 },
+    { "type": "range", "id": "h_size_mb", "min": 16, "max": 50, "step": 1, "unit": "px", "label": "Heading Size (Mobile)", "default": 32 },
     { "type": "range", "id": "p_size_dt", "min": 12, "max": 24, "step": 1, "unit": "px", "label": "Paragraph Size (Desktop)", "default": 18 },
     { "type": "range", "id": "p_size_mb", "min": 10, "max": 20, "step": 1, "unit": "px", "label": "Paragraph Size (Mobile)", "default": 16 },
     { "type": "range", "id": "feat_size_dt", "min": 12, "max": 22, "step": 1, "unit": "px", "label": "Table Row Font Size (Desktop)", "default": 16 },
@@ -241,7 +365,9 @@
       "content": "Section Spacing"
     },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Padding Top", "default": 60 },
-    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Padding Bottom", "default": 60 }
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Padding Bottom", "default": 60 },
+    { "type": "range", "id": "mobile_padding_horizontal", "min": 0, "max": 50, "step": 5, "unit": "px", "label": "Mobile Horizontal Padding", "default": 20 },
+    { "type": "range", "id": "gap_desktop", "min": 0, "max": 150, "step": 5, "unit": "px", "label": "Gap between columns (Desktop)", "default": 80 }
   ],
   "blocks": [
     {
@@ -256,9 +382,36 @@
     { 
       "name": "Comparison Table",
       "blocks": [
-        { "type": "feature" },
-        { "type": "feature" },
-        { "type": "feature" }
+        { 
+          "type": "feature",
+          "settings": {
+            "feature_text": "Professional CVs from Former Offshore Recruiters"
+          }
+        },
+        { 
+          "type": "feature",
+          "settings": {
+            "feature_text": "Weekly job postings in a private Telegram channel"
+          }
+        },
+        { 
+          "type": "feature",
+          "settings": {
+            "feature_text": "List of verified companies that are actually hiring"
+          }
+        },
+        { 
+          "type": "feature",
+          "settings": {
+            "feature_text": "Support and 1:1 consultations with a person working offshore"
+          }
+        },
+        { 
+          "type": "feature",
+          "settings": {
+            "feature_text": "Money back guarantee if you're not satisfied"
+          }
+        }
       ]
     }
   ]

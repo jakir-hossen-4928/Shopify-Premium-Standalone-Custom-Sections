@@ -28,6 +28,7 @@
     font-size: {{ section.settings.title_size_mb }}px;
     font-weight: {{ section.settings.title_weight }};
     line-height: 1.2;
+    font-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
   }
 
   .gallery-subtitle-{{ section.id }} {
@@ -36,6 +37,7 @@
     font-size: {{ section.settings.sub_size_mb }}px;
     font-weight: {{ section.settings.sub_weight }};
     line-height: 1.5;
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
   }
 
   @media screen and (min-width: 750px) {
