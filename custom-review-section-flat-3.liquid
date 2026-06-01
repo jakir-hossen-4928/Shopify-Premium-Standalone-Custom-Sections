@@ -1,0 +1,781 @@
+{% comment %}
+  ============================================================
+ Flat there.— GRID SLIDER REVIEW SECTION
+  ============================================================
+{% endcomment %}
+
+<style>
+#shopify-section-{{ section.id }} {
+  --wo-bg: {{ section.settings.bg_color }};
+  --wo-card-bg: {{ section.settings.card_bg }};
+  --wo-border: {{ section.settings.border_color }};
+  --wo-accent: {{ section.settings.accent_color }};
+  --wo-text-main: {{ section.settings.text_color_main }};
+  --wo-text-sub: {{ section.settings.text_color_sub }};
+  --wo-title-desk: {{ section.settings.title_size_desktop }}px;
+  --wo-text-desk: {{ section.settings.text_size_desktop }}px;
+  --wo-title-mob: {{ section.settings.title_size_mobile }}px;
+  --wo-text-mob: {{ section.settings.text_size_mobile }}px;
+  --wo-pad-top-desk: {{ section.settings.pad_top_desktop }}px;
+  --wo-pad-bot-desk: {{ section.settings.pad_bot_desktop }}px;
+  --wo-pad-top-mob: {{ section.settings.pad_top_mobile }}px;
+  --wo-pad-bot-mob: {{ section.settings.pad_bot_mobile }}px;
+}
+
+* { box-sizing: border-box; }
+
+.wo-rev-sec {
+  background: var(--wo-bg);
+  padding: var(--wo-pad-top-desk) 0 var(--wo-pad-bot-desk);
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+}
+
+.wo-rev-wrap {
+  max-width: 1580px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ── Header ── */
+.wo-rev-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.wo-rev-subtitle {
+  display: block;
+  color: var(--wo-accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.wo-rev-title {
+  font-size: var(--wo-title-desk);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--wo-text-main);
+  margin: 0;
+}
+
+/* ── Slider ── */
+.wo-slider-outer {
+  overflow: hidden;
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+  position: relative;
+}
+
+.wo-slider-outer.is-dragging {
+  cursor: grabbing;
+}
+
+.wo-slider-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.wo-slider-track.no-transition {
+  transition: none !important;
+}
+
+/* Each slide is 100% width of outer */
+.wo-slide {
+  min-width: 100%;
+  width: 100%;
+  display: grid;
+  gap: 24px;
+  padding: 4px 2px 8px;
+  align-items: stretch;
+}
+
+/* Grid columns set by JS data attribute */
+.wo-slide[data-cols="2"] { grid-template-columns: repeat(2, 1fr); }
+.wo-slide[data-cols="3"] { grid-template-columns: repeat(3, 1fr); }
+.wo-slide[data-cols="4"] { grid-template-columns: repeat(4, 1fr); }
+
+/* ── Card ── */
+.wo-rev-card {
+  background: var(--wo-card-bg);
+  border: 1px solid var(--wo-border);
+  border-radius: 12px;
+  padding: 32px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  pointer-events: none; /* prevent interfering with drag */
+}
+
+.wo-slider-outer:not(.is-dragging) .wo-rev-card {
+  pointer-events: auto;
+}
+
+.wo-rev-card:hover {
+  box-shadow: 0 12px 40px rgba(0,0,0,0.10);
+  transform: translateY(-4px);
+}
+
+.wo-rev-quote-icon {
+  display: block;
+  color: var(--wo-accent);
+  font-size: 52px;
+  line-height: 0.8;
+  font-family: Georgia, serif;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+
+.wo-rev-quote {
+  font-size: var(--wo-text-desk);
+  color: var(--wo-text-sub);
+  line-height: 1.65;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.wo-rev-profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--wo-border);
+}
+
+.wo-rev-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--wo-border);
+  display: block;
+  pointer-events: none;
+}
+
+.wo-rev-initial {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(232,160,32,0.12);
+  color: var(--wo-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  flex-shrink: 0;
+  border: 2px solid var(--wo-border);
+}
+
+.wo-rev-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.wo-rev-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--wo-text-main);
+  margin: 0;
+}
+
+.wo-rev-job {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wo-accent);
+  margin: 0;
+}
+
+/* ── Dots ── */
+.wo-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 36px;
+  min-height: 20px;
+}
+
+.wo-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--wo-border);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s ease, transform 0.3s ease;
+  outline: none;
+  display: block;
+  flex-shrink: 0;
+}
+
+.wo-dot.is-active {
+  background: var(--wo-accent);
+  transform: scale(1.4);
+}
+
+/* ── Responsive ── */
+@media (max-width: 767px) {
+  .wo-rev-sec {
+    padding: var(--wo-pad-top-mob) 0 var(--wo-pad-bot-mob);
+  }
+  .wo-rev-wrap {
+    padding: 0 16px;
+  }
+  .wo-rev-title {
+    font-size: var(--wo-title-mob);
+  }
+  .wo-rev-quote {
+    font-size: var(--wo-text-mob);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .wo-rev-wrap {
+    padding: 0 24px;
+  }
+}
+</style>
+
+<!-- Hidden data store for JS -->
+<div
+  id="wo-data-{{ section.id }}"
+  style="display:none"
+  data-cols="{{ section.settings.columns_desktop }}"
+>
+  {%- for block in section.blocks -%}
+    <div
+      class="wo-block-data"
+      data-name="{{ block.settings.name | escape }}"
+      data-job="{{ block.settings.job | escape }}"
+      data-quote="{{ block.settings.quote | escape }}"
+      data-image="{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 120 }}{%- endif -%}"
+      data-initial="{{ block.settings.name | slice: 0 | upcase | escape }}"
+    ></div>
+  {%- endfor -%}
+</div>
+
+<section class="wo-rev-sec" id="wo-sec-{{ section.id }}">
+  <div class="wo-rev-wrap">
+
+    <!-- Header -->
+    <div class="wo-rev-header">
+      {%- if section.settings.subtitle != blank -%}
+        <span class="wo-rev-subtitle">{{ section.settings.subtitle }}</span>
+      {%- endif -%}
+      {%- if section.settings.title != blank -%}
+        <h2 class="wo-rev-title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+    </div>
+
+    <!-- Slider — built by JS -->
+    <div class="wo-slider-outer" id="wo-outer-{{ section.id }}">
+      <div class="wo-slider-track" id="wo-track-{{ section.id }}"></div>
+    </div>
+
+    <!-- Dots — built by JS -->
+    <div class="wo-dots" id="wo-dots-{{ section.id }}"></div>
+
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  var sid     = '{{ section.id }}';
+  var dataEl  = document.getElementById('wo-data-' + sid);
+  var outer   = document.getElementById('wo-outer-' + sid);
+  var track   = document.getElementById('wo-track-' + sid);
+  var dotsEl  = document.getElementById('wo-dots-' + sid);
+
+  if (!dataEl || !outer || !track || !dotsEl) return;
+
+  /* ── Read block data from DOM ── */
+  var blockEls = dataEl.querySelectorAll('.wo-block-data');
+  var blocks   = [];
+  blockEls.forEach(function (el) {
+    blocks.push({
+      name:    el.getAttribute('data-name')    || '',
+      job:     el.getAttribute('data-job')     || '',
+      quote:   el.getAttribute('data-quote')   || '',
+      image:   el.getAttribute('data-image')   || '',
+      initial: el.getAttribute('data-initial') || '?'
+    });
+  });
+
+  if (blocks.length === 0) return;
+
+  /* ── Responsive columns ── */
+  var colsSetting = parseInt(dataEl.getAttribute('data-cols'), 10) || 3;
+
+  function getActiveCols() {
+    var w = window.innerWidth;
+    if (w < 768)  return 1;
+    if (w < 1024) return Math.min(2, colsSetting);
+    return colsSetting;
+  }
+
+  /* ── Build card HTML ── */
+  function buildCard(block) {
+    var avatar = block.image
+      ? '<img class="wo-rev-img" src="' + block.image + '" alt="' + block.name + '" loading="lazy" width="50" height="50">'
+      : '<div class="wo-rev-initial">' + block.initial + '</div>';
+
+    return (
+      '<div class="wo-rev-card">' +
+        '<span class="wo-rev-quote-icon">\u201C</span>' +
+        '<p class="wo-rev-quote">' + block.quote + '</p>' +
+        '<div class="wo-rev-profile">' +
+          avatar +
+          '<div class="wo-rev-meta">' +
+            '<h3 class="wo-rev-name">' + block.name + '</h3>' +
+            '<p class="wo-rev-job">' + block.job + '</p>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  /* ── Chunk array into pages ── */
+  function chunk(arr, size) {
+    var pages = [];
+    for (var i = 0; i < arr.length; i += size) {
+      pages.push(arr.slice(i, i + size));
+    }
+    return pages;
+  }
+
+  /* ── State ── */
+  var current  = 0;
+  var pages    = [];
+  var numPages = 0;
+
+  /* ── Render slides ── */
+  function render() {
+    var cols  = getActiveCols();
+    pages     = chunk(blocks, cols);
+    numPages  = pages.length;
+    current   = Math.min(current, numPages - 1);
+
+    /* Build track HTML */
+    var html = '';
+    pages.forEach(function (page) {
+      html += '<div class="wo-slide" data-cols="' + cols + '">';
+      page.forEach(function (block) {
+        html += buildCard(block);
+      });
+      html += '</div>';
+    });
+    track.innerHTML = html;
+
+    /* Build dots */
+    if (numPages <= 1) {
+      dotsEl.innerHTML = '';
+    } else {
+      var dotsHtml = '';
+      for (var i = 0; i < numPages; i++) {
+        dotsHtml += '<button class="wo-dot' + (i === current ? ' is-active' : '') + '" data-idx="' + i + '" aria-label="Page ' + (i + 1) + '"></button>';
+      }
+      dotsEl.innerHTML = dotsHtml;
+
+      dotsEl.querySelectorAll('.wo-dot').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          goTo(parseInt(this.getAttribute('data-idx'), 10));
+        });
+      });
+    }
+
+    /* Snap to current without animation */
+    track.classList.add('no-transition');
+    track.style.transform = 'translateX(' + (-current * 100) + '%)';
+    /* Force reflow then re-enable transition */
+    track.offsetHeight;
+    track.classList.remove('no-transition');
+  }
+
+  /* ── Navigate ── */
+  function goTo(index) {
+    current = Math.max(0, Math.min(index, numPages - 1));
+    track.style.transform = 'translateX(' + (-current * 100) + '%)';
+
+    dotsEl.querySelectorAll('.wo-dot').forEach(function (d, i) {
+      d.classList.toggle('is-active', i === current);
+    });
+  }
+
+  /* ── Drag / Swipe ── */
+  var dragStartX  = 0;
+  var dragStartY  = 0;
+  var dragCurrent = 0;
+  var dragging    = false;
+  var lockAxis    = null;
+  var THRESHOLD   = 50;
+
+  function dragStart(x, y) {
+    dragStartX  = x;
+    dragStartY  = y;
+    dragCurrent = 0;
+    dragging    = true;
+    lockAxis    = null;
+    track.classList.add('no-transition');
+    outer.classList.add('is-dragging');
+  }
+
+  function dragMove(x, y) {
+    if (!dragging) return;
+
+    var dx = x - dragStartX;
+    var dy = y - dragStartY;
+
+    /* Lock axis on first meaningful movement */
+    if (!lockAxis && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+      lockAxis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
+    }
+
+    if (lockAxis !== 'x') return;
+
+    dragCurrent = dx;
+
+    /* Resistance at edges */
+    var resistance = 1;
+    if ((current === 0 && dx > 0) || (current === numPages - 1 && dx < 0)) {
+      resistance = 0.25;
+    }
+
+    var pct = (-current * 100) + ((dx * resistance) / outer.offsetWidth * 100);
+    track.style.transform = 'translateX(' + pct + '%)';
+  }
+
+  function dragEnd() {
+    if (!dragging) return;
+    dragging = false;
+    track.classList.remove('no-transition');
+    outer.classList.remove('is-dragging');
+
+    if (lockAxis === 'x') {
+      if (dragCurrent < -THRESHOLD && current < numPages - 1) {
+        goTo(current + 1);
+      } else if (dragCurrent > THRESHOLD && current > 0) {
+        goTo(current - 1);
+      } else {
+        goTo(current); /* snap back */
+      }
+    }
+
+    lockAxis    = null;
+    dragCurrent = 0;
+  }
+
+  /* Mouse */
+  outer.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    dragStart(e.clientX, e.clientY);
+  });
+
+  document.addEventListener('mousemove', function (e) {
+    dragMove(e.clientX, e.clientY);
+  });
+
+  document.addEventListener('mouseup', function () {
+    dragEnd();
+  });
+
+  /* Touch */
+  outer.addEventListener('touchstart', function (e) {
+    dragStart(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+
+  outer.addEventListener('touchmove', function (e) {
+    if (lockAxis === 'x' && e.cancelable) e.preventDefault();
+    dragMove(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: false });
+
+  outer.addEventListener('touchend', function () {
+    dragEnd();
+  });
+
+  /* Prevent browser drag on images */
+  outer.addEventListener('dragstart', function (e) {
+    e.preventDefault();
+  });
+
+  /* ── Resize ── */
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(render, 200);
+  });
+
+  /* ── Init ── */
+  render();
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "WO Grid Reviews",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "━━ Content ━━"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "SUCCESS STORIES"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Real People. Real Results."
+    },
+    {
+      "type": "header",
+      "content": "━━ Layout ━━"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Cards Per Page (Desktop)",
+      "options": [
+        { "value": "2", "label": "2 Cards" },
+        { "value": "3", "label": "3 Cards" },
+        { "value": "4", "label": "4 Cards" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "header",
+      "content": "━━ Colors ━━"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#e2e4e8"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#e8a020"
+    },
+    {
+      "type": "color",
+      "id": "text_color_main",
+      "label": "Main Text Color",
+      "default": "#0d1015"
+    },
+    {
+      "type": "color",
+      "id": "text_color_sub",
+      "label": "Quote Text Color",
+      "default": "#444950"
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography Desktop ━━"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title Size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "text_size_desktop",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Quote Text Size",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography Mobile ━━"
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 18,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Size",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Quote Text Size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "━━ Padding ━━"
+    },
+    {
+      "type": "range",
+      "id": "pad_top_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding Desktop",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "pad_bot_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding Desktop",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "pad_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding Mobile",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "pad_bot_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding Mobile",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Profile Image (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "James L."
+        },
+        {
+          "type": "text",
+          "id": "job",
+          "label": "Job & Location",
+          "default": "Roustabout, Norway"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Review Text",
+          "default": "The guide gave me everything I needed to understand the offshore industry. After updating my CV, I got hired within 2 months!"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WO Grid Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "name": "James L.",
+            "job": "Roustabout, Norway",
+            "quote": "The guide gave me everything I needed to understand the offshore industry. After updating my CV, I got hired within 2 months!"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Michael R.",
+            "job": "Deckhand, Norway",
+            "quote": "Best investment I made for my future! The CV service is top-notch and really professional."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Daniel K.",
+            "job": "Crane Operator, Norway",
+            "quote": "Great support and clear guidance. Now I am working offshore and living the life I always wanted."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Sarah J.",
+            "job": "Safety Officer, UK",
+            "quote": "The psychological prep materials were game-changers. I walked into the interview with absolute confidence and got the job."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Marcus T.",
+            "job": "Platform Mechanic, Netherlands",
+            "quote": "From a 9-5 in logistics to a great salary and 8 months travel a year. This was my blueprint."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Elena R.",
+            "job": "Logistics Lead, Denmark",
+            "quote": "I had three job offers within two months of finishing my training. The Elite Package takes care of everything."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,433 @@
+{%- comment -%}
+  Guides & Services Pricing Section — Final
+  Layout: 3-column grid, each card = image (left) + content (right) flex row
+{%- endcomment -%}
+
+{%- style -%}
+
+  #PricingCards-{{ section.id }} {
+    --accent: {{ section.settings.highlight_color }};
+    --btn-text: {{ section.settings.btn_text_color }};
+    --card-dark: {{ section.settings.card_dark_bg }};
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    overflow: hidden;
+    position: relative;
+  }
+  #PricingCards-{{ section.id }} * { box-sizing: border-box; }
+
+  .pc-container { max-width: 1580px; margin: 0 auto; padding: 0 20px; }
+
+  /* ── Header ── */
+  .pc-header { text-align: center; margin-bottom: 48px; }
+  .pc-eyebrow {
+    display: inline-block;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .pc-heading {
+    color: {{ section.settings.heading_color }};
+    font-size: 36px;
+    font-weight: 900;
+    margin: 0;
+    line-height: 1.15;
+    letter-spacing: -0.6px;
+  }
+
+  /* ── 3-column grid ── */
+  .pc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    align-items: stretch;
+  }
+
+  /* ── Card: flex row — image left, content right ── */
+  .pc-card-wrapper {
+    border-radius: 13px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    transition: transform 0.45s cubic-bezier(0.22,1,0.36,1),
+                box-shadow 0.45s ease,
+                border-color 0.3s ease;
+  }
+
+  .pc-theme-dark {
+    background: linear-gradient(150deg, #0d1f33 0%, var(--card-dark) 100%);
+    border: 1.5px solid rgba(228,168,54,0.28);
+  }
+  .pc-theme-dark:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.5), 0 0 0 1px rgba(228,168,54,0.5);
+    border-color: rgba(228,168,54,0.55);
+  }
+  .pc-theme-light {
+    background: #ffffff;
+    box-shadow: 0 24px 55px rgba(0,0,0,0.5);
+  }
+  .pc-theme-light:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 36px 70px rgba(0,0,0,0.65);
+  }
+
+  /* ── Ribbon ── */
+  .pc-ribbon {
+    position: absolute;
+    top: 25px;
+    right: -45px;
+    background: var(--accent);
+    color: #071219;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 44px;
+    transform: rotate(45deg);
+    z-index: 10;
+    white-space: nowrap;
+  }
+
+  /* ── Image: left column, full card height ── */
+  .pc-img-col {
+    flex: 0 0 140px;
+    width: 140px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.03);
+    flex-shrink: 0;
+  }
+  .pc-theme-light .pc-img-col { background: #eef0f3; }
+  .pc-img-col img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+  }
+  @media(max-width: 764px){
+    .pc-img-col img{
+      object-position: center center;
+    }
+  }
+  .pc-card-wrapper:hover .pc-img-col img { transform: scale(1.05); }
+
+  /* ── Content: right column ── */
+  .pc-body {
+    flex: 1;
+    padding: 22px 18px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .pc-card-title {
+    font-size: 35px;
+    font-weight: 600;
+    margin: 0 0 16px;
+    letter-spacing: -0.3px;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+  .pc-theme-light .pc-card-title { color: #071219; }
+
+  .pc-desc {
+    font-size: 14px;
+    line-height: 1.65;
+    margin: 0px 45px 20px 0;
+    color: rgba(255,255,255,0.62);
+    font-weight: 400;
+  }
+  .pc-theme-light .pc-desc { color: #4a5568; }
+
+  .pc-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-grow: 1;
+  }
+  .pc-features li {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.82);
+  }
+  .pc-theme-light .pc-features li { color: #374151; }
+
+  .pc-check {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .pc-check::after {
+    content: '';
+    width: 3.5px;
+    height: 7px;
+    border: 2px solid #071219;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translate(-0.5px,-1px);
+    display: block;
+  }
+  .pc-theme-light .pc-check::after { border-color: #fff; }
+
+  .pc-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(228,168,54,0.25), transparent);
+    margin: 0 0 12px;
+  }
+  .pc-theme-light .pc-divider {
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+  }
+
+  .pc-price-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .pc-price {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: -0.8px;
+  }
+  .pc-theme-light .pc-price { color: #071219; }
+  .pc-compare {
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: line-through;
+    color: rgba(255,255,255,0.3);
+  }
+  .pc-theme-light .pc-compare { color: #9ca3af; }
+
+  .pc-btn {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: var(--accent);
+    color: var(--btn-text);
+    padding: 11px 16px;
+    border-radius: 7px;
+    font-weight: 800;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+  }
+  .pc-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(228,168,54,0.45);
+  }
+  .pc-btn-arrow { display: inline-block; transition: transform 0.25s ease; }
+  .pc-btn:hover .pc-btn-arrow { transform: translateX(4px); }
+
+  /* ── Scroll animation ── */
+  .pc-anim {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1),
+                transform 0.75s cubic-bezier(0.22,1,0.36,1);
+  }
+  .pc-anim.pc-visible { opacity: 1; transform: translateY(0); }
+  .pc-header.pc-anim { transform: translateY(18px); }
+  .pc-grid .pc-card-wrapper:nth-child(1) { transition-delay: 0.05s; }
+  .pc-grid .pc-card-wrapper:nth-child(2) { transition-delay: 0.18s; }
+  .pc-grid .pc-card-wrapper:nth-child(3) { transition-delay: 0.31s; }
+
+  /* ── Tablet ── */
+  @media screen and (max-width: 1024px) {
+    .pc-img-col { flex: 0 0 110px; width: 110px; }
+  }
+
+  /* ── Mobile ── */
+  @media screen and (max-width: 700px) {
+    #PricingCards-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+    .pc-heading { font-size: 24px; }
+    .pc-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
+    .pc-card-wrapper { flex-direction: column; }
+    .pc-img-col { width: 100%; flex: 0 0 auto; height: 220px; }
+    .pc-theme-dark:hover, .pc-theme-light:hover { transform: none !important; }
+    .pc-grid .pc-card-wrapper:nth-child(1),
+    .pc-grid .pc-card-wrapper:nth-child(2),
+    .pc-grid .pc-card-wrapper:nth-child(3) { transition-delay: 0s; }
+  }
+{%- endstyle -%}
+
+<section id="PricingCards-{{ section.id }}">
+  <div class="pc-container">
+
+    <div class="pc-header pc-anim">
+      {% if section.settings.subtitle != blank %}
+        <span class="pc-eyebrow">{{ section.settings.subtitle }}</span>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="pc-heading">{{ section.settings.title }}</h2>
+      {% endif %}
+    </div>
+
+    <div class="pc-grid">
+      {% for block in section.blocks %}
+        {% assign feature_list = block.settings.features | newline_to_br | split: '<br />' %}
+
+        <div class="pc-card-wrapper pc-theme-{{ block.settings.theme }} pc-anim" {{ block.shopify_attributes }}>
+
+          {% if block.settings.ribbon_text != blank %}
+            <div class="pc-ribbon">{{ block.settings.ribbon_text }}</div>
+          {% endif %}
+
+          <!-- Image: left column -->
+          {% if block.settings.image != blank %}
+            <div class="pc-img-col">
+              {{ block.settings.image | image_url: width: 500 | image_tag:
+                loading: 'lazy',
+                widths: '200, 300, 500'
+              }}
+            </div>
+          {% endif %}
+
+          <!-- Content: right column -->
+          <div class="pc-body">
+
+            {% if block.settings.title != blank %}
+              <h3 class="pc-card-title">{{ block.settings.title }}</h3>
+            {% endif %}
+
+            {% if block.settings.text != blank %}
+              <p class="pc-desc">{{ block.settings.text }}</p>
+            {% endif %}
+
+            {% if block.settings.features != blank %}
+              <ul class="pc-features">
+                {% for feature in feature_list %}
+                  {% if feature != blank %}
+                    <li>
+                      <span class="pc-check" aria-hidden="true"></span>
+                      <span>{{ feature }}</span>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            <div class="pc-divider"></div>
+
+            <div class="pc-price-wrap">
+              {% if block.settings.compare_price != blank %}
+                <span class="pc-compare">{{ block.settings.compare_price }}</span>
+              {% endif %}
+              {% if block.settings.price != blank %}
+                <span class="pc-price">{{ block.settings.price }}</span>
+              {% endif %}
+            </div>
+
+            {% if block.settings.btn_text != blank %}
+              <a href="{{ block.settings.btn_link }}" class="pc-btn">
+                {{ block.settings.btn_text }}
+                <span class="pc-btn-arrow">→</span>
+              </a>
+            {% endif %}
+
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function() {
+  function init() {
+    var section = document.querySelector('#PricingCards-{{ section.id }}');
+    if (!section) return;
+    var obs = new IntersectionObserver(function(entries, o) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('pc-visible'); o.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    section.querySelectorAll('.pc-anim').forEach(function(el) { obs.observe(el); });
+  }
+  document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();
+  if (window.Shopify && Shopify.designMode) {
+    document.addEventListener('shopify:section:load', function(e) {
+      if (e.detail.sectionId === '{{ section.id }}') init();
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Guides & Services Pro",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top_desktop", "min": 0, "max": 150, "step": 10, "unit": "px", "label": "Padding Top (Desktop)", "default": 80 },
+    { "type": "range", "id": "padding_bottom_desktop", "min": 0, "max": 150, "step": 10, "unit": "px", "label": "Padding Bottom (Desktop)", "default": 100 },
+    { "type": "range", "id": "padding_top_mobile", "min": 0, "max": 100, "step": 10, "unit": "px", "label": "Padding Top (Mobile)", "default": 50 },
+    { "type": "range", "id": "padding_bottom_mobile", "min": 0, "max": 100, "step": 10, "unit": "px", "label": "Padding Bottom (Mobile)", "default": 50 },
+    { "type": "header", "content": "Header" },
+    { "type": "text", "id": "subtitle", "label": "Eyebrow Text", "default": "OUR PRODUCTS" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Guides & Services to Boost Your Career" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Section Background", "default": "#071b2e" },
+    { "type": "color", "id": "card_dark_bg", "label": "Dark Card Background", "default": "#071b2e" },
+    { "type": "color", "id": "heading_color", "label": "Heading Color", "default": "#ffffff" },
+    { "type": "color", "id": "highlight_color", "label": "Accent Color", "default": "#E4A836" },
+    { "type": "color", "id": "btn_text_color", "label": "Button Text Color", "default": "#000000" }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Product Card",
+      "settings": [
+        { "type": "select", "id": "theme", "label": "Card Theme", "options": [{ "value": "dark", "label": "Dark" }, { "value": "light", "label": "Light" }], "default": "dark" },
+        { "type": "text", "id": "ribbon_text", "label": "Ribbon Text", "info": "Leave blank to hide. E.g: BESTSELLER" },
+        { "type": "image_picker", "id": "image", "label": "Product Image" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Offshore Guide" },
+        { "type": "textarea", "id": "text", "label": "Description", "default": "Step-by-step guide to help you understand the industry." },
+        { "type": "textarea", "id": "features", "label": "Features (one per line)", "default": "Industry Overview\nJob Roles Explained\nHow to Get Hired" },
+        { "type": "text", "id": "price", "label": "Price", "default": "$49" },
+        { "type": "text", "id": "compare_price", "label": "Compare at Price", "info": "Optional strikethrough price." },
+        { "type": "text", "id": "btn_text", "label": "Button Text", "default": "View Details" },
+        { "type": "url", "id": "btn_link", "label": "Button Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Guides & Services Pro",
+      "blocks": [
+        { "type": "card", "settings": { "theme": "dark", "ribbon_text": "BESTSELLER", "title": "Offshore Guide", "text": "Step-by-step guide to help you understand the industry, requirements and how to get started.", "features": "Industry Overview\nJob Roles Explained\nHow to Get Hired\nInsider Tips & More", "price": "$49" } },
+        { "type": "card", "settings": { "theme": "light", "title": "CV Service", "text": "Professional offshore CV writing service that gets you noticed.", "features": "Industry Specific CV\nOptimized for ATS\nProfessional Design\nHigher Interview Chance", "price": "$99" } },
+        { "type": "card", "settings": { "theme": "dark", "ribbon_text": "MOST POPULAR", "title": "Pro Bundle", "text": "Get the guide + CV service and save more with our complete package.", "features": "Offshore Guide\nProfessional CV\nEmail Support\nBonus Resources", "price": "$129", "compare_price": "$148" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

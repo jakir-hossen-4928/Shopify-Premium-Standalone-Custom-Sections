@@ -263,6 +263,127 @@ Below is a visual guide to the premium custom sections in this repository. Each 
 
 ---
 
+### 18. Cinematic Hero Banner
+*A high-impact, full-screen hero section with parallax backgrounds and interactive stats.*
+
+![Cinematic Hero](./images/cenemetic-hero-banner.png)
+
+👉 **Source Code:** [`cenemetic-hero-banner.liquid`](./cenemetic-hero-banner.liquid)
+
+*   **Key Features**:
+    *   **Cinematic Parallax**: Smooth background zoom and parallax effects for a premium feel.
+    *   **Dual CTA Support**: Primary action button and secondary video/ghost button.
+    *   **Trust Widget**: Integrated reviewer avatars and star ratings for social proof.
+    *   **Bento Stats Grid**: Modern modular stats grid that optimizes for mobile layouts.
+    *   **Overlay Control**: Precise adjustment of color, opacity, and blur for background images.
+
+---
+
+### 19. Interactive Path Timeline
+*A visually guided process timeline with dashed connectors and icon badges.*
+
+![Path Timeline](./images/path-timeline.png)
+
+👉 **Source Code:** [`path-timeline.liquid`](./path-timeline.liquid)
+
+*   **Key Features**:
+    *   **Animated Path**: Dashed connector line that guides the user's eye through steps.
+    *   **Icon Badges**: Circular badges for each step with support for custom image icons.
+    *   **Numbered Milestones**: Elegant gold-accented numbering for clear sequence.
+    *   **Scroll-Triggered Reveals**: Smooth fade-up animations as the user scrolls through the process.
+
+---
+
+### 20. Product Pro Bundle Cards
+*Modern pricing cards with a unique flex-row layout and ribbon overlays.*
+
+![Product Bundle](./images/prdocut-block-pro-bundle.png)
+
+👉 **Source Code:** [`prdocut-block-pro-bundle.liquid`](./prdocut-block-pro-bundle.liquid)
+
+*   **Key Features**:
+    *   **Asymmetric Design**: Unique flex-row layout with image on the left and content on the right.
+    *   **Ribbon Overlays**: Customizable "Best Value" or "Popular" ribbons for specific cards.
+    *   **Feature Checklists**: Integrated list system with custom checkmark icons and dividers.
+    *   **Premium Themes**: Easily toggle between light and dark themes per card for visual hierarchy.
+
+---
+
+### 21. Premium CTA Section
+*A high-conversion split-layout CTA with glowing buttons and magnetic hover effects.*
+
+![Premium CTA](./images/cta-premiun-section.png)
+
+👉 **Source Code:** [`cta-premiun-section.liquid`](./cta-premiun-section.liquid)
+
+*   **Key Features**:
+    *   **Split Layout**: Compelling content on the left with a visually anchored button on the right.
+    *   **Magnetic Buttons**: Modern interaction effects with pulsing glow animations.
+    *   **Blur Reveal**: Sophisticated staggered blur and fade animations on load.
+    *   **Section BG Control**: Full control over background image scale, overlay, and gradients.
+
+---
+
+### 22. Image with Trust Card & Text
+*An editorial layout featuring a handwriting-style trust card and video-ready image blocks.*
+
+![Image Trust](./images/image-text-trust-section.png)
+
+👉 **Source Code:** [`image-text-trust-section.liquid`](./image-text-trust-section.liquid)
+
+*   **Key Features**:
+    *   **Trust Badge Overlay**: Floating handwriting-style card for personal brand trust.
+    *   **Editorial Layout**: Sophisticated grid spacing with large typography and handwriting accents.
+    *   **Video Integration**: Support for video background or image fallback in the main block.
+    *   **Responsive Flow**: Automatically adjusts the grid and card overlap for mobile devices.
+
+---
+
+### 23. Two-Column Grid FAQ
+*A space-efficient accordion section with background image support and auto-close logic.*
+
+![Grid FAQ](./images/two-colum-grid-faq.png)
+
+👉 **Source Code:** [`two-colum-grid-faq.liquid`](./two-colum-grid-faq.liquid)
+
+*   **Key Features**:
+    *   **Dual Columns**: Maximizes space by showing FAQs in two columns on desktop.
+    *   **BG Image Overlays**: Beautiful full-section background images with customizable overlays.
+    *   **Smart Accordion**: Auto-closing logic for siblings to keep the layout clean.
+    *   **Merchant Customization**: Extensive controls for colors, sizes, and layout gaps.
+
+---
+
+### 24. Flat Grid Slider Reviews
+*A minimalist review section with grid-to-slider transformation for mobile.*
+
+![Flat Reviews](./images/custom-review-section-flat-3.png)
+
+👉 **Source Code:** [`custom-review-section-flat-3.liquid`](./custom-review-section-flat-3.liquid)
+
+*   **Key Features**:
+    *   **Grid Slider**: Displays as a clean grid on desktop and transforms into a draggable slider on mobile.
+    *   **Minimalist Design**: Flat card aesthetic with subtle borders and star ratings.
+    *   **Customizable Columns**: Choose between 2 or 3 columns for the review grid.
+    *   **Smooth Navigation**: High-performance touch and mouse dragging for the slider mode.
+
+---
+
+### 25. Premium Sidebar Header & Cart
+*A sophisticated navigation system with integrated sidebar cart and mobile-optimized drawer.*
+
+![Premium Header](./images/full-custom-header-with-sidebar-cart.png)
+
+👉 **Source Code:** [`full-custom-header-with-sidebar-cart.liquid`](./full-custom-header-with-sidebar-cart.liquid)
+
+*   **Key Features**:
+    *   **Sidebar Cart Drawer**: Seamless slide-out cart for a modern shopping experience.
+    *   **Solid Navigation**: Clean, sticky header with logo centering and custom CTA buttons.
+    *   **Mobile Drawer**: Fully responsive mobile menu with spring-based animations.
+    *   **Visual Polish**: Integrated cart count badges, overlays, and refined typography controls.
+
+---
+
 ## 🛠️ Step-by-Step Installation Guide
 
 Implementing any of these custom sections on your Shopify store is quick and completely code-free:

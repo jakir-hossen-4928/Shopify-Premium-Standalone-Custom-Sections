@@ -1,0 +1,806 @@
+{%- comment -%}
+  Image with Trust Card & Text - Animated & Video Ready
+{%- endcomment -%}
+
+{%- style -%}
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap');
+
+  #ImageTrustSection-{{ section.id }} {
+    /* Section Padding */
+    --padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    --padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --max-width: {{ section.settings.max_width }}px;
+
+    /* Typography - Desktop */
+    --title-size-desk: {{ section.settings.title_size_desk }}px;
+    --subtitle-size-desk: {{ section.settings.subtitle_size_desk }}px;
+    --text-size-desk: {{ section.settings.text_size_desk }}px;
+    --handwriting-size-desk: {{ section.settings.handwriting_size_desk }}px;
+
+    /* Typography - Mobile */
+    --title-size-mob: {{ section.settings.title_size_mob }}px;
+    --subtitle-size-mob: {{ section.settings.subtitle_size_mob }}px;
+    --text-size-mob: {{ section.settings.text_size_mob }}px;
+    --handwriting-size-mob: {{ section.settings.handwriting_size_mob }}px;
+
+    /* Colors */
+    --bg-color: {{ section.settings.bg_color }};
+    --title-color: {{ section.settings.title_color }};
+    --text-color: {{ section.settings.text_color }};
+    --highlight-color: {{ section.settings.highlight_color }};
+    
+    --btn-bg: {{ section.settings.btn_bg }};
+    --btn-text-color: {{ section.settings.btn_text_color }};
+    
+    --feature-bg: {{ section.settings.feature_bg }};
+    --feature-border: {{ section.settings.feature_border }};
+    
+    --card-bg: {{ section.settings.card_bg }};
+  }
+
+  #ImageTrustSection-{{ section.id }} {
+    background-color: var(--bg-color);
+    padding-top: var(--padding-top-desktop);
+    padding-bottom: var(--padding-bottom-desktop);
+    overflow: hidden; /* Crucial for animation */
+  }
+
+  #ImageTrustSection-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  .itt-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  /* =====================================
+     SCROLL ANIMATIONS (Left & Right)
+  ====================================== */
+  .itt-animate {
+    opacity: 0;
+    /* Duration increased to 1.5s for smoother effect */
+    transition: opacity 1.5s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  .itt-animate.slide-left {
+    /* Comes from further away */
+    transform: translateX(-150px);
+  }
+  
+  .itt-animate.slide-right {
+    /* Comes from further away */
+    transform: translateX(150px);
+  }
+  
+  .itt-animate.itt-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* =====================================
+     LEFT COLUMN: CONTENT
+  ====================================== */
+  .itt-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .itt-subtitle {
+    font-size: var(--subtitle-size-desk);
+    color: var(--highlight-color);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+  }
+
+  .itt-title {
+    font-size: var(--title-size-desk);
+    color: var(--title-color);
+    line-height: 1.2;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  .itt-text {
+    font-size: var(--text-size-desk);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .itt-text p { margin: 0 0 10px 0; }
+  .itt-text p:last-child { margin: 0; }
+
+  /* Feature Tags */
+  .itt-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+
+  .itt-feature-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--feature-bg);
+    border: 1px solid var(--feature-border);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--title-color);
+  }
+
+  .itt-feature-tag svg {
+    width: 16px;
+    height: 16px;
+    color: var(--highlight-color);
+    flex-shrink: 0;
+  }
+
+  /* Button */
+  .itt-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--btn-bg);
+    color: var(--btn-text-color);
+    padding: 16px 28px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    width: fit-content;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .itt-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    color: #fff;
+  }
+
+  .itt-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--highlight-color);
+  }
+
+  /* =====================================
+     RIGHT COLUMN: MEDIA CARD
+  ====================================== */
+  .itt-media-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: visible;
+  }
+
+  .itt-image-wrap {
+    position: relative;
+    width: 100%;
+    padding-bottom: 60%;
+    border-radius: 16px 16px 0 0;
+    overflow: hidden;
+  }
+
+  .itt-image-wrap img, .itt-image-wrap video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .itt-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%);
+  }
+
+  /* Handwritten Text */
+  .itt-handwriting-wrap {
+    position: absolute;
+    top: 15%;
+    left: 6%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .itt-handwriting {
+    font-size: var(--handwriting-size-desk);
+    color: #fff;
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .itt-arrow-svg {
+    width: 40px;
+    height: auto;
+    margin-top: 5px;
+    margin-left: 50px;
+    stroke: #fff;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+  }
+
+  /* Play Button */
+  .itt-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    z-index: 2;
+    cursor: pointer;
+    box-shadow: 0 0 0 8px rgba(255,255,255,0.2), 0 10px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+  }
+
+  .itt-play-btn:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+
+  .itt-play-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: #000;
+    margin-left: 4px;
+  }
+
+  /* Trust Bar */
+  .itt-trust-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    background: var(--card-bg);
+    border-radius: 0 0 16px 16px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .itt-trust-left, .itt-trust-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .itt-avatars {
+    display: flex;
+    align-items: center;
+  }
+
+  .itt-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--card-bg);
+    object-fit: cover;
+    margin-left: -12px;
+    background-color: #eee;
+  }
+  .itt-avatar:first-child { margin-left: 0; }
+
+  .itt-trust-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--title-color);
+    line-height: 1.3;
+  }
+  .itt-trust-text span {
+    display: block;
+    font-weight: 400;
+    color: var(--text-color);
+    font-size: 12px;
+  }
+
+  .itt-rating-box {
+    border: 1px solid var(--feature-border);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--title-color);
+  }
+
+  .itt-stars-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .itt-stars { display: flex; gap: 2px; color: var(--highlight-color); }
+  .itt-stars svg { width: 14px; height: 14px; fill: currentColor; }
+  .itt-reviews-count { font-size: 11px; color: var(--highlight-color); font-weight: 500; }
+
+  /* =====================================
+     VIDEO MODAL (LIGHTBOX)
+  ====================================== */
+  .itt-video-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .itt-video-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .itt-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+  }
+
+  .itt-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    z-index: 2;
+    transform: scale(0.95);
+    transition: transform 0.4s ease;
+  }
+
+  .itt-video-modal.active .itt-modal-content {
+    transform: scale(1);
+  }
+
+  .itt-modal-content video {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    outline: none;
+  }
+
+  .itt-close-btn {
+    position: absolute;
+    top: -45px;
+    right: 0;
+    color: #fff;
+    background: none;
+    border: none;
+    font-size: 32px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 5px;
+  }
+
+  .itt-close-btn:hover { color: var(--highlight-color); }
+
+  /* =====================================
+     MOBILE RESPONSIVE
+  ====================================== */
+  @media screen and (max-width: 990px) {
+    #ImageTrustSection-{{ section.id }} {
+      padding-top: var(--padding-top-mobile);
+      padding-bottom: var(--padding-bottom-mobile);
+    }
+    .itt-container {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    
+    /* Smooth vertical fade up for mobile */
+    .itt-animate.slide-left, .itt-animate.slide-right { transform: translateY(60px); }
+    .itt-animate.itt-visible { transform: translateY(0); }
+    
+    .itt-title { font-size: var(--title-size-mob); }
+    .itt-subtitle { font-size: var(--subtitle-size-mob); }
+    .itt-text { font-size: var(--text-size-mob); }
+    .itt-handwriting { font-size: var(--handwriting-size-mob); }
+
+    .itt-features { justify-content: center; }
+    .itt-content { align-items: center; text-align: center; }
+    .itt-btn { width: 100%; }
+
+    .itt-image-wrap { padding-bottom: 75%; }
+    .itt-handwriting-wrap { top: 10%; }
+    .itt-arrow-svg { width: 30px; margin-left: 30px; }
+    .itt-play-btn { width: 60px; height: 60px; }
+
+    .itt-trust-bar { flex-direction: column; text-align: center; padding: 20px; }
+    .itt-trust-left { flex-direction: column; }
+    .itt-trust-right { justify-content: center; }
+  }
+{%- endstyle -%}
+
+<section id="ImageTrustSection-{{ section.id }}">
+  <div class="itt-container">
+    
+    <!-- LEFT COLUMN (Slides from Left) -->
+    <div class="itt-content itt-animate slide-left">
+      {% if section.settings.subtitle != blank %}
+        <h4 class="itt-subtitle">{{ section.settings.subtitle }}</h4>
+      {% endif %}
+
+      {% if section.settings.title != blank %}
+        <h2 class="itt-title">{{ section.settings.title }}</h2>
+      {% endif %}
+
+      {% if section.settings.text != blank %}
+        <div class="itt-text">{{ section.settings.text }}</div>
+      {% endif %}
+
+      <!-- Feature Tags -->
+      {% if section.blocks.size > 0 %}
+        <div class="itt-features">
+          {% for block in section.blocks %}
+            <div class="itt-feature-tag" {{ block.shopify_attributes }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <path d="M9 12l2 2 4-4"></path>
+              </svg>
+              {{ block.settings.title }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Button -->
+      {% if section.settings.btn_text != blank %}
+        <a href="{{ section.settings.btn_link }}" class="itt-btn">
+          {{ section.settings.btn_text }}
+          <svg viewBox="0 0 24 24">
+            <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      {% endif %}
+    </div>
+
+    <!-- RIGHT COLUMN (Slides from Right) -->
+    <div class="itt-media-card itt-animate slide-right">
+      <div class="itt-image-wrap">
+        {% if section.settings.image != blank %}
+          {{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy' }}
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+        
+        <div class="itt-image-overlay"></div>
+
+        {% if section.settings.handwriting_text != blank %}
+          <div class="itt-handwriting-wrap">
+            <div class="itt-handwriting">{{ section.settings.handwriting_text | newline_to_br }}</div>
+            <svg class="itt-arrow-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 20 Q 30 70, 80 80" stroke-width="4" stroke-linecap="round" fill="transparent"/>
+              <path d="M60 70 L 80 80 L 70 95" stroke-width="4" stroke-linecap="round" fill="transparent"/>
+            </svg>
+          </div>
+        {% endif %}
+
+        {% if section.settings.hosted_video != blank %}
+          <div class="itt-play-btn">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Trust Bar Bottom -->
+      {% if section.settings.show_trust_bar %}
+        <div class="itt-trust-bar">
+          <div class="itt-trust-left">
+            <div class="itt-avatars">
+              {% if section.settings.avatar_1 != blank %}
+                {{ section.settings.avatar_1 | image_url: width: 80 | image_tag: class: 'itt-avatar' }}
+              {% endif %}
+              {% if section.settings.avatar_2 != blank %}
+                {{ section.settings.avatar_2 | image_url: width: 80 | image_tag: class: 'itt-avatar' }}
+              {% endif %}
+              {% if section.settings.avatar_3 != blank %}
+                {{ section.settings.avatar_3 | image_url: width: 80 | image_tag: class: 'itt-avatar' }}
+              {% endif %}
+            </div>
+            <div class="itt-trust-text">
+              {{ section.settings.trust_text_bold }}
+              <span>{{ section.settings.trust_text_sub }}</span>
+            </div>
+          </div>
+
+          <div class="itt-trust-right">
+            <div class="itt-rating-box">{{ section.settings.rating_score }}</div>
+            <div class="itt-stars-wrap">
+              <div class="itt-stars">
+                <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
+              </div>
+              <div class="itt-reviews-count">{{ section.settings.review_count_text }}</div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- Hidden Video Lightbox Modal -->
+  {% if section.settings.hosted_video != blank %}
+    <div class="itt-video-modal">
+      <div class="itt-modal-overlay"></div>
+      <div class="itt-modal-content">
+        <button class="itt-close-btn">&times;</button>
+        {{ section.settings.hosted_video | video_tag: controls: true, autoplay: false, loop: false, width: '100%' }}
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+<script>
+  (function() {
+    function initImageTrustSection() {
+      const section = document.querySelector("#ImageTrustSection-{{ section.id }}");
+      if (!section) return;
+
+      // --- 1. Intersection Observer for Scroll Animations ---
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15
+      };
+      
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('itt-visible');
+            obs.unobserve(entry.target); // Only animate once
+          }
+        });
+      }, observerOptions);
+
+      const animatedElements = section.querySelectorAll('.itt-animate');
+      animatedElements.forEach(el => observer.observe(el));
+
+      // --- 2. Video Modal Logic ---
+      const playBtn = section.querySelector('.itt-play-btn');
+      const modal = section.querySelector('.itt-video-modal');
+      
+      if (playBtn && modal) {
+        const closeBtn = modal.querySelector('.itt-close-btn');
+        const overlay = modal.querySelector('.itt-modal-overlay');
+        const videoEl = modal.querySelector('video');
+
+        const openModal = () => {
+          modal.classList.add('active');
+          if(videoEl) videoEl.play();
+        };
+
+        const closeModal = () => {
+          modal.classList.remove('active');
+          if(videoEl) videoEl.pause();
+        };
+
+        playBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', closeModal);
+      }
+    }
+
+    // Run normally on page load
+    document.addEventListener("DOMContentLoaded", initImageTrustSection);
+    
+    // FIX FOR SHOPIFY THEME EDITOR BLANK ISSUE
+    if (window.Shopify && Shopify.designMode) {
+      document.addEventListener('shopify:section:load', function(event) {
+        if (event.detail.sectionId === '{{ section.id }}') {
+          initImageTrustSection();
+        }
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Image & Trust Text",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Spacing"
+    },
+    {
+      "type": "range", "id": "max_width", "min": 800, "max": 1800, "step": 10, "unit": "px",
+      "label": "Section Max Width", "default": 1300
+    },
+    {
+      "type": "range", "id": "padding_top_desktop", "min": 0, "max": 150, "step": 10, "unit": "px",
+      "label": "Padding Top (Desktop)", "default": 80
+    },
+    {
+      "type": "range", "id": "padding_bottom_desktop", "min": 0, "max": 150, "step": 10, "unit": "px",
+      "label": "Padding Bottom (Desktop)", "default": 80
+    },
+    {
+      "type": "range", "id": "padding_top_mobile", "min": 0, "max": 100, "step": 10, "unit": "px",
+      "label": "Padding Top (Mobile)", "default": 50
+    },
+    {
+      "type": "range", "id": "padding_bottom_mobile", "min": 0, "max": 100, "step": 10, "unit": "px",
+      "label": "Padding Bottom (Mobile)", "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Content - Left Column"
+    },
+    {
+      "type": "text", "id": "subtitle", "label": "Subtitle",
+      "default": "YOUR FUTURE IS OFFSHORE"
+    },
+    {
+      "type": "textarea", "id": "title", "label": "Heading",
+      "default": "We Help You Get Hired in the Norwegian Offshore Industry"
+    },
+    {
+      "type": "richtext", "id": "text", "label": "Paragraph",
+      "default": "<p>Work Offshore is your trusted guide to enter the offshore oil and gas industry in Norway. We provide step-by-step guidance, professional CV services and career resources that help you stand out and get hired faster.</p>"
+    },
+    {
+      "type": "text", "id": "btn_text", "label": "Button Text",
+      "default": "LEARN MORE ABOUT US"
+    },
+    {
+      "type": "url", "id": "btn_link", "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Media Card - Right Column"
+    },
+    {
+      "type": "image_picker", "id": "image", "label": "Cover Image"
+    },
+    {
+      "type": "video", "id": "hosted_video", "label": "Upload Video",
+      "info": "Selecting a video will automatically show the play button and open the video when clicked."
+    },
+    {
+      "type": "textarea", "id": "handwriting_text", "label": "Handwritten Text",
+      "default": "Real people.\nReal jobs.\nReal freedom.",
+      "info": "Use Enter for line breaks."
+    },
+    {
+      "type": "header",
+      "content": "Trust Bar (Bottom of Card)"
+    },
+    {
+      "type": "checkbox", "id": "show_trust_bar", "label": "Show Trust Bar", "default": true
+    },
+    {
+      "type": "image_picker", "id": "avatar_1", "label": "Avatar 1"
+    },
+    {
+      "type": "image_picker", "id": "avatar_2", "label": "Avatar 2"
+    },
+    {
+      "type": "image_picker", "id": "avatar_3", "label": "Avatar 3"
+    },
+    {
+      "type": "text", "id": "trust_text_bold", "label": "Main Text",
+      "default": "Join thousands who changed their life"
+    },
+    {
+      "type": "text", "id": "trust_text_sub", "label": "Sub Text",
+      "default": "with an offshore career"
+    },
+    {
+      "type": "text", "id": "rating_score", "label": "Rating Score",
+      "default": "4.9/5"
+    },
+    {
+      "type": "text", "id": "review_count_text", "label": "Review Count Text",
+      "default": "From 1,000+ reviews"
+    },
+    {
+      "type": "header",
+      "content": "Typography - Desktop"
+    },
+    {
+      "type": "range", "id": "title_size_desk", "min": 24, "max": 64, "step": 2, "unit": "px",
+      "label": "Heading Size", "default": 42
+    },
+    {
+      "type": "range", "id": "subtitle_size_desk", "min": 10, "max": 24, "step": 1, "unit": "px",
+      "label": "Subtitle Size", "default": 14
+    },
+    {
+      "type": "range", "id": "text_size_desk", "min": 12, "max": 24, "step": 1, "unit": "px",
+      "label": "Paragraph Size", "default": 16
+    },
+    {
+      "type": "range", "id": "handwriting_size_desk", "min": 20, "max": 60, "step": 2, "unit": "px",
+      "label": "Handwriting Size", "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Typography - Mobile"
+    },
+    {
+      "type": "range", "id": "title_size_mob", "min": 20, "max": 50, "step": 2, "unit": "px",
+      "label": "Heading Size", "default": 32
+    },
+    {
+      "type": "range", "id": "subtitle_size_mob", "min": 10, "max": 20, "step": 1, "unit": "px",
+      "label": "Subtitle Size", "default": 12
+    },
+    {
+      "type": "range", "id": "text_size_mob", "min": 12, "max": 20, "step": 1, "unit": "px",
+      "label": "Paragraph Size", "default": 15
+    },
+    {
+      "type": "range", "id": "handwriting_size_mob", "min": 16, "max": 40, "step": 1, "unit": "px",
+      "label": "Handwriting Size", "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    { "type": "color", "id": "bg_color", "label": "Section Background", "default": "#FAFAFA" },
+    { "type": "color", "id": "title_color", "label": "Heading & Dark Text", "default": "#0B192C" },
+    { "type": "color", "id": "text_color", "label": "Paragraph Color", "default": "#555555" },
+    { "type": "color", "id": "highlight_color", "label": "Highlight Color (Gold)", "default": "#C79A3A" },
+    { "type": "color", "id": "btn_bg", "label": "Button Background", "default": "#0B192C" },
+    { "type": "color", "id": "btn_text_color", "label": "Button Text Color", "default": "#FFFFFF" },
+    { "type": "color", "id": "feature_bg", "label": "Feature Box Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "feature_border", "label": "Feature Box Border", "default": "#EAEAEA" },
+    { "type": "color", "id": "card_bg", "label": "Trust Card Background", "default": "#FFFFFF" }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Tag",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text", "id": "title", "label": "Feature Text", "default": "Proven Strategy"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image & Trust Text",
+      "blocks": [
+        { "type": "feature", "settings": { "title": "Proven Strategy" } },
+        { "type": "feature", "settings": { "title": "Industry Knowledge" } },
+        { "type": "feature", "settings": { "title": "Professional Support" } },
+        { "type": "feature", "settings": { "title": "Real Results" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

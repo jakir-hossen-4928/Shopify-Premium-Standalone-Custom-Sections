@@ -1,0 +1,1341 @@
+{% comment %}
+  ============================================================
+  WORK OFFSHORE — PREMIUM CTA SECTION v2.1
+  Split Layout | Left Content | Right Button + Image
+  Full Section BG Image | Overlay Opacity Control
+  Staggered Blur Reveal | Pulsing Glow Button | Magnetic Hover
+  ============================================================
+{% endcomment %}
+
+<style>
+/* ============================================================
+   CSS VARIABLES
+============================================================ */
+#shopify-section-{{ section.id }} {
+  --wo-cta-bg: {{ section.settings.bg_color }};
+  --wo-cta-title: {{ section.settings.title_color }};
+  --wo-cta-text: {{ section.settings.text_color }};
+  --wo-cta-accent: {{ section.settings.accent_color }};
+
+  --wo-cta-btn-bg: {{ section.settings.btn_bg_color }};
+  --wo-cta-btn-text: {{ section.settings.btn_text_color }};
+  --wo-cta-btn-glow: {{ section.settings.btn_glow_color }};
+
+  /* Right card image overlay */
+  --wo-cta-overlay: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  --wo-cta-overlay-color: {{ section.settings.overlay_color }};
+
+  /* Section BG image overlay */
+  --wo-cta-section-overlay: {{ section.settings.section_overlay_opacity | divided_by: 100.0 }};
+  --wo-cta-section-overlay-color: {{ section.settings.section_overlay_color }};
+
+  --wo-cta-title-desk: {{ section.settings.title_size_desk }}px;
+  --wo-cta-text-desk: {{ section.settings.text_size_desk }}px;
+  --wo-cta-label-desk: {{ section.settings.label_size_desk }}px;
+
+  --wo-cta-title-mob: {{ section.settings.title_size_mob }}px;
+  --wo-cta-text-mob: {{ section.settings.text_size_mob }}px;
+
+  --wo-cta-pad-top-desk: {{ section.settings.pad_top_desk }}px;
+  --wo-cta-pad-bot-desk: {{ section.settings.pad_bot_desk }}px;
+  --wo-cta-pad-top-mob: {{ section.settings.pad_top_mob }}px;
+  --wo-cta-pad-bot-mob: {{ section.settings.pad_bot_mob }}px;
+
+  --wo-cta-gap: {{ section.settings.col_gap }}px;
+  --wo-cta-radius: {{ section.settings.section_radius }}px;
+  --wo-cta-inner-radius: {{ section.settings.inner_radius }}px;
+}
+
+/* ============================================================
+   SECTION WRAPPER
+============================================================ */
+.wo-cta-section {
+  position: relative;
+  background-color: var(--wo-cta-bg);
+  padding: var(--wo-cta-pad-top-desk) clamp(20px, 5vw, 80px) var(--wo-cta-pad-bot-desk);
+  overflow: hidden;
+  border-radius: var(--wo-cta-radius);
+}
+
+/* ---- Full Section BG Image ---- */
+.wo-cta-section-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.wo-cta-section-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transform: scale(1.04);
+  transition: transform 12s ease-in-out;
+}
+
+.wo-cta-section.is-visible .wo-cta-section-bg img {
+  transform: scale(1);
+}
+
+/* Section BG Overlay */
+.wo-cta-section-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: var(--wo-cta-section-overlay-color);
+  opacity: var(--wo-cta-section-overlay);
+  z-index: 1;
+}
+
+/* Section BG Gradient for readability */
+.wo-cta-section-bg-grad {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(0,0,0,0.55) 0%,
+    rgba(0,0,0,0.25) 50%,
+    rgba(0,0,0,0.4) 100%
+  );
+  z-index: 2;
+}
+
+/* Noise texture layer */
+.wo-cta-section-noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 3;
+}
+
+/* ============================================================
+   GRID
+============================================================ */
+.wo-cta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--wo-cta-gap);
+  align-items: center;
+  max-width: 1560px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 4; /* Above all BG layers */
+}
+
+/* ============================================================
+   LEFT — CONTENT COLUMN
+============================================================ */
+.wo-cta-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* Eyebrow */
+.wo-cta-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--wo-cta-label-desk);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--wo-cta-accent);
+  margin-bottom: 20px;
+}
+
+.wo-cta-label::before {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background-color: var(--wo-cta-accent);
+  border-radius: 2px;
+}
+
+/* Heading */
+.wo-cta-heading {
+  font-size: var(--wo-cta-title-desk);
+  font-weight: 800;
+  color: var(--wo-cta-title);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0 0 24px 0;
+}
+
+.wo-cta-heading em {
+  font-style: normal;
+  color: var(--wo-cta-accent);
+  position: relative;
+  display: inline-block;
+}
+
+.wo-cta-heading em::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0; right: 0;
+  height: 3px;
+  background: var(--wo-cta-accent);
+  border-radius: 2px;
+  opacity: 0.4;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.9s;
+}
+
+.wo-cta-section.is-visible .wo-cta-heading em::after {
+  transform: scaleX(1);
+}
+
+/* Description */
+.wo-cta-desc {
+  font-size: var(--wo-cta-text-desk);
+  color: var(--wo-cta-text);
+  line-height: 1.7;
+  margin: 0 0 40px 0;
+  max-width: 480px;
+}
+
+/* Stats Row */
+.wo-cta-stats {
+  display: flex;
+  gap: 36px;
+  flex-wrap: wrap;
+}
+
+.wo-cta-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.wo-cta-stat-num {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--wo-cta-title);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.wo-cta-stat-num span {
+  color: var(--wo-cta-accent);
+}
+
+.wo-cta-stat-label {
+  font-size: 11px;
+  color: var(--wo-cta-text);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.wo-cta-stat + .wo-cta-stat {
+  padding-left: 36px;
+  border-left: 1px solid rgba(255,255,255,0.12);
+}
+
+/* ============================================================
+   RIGHT — IMAGE + BUTTON COLUMN
+============================================================ */
+.wo-cta-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  gap: 32px;
+}
+
+/* ---- Image Card ---- */
+.wo-cta-img-card {
+  position: relative;
+  width: 100%;
+  border-radius: var(--wo-cta-inner-radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  {% comment %} box-shadow:
+    0 0 0 1px rgba(255,255,255,0.07),
+    0 30px 80px rgba(0,0,0,0.55),
+    0 10px 30px rgba(0,0,0,0.35); {% endcomment %}
+}
+
+.wo-cta-img-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wo-cta-img-card:hover img {
+  transform: scale(1.05);
+}
+
+.wo-cta-img-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: var(--wo-cta-overlay-color);
+  opacity: var(--wo-cta-overlay);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.wo-cta-img-overlay-grad {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0,0,0,0.35) 0%,
+    transparent 60%,
+    rgba(0,0,0,0.2) 100%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Live Badge */
+.wo-cta-live-dot {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  padding: 6px 12px 6px 10px;
+}
+
+.wo-cta-live-dot-circle {
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: wo-live-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes wo-live-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(34,197,94,0.5); }
+  50%       { opacity: 0.8; transform: scale(1.15); box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+}
+
+.wo-cta-live-dot-text {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Bottom Image Badge */
+.wo-cta-img-badge {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  z-index: 3;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.wo-cta-img-badge-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+
+.wo-cta-img-badge-sub {
+  font-size: 10px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---- Button Group ---- */
+.wo-cta-btn-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+/* ---- Primary Glow Button ---- */
+.wo-cta-btn-wrap {
+  position: relative;
+  display: inline-block;
+  z-index: 2;
+  width: 100%;
+}
+
+.wo-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px 40px;
+  background-color: var(--wo-cta-btn-bg);
+  color: var(--wo-cta-btn-text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 6px;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  overflow: hidden;
+  transition:
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+/* Shimmer sweep */
+.wo-cta-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.65s ease;
+  pointer-events: none;
+}
+
+.wo-cta-btn:hover::before {
+  left: 150%;
+}
+
+/* Arrow */
+.wo-cta-btn-arrow {
+  display: inline-flex;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.wo-cta-btn:hover .wo-cta-btn-arrow {
+  transform: translateX(5px);
+}
+
+/* Glow layer */
+.wo-cta-btn-wrap::after {
+  content: '';
+  position: absolute;
+  top: 15%; left: 5%; right: 5%; bottom: -15%;
+  background: var(--wo-cta-btn-glow);
+  filter: blur(28px);
+  opacity: 0.45;
+  z-index: 1;
+  border-radius: 12px;
+  animation: wo-pulse-glow 3s ease-in-out infinite alternate;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+@keyframes wo-pulse-glow {
+  0%   { transform: scale(0.92); opacity: 0.35; }
+  100% { transform: scale(1.08); opacity: 0.65; }
+}
+
+.wo-cta-btn-wrap:hover .wo-cta-btn {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+}
+
+.wo-cta-btn-wrap:hover::after {
+  opacity: 0.85;
+  filter: blur(34px);
+  animation-play-state: paused;
+}
+
+.wo-cta-btn-wrap:active .wo-cta-btn {
+  transform: scale(0.97) translateY(0);
+}
+
+/* Secondary Link */
+.wo-cta-secondary-link {
+  font-size: 12px;
+  color: var(--wo-cta-text);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wo-cta-secondary-link:hover {
+  opacity: 1;
+  color: var(--wo-cta-title);
+}
+
+/* Trust Badges */
+.wo-cta-trust {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.wo-cta-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--wo-cta-text);
+  opacity: 0.65;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.wo-cta-trust-sep {
+  width: 3px;
+  height: 3px;
+  background: var(--wo-cta-text);
+  border-radius: 50%;
+  opacity: 0.3;
+}
+
+/* No image state */
+.wo-cta-right.no-image {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--wo-cta-inner-radius);
+  padding: 48px 40px;
+}
+
+/* ============================================================
+   REVEAL ANIMATIONS
+============================================================ */
+.wo-anim-reveal {
+  opacity: 0;
+  transform: translateY(28px) scale(0.98);
+  filter: blur(6px);
+  transition:
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, filter;
+}
+
+.wo-anim-reveal-right {
+  opacity: 0;
+  transform: translateX(28px) scale(0.98);
+  filter: blur(6px);
+  transition:
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, filter;
+}
+
+.wo-cta-section.is-visible .wo-anim-reveal,
+.wo-cta-section.is-visible .wo-anim-reveal-right {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+  filter: blur(0);
+}
+
+/* Stagger — left */
+.wo-cta-left .wo-anim-reveal:nth-child(1) { transition-delay: 0.05s; }
+.wo-cta-left .wo-anim-reveal:nth-child(2) { transition-delay: 0.18s; }
+.wo-cta-left .wo-anim-reveal:nth-child(3) { transition-delay: 0.30s; }
+.wo-cta-left .wo-anim-reveal:nth-child(4) { transition-delay: 0.42s; }
+
+/* Stagger — right */
+.wo-cta-right .wo-anim-reveal-right:nth-child(1) { transition-delay: 0.25s; }
+.wo-cta-right .wo-anim-reveal-right:nth-child(2) { transition-delay: 0.40s; }
+.wo-cta-right .wo-anim-reveal-right:nth-child(3) { transition-delay: 0.52s; }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 900px) {
+  .wo-cta-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .wo-cta-right {
+    order: -1;
+  }
+
+  .wo-cta-right.no-image {
+    order: 1;
+    padding: 36px 24px;
+  }
+
+  .wo-anim-reveal-right {
+    transform: translateY(28px) scale(0.98);
+  }
+}
+
+@media (max-width: 768px) {
+  .wo-cta-section {
+    padding: var(--wo-cta-pad-top-mob) 20px var(--wo-cta-pad-bot-mob);
+  }
+
+  .wo-cta-heading {
+    font-size: var(--wo-cta-title-mob);
+    margin-bottom: 18px;
+  }
+
+  .wo-cta-desc {
+    font-size: var(--wo-cta-text-mob);
+    margin-bottom: 32px;
+  }
+
+  .wo-cta-btn {
+    padding: 18px 28px;
+    font-size: 11px;
+  }
+
+  .wo-cta-stats {
+    gap: 20px;
+  }
+
+  .wo-cta-stat + .wo-cta-stat {
+    padding-left: 20px;
+  }
+
+  .wo-cta-stat-num {
+    font-size: 22px;
+  }
+
+  .wo-cta-img-card {
+    aspect-ratio: 16 / 9;
+  }
+
+  .wo-cta-section-bg-grad {
+    background: linear-gradient(
+      180deg,
+      rgba(0,0,0,0.6) 0%,
+      rgba(0,0,0,0.3) 100%
+    );
+  }
+}
+</style>
+
+{%- assign has_card_image   = false -%}
+{%- assign has_section_bg   = false -%}
+{%- if section.settings.bg_image   != blank -%}{%- assign has_card_image  = true -%}{%- endif -%}
+{%- if section.settings.section_bg_image != blank -%}{%- assign has_section_bg = true -%}{%- endif -%}
+
+<section class="wo-cta-section" id="wo-cta-{{ section.id }}">
+
+  <!-- ══════════════════════════════
+       SECTION BACKGROUND IMAGE LAYERS
+  ══════════════════════════════ -->
+  {%- if has_section_bg -%}
+    <div class="wo-cta-section-bg">
+      {{- section.settings.section_bg_image
+          | image_url: width: 2000
+          | image_tag:
+              loading: 'lazy',
+              widths: '800, 1200, 1600, 2000',
+              alt: section.settings.section_bg_alt -}}
+    </div>
+    <div class="wo-cta-section-bg-overlay"></div>
+    {%- if section.settings.section_bg_grad -%}
+      <div class="wo-cta-section-bg-grad"></div>
+    {%- endif -%}
+  {%- endif -%}
+
+  <div class="wo-cta-section-noise"></div>
+
+  <!-- ══════════════════════════════
+       CONTENT GRID
+  ══════════════════════════════ -->
+  <div class="wo-cta-grid">
+
+    <!-- LEFT — CONTENT -->
+    <div class="wo-cta-left">
+
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="wo-cta-label wo-anim-reveal">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.title != blank -%}
+        <h2 class="wo-cta-heading wo-anim-reveal">{{ section.settings.title | newline_to_br }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <p class="wo-cta-desc wo-anim-reveal">{{ section.settings.text | newline_to_br }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.show_stats -%}
+        <div class="wo-cta-stats wo-anim-reveal">
+          {%- if section.settings.stat1_num != blank -%}
+            <div class="wo-cta-stat">
+              <div class="wo-cta-stat-num">
+                {{ section.settings.stat1_num }}<span>{{ section.settings.stat1_suffix }}</span>
+              </div>
+              <div class="wo-cta-stat-label">{{ section.settings.stat1_label }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.stat2_num != blank -%}
+            <div class="wo-cta-stat">
+              <div class="wo-cta-stat-num">
+                {{ section.settings.stat2_num }}<span>{{ section.settings.stat2_suffix }}</span>
+              </div>
+              <div class="wo-cta-stat-label">{{ section.settings.stat2_label }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.stat3_num != blank -%}
+            <div class="wo-cta-stat">
+              <div class="wo-cta-stat-num">
+                {{ section.settings.stat3_num }}<span>{{ section.settings.stat3_suffix }}</span>
+              </div>
+              <div class="wo-cta-stat-label">{{ section.settings.stat3_label }}</div>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+
+    <!-- RIGHT — IMAGE + BUTTON -->
+    <div class="wo-cta-right{% unless has_card_image %} no-image{% endunless %}">
+
+      {%- if has_card_image -%}
+        <div class="wo-cta-img-card wo-anim-reveal-right">
+
+          {{- section.settings.bg_image
+              | image_url: width: 900
+              | image_tag:
+                  loading: 'lazy',
+                  widths: '400, 600, 900',
+                  alt: section.settings.img_alt -}}
+
+          <div class="wo-cta-img-overlay"></div>
+          <div class="wo-cta-img-overlay-grad"></div>
+
+          {%- if section.settings.show_live_badge -%}
+            <div class="wo-cta-live-dot">
+              <div class="wo-cta-live-dot-circle"></div>
+              <span class="wo-cta-live-dot-text">
+                {{ section.settings.live_badge_text | default: 'Live Positions' }}
+              </span>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.img_badge_title != blank -%}
+            <div class="wo-cta-img-badge">
+              <div class="wo-cta-img-badge-title">{{ section.settings.img_badge_title }}</div>
+              {%- if section.settings.img_badge_sub != blank -%}
+                <div class="wo-cta-img-badge-sub">{{ section.settings.img_badge_sub }}</div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+        </div>
+      {%- endif -%}
+
+      <!-- Button Group -->
+      <div class="wo-cta-btn-group wo-anim-reveal-right">
+
+        {%- if section.settings.btn_text != blank and section.settings.btn_url != blank -%}
+          <div class="wo-cta-btn-wrap" id="wo-magnetic-{{ section.id }}">
+            <a href="{{ section.settings.btn_url }}" class="wo-cta-btn">
+              {{ section.settings.btn_text }}
+              <span class="wo-cta-btn-arrow">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+              </span>
+            </a>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_trust -%}
+          <div class="wo-cta-trust">
+            {%- if section.settings.trust1 != blank -%}
+              <div class="wo-cta-trust-item">
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0
+                        01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622
+                        5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+                {{ section.settings.trust1 }}
+              </div>
+              <div class="wo-cta-trust-sep"></div>
+            {%- endif -%}
+
+            {%- if section.settings.trust2 != blank -%}
+              <div class="wo-cta-trust-item">
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                {{ section.settings.trust2 }}
+              </div>
+              <div class="wo-cta-trust-sep"></div>
+            {%- endif -%}
+
+            {%- if section.settings.trust3 != blank -%}
+              <div class="wo-cta-trust-item">
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283
+                        -.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283
+                        .356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                {{ section.settings.trust3 }}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.secondary_text != blank
+            and section.settings.secondary_url != blank -%}
+          <a href="{{ section.settings.secondary_url }}" class="wo-cta-secondary-link">
+            {{ section.settings.secondary_text }}
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        {%- endif -%}
+
+      </div><!-- /btn-group -->
+
+    </div><!-- /right -->
+
+  </div><!-- /grid -->
+</section>
+
+<script>
+(function () {
+  const section = document.getElementById('wo-cta-{{ section.id }}');
+  if (!section) return;
+
+  /* 1 — Scroll Reveal */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        section.classList.add('is-visible');
+        observer.unobserve(section);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  observer.observe(section);
+
+  /* 2 — Magnetic Button */
+  const btnWrap = document.getElementById('wo-magnetic-{{ section.id }}');
+  const btn     = btnWrap ? btnWrap.querySelector('.wo-cta-btn') : null;
+
+  if (btnWrap && btn) {
+    let raf;
+
+    btnWrap.addEventListener('mousemove', (e) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const rect = btnWrap.getBoundingClientRect();
+        const x    = e.clientX - rect.left  - rect.width  / 2;
+        const y    = e.clientY - rect.top   - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px) scale(1.02)`;
+      });
+    });
+
+    btnWrap.addEventListener('mouseleave', () => {
+      cancelAnimationFrame(raf);
+      btn.style.transform = '';
+    });
+  }
+
+  /* 3 — Counter Animation */
+  const statNums = section.querySelectorAll('.wo-cta-stat-num');
+
+  if (statNums.length) {
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+
+        const el         = entry.target;
+        const suffix     = el.querySelector('span');
+        const suffixTxt  = suffix ? suffix.textContent : '';
+        const rawText    = el.childNodes[0].textContent.trim();
+        const target     = parseFloat(rawText);
+
+        if (isNaN(target)) return;
+
+        const isFloat   = rawText.includes('.');
+        const duration  = 1600;
+        const start     = performance.now();
+
+        function tick(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased    = 1 - Math.pow(1 - progress, 4);
+          const current  = target * eased;
+          el.childNodes[0].textContent = isFloat
+            ? current.toFixed(1)
+            : Math.round(current);
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+
+        requestAnimationFrame(tick);
+        countObserver.unobserve(el);
+      });
+    }, { threshold: 0.6 });
+
+    statNums.forEach(n => countObserver.observe(n));
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "WO Premium CTA v2",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "━━ Section Background Image ━━"
+    },
+    {
+      "type": "image_picker",
+      "id": "section_bg_image",
+      "label": "Section Background Image"
+    },
+    {
+      "type": "text",
+      "id": "section_bg_alt",
+      "label": "Section BG Image Alt Text",
+      "default": "Background"
+    },
+    {
+      "type": "color",
+      "id": "section_overlay_color",
+      "label": "Section BG Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "section_overlay_opacity",
+      "min": 0,
+      "max": 95,
+      "step": 5,
+      "unit": "%",
+      "label": "Section BG Overlay Opacity",
+      "default": 60
+    },
+    {
+      "type": "checkbox",
+      "id": "section_bg_grad",
+      "label": "Enable Readability Gradient",
+      "default": true,
+      "info": "Adds a subtle dark gradient over the BG image to improve text contrast"
+    },
+    {
+      "type": "header",
+      "content": "━━ Left Column — Content ━━"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "Work Offshore"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Heading",
+      "default": "Your New Life\nStarts Offshore."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Stop trading all your time for half the money. Join the elite who work less and earn significantly more offshore."
+    },
+    {
+      "type": "header",
+      "content": "━━ Stats Row ━━"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show Stats",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stat1_num",
+      "label": "Stat 1 — Number",
+      "default": "3"
+    },
+    {
+      "type": "text",
+      "id": "stat1_suffix",
+      "label": "Stat 1 — Suffix",
+      "default": "x"
+    },
+    {
+      "type": "text",
+      "id": "stat1_label",
+      "label": "Stat 1 — Label",
+      "default": "Avg Salary Increase"
+    },
+    {
+      "type": "text",
+      "id": "stat2_num",
+      "label": "Stat 2 — Number",
+      "default": "500"
+    },
+    {
+      "type": "text",
+      "id": "stat2_suffix",
+      "label": "Stat 2 — Suffix",
+      "default": "+"
+    },
+    {
+      "type": "text",
+      "id": "stat2_label",
+      "label": "Stat 2 — Label",
+      "default": "Professionals Placed"
+    },
+    {
+      "type": "text",
+      "id": "stat3_num",
+      "label": "Stat 3 — Number",
+      "default": "48"
+    },
+    {
+      "type": "text",
+      "id": "stat3_suffix",
+      "label": "Stat 3 — Suffix",
+      "default": "hr"
+    },
+    {
+      "type": "text",
+      "id": "stat3_label",
+      "label": "Stat 3 — Label",
+      "default": "Avg Match Time"
+    },
+    {
+      "type": "header",
+      "content": "━━ Right Column — Card Image ━━"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Card Image"
+    },
+    {
+      "type": "text",
+      "id": "img_alt",
+      "label": "Card Image Alt Text",
+      "default": "Work Offshore opportunity"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Card Image Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Card Image Overlay Opacity",
+      "default": 30
+    },
+    {
+      "type": "checkbox",
+      "id": "show_live_badge",
+      "label": "Show Live Positions Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "live_badge_text",
+      "label": "Live Badge Text",
+      "default": "Live Positions"
+    },
+    {
+      "type": "text",
+      "id": "img_badge_title",
+      "label": "Card Bottom Badge — Title",
+      "default": "Gulf Region • APAC • Europe"
+    },
+    {
+      "type": "text",
+      "id": "img_badge_sub",
+      "label": "Card Bottom Badge — Subtitle",
+      "default": "Active Offshore Markets"
+    },
+    {
+      "type": "header",
+      "content": "━━ Right Column — Button ━━"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Primary Button Text",
+      "default": "Secure Your Career Package"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_text",
+      "label": "Secondary Link Text",
+      "default": "Browse open positions"
+    },
+    {
+      "type": "url",
+      "id": "secondary_url",
+      "label": "Secondary Link URL"
+    },
+    {
+      "type": "header",
+      "content": "━━ Trust Badges ━━"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust",
+      "label": "Show Trust Badges",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust1",
+      "label": "Trust Badge 1",
+      "default": "100% Secure"
+    },
+    {
+      "type": "text",
+      "id": "trust2",
+      "label": "Trust Badge 2",
+      "default": "Fast Setup"
+    },
+    {
+      "type": "text",
+      "id": "trust3",
+      "label": "Trust Badge 3",
+      "default": "500+ Placed"
+    },
+    {
+      "type": "header",
+      "content": "━━ Colors ━━"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Fallback Background",
+      "default": "#050505",
+      "info": "Used when no background image is set"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Heading Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body Text Color",
+      "default": "#8a8f9e"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#f0b83e"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "label": "Button Background",
+      "default": "#f0b83e"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Button Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "btn_glow_color",
+      "label": "Button Glow Color",
+      "default": "#f0b83e"
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography (Desktop) ━━"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desk",
+      "min": 30,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size",
+      "default": 58
+    },
+    {
+      "type": "range",
+      "id": "text_size_desk",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Size",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "label_size_desk",
+      "min": 9,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Eyebrow Label Size",
+      "default": 11
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography (Mobile) ━━"
+    },
+    {
+      "type": "range",
+      "id": "title_size_mob",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "text_size_mob",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Size",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "━━ Spacing & Shape ━━"
+    },
+    {
+      "type": "range",
+      "id": "col_gap",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Column Gap",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "section_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Section Border Radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "inner_radius",
+      "min": 4,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Image Radius",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "pad_top_desk",
+      "min": 40,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding (Desktop)",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "pad_bot_desk",
+      "min": 40,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding (Desktop)",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "pad_top_mob",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding (Mobile)",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "pad_bot_mob",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding (Mobile)",
+      "default": 70
+    }
+  ],
+  "presets": [
+    {
+      "name": "WO Premium CTA v2"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,725 @@
+{% comment %}
+  ============================================================
+  WORK OFFSHORE — FAQ / ACCORDION SECTION
+  2-Column Grid | Background Image + Overlay | Auto-Close Siblings
+  ============================================================
+{% endcomment %}
+
+<style>
+/* ============================================================
+   CSS VARIABLES
+============================================================ */
+#shopify-section-{{ section.id }} {
+  --wo-faq-accent:      {{ section.settings.accent_color }};
+  --wo-faq-title:       {{ section.settings.title_color }};
+  --wo-faq-q:           {{ section.settings.question_color }};
+  --wo-faq-a:           {{ section.settings.answer_color }};
+  --wo-faq-item-bg:     {{ section.settings.item_bg_color }};
+  --wo-faq-item-border: {{ section.settings.item_border_color }};
+  --wo-faq-btn-bg:      {{ section.settings.btn_bg_color }};
+  --wo-faq-btn-text:    {{ section.settings.btn_text_color }};
+  --wo-faq-btn-border:  {{ section.settings.btn_border_color }};
+  --wo-faq-overlay:     {{ section.settings.overlay_color }};
+  --wo-faq-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+
+  --wo-faq-title-desk:  {{ section.settings.title_size_desktop }}px;
+  --wo-faq-q-desk:      {{ section.settings.q_size_desktop }}px;
+  --wo-faq-a-desk:      {{ section.settings.a_size_desktop }}px;
+  --wo-faq-title-mob:   {{ section.settings.title_size_mobile }}px;
+  --wo-faq-q-mob:       {{ section.settings.q_size_mobile }}px;
+  --wo-faq-a-mob:       {{ section.settings.a_size_mobile }}px;
+
+  --wo-faq-pad-top-desk: {{ section.settings.pad_top_desktop }}px;
+  --wo-faq-pad-bot-desk: {{ section.settings.pad_bot_desktop }}px;
+  --wo-faq-pad-top-mob:  {{ section.settings.pad_top_mobile }}px;
+  --wo-faq-pad-bot-mob:  {{ section.settings.pad_bot_mobile }}px;
+}
+
+/* ============================================================
+   SECTION WRAPPER — background image + overlay
+============================================================ */
+.wo-faq-section {
+  position: relative;
+  padding: var(--wo-faq-pad-top-desk) 20px var(--wo-faq-pad-bot-desk);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
+
+/* Background image layer */
+.wo-faq-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+/* Overlay layer — color + opacity controlled from theme editor */
+.wo-faq-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: var(--wo-faq-overlay);
+  opacity: var(--wo-faq-overlay-opacity);
+  z-index: 1;
+}
+
+/* Content sits above overlay */
+.wo-faq-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1560px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   HEADER
+============================================================ */
+.wo-faq-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.wo-faq-title {
+  font-size: var(--wo-faq-title-desk);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--wo-faq-title);
+  margin: 0;
+}
+
+/* ============================================================
+   2-COLUMN GRID
+============================================================ */
+.wo-faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 12px;
+}
+
+.wo-faq-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ============================================================
+   FAQ ITEM
+============================================================ */
+.wo-faq-item {
+  background-color: var(--wo-faq-item-bg);
+  border: 1px solid var(--wo-faq-item-border);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: background-color 0.25s ease;
+}
+
+.wo-faq-item:hover {
+  background-color: rgba(18,18,18,0.67);
+}
+
+/* ============================================================
+   TRIGGER / QUESTION ROW
+============================================================ */
+.wo-faq-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wo-faq-trigger:focus-visible {
+  outline: 2px solid var(--wo-faq-accent);
+  outline-offset: -2px;
+  border-radius: 6px;
+}
+
+.wo-faq-q-text {
+  font-size: var(--wo-faq-q-desk);
+  font-weight: 600;
+  color: var(--wo-faq-q);
+  padding-right: 16px;
+  line-height: 1.4;
+  transition: color 0.25s ease;
+}
+
+.wo-faq-item.is-open .wo-faq-q-text {
+  color: #ffffff;
+}
+
+/* ============================================================
+   PLUS / MINUS ICON
+============================================================ */
+.wo-faq-icon {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.wo-faq-icon::before,
+.wo-faq-icon::after {
+  content: '';
+  position: absolute;
+  background-color: var(--wo-faq-accent);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+  border-radius: 2px;
+}
+
+.wo-faq-icon::before {
+  top: 50%; left: 0;
+  width: 100%; height: 2px;
+  margin-top: -1px;
+}
+
+.wo-faq-icon::after {
+  top: 0; left: 50%;
+  width: 2px; height: 100%;
+  margin-left: -1px;
+}
+
+.wo-faq-item.is-open .wo-faq-icon::after {
+  transform: rotate(90deg);
+  opacity: 0;
+}
+
+/* ============================================================
+   SMOOTH ACCORDION CONTENT (CSS GRID TRICK)
+============================================================ */
+.wo-faq-content-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wo-faq-item.is-open .wo-faq-content-wrap {
+  grid-template-rows: 1fr;
+}
+
+.wo-faq-content-inner {
+  overflow: hidden;
+}
+
+.wo-faq-a-text {
+  padding: 0 20px 20px;
+  font-size: var(--wo-faq-a-desk);
+  color: var(--wo-faq-a);
+  line-height: 1.65;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.28s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wo-faq-item.is-open .wo-faq-a-text {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.08s;
+}
+
+.wo-faq-a-text a {
+  color: var(--wo-faq-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ============================================================
+   VIEW ALL BUTTON
+============================================================ */
+.wo-faq-footer {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.wo-faq-btn {
+  display: inline-block;
+  padding: 14px 40px;
+  background-color: var(--wo-faq-btn-bg);
+  color: var(--wo-faq-btn-text);
+  border: 1px solid var(--wo-faq-btn-border);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.wo-faq-btn:hover {
+  background-color: var(--wo-faq-accent);
+  border-color: var(--wo-faq-accent);
+  color: #000;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 768px) {
+  .wo-faq-section {
+    padding: var(--wo-faq-pad-top-mob) 16px var(--wo-faq-pad-bot-mob);
+  }
+  .wo-faq-header {
+    margin-bottom: 24px;
+  }
+  .wo-faq-title {
+    font-size: var(--wo-faq-title-mob);
+  }
+  /* Stack to single column on mobile */
+  .wo-faq-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .wo-faq-col {
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .wo-faq-q-text {
+    font-size: var(--wo-faq-q-mob);
+  }
+  .wo-faq-a-text {
+    font-size: var(--wo-faq-a-mob);
+    padding: 0 16px 18px;
+  }
+  .wo-faq-trigger {
+    padding: 16px;
+  }
+}
+</style>
+
+<section class="wo-faq-section">
+
+  <!-- Background Image -->
+  {%- if section.settings.bg_image != blank -%}
+    <div class="wo-faq-bg" style="background-image: url('{{ section.settings.bg_image | image_url: width: 1600 }}');"></div>
+  {%- else -%}
+    <div class="wo-faq-bg" style="background-color: {{ section.settings.fallback_bg_color }};"></div>
+  {%- endif -%}
+
+  <!-- Overlay -->
+  <div class="wo-faq-overlay"></div>
+
+  <div class="wo-faq-inner">
+
+    <!-- Header -->
+    <div class="wo-faq-header">
+      {%- if section.settings.title != blank -%}
+        <h2 class="wo-faq-title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+    </div>
+
+    <!-- 2-Column FAQ Grid — each column is an independent accordion group -->
+    <div class="wo-faq-grid">
+
+      <!-- LEFT COLUMN (odd blocks: 1, 3, 5 …) -->
+      <div class="wo-faq-col" data-col="left">
+        {%- for block in section.blocks -%}
+          {%- if forloop.index0 == 0 or forloop.index0 == 2 or forloop.index0 == 4 or forloop.index0 == 6 or forloop.index0 == 8 -%}
+            <div class="wo-faq-item" {{ block.shopify_attributes }}>
+              <button class="wo-faq-trigger"
+                      aria-expanded="false"
+                      aria-controls="faq-content-{{ block.id }}">
+                <span class="wo-faq-q-text">{{ block.settings.question }}</span>
+                <span class="wo-faq-icon" aria-hidden="true"></span>
+              </button>
+              <div class="wo-faq-content-wrap" id="faq-content-{{ block.id }}">
+                <div class="wo-faq-content-inner">
+                  <div class="wo-faq-a-text">{{ block.settings.answer }}</div>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <!-- RIGHT COLUMN (even blocks: 2, 4, 6 …) -->
+      <div class="wo-faq-col" data-col="right">
+        {%- for block in section.blocks -%}
+          {%- if forloop.index0 == 1 or forloop.index0 == 3 or forloop.index0 == 5 or forloop.index0 == 7 or forloop.index0 == 9 -%}
+            <div class="wo-faq-item" {{ block.shopify_attributes }}>
+              <button class="wo-faq-trigger"
+                      aria-expanded="false"
+                      aria-controls="faq-content-{{ block.id }}">
+                <span class="wo-faq-q-text">{{ block.settings.question }}</span>
+                <span class="wo-faq-icon" aria-hidden="true"></span>
+              </button>
+              <div class="wo-faq-content-wrap" id="faq-content-{{ block.id }}">
+                <div class="wo-faq-content-inner">
+                  <div class="wo-faq-a-text">{{ block.settings.answer }}</div>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+    </div>
+
+    <!-- View All Button -->
+    {%- if section.settings.show_btn and section.settings.btn_label != blank -%}
+      <div class="wo-faq-footer">
+        <a href="{{ section.settings.btn_url }}" class="wo-faq-btn">
+          {{ section.settings.btn_label }}
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<!-- ============================================================
+     JAVASCRIPT: EXCLUSIVE ACCORDION (AUTO-CLOSE SIBLINGS)
+============================================================ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const sectionEl = document.getElementById('shopify-section-{{ section.id }}');
+  if (!sectionEl) return;
+
+  sectionEl.querySelectorAll('.wo-faq-trigger').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const currentItem = btn.closest('.wo-faq-item');
+      const parentCol  = btn.closest('.wo-faq-col');
+      const isOpen     = currentItem.classList.contains('is-open');
+
+      // Close all items ONLY within the same column
+      parentCol.querySelectorAll('.wo-faq-item').forEach(item => {
+        item.classList.remove('is-open');
+        item.querySelector('.wo-faq-trigger').setAttribute('aria-expanded', 'false');
+      });
+
+      // If clicked item was closed, open it (toggle: if it was open it stays closed)
+      if (!isOpen) {
+        currentItem.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // ── Default: প্রতিটি column এর প্রথম item auto-open ──
+  sectionEl.querySelectorAll('.wo-faq-col').forEach(col => {
+    const firstItem = col.querySelector('.wo-faq-item');
+    if (firstItem) {
+      firstItem.classList.add('is-open');
+      firstItem.querySelector('.wo-faq-trigger').setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "WO FAQ Section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "━━ Content ━━"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "header",
+      "content": "━━ Background ━━"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "color",
+      "id": "fallback_bg_color",
+      "label": "Fallback Background Color (no image)",
+      "default": "#0d1b2a"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#0a1628"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 75
+    },
+    {
+      "type": "header",
+      "content": "━━ Colors ━━"
+    },
+    {
+      "type": "color",
+      "id": "item_bg_color",
+      "label": "FAQ Item Background",
+      "default": "#0e1e35"
+    },
+    {
+      "type": "color",
+      "id": "item_border_color",
+      "label": "FAQ Item Border",
+      "default": "#1e3050"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Plus Icon & Link Color",
+      "default": "#e8a020"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Heading Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Question Text Color",
+      "default": "#d0d8e8"
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Answer Text Color",
+      "default": "#8a9ab5"
+    },
+    {
+      "type": "header",
+      "content": "━━ Button ━━"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_btn",
+      "label": "Show 'View All FAQs' Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "VIEW ALL FAQS"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "label": "Button Background",
+      "default": "#00000000"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_border_color",
+      "label": "Button Border Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography (Desktop) ━━"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "q_size_desktop",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Question Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "a_size_desktop",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Answer Size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography (Mobile) ━━"
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 20,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "q_size_mobile",
+      "min": 13,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Question Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "a_size_mobile",
+      "min": 12,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Answer Size",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "━━ Padding ━━"
+    },
+    {
+      "type": "range",
+      "id": "pad_top_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "pad_bot_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "pad_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding (Mobile)",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "pad_bot_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding (Mobile)",
+      "default": 45
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Do I need experience to work offshore?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>No prior offshore experience is required. Entry-level positions exist for motivated candidates willing to complete the necessary safety certifications and training.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WO FAQ Section",
+      "blocks": [
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Do I need experience to work offshore?",
+            "answer": "<p>No prior offshore experience is required. Entry-level positions exist for motivated candidates willing to complete the necessary safety certifications and training.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How long does it take to get hired?",
+            "answer": "<p>The hiring timeline varies by role and employer, but with the right certifications in place, many candidates secure their first offshore position within 4–12 weeks of actively applying.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How long are the rotations?",
+            "answer": "<p>Standard rotations are typically 2 weeks on / 2 weeks off or 4 weeks on / 4 weeks off, depending on the employer and region. Some specialist roles may have different schedules.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Is the guide suitable for beginners?",
+            "answer": "<p>Absolutely. The guide is written specifically for people who are completely new to the offshore industry. It covers everything from certifications to CV writing and interview preparation.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What is the average salary?",
+            "answer": "<p>Entry-level offshore roles typically start between $50,000–$80,000 per year depending on the role and region. Experienced technicians and supervisors can earn significantly more.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Do you offer refunds?",
+            "answer": "<p>Yes, we offer a 30-day money-back guarantee. If you are not satisfied with the guide for any reason, contact us and we will issue a full refund — no questions asked.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
