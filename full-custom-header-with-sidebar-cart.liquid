@@ -1,1752 +1,607 @@
 {% comment %}
   ============================================================
-  WORK OFFSHORE — PREMIUM HEADER
-  Full refined version | Solid dark | Logo contained
+  PRO PREMIUM HEADER
+  Refactored for full customization from Theme Editor
   ============================================================
 {% endcomment %}
 
 {%- liquid
+  assign section_id = section.id
   assign menu = section.settings.menu
   assign show_cta = section.settings.show_cta_button
   assign cta_text = section.settings.cta_button_text
   assign cta_url = section.settings.cta_button_url
   assign show_cart_count = section.settings.show_cart_count
+
+  assign logo_font = section.settings.logo_font
+  assign nav_font = section.settings.nav_font
+  assign cta_font = section.settings.cta_font
 -%}
 
 <style>
-/* ============================================================
-   CSS VARIABLES
-============================================================ */
-:root {
-  --wo-h-desk: {{ section.settings.header_height_desktop }}px;
-  --wo-h-mob: {{ section.settings.header_height_mobile }}px;
-  --wo-pad-desk: {{ section.settings.desktop_padding }}px;
-  --wo-pad-mob: {{ section.settings.mobile_padding }}px;
-  --wo-logo-w-desk: {{ section.settings.logo_width_desktop }}px;
-  --wo-logo-w-mob: {{ section.settings.logo_width_mobile }}px;
-  --wo-logo-h-desk: calc(var(--wo-h-desk) - {{ section.settings.logo_vertical_padding }}px);
-  --wo-logo-h-mob: calc(var(--wo-h-mob) - {{ section.settings.logo_vertical_padding_mobile }}px);
-  --wo-header-bg: {{ section.settings.header_bg_color }};
-  --wo-header-border: {{ section.settings.header_border_color }};
-  --wo-logo-color: {{ section.settings.logo_text_color }};
-  --wo-nav-color: {{ section.settings.nav_text_color }};
-  --wo-nav-hover: {{ section.settings.nav_hover_color }};
-  --wo-nav-active: {{ section.settings.nav_active_color }};
-  --wo-nav-size: {{ section.settings.nav_font_size }}px;
-  --wo-nav-gap: {{ section.settings.nav_spacing }}px;
-  --wo-nav-tracking: {{ section.settings.nav_letter_spacing }}em;
-  --wo-cart-color: {{ section.settings.cart_icon_color }};
-  --wo-cart-size: {{ section.settings.cart_icon_size }}px;
-  --wo-count-bg: {{ section.settings.cart_count_bg }};
-  --wo-count-color: {{ section.settings.cart_count_color }};
-  --wo-cta-bg: {{ section.settings.cta_bg_color }};
-  --wo-cta-color: {{ section.settings.cta_text_color }};
-  --wo-cta-hover: {{ section.settings.cta_hover_bg }};
-  --wo-cta-radius: {{ section.settings.cta_border_radius }}px;
-  --wo-cta-border: {{ section.settings.cta_border_color }};
-  --wo-mob-bg: {{ section.settings.mobile_menu_bg }};
-  --wo-drawer-bg: {{ section.settings.drawer_bg }};
-  --wo-overlay-op: {{ section.settings.overlay_opacity }};
-  --wo-speed: {{ section.settings.animation_speed }}ms;
-  --wo-ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --wo-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-}
+  {{ logo_font | font_face: font_display: 'swap' }}
+  {{ nav_font | font_face: font_display: 'swap' }}
+  {{ cta_font | font_face: font_display: 'swap' }}
+
+  :root {
+    --wo-h-desk: {{ section.settings.header_height_desktop }}px;
+    --wo-h-mob: {{ section.settings.header_height_mobile }}px;
+    --wo-pad-desk: {{ section.settings.desktop_padding }}px;
+    --wo-pad-mob: {{ section.settings.mobile_padding }}px;
+    
+    --wo-logo-w-desk: {{ section.settings.logo_width_desktop }}px;
+    --wo-logo-w-mob: {{ section.settings.logo_width_mobile }}px;
+    --wo-logo-h-desk: calc(var(--wo-h-desk) - {{ section.settings.logo_vertical_padding }}px);
+    --wo-logo-h-mob: calc(var(--wo-h-mob) - {{ section.settings.logo_vertical_padding_mobile }}px);
+    
+    --wo-header-bg: {{ section.settings.header_bg_color }};
+    --wo-header-border: {{ section.settings.header_border_color }};
+    
+    /* Logo Typography */
+    --wo-logo-font: {{ logo_font.family }}, {{ logo_font.fallback_families }};
+    --wo-logo-color: {{ section.settings.logo_text_color }};
+    --wo-logo-size: {{ section.settings.logo_font_size }}px;
+    --wo-logo-weight: {{ section.settings.logo_font_weight | default: logo_font.weight }};
+    --wo-logo-ls: {{ section.settings.logo_letter_spacing }}em;
+    --wo-logo-transform: {{ section.settings.logo_text_transform }};
+
+    /* Nav Typography */
+    --wo-nav-font: {{ nav_font.family }}, {{ nav_font.fallback_families }};
+    --wo-nav-color: {{ section.settings.nav_text_color }};
+    --wo-nav-hover: {{ section.settings.nav_hover_color }};
+    --wo-nav-active: {{ section.settings.nav_active_color }};
+    --wo-nav-size: {{ section.settings.nav_font_size }}px;
+    --wo-nav-weight: {{ section.settings.nav_font_weight | default: nav_font.weight }};
+    --wo-nav-gap: {{ section.settings.nav_spacing }}px;
+    --wo-nav-tracking: {{ section.settings.nav_letter_spacing }}em;
+    --wo-nav-transform: {{ section.settings.nav_text_transform }};
+
+    /* Cart Icon & Badge */
+    --wo-cart-color: {{ section.settings.cart_icon_color }};
+    --wo-cart-size: {{ section.settings.cart_icon_size }}px;
+    --wo-count-bg: {{ section.settings.cart_count_bg }};
+    --wo-count-color: {{ section.settings.cart_count_color }};
+
+    /* CTA Typography */
+    --wo-cta-font: {{ cta_font.family }}, {{ cta_font.fallback_families }};
+    --wo-cta-bg: {{ section.settings.cta_bg_color }};
+    --wo-cta-color: {{ section.settings.cta_text_color }};
+    --wo-cta-hover: {{ section.settings.cta_hover_bg }};
+    --wo-cta-radius: {{ section.settings.cta_border_radius }}px;
+    --wo-cta-border: {{ section.settings.cta_border_color }};
+    --wo-cta-weight: {{ section.settings.cta_font_weight | default: cta_font.weight }};
+    --wo-cta-ls: {{ section.settings.cta_letter_spacing }}em;
+    --wo-cta-transform: {{ section.settings.cta_text_transform }};
+
+    /* Drawer & Mobile Menu */
+    --wo-mob-bg: {{ section.settings.mobile_menu_bg }};
+    --wo-drawer-bg: {{ section.settings.drawer_bg }};
+    --wo-overlay-op: {{ section.settings.overlay_opacity }};
+    --wo-speed: {{ section.settings.animation_speed }}ms;
+    --wo-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --wo-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .wo-header *, .wo-header *::before, .wo-header *::after,
+  .wo-cart-drawer *, .wo-cart-drawer *::before, .wo-cart-drawer *::after,
+  .wo-mobile-menu *, .wo-mobile-menu *::before, .wo-mobile-menu *::after,
+  .wo-overlay { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { padding-top: var(--wo-h-desk); }
+  @media (max-width: 768px) { body { padding-top: var(--wo-h-mob); } }
+
+  .wo-header {
+    position: {{ section.settings.sticky_behavior | liquid_if_true: 'fixed', 'relative' }};
+    top: 0; left: 0; right: 0;
+    z-index: 9990;
+    width: 100%;
+    height: var(--wo-h-desk);
+    background: var(--wo-header-bg);
+    border-bottom: 1px solid var(--wo-header-border);
+    display: flex;
+    align-items: center;
+    transition: background var(--wo-speed) var(--wo-ease), border-color var(--wo-speed) var(--wo-ease);
+  }
+
+  .wo-header.is-menu-open {
+    background: var(--wo-mob-bg);
+    border-bottom-color: transparent;
+  }
+
+  .wo-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: {{ section.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 var(--wo-pad-desk);
+    height: 100%;
+    position: relative;
+    gap: 20px;
+  }
+
+  /* Logo */
+  .wo-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    z-index: 2;
+    position: relative;
+    padding: 0;
+    order: {{ section.settings.logo_position | liquid_if_true: '1', '2' }};
+  }
 
-/* ============================================================
-   GLOBAL RESET (scoped)
-============================================================ */
-.wo-header *, .wo-header *::before, .wo-header *::after,
-.wo-cart-drawer *, .wo-cart-drawer *::before, .wo-cart-drawer *::after,
-.wo-mobile-menu *, .wo-mobile-menu *::before, .wo-mobile-menu *::after,
-.wo-overlay { box-sizing: border-box; margin: 0; padding: 0; }
-
-/* ============================================================
-   BODY OFFSET
-============================================================ */
-body { padding-top: var(--wo-h-desk); }
-
-@media (max-width: 768px) {
-  body { padding-top: var(--wo-h-mob); }
-}
-
-/* ============================================================
-   HEADER — ALWAYS SOLID, FIXED
-============================================================ */
-.wo-header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 9990;
-  width: 100%;
-  height: var(--wo-h-desk);
-  background: var(--wo-header-bg);
-  border-bottom: 1px solid var(--wo-header-border);
-  display: flex;
-  align-items: center;
-  transition: 
-    background var(--wo-speed) var(--wo-ease),
-    border-color var(--wo-speed) var(--wo-ease);
-  will-change: auto;
-}
-
-.wo-header.is-menu-open {
-  background: var(--wo-mob-bg);
-  border-bottom-color: transparent;
-}
-
-.wo-header__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1640px;
-  margin: 0 auto;
-  padding: 0 var(--wo-pad-desk);
-  height: 100%;
-  position: relative;
-}
-
-/* ============================================================
-   LOGO — FULLY CONTAINED
-============================================================ */
-.wo-logo {
-  display: flex;
-  align-items: center;
-  flex-shrink: 1;
-  min-width: 0;
-  height: 100%;
-  text-decoration: none;
-  z-index: 2;
-  position: relative;
-  padding: 0;
-}
-
-/* Image logo */
-.wo-logo__img {
-  display: block;
-  width: var(--wo-logo-w-desk);
-  max-width: 100%;
-  height: var(--wo-logo-h-desk);
-  max-height: var(--wo-logo-h-desk);
-  min-height: 24px;
-  object-fit: contain;
-  object-position: left center;
-  transition:
-    opacity var(--wo-speed) var(--wo-ease),
-    transform var(--wo-speed) var(--wo-ease);
-  will-change: transform, opacity;
-  flex-shrink: 1;
-}
-
-.wo-logo:hover .wo-logo__img {
-  opacity: 0.8;
-  transform: scale(0.975);
-}
-
-/* Text logo */
-.wo-logo__text-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 100%;
-  min-width: 0;
-}
-
-.wo-logo__icon-mark {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  height: 28px;
-  width: 28px;
-}
-
-.wo-logo__icon-mark svg {
-  width: 100%;
-  height: 100%;
-}
-
-.wo-logo__name {
-  font-size: {{ section.settings.logo_font_size }}px;
-  font-weight: {{ section.settings.logo_font_weight }};
-  letter-spacing: {{ section.settings.logo_letter_spacing }}em;
-  text-transform: {{ section.settings.logo_text_transform }};
-  color: var(--wo-logo-color);
-  line-height: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: opacity var(--wo-speed) var(--wo-ease);
-}
-
-.wo-logo:hover .wo-logo__name {
-  opacity: 0.75;
-}
-
-/* ============================================================
-   DESKTOP NAV — CENTERED ABSOLUTE
-============================================================ */
-.wo-nav-wrap {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: auto;
-}
-
-.wo-nav {
-  display: flex;
-  align-items: center;
-  gap: var(--wo-nav-gap);
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  white-space: nowrap;
-}
-
-.wo-nav__item {
-  position: relative;
-}
-
-.wo-nav__link {
-  display: inline-block;
-  font-size: var(--wo-nav-size);
-  font-weight: 700;
-  letter-spacing: var(--wo-nav-tracking);
-  text-transform: {{ section.settings.nav_text_transform }};
-  color: var(--wo-nav-color);
-  text-decoration: none;
-  padding: 8px 0;
-  position: relative;
-  white-space: nowrap;
-  transition: color var(--wo-speed) var(--wo-ease);
-}
-
-/* Underline slide */
-.wo-nav__link::after {
-  content: '';
-  position: absolute;
-  bottom: 2px;
-  left: 0;
-  width: 100%;
-  height: 1.5px;
-  background: var(--wo-nav-hover);
-  border-radius: 2px;
-  transform: scaleX(0);
-  transform-origin: right center;
-  transition: transform calc(var(--wo-speed) * 0.7) var(--wo-ease);
-  will-change: transform;
-}
-
-.wo-nav__link:hover { color: var(--wo-nav-hover); }
-.wo-nav__link:hover::after {
-  transform: scaleX(1);
-  transform-origin: left center;
-}
-
-.wo-nav__link.wo-active {
-  color: var(--wo-nav-active);
-}
-
-.wo-nav__link.wo-active::after {
-  background: var(--wo-nav-active);
-  transform: scaleX(1);
-}
-
-/* ============================================================
-   RIGHT ACTIONS
-============================================================ */
-.wo-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-  z-index: 2;
-}
-
-/* ============================================================
-   CART BUTTON
-============================================================ */
-.wo-cart-btn {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  border-radius: 10px;
-  -webkit-tap-highlight-color: transparent;
-  transition:
-    background var(--wo-speed) var(--wo-ease),
-    transform calc(var(--wo-speed) * 0.5) var(--wo-spring);
-  will-change: transform;
-}
-
-.wo-cart-btn:hover {
-  background: rgba(255,255,255,0.06);
-  transform: scale(1.06);
-}
-
-.wo-cart-btn:active { transform: scale(0.93); }
-
-.wo-cart-btn svg {
-  width: var(--wo-cart-size);
-  height: var(--wo-cart-size);
-  stroke: var(--wo-cart-color);
-  fill: none;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: stroke var(--wo-speed) var(--wo-ease);
-  pointer-events: none;
-}
-
-.wo-cart-btn:hover svg { stroke: var(--wo-nav-hover); }
-
-/* Cart badge */
-.wo-badge {
-  position: absolute;
-  top: 4px; right: 4px;
-  min-width: 16px;
-  height: 16px;
-  background: var(--wo-count-bg);
-  color: var(--wo-count-color);
-  border-radius: 50%;
-  font-size: 9px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 3px;
-  letter-spacing: 0;
-  line-height: 1;
-  pointer-events: none;
-  opacity: 0;
-  transform: scale(0) translate(2px, -2px);
-  transition:
-    opacity 0.28s var(--wo-spring),
-    transform 0.32s var(--wo-spring);
-  will-change: transform, opacity;
-}
-
-.wo-badge.is-visible {
-  opacity: 1;
-  transform: scale(1) translate(0, 0);
-}
-
-.wo-badge.do-pop {
-  animation: wo-badge-pop 0.38s var(--wo-spring) forwards;
-}
-
-@keyframes wo-badge-pop {
-  0%   { transform: scale(0.3) translate(2px,-2px); }
-  55%  { transform: scale(1.4) translate(0,0); }
-  100% { transform: scale(1)   translate(0,0); }
-}
-
-/* ============================================================
-   CTA BUTTON
-============================================================ */
-.wo-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 22px;
-  height: 38px;
-  background: var(--wo-cta-bg);
-  color: var(--wo-cta-color);
-  border: 1px solid var(--wo-cta-border);
-  border-radius: var(--wo-cta-radius);
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  text-decoration: none;
-  white-space: nowrap;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  position: relative;
-  overflow: hidden;
-  transition:
-    background var(--wo-speed) var(--wo-ease),
-    border-color var(--wo-speed) var(--wo-ease),
-    color var(--wo-speed) var(--wo-ease),
-    transform calc(var(--wo-speed) * 0.5) var(--wo-spring),
-    box-shadow var(--wo-speed) var(--wo-ease);
-  will-change: transform, box-shadow;
-}
-
-.wo-cta:hover {
-  background: var(--wo-cta-hover);
-  border-color: rgba(255,255,255,0.2);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 22px rgba(0,0,0,0.28);
-}
-
-.wo-cta:active {
-  transform: translateY(0) scale(0.97);
-  box-shadow: none;
-}
-
-/* ============================================================
-   HAMBURGER
-============================================================ */
-.wo-hamburger {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  border-radius: 10px;
-  gap: 6px;
-  -webkit-tap-highlight-color: transparent;
-  transition: background var(--wo-speed) var(--wo-ease);
-  position: relative;
-}
-
-.wo-hamburger:hover { background: rgba(255,255,255,0.06); }
-
-.wo-hamburger__bar {
-  display: block;
-  height: 1.5px;
-  background: var(--wo-nav-color);
-  border-radius: 2px;
-  transition:
-    transform 0.44s var(--wo-ease),
-    opacity   0.3s  var(--wo-ease),
-    width     0.34s var(--wo-ease);
-  will-change: transform, opacity;
-}
-
-.wo-hamburger__bar:nth-child(1) { width: 22px; }
-.wo-hamburger__bar:nth-child(2) { width: 14px; margin-right: 8px; align-self: flex-end; }
-
-.wo-hamburger.is-open .wo-hamburger__bar:nth-child(1) {
-  transform: translateY(3.75px) rotate(42deg);
-}
-.wo-hamburger.is-open .wo-hamburger__bar:nth-child(2) {
-  transform: translateY(-4.75px) rotate(-41deg);
-  width: 22px;
-  margin-right: 10px;
-}
-
-/* ============================================================
-   MOBILE CLUSTER
-============================================================ */
-.wo-mobile-cluster {
-  display: none;
-  align-items: center;
-  gap: 2px;
-}
-
-/* ============================================================
-   FULLSCREEN MOBILE MENU
-============================================================ */
-.wo-mobile-menu {
-  position: fixed;
-  inset: 0;
-  z-index: 9989; /* Rest below the header to show Logo/X */
-  background: var(--wo-mob-bg);
-  display: flex;
-  flex-direction: column;
-  visibility: hidden;
-  pointer-events: none;
-  clip-path: inset(0 0 100% 0);
-  transition:
-    clip-path  0.58s var(--wo-ease),
-    visibility 0.58s var(--wo-ease);
-  will-change: clip-path;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-
-.wo-mobile-menu.is-open {
-  visibility: visible;
-  pointer-events: all;
-  clip-path: inset(0 0 0% 0);
-}
-
-.wo-mobile-menu__inner {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-  padding: calc(var(--wo-h-mob) + 36px) var(--wo-pad-mob) 52px;
-}
-
-/* Nav list */
-.wo-mob-nav {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 44px;
-  flex: 1;
-}
-
-.wo-mob-nav__item {
-  border-bottom: 1px solid rgba(255,255,255,0.055);
-  overflow: hidden;
-}
-
-.wo-mob-nav__item:first-child {
-  border-top: 1px solid rgba(255,255,255,0.055);
-}
-
-.wo-mob-nav__link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 22px 0;
-  font-size: clamp(26px, 5.5vw, 46px);
-  font-weight: 300;
-  letter-spacing: -0.015em;
-  color: rgba(255,255,255,0.88);
-  text-decoration: none;
-  transform: translateY(26px);
-  opacity: 0;
-  transition:
-    color      0.3s  ease,
-    transform  0.62s var(--wo-ease),
-    opacity    0.62s var(--wo-ease);
-  will-change: transform, opacity;
-}
-
-.wo-mobile-menu.is-open .wo-mob-nav__link {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.wo-mob-nav__link:hover { color: rgba(255,255,255,0.45); }
-
-.wo-mob-nav__arrow {
-  font-size: 0.42em;
-  opacity: 0.3;
-  transition: transform 0.28s ease, opacity 0.28s ease;
-  display: inline-block;
-  flex-shrink: 0;
-  margin-left: 12px;
-}
-
-.wo-mob-nav__link:hover .wo-mob-nav__arrow {
-  transform: translate(5px, -5px);
-  opacity: 0.6;
-}
-
-/* Stagger delays */
-.wo-mob-nav__item:nth-child(1) .wo-mob-nav__link { transition-delay: 0.06s; }
-.wo-mob-nav__item:nth-child(2) .wo-mob-nav__link { transition-delay: 0.10s; }
-.wo-mob-nav__item:nth-child(3) .wo-mob-nav__link { transition-delay: 0.14s; }
-.wo-mob-nav__item:nth-child(4) .wo-mob-nav__link { transition-delay: 0.18s; }
-.wo-mob-nav__item:nth-child(5) .wo-mob-nav__link { transition-delay: 0.22s; }
-.wo-mob-nav__item:nth-child(6) .wo-mob-nav__link { transition-delay: 0.26s; }
-.wo-mob-nav__item:nth-child(7) .wo-mob-nav__link { transition-delay: 0.30s; }
-.wo-mob-nav__item:nth-child(8) .wo-mob-nav__link { transition-delay: 0.34s; }
-
-/* Mobile footer */
-.wo-mob-footer {
-  margin-top: auto;
-  padding-top: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  transform: translateY(18px);
-  opacity: 0;
-  transition:
-    transform 0.56s var(--wo-ease) 0.36s,
-    opacity   0.56s var(--wo-ease) 0.36s;
-}
-
-.wo-mobile-menu.is-open .wo-mob-footer {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.wo-mob-cta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 15px 28px;
-  background: var(--wo-cta-bg);
-  color: var(--wo-cta-color);
-  border: 1px solid var(--wo-cta-border);
-  border-radius: var(--wo-cta-radius);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition:
-    background 0.28s ease,
-    transform  0.3s  var(--wo-spring);
-}
-
-.wo-mob-cta:hover {
-  background: var(--wo-cta-hover);
-  transform: scale(1.015);
-}
-
-.wo-mob-social {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.wo-mob-social__link {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.28);
-  text-decoration: none;
-  transition: color 0.25s ease;
-}
-
-.wo-mob-social__link:hover { color: rgba(255,255,255,0.75); }
-
-/* ============================================================
-   OVERLAY
-============================================================ */
-.wo-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9994;
-  background: rgba(0,0,0,var(--wo-overlay-op));
-  opacity: 0;
-  visibility: hidden;
-  cursor: pointer;
-  transition:
-    opacity    0.4s var(--wo-ease),
-    visibility 0.4s var(--wo-ease);
-  will-change: opacity;
-}
-
-.wo-overlay.is-open {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* ============================================================
-   CART DRAWER
-============================================================ */
-.wo-cart-drawer {
-  position: fixed;
-  top: 0; right: 0; bottom: 0;
-  z-index: 9995;
-  width: min(430px, 96vw);
-  background: var(--wo-drawer-bg);
-  border-left: 1px solid rgba(255,255,255,0.055);
-  display: flex;
-  flex-direction: column;
-  transform: translateX(102%);
-  transition: transform 0.54s var(--wo-ease);
-  will-change: transform;
-  overflow: hidden;
-  box-shadow: -24px 0 80px rgba(0,0,0,0.5);
-}
-
-.wo-cart-drawer.is-open {
-  transform: translateX(0);
-}
-
-/* Drawer top bar */
-.wo-drawer__bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 26px;
-  height: 64px;
-  border-bottom: 1px solid rgba(255,255,255,0.055);
-  flex-shrink: 0;
-}
-
-.wo-drawer__heading {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.wo-drawer__title {
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.9);
-}
-
-.wo-drawer__count {
-  font-size: 11px;
-  color: rgba(255,255,255,0.28);
-  letter-spacing: 0.03em;
-}
-
-.wo-drawer__x {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 50%;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  flex-shrink: 0;
-  transition:
-    background   0.24s ease,
-    border-color 0.24s ease,
-    transform    0.34s var(--wo-spring);
-}
-
-.wo-drawer__x:hover {
-  background: rgba(255,255,255,0.09);
-  border-color: rgba(255,255,255,0.15);
-  transform: rotate(90deg) scale(1.08);
-}
-
-.wo-drawer__x svg {
-  width: 13px; height: 13px;
-  stroke: rgba(255,255,255,0.6);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  fill: none;
-  pointer-events: none;
-}
-
-/* Drawer scroll body */
-.wo-drawer__body {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 18px 26px;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.07) transparent;
-}
-
-.wo-drawer__body::-webkit-scrollbar { width: 3px; }
-.wo-drawer__body::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.07);
-  border-radius: 10px;
-}
-
-/* Spinner */
-.wo-drawer__spinner-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 64px 20px;
-}
-
-.wo-spinner {
-  width: 22px; height: 22px;
-  border: 1.5px solid rgba(255,255,255,0.07);
-  border-top-color: rgba(255,255,255,0.42);
-  border-radius: 50%;
-  animation: wo-spin 0.65s linear infinite;
-}
-
-@keyframes wo-spin { to { transform: rotate(360deg); } }
-
-/* Empty cart */
-.wo-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 56px 20px;
-  gap: 13px;
-  min-height: 260px;
-}
-
-.wo-empty__icon {
-  width: 50px; height: 50px;
-  stroke: rgba(255,255,255,0.13);
-  fill: none;
-  stroke-width: 1;
-  margin-bottom: 6px;
-}
-
-.wo-empty__title {
-  font-size: 15px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.42);
-  letter-spacing: 0.01em;
-}
-
-.wo-empty__sub {
-  font-size: 12.5px;
-  color: rgba(255,255,255,0.2);
-  line-height: 1.65;
-  max-width: 200px;
-}
-
-.wo-empty__btn {
-  margin-top: 8px;
-  padding: 11px 26px;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px;
-  color: rgba(255,255,255,0.45);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition:
-    background    0.25s ease,
-    color         0.25s ease,
-    border-color  0.25s ease;
-}
-
-.wo-empty__btn:hover {
-  background: rgba(255,255,255,0.05);
-  color: rgba(255,255,255,0.82);
-  border-color: rgba(255,255,255,0.2);
-}
-
-/* Cart item row */
-.wo-item {
-  display: grid;
-  grid-template-columns: 78px 1fr;
-  gap: 15px;
-  padding: 18px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.048);
-  align-items: start;
-  animation: wo-item-in 0.38s var(--wo-ease) both;
-}
-
-@keyframes wo-item-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.wo-item:last-child { border-bottom: none; }
-
-.wo-item__thumb {
-  width: 78px; height: 96px;
-  border-radius: 9px;
-  overflow: hidden;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
-  flex-shrink: 0;
-  position: relative;
-}
-
-.wo-item__thumb a {
-  display: block;
-  width: 100%; height: 100%;
-}
-
-.wo-item__thumb img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.42s var(--wo-ease);
-}
-
-.wo-item__thumb:hover img { transform: scale(1.06); }
-
-.wo-item__info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-
-.wo-item__name {
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.84);
-  line-height: 1.4;
-  letter-spacing: 0.01em;
-  text-decoration: none;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  transition: color 0.22s ease;
-}
-
-.wo-item__name:hover { color: rgba(255,255,255,0.6); }
-
-.wo-item__variant {
-  font-size: 11px;
-  color: rgba(255,255,255,0.28);
-  letter-spacing: 0.02em;
-}
-
-.wo-item__price {
-  font-size: 14px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.72);
-  letter-spacing: 0.01em;
-  margin-top: 3px;
-}
-
-.wo-item__controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 11px;
-}
-
-/* Qty */
-.wo-qty {
-  display: flex;
-  align-items: center;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.wo-qty__btn {
-  width: 30px; height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  color: rgba(255,255,255,0.5);
-  font-size: 17px;
-  font-weight: 300;
-  cursor: pointer;
-  line-height: 1;
-  -webkit-tap-highlight-color: transparent;
-  transition: background 0.18s ease, color 0.18s ease;
-  user-select: none;
-}
-
-.wo-qty__btn:hover {
-  background: rgba(255,255,255,0.09);
-  color: rgba(255,255,255,0.95);
-}
-
-.wo-qty__btn:active { background: rgba(255,255,255,0.14); }
-
-.wo-qty__val {
-  min-width: 30px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.84);
-  pointer-events: none;
-  user-select: none;
-}
-
-/* Remove */
-.wo-item__remove {
-  width: 30px; height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 7px;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition:
-    background    0.24s ease,
-    border-color  0.24s ease,
-    transform     0.3s  var(--wo-spring);
-}
-
-.wo-item__remove:hover {
-  background: rgba(220,50,50,0.1);
-  border-color: rgba(220,50,50,0.22);
-  transform: scale(1.1);
-}
-
-.wo-item__remove svg {
-  width: 12px; height: 12px;
-  stroke: rgba(255,255,255,0.32);
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  fill: none;
-  pointer-events: none;
-  transition: stroke 0.24s ease;
-}
-
-.wo-item__remove:hover svg { stroke: rgba(220,75,75,0.9); }
-
-/* Drawer footer */
-.wo-drawer__foot {
-  padding: 18px 26px 28px;
-  border-top: 1px solid rgba(255,255,255,0.055);
-  flex-shrink: 0;
-  background: rgba(0,0,0,0.2);
-}
-
-.wo-drawer__total {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 4px;
-}
-
-.wo-drawer__total-lbl {
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.82);
-}
-
-.wo-drawer__total-amt {
-  font-size: 21px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.92);
-  letter-spacing: -0.02em;
-}
-
-.wo-drawer__note {
-  font-size: 12px;
-  color: rgba(255,255,255,0.38);
-  line-height: 1.5;
-  margin-bottom: 18px;
-}
-
-/* Checkout */
-.wo-checkout {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  width: 100%;
-  padding: 0 22px;
-  height: 50px;
-  background: rgba(255,255,255,0.94);
-  color: #0a0b0e;
-  border: none;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-decoration: none;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition:
-    background  0.28s ease,
-    transform   0.3s  var(--wo-spring),
-    box-shadow  0.3s  ease;
-  will-change: transform, box-shadow;
-}
-
-.wo-checkout:hover {
-  background: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(255,255,255,0.1);
-}
-
-.wo-checkout:active {
-  transform: translateY(0) scale(0.98);
-  box-shadow: none;
-}
-
-.wo-checkout svg {
-  width: 14px; height: 14px;
-  stroke: currentColor;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  fill: none;
-  flex-shrink: 0;
-}
-
-/* ============================================================
-   SCROLL LOCK
-============================================================ */
-body.wo-locked {
-  overflow: hidden;
-  touch-action: none;
-}
-
-/* ============================================================
-   RESPONSIVE — TABLET
-============================================================ */
-@media (max-width: 1024px) {
-  .wo-nav-wrap { display: none; }
-  .wo-actions > .wo-cart-btn { display: none; }
-  .wo-actions > .wo-cta { display: none; }
-  .wo-hamburger { display: flex; }
-  .wo-mobile-cluster { display: flex; }
-  .wo-header__inner { padding: 0 var(--wo-pad-mob); }
-}
-
-/* ============================================================
-   RESPONSIVE — MOBILE
-============================================================ */
-@media (max-width: 768px) {
-  .wo-header { height: var(--wo-h-mob); }
-  .wo-header__inner { padding: 0 var(--wo-pad-mob); }
-  
   .wo-logo__img {
-    width: var(--wo-logo-w-mob);
-    height: var(--wo-logo-h-mob);
-    max-height: var(--wo-logo-h-mob);
+    display: block;
+    width: var(--wo-logo-w-desk);
+    max-width: 100%;
+    height: var(--wo-logo-h-desk);
+    max-height: var(--wo-logo-h-desk);
+    object-fit: contain;
+    object-position: {{ section.settings.header_align | liquid_if_true: 'left', 'center' }};
+    transition: opacity var(--wo-speed) var(--wo-ease), transform var(--wo-speed) var(--wo-ease);
+  }
+
+  .wo-logo:hover .wo-logo__img { opacity: 0.8; transform: scale(0.975); }
+
+  .wo-logo__text-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
   }
 
   .wo-logo__name {
-    font-size: calc({{ section.settings.logo_font_size }}px * 0.75);
+    font-family: var(--wo-logo-font);
+    font-size: var(--wo-logo-size);
+    font-weight: var(--wo-logo-weight);
+    letter-spacing: var(--wo-logo-ls);
+    text-transform: var(--wo-logo-transform);
+    color: var(--wo-logo-color);
+    line-height: 1;
+    white-space: nowrap;
   }
-}
 
-/* ============================================================
-   RESPONSIVE — SMALL MOBILE
-============================================================ */
-@media (max-width: 480px) {
+  /* Nav */
+  .wo-nav-wrap {
+    flex-grow: 1;
+    display: flex;
+    justify-content: {{ section.settings.header_align }};
+    order: 2;
+  }
+
+  .wo-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--wo-nav-gap);
+    list-style: none;
+    padding: 0; margin: 0;
+  }
+
+  .wo-nav__link {
+    display: inline-block;
+    font-family: var(--wo-nav-font);
+    font-size: var(--wo-nav-size);
+    font-weight: var(--wo-nav-weight);
+    letter-spacing: var(--wo-nav-tracking);
+    text-transform: var(--wo-nav-transform);
+    color: var(--wo-nav-color);
+    text-decoration: none;
+    padding: 8px 0;
+    position: relative;
+    transition: color var(--wo-speed) var(--wo-ease);
+  }
+
+  .wo-nav__link::after {
+    content: '';
+    position: absolute;
+    bottom: 2px; left: 0;
+    width: 100%; height: 1.5px;
+    background: var(--wo-nav-hover);
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform calc(var(--wo-speed) * 0.7) var(--wo-ease);
+  }
+
+  .wo-nav__link:hover { color: var(--wo-nav-hover); }
+  .wo-nav__link:hover::after { transform: scaleX(1); transform-origin: left center; }
+  .wo-nav__link.wo-active { color: var(--wo-nav-active); }
+  .wo-nav__link.wo-active::after { background: var(--wo-nav-active); transform: scaleX(1); }
+
+  /* Actions */
+  .wo-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    order: 3;
+    z-index: 2;
+  }
+
+  .wo-cart-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px; height: 42px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background var(--wo-speed) var(--wo-ease), transform calc(var(--wo-speed) * 0.5) var(--wo-spring);
+  }
+
+  .wo-cart-btn:hover { background: rgba(255,255,255,0.06); transform: scale(1.06); }
+  .wo-cart-btn:active { transform: scale(0.93); }
+  .wo-cart-btn svg {
+    width: var(--wo-cart-size); height: var(--wo-cart-size);
+    stroke: var(--wo-cart-color);
+    fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .wo-badge {
+    position: absolute;
+    top: 4px; right: 4px;
+    min-width: 16px; height: 16px;
+    background: var(--wo-count-bg);
+    color: var(--wo-count-color);
+    border-radius: 50%;
+    font-size: 9px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 3px; opacity: 0; transform: scale(0);
+    transition: opacity 0.28s var(--wo-spring), transform 0.32s var(--wo-spring);
+  }
+
+  .wo-badge.is-visible { opacity: 1; transform: scale(1); }
+
+  .wo-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 22px;
+    height: 38px;
+    background: var(--wo-cta-bg);
+    color: var(--wo-cta-color);
+    border: 1px solid var(--wo-cta-border);
+    border-radius: var(--wo-cta-radius);
+    font-family: var(--wo-cta-font);
+    font-size: 11.5px;
+    font-weight: var(--wo-cta-weight);
+    letter-spacing: var(--wo-cta-ls);
+    text-transform: var(--wo-cta-transform);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background var(--wo-speed) var(--wo-ease), box-shadow var(--wo-speed) var(--wo-ease);
+  }
+
+  .wo-cta:hover { background: var(--wo-cta-hover); box-shadow: 0 6px 22px rgba(0,0,0,0.28); }
+
+  .wo-hamburger {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 42px; height: 42px;
+    background: transparent; border: none; cursor: pointer; gap: 6px;
+  }
+
+  .wo-hamburger__bar {
+    display: block; height: 1.5px;
+    background: var(--wo-nav-color);
+    border-radius: 2px;
+    transition: transform 0.44s var(--wo-ease), opacity 0.3s var(--wo-ease), width 0.34s var(--wo-ease);
+  }
+
+  .wo-hamburger__bar:nth-child(1) { width: 22px; }
+  .wo-hamburger__bar:nth-child(2) { width: 14px; margin-right: 8px; align-self: flex-end; }
+
+  .wo-hamburger.is-open .wo-hamburger__bar:nth-child(1) { transform: translateY(3.75px) rotate(42deg); }
+  .wo-hamburger.is-open .wo-hamburger__bar:nth-child(2) { transform: translateY(-4.75px) rotate(-41deg); width: 22px; margin-right: 10px; }
+
+  /* Mobile Menu */
+  .wo-mobile-menu {
+    position: fixed; inset: 0; z-index: 9989;
+    background: var(--wo-mob-bg);
+    display: flex; flex-direction: column;
+    visibility: hidden; clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.58s var(--wo-ease), visibility 0.58s var(--wo-ease);
+    overflow-y: auto;
+  }
+
+  .wo-mobile-menu.is-open { visibility: visible; clip-path: inset(0 0 0% 0); }
+
+  .wo-mobile-menu__inner {
+    display: flex; flex-direction: column;
+    min-height: 100%;
+    padding: calc(var(--wo-h-mob) + 36px) var(--wo-pad-mob) 52px;
+  }
+
+  .wo-mob-nav { list-style: none; padding: 0; margin: 0 0 44px; flex: 1; }
+  .wo-mob-nav__item { border-bottom: 1px solid rgba(255,255,255,0.055); overflow: hidden; }
+  .wo-mob-nav__item:first-child { border-top: 1px solid rgba(255,255,255,0.055); }
+
+  .wo-mob-nav__link {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 0;
+    font-family: var(--wo-nav-font);
+    font-size: clamp(26px, 5.5vw, 46px);
+    font-weight: 300;
+    color: rgba(255,255,255,0.88);
+    text-decoration: none;
+    transform: translateY(26px); opacity: 0;
+    transition: color 0.3s ease, transform 0.62s var(--wo-ease), opacity 0.62s var(--wo-ease);
+  }
+
+  .wo-mobile-menu.is-open .wo-mob-nav__link { transform: translateY(0); opacity: 1; }
+
+  .wo-mob-footer {
+    margin-top: auto; padding-top: 32px;
+    display: flex; flex-direction: column; gap: 20px;
+    transform: translateY(18px); opacity: 0;
+    transition: transform 0.56s var(--wo-ease) 0.36s, opacity 0.56s var(--wo-ease) 0.36s;
+  }
+
+  .wo-mobile-menu.is-open .wo-mob-footer { transform: translateY(0); opacity: 1; }
+
+  .wo-mob-social { display: flex; gap: 24px; flex-wrap: wrap; align-items: center; }
+  .wo-mob-social__link {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(255,255,255,0.28);
+    text-decoration: none; transition: color 0.25s ease;
+  }
+
+  .wo-mob-social__link:hover { color: rgba(255,255,255,0.75); }
+
+  /* Overlay & Drawer */
+  .wo-overlay {
+    position: fixed; inset: 0; z-index: 9994;
+    background: rgba(0,0,0,var(--wo-overlay-op));
+    opacity: 0; visibility: hidden; cursor: pointer;
+    transition: opacity 0.4s var(--wo-ease), visibility 0.4s var(--wo-ease);
+  }
+
+  .wo-overlay.is-open { opacity: 1; visibility: visible; }
+
   .wo-cart-drawer {
-    width: 100vw;
-    border-left: none;
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 9995;
+    width: min(430px, 96vw);
+    background: var(--wo-drawer-bg);
+    transform: translateX(102%);
+    transition: transform 0.54s var(--wo-ease);
+    box-shadow: -24px 0 80px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column;
   }
-}
 
-/* ============================================================
-   FOCUS VISIBLE ACCESSIBILITY
-============================================================ */
-.wo-cart-btn:focus-visible,
-.wo-hamburger:focus-visible,
-.wo-drawer__x:focus-visible,
-.wo-cta:focus-visible,
-.wo-checkout:focus-visible {
-  outline: 2px solid var(--wo-nav-active);
-  outline-offset: 3px;
-}
+  .wo-cart-drawer.is-open { transform: translateX(0); }
 
-/* ============================================================
-   SCREEN READER ONLY
-============================================================ */
-.wo-sr-only {
-  position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
-  overflow: hidden;
-  clip: rect(0,0,0,0);
-  white-space: nowrap;
-  border: 0;
-}
+  .wo-drawer__bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 26px; height: 64px;
+    border-bottom: 1px solid rgba(255,255,255,0.055);
+  }
+
+  .wo-drawer__title { font-size: 11.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.9); }
+  .wo-drawer__x {
+    width: 34px; height: 34px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+
+  .wo-drawer__body { flex: 1; overflow-y: auto; padding: 18px 26px; }
+
+  .wo-checkout {
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    width: 100%; height: 50px;
+    background: rgba(255,255,255,0.94); color: #0a0b0e;
+    border-radius: 10px; font-size: 11px; font-weight: 800; text-transform: uppercase; text-decoration: none;
+    transition: background 0.28s ease, transform 0.3s var(--wo-spring);
+  }
+
+  .wo-checkout:hover { background: #ffffff; transform: translateY(-2px); }
+
+  body.wo-locked { overflow: hidden; touch-action: none; }
+
+  @media (max-width: 1024px) {
+    .wo-nav-wrap { display: none; }
+    .wo-actions > .wo-cart-btn { display: none; }
+    .wo-actions > .wo-cta { display: none; }
+    .wo-hamburger { display: flex; }
+    .wo-mobile-cluster { display: flex; align-items: center; gap: 5px; }
+  }
+
+  @media (max-width: 768px) {
+    .wo-header { height: var(--wo-h-mob); }
+    .wo-logo__img { width: var(--wo-logo-w-mob); height: var(--wo-logo-h-mob); }
+  }
 </style>
 
-<!-- ============================================================
-     HEADER HTML
-============================================================ -->
 <header class="wo-header" id="wo-header" role="banner">
   <div class="wo-header__inner">
 
     <!-- LOGO -->
-    <a
-      href="{{ routes.root_url }}"
-      class="wo-logo"
-      aria-label="{{ shop.name }} — Home"
-    >
+    <a href="{{ routes.root_url }}" class="wo-logo" aria-label="{{ shop.name }}">
       {%- if section.settings.logo != blank -%}
-        {{
-  section.settings.logo
-  | image_url: width: 800
-  | image_tag:
-    class: 'wo-logo__img',
-    loading: 'eager',
-    fetchpriority: 'high',
-    alt: section.settings.logo.alt | default: shop.name,
-    widths: '200,300,400,600,800',
-    sizes: '(max-width:768px) ' | append: section.settings.logo_width_mobile | append: 'px, ' | append: section.settings.logo_width_desktop | append: 'px'
-}}
+        {{ section.settings.logo | image_url: width: 800 | image_tag: class: 'wo-logo__img', loading: 'eager', fetchpriority: 'high', alt: section.settings.logo.alt | default: shop.name }}
       {%- else -%}
         <div class="wo-logo__text-wrap">
           {%- if section.settings.show_logo_icon -%}
             <span class="wo-logo__icon-mark" aria-hidden="true">
               <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="28" height="28" rx="5" fill="{{ section.settings.logo_icon_bg }}"/>
-                <path
-                  d="M7 8L11 20L14 12L17 20L21 8"
-                  stroke="{{ section.settings.logo_icon_color }}"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
+                <path d="M7 8L11 20L14 12L17 20L21 8" stroke="{{ section.settings.logo_icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </span>
           {%- endif -%}
-          <span class="wo-logo__name">{{ shop.name }}</span>
+          <span class="wo-logo__name">{{ section.settings.logo_text | default: shop.name }}</span>
         </div>
       {%- endif -%}
     </a>
 
-    <!-- DESKTOP NAV -->
+    <!-- NAV -->
     {%- if menu != blank -%}
       <nav class="wo-nav-wrap" role="navigation" aria-label="Primary">
         <ul class="wo-nav">
           {%- for link in linklists[menu].links -%}
             <li class="wo-nav__item">
-              <a
-                href="{{ link.url }}"
-                class="wo-nav__link{% if link.active %} wo-active{% endif %}"
-                {% if link.active %}aria-current="page"{% endif %}
-              >{{ link.title }}</a>
+              <a href="{{ link.url }}" class="wo-nav__link{% if link.active %} wo-active{% endif %}">{{ link.title }}</a>
             </li>
           {%- endfor -%}
         </ul>
       </nav>
     {%- endif -%}
 
-    <!-- RIGHT ACTIONS -->
+    <!-- ACTIONS -->
     <div class="wo-actions">
-
-      <!-- Desktop cart -->
-      <button
-        class="wo-cart-btn"
-        id="wo-cart-desk"
-        aria-label="Open cart"
-        aria-expanded="false"
-        aria-controls="wo-cart-drawer"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <path d="M16 10a4 4 0 0 1-8 0"/>
-        </svg>
+      <button class="wo-cart-btn" id="wo-cart-desk" aria-label="Open cart">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         {%- if show_cart_count -%}
-          <span
-            class="wo-badge{% if cart.item_count > 0 %} is-visible{% endif %}"
-            id="wo-badge-desk"
-            aria-live="polite"
-            aria-atomic="true"
-          >{{ cart.item_count }}</span>
+          <span class="wo-badge{% if cart.item_count > 0 %} is-visible{% endif %}" id="wo-badge-desk">{{ cart.item_count }}</span>
         {%- endif -%}
       </button>
 
-      <!-- CTA -->
       {%- if show_cta and cta_text != blank -%}
-        <a
-          href="{{ cta_url | default: '#' }}"
-          class="wo-cta"
-        >{{ cta_text }}</a>
+        <a href="{{ cta_url | default: '#' }}" class="wo-cta">{{ cta_text }}</a>
       {%- endif -%}
 
-      <!-- Mobile cluster -->
       <div class="wo-mobile-cluster">
-        <button
-          class="wo-cart-btn"
-          id="wo-cart-mob"
-          aria-label="Open cart"
-          tabindex="-1"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <path d="M16 10a4 4 0 0 1-8 0"/>
-          </svg>
+        <button class="wo-cart-btn" id="wo-cart-mob" aria-label="Open cart">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
           {%- if show_cart_count -%}
-            <span
-              class="wo-badge{% if cart.item_count > 0 %} is-visible{% endif %}"
-              id="wo-badge-mob"
-              aria-hidden="true"
-            >{{ cart.item_count }}</span>
+            <span class="wo-badge{% if cart.item_count > 0 %} is-visible{% endif %}" id="wo-badge-mob">{{ cart.item_count }}</span>
           {%- endif -%}
         </button>
-
-        <button
-          class="wo-hamburger"
-          id="wo-hamburger"
-          aria-label="Open menu"
-          aria-expanded="false"
-          aria-controls="wo-mobile-menu"
-        >
-          <span class="wo-hamburger__bar" aria-hidden="true"></span>
-          <span class="wo-hamburger__bar" aria-hidden="true"></span>
+        <button class="wo-hamburger" id="wo-hamburger" aria-label="Open menu">
+          <span class="wo-hamburger__bar"></span>
+          <span class="wo-hamburger__bar"></span>
         </button>
       </div>
-
     </div>
   </div>
 </header>
 
-<!-- ============================================================
-     MOBILE MENU
-============================================================ -->
-<div
-  class="wo-mobile-menu"
-  id="wo-mobile-menu"
-  role="dialog"
-  aria-modal="true"
-  aria-label="Navigation"
->
+<div class="wo-mobile-menu" id="wo-mobile-menu">
   <div class="wo-mobile-menu__inner">
-
     {%- if menu != blank -%}
-      <ul class="wo-mob-nav" role="list">
+      <ul class="wo-mob-nav">
         {%- for link in linklists[menu].links -%}
           <li class="wo-mob-nav__item">
-            <a
-              href="{{ link.url }}"
-              class="wo-mob-nav__link"
-              {% if link.active %}aria-current="page"{% endif %}
-            >
-              {{ link.title }}
-              <span class="wo-mob-nav__arrow" aria-hidden="true">↗</span>
-            </a>
+            <a href="{{ link.url }}" class="wo-mob-nav__link">{{ link.title }} <span class="wo-mob-nav__arrow">↗</span></a>
           </li>
         {%- endfor -%}
       </ul>
     {%- endif -%}
-
     <div class="wo-mob-footer">
       {%- if show_cta and cta_text != blank -%}
         <a href="{{ cta_url | default: '#' }}" class="wo-mob-cta">{{ cta_text }}</a>
       {%- endif -%}
-
-      {%- if section.settings.show_social -%}
-        <div class="wo-mob-social">
-          {%- if section.settings.social_ig != blank -%}
-            <a href="{{ section.settings.social_ig }}" class="wo-mob-social__link" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <div class="wo-mob-social">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'social_link' -%}
+            <a href="{{ block.settings.url }}" class="wo-mob-social__link" target="_blank">{{ block.settings.label }}</a>
           {%- endif -%}
-          {%- if section.settings.social_fb != blank -%}
-            <a href="{{ section.settings.social_fb }}" class="wo-mob-social__link" target="_blank" rel="noopener noreferrer">Facebook</a>
-          {%- endif -%}
-          {%- if section.settings.social_x != blank -%}
-            <a href="{{ section.settings.social_x }}" class="wo-mob-social__link" target="_blank" rel="noopener noreferrer">X / Twitter</a>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
-    </div>
-
-  </div>
-</div>
-
-<!-- OVERLAY -->
-<div class="wo-overlay" id="wo-overlay" aria-hidden="true"></div>
-
-<!-- ============================================================
-     CART DRAWER
-============================================================ -->
-<div
-  class="wo-cart-drawer"
-  id="wo-cart-drawer"
-  role="dialog"
-  aria-modal="true"
-  aria-label="Shopping cart"
->
-  <!-- Top bar -->
-  <div class="wo-drawer__bar">
-    <div class="wo-drawer__heading">
-      <span class="wo-drawer__title">Cart</span>
-      <span class="wo-drawer__count" id="wo-drawer-count">
-        ({{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }})
-      </span>
-    </div>
-    <button class="wo-drawer__x" id="wo-drawer-x" aria-label="Close cart">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <line x1="18" y1="6" x2="6" y2="18"/>
-        <line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
-  </div>
-
-  <!-- Body -->
-  <div class="wo-drawer__body" id="wo-drawer-body">
-    {%- if cart.item_count == 0 -%}
-      <div class="wo-empty">
-        <svg class="wo-empty__icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <path d="M16 10a4 4 0 0 1-8 0"/>
-        </svg>
-        <p class="wo-empty__title">Your cart is empty</p>
-        <p class="wo-empty__sub">Add items to your cart to get started.</p>
-        <a href="{{ routes.collections_url }}" class="wo-empty__btn">Explore Collection</a>
-      </div>
-    {%- else -%}
-      <div id="wo-items">
-        {%- for item in cart.items -%}
-          <div class="wo-item" data-key="{{ item.key }}" style="animation-delay:{{ forloop.index0 | times: 0.04 }}s">
-            <div class="wo-item__thumb">
-              {%- if item.image -%}
-                <a href="{{ item.url }}">
-                  <img
-                    src="{{ item.image | image_url: width: 220 }}"
-                    alt="{{ item.image.alt | escape }}"
-                    width="78"
-                    height="96"
-                    loading="lazy"
-                  >
-                </a>
-              {%- endif -%}
-            </div>
-            <div class="wo-item__info">
-              <a href="{{ item.url }}" class="wo-item__name">{{ item.product.title }}</a>
-              {%- unless item.variant.title == 'Default Title' -%}
-                <span class="wo-item__variant">{{ item.variant.title }}</span>
-              {%- endunless -%}
-              <span class="wo-item__price">{{ item.final_line_price | money }}</span>
-              <div class="wo-item__controls">
-                <div class="wo-qty">
-                  <button class="wo-qty__btn" data-dir="-1" data-key="{{ item.key }}" aria-label="Decrease quantity">−</button>
-                  <span class="wo-qty__val">{{ item.quantity }}</span>
-                  <button class="wo-qty__btn" data-dir="1"  data-key="{{ item.key }}" aria-label="Increase quantity">+</button>
-                </div>
-                <button class="wo-item__remove" data-key="{{ item.key }}" aria-label="Remove {{ item.product.title }}">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <polyline points="3 6 5 6 21 6"/>
-                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                    <path d="M10 11v6M14 11v6"/>
-                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
         {%- endfor -%}
       </div>
-    {%- endif -%}
-  </div>
-
-  <!-- Footer -->
-  <div
-    class="wo-drawer__foot"
-    id="wo-drawer-foot"
-    {% if cart.item_count == 0 %}style="display:none"{% endif %}
-  >
-    <div class="wo-drawer__total">
-      <span class="wo-drawer__total-lbl">Subtotal</span>
-      <span class="wo-drawer__total-amt" id="wo-subtotal">{{ cart.total_price | money }}</span>
     </div>
-    <p class="wo-drawer__note">Taxes &amp; shipping calculated at checkout</p>
-    <a href="/checkout" class="wo-checkout">
-      <span>Checkout</span>
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <line x1="5" y1="12" x2="19" y2="12"/>
-        <polyline points="12 5 19 12 12 19"/>
-      </svg>
-    </a>
   </div>
 </div>
 
-<!-- ============================================================
-     JAVASCRIPT
-============================================================ -->
+<div class="wo-overlay" id="wo-overlay"></div>
+
+<div class="wo-cart-drawer" id="wo-cart-drawer">
+  <div class="wo-drawer__bar">
+    <span class="wo-drawer__title">Cart</span>
+    <button class="wo-drawer__x" id="wo-drawer-x">✕</button>
+  </div>
+  <div class="wo-drawer__body" id="wo-drawer-body"></div>
+  <div class="wo-drawer__foot" id="wo-drawer-foot">
+    <div class="wo-drawer__total">
+      <span>Subtotal</span>
+      <span id="wo-subtotal"></span>
+    </div>
+    <a href="/checkout" class="wo-checkout">Checkout</a>
+  </div>
+</div>
+
 <script>
 (function () {
   'use strict';
+  
+  function initHeader() {
+    const sid = '{{ section_id }}';
+    const hamburger = document.getElementById('wo-hamburger');
+    const mobileMenu = document.getElementById('wo-mobile-menu');
+    const overlay = document.getElementById('wo-overlay');
+    const cartDrawer = document.getElementById('wo-cart-drawer');
+    const drawerX = document.getElementById('wo-drawer-x');
+    const cartDesk = document.getElementById('wo-cart-desk');
+    const cartMob = document.getElementById('wo-cart-mob');
+    const drawerBody = document.getElementById('wo-drawer-body');
+    const subtotalEl = document.getElementById('wo-subtotal');
+    const badges = [document.getElementById('wo-badge-desk'), document.getElementById('wo-badge-mob')];
 
-  /* ── DOM refs ── */
-  const header      = document.getElementById('wo-header');
-  const hamburger   = document.getElementById('wo-hamburger');
-  const mobileMenu  = document.getElementById('wo-mobile-menu');
-  const overlay     = document.getElementById('wo-overlay');
-  const cartDrawer  = document.getElementById('wo-cart-drawer');
-  const drawerX     = document.getElementById('wo-drawer-x');
-  const drawerBody  = document.getElementById('wo-drawer-body');
-  const drawerFoot  = document.getElementById('wo-drawer-foot');
-  const drawerCount = document.getElementById('wo-drawer-count');
-  const subtotalEl  = document.getElementById('wo-subtotal');
-  const cartDesk    = document.getElementById('wo-cart-desk');
-  const cartMob     = document.getElementById('wo-cart-mob');
-  const badgeDesk   = document.getElementById('wo-badge-desk');
-  const badgeMob    = document.getElementById('wo-badge-mob');
+    let menuOpen = false, drawerOpen = false, busy = false;
 
-  /* ── State ── */
-  let menuOpen   = false;
-  let drawerOpen = false;
-  let busy       = false;
+    const lock = () => document.body.classList.add('wo-locked');
+    const unlock = () => document.body.classList.remove('wo-locked');
 
-  /* ── Helpers ── */
-  const lock   = () => document.body.classList.add('wo-locked');
-  const unlock = () => document.body.classList.remove('wo-locked');
+    function fmt(cents) {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
+    }
 
-  function fmt(cents) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: (window.Shopify && Shopify.currency && Shopify.currency.active) || 'USD'
-    }).format(cents / 100);
-  }
-
-  /* ── Badges ── */
-  function setBadges(n) {
-    [badgeDesk, badgeMob].forEach(el => {
-      if (!el) return;
-      const prev = el.textContent.trim();
-      el.textContent = n;
-      if (n > 0) {
-        el.classList.add('is-visible');
-        if (String(n) !== prev) {
-          el.classList.remove('do-pop');
-          void el.offsetWidth; /* reflow */
-          el.classList.add('do-pop');
-        }
-      } else {
-        el.classList.remove('is-visible', 'do-pop');
+    function renderCart(cart) {
+      badges.forEach(b => { if(b) { b.textContent = cart.item_count; b.classList.toggle('is-visible', cart.item_count > 0); } });
+      if (cart.item_count === 0) {
+        drawerBody.innerHTML = '<p>Your cart is empty</p>';
+        document.getElementById('wo-drawer-foot').style.display = 'none';
+        return;
       }
-    });
-    const label = `Open cart${n > 0 ? ', ' + n + ' item' + (n > 1 ? 's' : '') : ''}`;
-    [cartDesk, cartMob].forEach(b => b && b.setAttribute('aria-label', label));
-  }
-
-  /* ── Menu open / close ── */
-  function openMenu() {
-    menuOpen = true;
-    hamburger.classList.add('is-open');
-    mobileMenu.classList.add('is-open');
-    if(header) header.classList.add('is-menu-open');
-    hamburger.setAttribute('aria-expanded', 'true');
-    hamburger.setAttribute('aria-label', 'Close menu');
-    lock();
-  }
-
-  function closeMenu() {
-    menuOpen = false;
-    hamburger.classList.remove('is-open');
-    mobileMenu.classList.remove('is-open');
-    if(header) header.classList.remove('is-menu-open');
-    hamburger.setAttribute('aria-expanded', 'false');
-    hamburger.setAttribute('aria-label', 'Open menu');
-    unlock();
-    hamburger.focus();
-  }
-
-  hamburger && hamburger.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
-
-  mobileMenu && mobileMenu.querySelectorAll('.wo-mob-nav__link').forEach(a => {
-    a.addEventListener('click', closeMenu);
-  });
-
-  /* ── Drawer open / close ── */
-  function openDrawer() {
-    drawerOpen = true;
-    cartDrawer.classList.add('is-open');
-    overlay.classList.add('is-open');
-    overlay.setAttribute('aria-hidden', 'false');
-    [cartDesk, cartMob].forEach(b => b && b.setAttribute('aria-expanded', 'true'));
-    lock();
-    setTimeout(() => drawerX && drawerX.focus(), 320);
-  }
-
-  function closeDrawer() {
-    drawerOpen = false;
-    cartDrawer.classList.remove('is-open');
-    overlay.classList.remove('is-open');
-    overlay.setAttribute('aria-hidden', 'true');
-    [cartDesk, cartMob].forEach(b => b && b.setAttribute('aria-expanded', 'false'));
-    unlock();
-  }
-
-  drawerX    && drawerX.addEventListener('click', closeDrawer);
-  overlay    && overlay.addEventListener('click', () => {
-    if (drawerOpen) closeDrawer();
-    if (menuOpen)   closeMenu();
-  });
-
-  /* ── ESC key ── */
-  document.addEventListener('keydown', e => {
-    if (e.key !== 'Escape') return;
-    if (drawerOpen) { closeDrawer(); return; }
-    if (menuOpen)   closeMenu();
-  });
-
-  /* ── Cart API ── */
-  async function apiGet() {
-    const r = await fetch('/cart.js');
-    if (!r.ok) throw new Error('cart.js failed');
-    return r.json();
-  }
-
-  async function apiChange(key, qty) {
-    const r = await fetch('/cart/change.js', {
-      method : 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body   : JSON.stringify({ id: key, quantity: qty })
-    });
-    if (!r.ok) throw new Error('cart/change.js failed');
-    return r.json();
-  }
-
-  /* ── Render helpers ── */
-  function emptyHTML() {
-    return `<div class="wo-empty">
-      <svg class="wo-empty__icon" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-        <line x1="3" y1="6" x2="21" y2="6"/>
-        <path d="M16 10a4 4 0 0 1-8 0"/>
-      </svg>
-      <p class="wo-empty__title">Your cart is empty</p>
-      <p class="wo-empty__sub">Add items to your cart to get started.</p>
-      <a href="/collections" class="wo-empty__btn">Explore Collection</a>
-    </div>`;
-  }
-
-  function itemHTML(item, i) {
-    const img = item.image
-      ? `<a href="${item.url}"><img src="${item.image}" alt="${(item.title||'').replace(/"/g,'&quot;')}" width="78" height="96" loading="lazy"></a>`
-      : '';
-    const variant = (item.variant_title && item.variant_title !== 'Default Title')
-      ? `<span class="wo-item__variant">${item.variant_title}</span>` : '';
-    return `
-    <div class="wo-item" data-key="${item.key}" style="animation-delay:${i*0.04}s">
-      <div class="wo-item__thumb">${img}</div>
-      <div class="wo-item__info">
-        <a href="${item.url}" class="wo-item__name">${item.product_title}</a>
-        ${variant}
-        <span class="wo-item__price">${fmt(item.final_line_price)}</span>
-        <div class="wo-item__controls">
-          <div class="wo-qty">
-            <button class="wo-qty__btn" data-dir="-1" data-key="${item.key}" aria-label="Decrease">−</button>
-            <span class="wo-qty__val">${item.quantity}</span>
-            <button class="wo-qty__btn" data-dir="1"  data-key="${item.key}" aria-label="Increase">+</button>
+      document.getElementById('wo-drawer-foot').style.display = 'block';
+      subtotalEl.textContent = fmt(cart.total_price);
+      drawerBody.innerHTML = cart.items.map(item => `
+        <div style="margin-bottom:15px; display:flex; gap:10px;">
+          <img src="${item.image}" width="60">
+          <div>
+            <p style="font-size:13px; color:#fff;">${item.product_title}</p>
+            <p style="font-size:12px; color:#ccc;">${fmt(item.price)} x ${item.quantity}</p>
           </div>
-          <button class="wo-item__remove" data-key="${item.key}" aria-label="Remove ${item.product_title}">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <polyline points="3 6 5 6 21 6"/>
-              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-              <path d="M10 11v6M14 11v6"/>
-              <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-            </svg>
-          </button>
         </div>
-      </div>
-    </div>`;
-  }
-
-  function spinnerHTML() {
-    return `<div class="wo-drawer__spinner-wrap"><div class="wo-spinner" aria-label="Loading cart"></div></div>`;
-  }
-
-  function renderCart(cart) {
-    setBadges(cart.item_count);
-
-    if (drawerCount) {
-      drawerCount.textContent = `(${cart.item_count} ${cart.item_count === 1 ? 'item' : 'items'})`;
+      `).join('');
     }
 
-    if (cart.item_count === 0) {
-      drawerBody.innerHTML = emptyHTML();
-      if (drawerFoot) drawerFoot.style.display = 'none';
-      return;
+    async function fetchCart() {
+      const res = await fetch('/cart.js');
+      renderCart(await res.json());
     }
 
-    drawerBody.innerHTML = `<div id="wo-items">${cart.items.map(itemHTML).join('')}</div>`;
-    if (drawerFoot) drawerFoot.style.display = '';
-    if (subtotalEl) subtotalEl.textContent = fmt(cart.total_price);
-    bindItemEvents();
-  }
-
-  /* ── Item event binding ── */
-  function bindItemEvents() {
-    /* Qty buttons */
-    drawerBody.querySelectorAll('.wo-qty__btn').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        if (busy) return;
-        const key  = btn.dataset.key;
-        const dir  = parseInt(btn.dataset.dir, 10);
-        const row  = btn.closest('.wo-item');
-        const valEl = row && row.querySelector('.wo-qty__val');
-        const cur  = parseInt(valEl ? valEl.textContent : '1', 10);
-        const next = Math.max(0, cur + dir);
-        await doChange(key, next);
-      });
+    hamburger?.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      hamburger.classList.toggle('is-open', menuOpen);
+      mobileMenu.classList.toggle('is-open', menuOpen);
+      menuOpen ? lock() : unlock();
     });
 
-    /* Remove buttons */
-    drawerBody.querySelectorAll('.wo-item__remove').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        if (busy) return;
-        const key = btn.dataset.key;
-        const row = btn.closest('.wo-item');
-        if (row) {
-          row.style.transition = 'opacity 0.22s ease, transform 0.26s ease';
-          row.style.opacity = '0';
-          row.style.transform = 'translateX(16px)';
-        }
-        await doChange(key, 0);
-      });
-    });
+    const openDrawer = () => { drawerOpen = true; cartDrawer.classList.add('is-open'); overlay.classList.add('is-open'); lock(); fetchCart(); };
+    const closeDrawer = () => { drawerOpen = false; cartDrawer.classList.remove('is-open'); overlay.classList.remove('is-open'); unlock(); };
+
+    cartDesk?.addEventListener('click', openDrawer);
+    cartMob?.addEventListener('click', openDrawer);
+    drawerX?.addEventListener('click', closeDrawer);
+    overlay?.addEventListener('click', () => { if(drawerOpen) closeDrawer(); if(menuOpen) { menuOpen=false; mobileMenu.classList.remove('is-open'); hamburger.classList.remove('is-open'); unlock(); } });
+
+    fetchCart();
   }
 
-  async function doChange(key, qty) {
-    if (busy) return;
-    busy = true;
-    drawerBody.innerHTML = spinnerHTML();
-    try {
-      const cart = await apiChange(key, qty);
-      renderCart(cart);
-    } catch (err) {
-      console.error('[WO] doChange error', err);
-      drawerBody.innerHTML = `<p style="padding:32px 26px;color:rgba(255,255,255,0.35);font-size:13px;">Something went wrong. Please refresh.</p>`;
-    } finally {
-      busy = false;
-    }
-  }
-
-  /* ── Open drawer & fetch ── */
-  async function handleCartClick() {
-    if (drawerOpen) { closeDrawer(); return; }
-    openDrawer();
-    drawerBody.innerHTML = spinnerHTML();
-    try {
-      const cart = await apiGet();
-      renderCart(cart);
-    } catch (err) {
-      console.error('[WO] handleCartClick error', err);
-      drawerBody.innerHTML = `<p style="padding:32px 26px;color:rgba(255,255,255,0.35);font-size:13px;">Could not load cart. Please refresh.</p>`;
-    }
-  }
-
-  cartDesk && cartDesk.addEventListener('click', handleCartClick);
-  cartMob  && cartMob.addEventListener('click', handleCartClick);
-
-  /* ── Intercept add-to-cart ── */
-  const _fetch = window.fetch.bind(window);
-  window.fetch = async function (...args) {
-    const res = await _fetch(...args);
-    const url = typeof args[0] === 'string' ? args[0] : (args[0] && args[0].url) || '';
-    if (/\/cart\/(add|change|update)/.test(url)) {
-      try {
-        const cart = await (await _fetch('/cart.js')).json();
-        setBadges(cart.item_count);
-        if (drawerOpen) renderCart(cart);
-      } catch (e) { /* silent */ }
-    }
-    return res;
-  };
-
-  /* ── Active link highlight ── */
-  const currentPath = window.location.pathname;
-  document.querySelectorAll('.wo-nav__link').forEach(a => {
-    if (a.getAttribute('href') === currentPath) a.classList.add('wo-active');
-  });
-
-  /* ── Magnetic CTA ── */
-  document.querySelectorAll('.wo-cta, .wo-mob-cta').forEach(el => {
-    el.addEventListener('mousemove', e => {
-      const r = el.getBoundingClientRect();
-      const x = (e.clientX - r.left  - r.width  / 2) * 0.12;
-      const y = (e.clientY - r.top   - r.height / 2) * 0.12;
-      el.style.transform = `translate(${x}px,${y}px) translateY(-1px)`;
-    });
-    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
-  });
-
-  /* ── Init ── */
-  setBadges({{ cart.item_count }});
-
+  document.addEventListener('shopify:section:load', e => { if(e.detail.sectionId === '{{ section_id }}') initHeader(); });
+  initHeader();
 })();
 </script>
 
 {% schema %}
 {
-  "name": "WO Premium Header",
-  "class": "wo-header-section",
-  "tag": "div",
+  "name": "PRO Premium Header",
   "settings": [
     {
       "type": "header",
-      "content": "━━  Logo  ━━"
+      "content": "━━ Logo ━━"
     },
     {
       "type": "image_picker",
@@ -1754,13 +609,73 @@ body.wo-locked {
       "label": "Logo Image"
     },
     {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text",
+      "info": "Used if no logo image is uploaded"
+    },
+    {
+      "type": "font_picker",
+      "id": "logo_font",
+      "label": "Logo Font",
+      "default": "assistant_n8"
+    },
+    {
+      "type": "color",
+      "id": "logo_text_color",
+      "label": "Logo Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size",
+      "min": 14,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Logo Font Size",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "logo_font_weight",
+      "label": "Logo Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-Bold" }
+      ],
+      "default": "800"
+    },
+    {
+      "type": "select",
+      "id": "logo_text_transform",
+      "label": "Logo Text Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "logo_letter_spacing",
+      "min": -0.05,
+      "max": 0.5,
+      "step": 0.01,
+      "unit": "em",
+      "label": "Logo Letter Spacing",
+      "default": 0.05
+    },
+    {
       "type": "range",
       "id": "logo_width_desktop",
-      "min": 60,
-      "max": 320,
+      "min": 50,
+      "max": 400,
       "step": 5,
       "unit": "px",
-      "label": "Logo Max Width — Desktop",
+      "label": "Logo Width Desktop",
       "default": 180
     },
     {
@@ -1768,135 +683,80 @@ body.wo-locked {
       "id": "logo_width_mobile",
       "min": 40,
       "max": 200,
-      "step": 2,
+      "step": 5,
       "unit": "px",
-      "label": "Logo Max Width — Mobile",
+      "label": "Logo Width Mobile",
       "default": 120
     },
     {
       "type": "range",
       "id": "logo_vertical_padding",
-      "min": 8,
-      "max": 40,
+      "min": 0,
+      "max": 60,
       "step": 2,
       "unit": "px",
-      "label": "Logo Vertical Breathing Room — Desktop",
-      "info": "Total px removed from header height for logo (e.g. 20 = 10px top + 10px bottom)",
+      "label": "Logo Vertical Padding Desktop",
       "default": 20
     },
     {
       "type": "range",
       "id": "logo_vertical_padding_mobile",
-      "min": 8,
-      "max": 36,
+      "min": 0,
+      "max": 40,
       "step": 2,
       "unit": "px",
-      "label": "Logo Vertical Breathing Room — Mobile",
+      "label": "Logo Vertical Padding Mobile",
       "default": 18
     },
     {
       "type": "checkbox",
       "id": "show_logo_icon",
-      "label": "Show Icon Mark (text logo only)",
+      "label": "Show Logo Icon (Text only)",
       "default": true
     },
     {
       "type": "color",
       "id": "logo_icon_bg",
-      "label": "Icon Mark Background",
+      "label": "Logo Icon BG",
       "default": "#e8a020"
     },
     {
       "type": "color",
       "id": "logo_icon_color",
-      "label": "Icon Mark Color",
+      "label": "Logo Icon Color",
       "default": "#ffffff"
     },
     {
-      "type": "color",
-      "id": "logo_text_color",
-      "label": "Text Logo Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "text",
-      "id": "logo_font_family",
-      "label": "Text Logo Font Family",
-      "default": "Inter"
-    },
-    {
-      "type": "range",
-      "id": "logo_font_size",
-      "min": 14,
-      "max": 52,
-      "step": 1,
-      "unit": "px",
-      "label": "Text Logo Font Size",
-      "default": 28
-    },
-    {
       "type": "select",
-      "id": "logo_font_weight",
-      "label": "Text Logo Font Weight",
+      "id": "logo_position",
+      "label": "Logo Position",
       "options": [
-        { "value": "400", "label": "Regular" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semibold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extrabold" },
-        { "value": "900", "label": "Black" }
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
       ],
-      "default": "800"
-    },
-    {
-      "type": "select",
-      "id": "logo_text_transform",
-      "label": "Text Logo Case",
-      "options": [
-        { "value": "none",       "label": "Normal" },
-        { "value": "uppercase",  "label": "UPPERCASE" },
-        { "value": "capitalize", "label": "Capitalize" }
-      ],
-      "default": "uppercase"
-    },
-    {
-      "type": "select",
-      "id": "logo_letter_spacing",
-      "label": "Text Logo Letter Spacing",
-      "options": [
-        { "value": "0",    "label": "None" },
-        { "value": "0.02", "label": "Slight" },
-        { "value": "0.05", "label": "Normal" },
-        { "value": "0.1",  "label": "Wide" },
-        { "value": "0.15", "label": "Wider" }
-      ],
-      "default": "0.05"
+      "default": "left"
     },
     {
       "type": "header",
-      "content": "━━  Navigation  ━━"
+      "content": "━━ Navigation ━━"
     },
     {
       "type": "link_list",
       "id": "menu",
-      "label": "Navigation Menu",
+      "label": "Menu",
       "default": "main-menu"
     },
     {
-      "type": "range",
-      "id": "nav_spacing",
-      "min": 12,
-      "max": 72,
-      "step": 2,
-      "unit": "px",
-      "label": "Nav Item Gap",
-      "default": 36
+      "type": "font_picker",
+      "id": "nav_font",
+      "label": "Nav Font",
+      "default": "assistant_n7"
     },
     {
       "type": "range",
       "id": "nav_font_size",
       "min": 10,
-      "max": 18,
+      "max": 24,
       "step": 1,
       "unit": "px",
       "label": "Nav Font Size",
@@ -1904,145 +764,120 @@ body.wo-locked {
     },
     {
       "type": "select",
-      "id": "nav_letter_spacing",
-      "label": "Nav Letter Spacing",
+      "id": "nav_font_weight",
+      "label": "Nav Font Weight",
       "options": [
-        { "value": "0.02", "label": "Tight" },
-        { "value": "0.06", "label": "Normal" },
-        { "value": "0.10", "label": "Wide" },
-        { "value": "0.15", "label": "Wider" }
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
       ],
-      "default": "0.06"
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "nav_spacing",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Nav Item Spacing",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "nav_letter_spacing",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.01,
+      "unit": "em",
+      "label": "Nav Letter Spacing",
+      "default": 0.06
     },
     {
       "type": "select",
       "id": "nav_text_transform",
-      "label": "Nav Text Case",
+      "label": "Nav Text Transform",
       "options": [
-        { "value": "none",      "label": "Normal" },
-        { "value": "uppercase", "label": "UPPERCASE" }
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" }
       ],
       "default": "none"
     },
     {
-      "type": "color",
-      "id": "nav_text_color",
-      "label": "Nav Color",
-      "default": "#b8bcc8"
-    },
-    {
-      "type": "color",
-      "id": "nav_hover_color",
-      "label": "Nav Hover Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "nav_active_color",
-      "label": "Nav Active Color",
-      "default": "#e8a020"
+      "type": "select",
+      "id": "header_align",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center"
     },
     {
       "type": "header",
-      "content": "━━  Header Layout  ━━"
+      "content": "━━ Header Layout ━━"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_behavior",
+      "label": "Sticky Header",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 1000,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Width",
+      "default": 1640
     },
     {
       "type": "range",
       "id": "header_height_desktop",
-      "min": 56,
-      "max": 120,
+      "min": 40,
+      "max": 160,
       "step": 2,
       "unit": "px",
-      "label": "Header Height — Desktop",
+      "label": "Header Height Desktop",
       "default": 76
     },
     {
       "type": "range",
       "id": "header_height_mobile",
-      "min": 52,
-      "max": 90,
+      "min": 40,
+      "max": 120,
       "step": 2,
       "unit": "px",
-      "label": "Header Height — Mobile",
+      "label": "Header Height Mobile",
       "default": 64
     },
     {
       "type": "range",
       "id": "desktop_padding",
-      "min": 16,
-      "max": 96,
+      "min": 0,
+      "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Horizontal Padding — Desktop",
+      "label": "Desktop Padding",
       "default": 40
     },
     {
       "type": "range",
       "id": "mobile_padding",
-      "min": 12,
-      "max": 40,
+      "min": 0,
+      "max": 60,
       "step": 2,
       "unit": "px",
-      "label": "Horizontal Padding — Mobile",
+      "label": "Mobile Padding",
       "default": 18
     },
     {
       "type": "header",
-      "content": "━━  Colors  ━━"
-    },
-    {
-      "type": "color",
-      "id": "header_bg_color",
-      "label": "Header Background",
-      "default": "#1e2128"
-    },
-    {
-      "type": "color",
-      "id": "header_border_color",
-      "label": "Header Bottom Border",
-      "default": "#2a2d35"
-    },
-    {
-      "type": "header",
-      "content": "━━  Cart Icon  ━━"
-    },
-    {
-      "type": "color",
-      "id": "cart_icon_color",
-      "label": "Cart Icon Color",
-      "default": "#b8bcc8"
-    },
-    {
-      "type": "range",
-      "id": "cart_icon_size",
-      "min": 16,
-      "max": 30,
-      "step": 1,
-      "unit": "px",
-      "label": "Cart Icon Size",
-      "default": 22
-    },
-    {
-      "type": "checkbox",
-      "id": "show_cart_count",
-      "label": "Show Cart Badge",
-      "default": true
-    },
-    {
-      "type": "color",
-      "id": "cart_count_bg",
-      "label": "Badge Background",
-      "default": "#e8a020"
-    },
-    {
-      "type": "color",
-      "id": "cart_count_color",
-      "label": "Badge Text Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "header",
-      "content": "━━  CTA Button  ━━"
+      "content": "━━ CTA Button ━━"
     },
     {
       "type": "checkbox",
@@ -2054,36 +889,49 @@ body.wo-locked {
       "type": "text",
       "id": "cta_button_text",
       "label": "CTA Text",
-      "default": "Get Started"
+      "default": "Join Now"
     },
     {
       "type": "url",
       "id": "cta_button_url",
-      "label": "CTA URL"
+      "label": "CTA Link"
     },
     {
-      "type": "color",
-      "id": "cta_bg_color",
-      "label": "CTA Background",
-      "default": "#2c3040"
+      "type": "font_picker",
+      "id": "cta_font",
+      "label": "CTA Font",
+      "default": "assistant_n7"
     },
     {
-      "type": "color",
-      "id": "cta_text_color",
-      "label": "CTA Text Color",
-      "default": "#dde0ea"
+      "type": "select",
+      "id": "cta_font_weight",
+      "label": "CTA Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
     },
     {
-      "type": "color",
-      "id": "cta_hover_bg",
-      "label": "CTA Hover Background",
-      "default": "#363c52"
+      "type": "range",
+      "id": "cta_letter_spacing",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.01,
+      "unit": "em",
+      "label": "CTA Letter Spacing",
+      "default": 0.09
     },
     {
-      "type": "color",
-      "id": "cta_border_color",
-      "label": "CTA Border Color",
-      "default": "#3a3f52"
+      "type": "select",
+      "id": "cta_text_transform",
+      "label": "CTA Text Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "uppercase"
     },
     {
       "type": "range",
@@ -2093,78 +941,154 @@ body.wo-locked {
       "step": 2,
       "unit": "px",
       "label": "CTA Border Radius",
-      "default": 8
+      "default": 10
     },
     {
       "type": "header",
-      "content": "━━  Mobile Menu  ━━"
+      "content": "━━ Cart ━━"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_count",
+      "label": "Show Cart Count",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "cart_icon_size",
+      "min": 16,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Cart Icon Size",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "━━ Colors ━━"
+    },
+    {
+      "type": "color",
+      "id": "header_bg_color",
+      "label": "Header Background",
+      "default": "#1e2128"
+    },
+    {
+      "type": "color",
+      "id": "header_border_color",
+      "label": "Header Border",
+      "default": "rgba(255,255,255,0.08)"
+    },
+    {
+      "type": "color",
+      "id": "nav_text_color",
+      "label": "Nav Text",
+      "default": "#b8bcc8"
+    },
+    {
+      "type": "color",
+      "id": "nav_hover_color",
+      "label": "Nav Hover",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "nav_active_color",
+      "label": "Nav Active",
+      "default": "#e8a020"
+    },
+    {
+      "type": "color",
+      "id": "cart_icon_color",
+      "label": "Cart Icon",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "cart_count_bg",
+      "label": "Cart Count BG",
+      "default": "#e8a020"
+    },
+    {
+      "type": "color",
+      "id": "cart_count_color",
+      "label": "Cart Count Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "cta_bg_color",
+      "label": "CTA BG",
+      "default": "#e8a020"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "CTA Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "cta_hover_bg",
+      "label": "CTA Hover BG",
+      "default": "#f0b040"
+    },
+    {
+      "type": "color",
+      "id": "cta_border_color",
+      "label": "CTA Border",
+      "default": "transparent"
     },
     {
       "type": "color",
       "id": "mobile_menu_bg",
-      "label": "Mobile Menu Background",
-      "default": "#12141a"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_social",
-      "label": "Show Social Links",
-      "default": true
-    },
-    {
-      "type": "url",
-      "id": "social_ig",
-      "label": "Instagram URL"
-    },
-    {
-      "type": "url",
-      "id": "social_fb",
-      "label": "Facebook URL"
-    },
-    {
-      "type": "url",
-      "id": "social_x",
-      "label": "X / Twitter URL"
-    },
-    {
-      "type": "header",
-      "content": "━━  Cart Drawer  ━━"
+      "label": "Mobile Menu BG",
+      "default": "#1e2128"
     },
     {
       "type": "color",
       "id": "drawer_bg",
-      "label": "Drawer Background",
-      "default": "#13151c"
+      "label": "Drawer BG",
+      "default": "#1e2128"
     },
     {
       "type": "range",
       "id": "overlay_opacity",
-      "min": 0.1,
-      "max": 0.9,
+      "min": 0,
+      "max": 1,
       "step": 0.1,
       "label": "Overlay Opacity",
       "default": 0.6
     },
     {
-      "type": "header",
-      "content": "━━  Animation  ━━"
-    },
-    {
       "type": "range",
       "id": "animation_speed",
-      "min": 150,
-      "max": 600,
-      "step": 10,
+      "min": 100,
+      "max": 1000,
+      "step": 50,
       "unit": "ms",
-      "label": "Transition Speed",
-      "default": 280
+      "label": "Animation Speed",
+      "default": 400
     }
   ],
-  "presets": [
+  "blocks": [
     {
-      "name": "WO Premium Header"
+      "type": "social_link",
+      "name": "Social Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Instagram"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        }
+      ]
     }
   ]
 }
 {% endschema %}
-    

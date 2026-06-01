@@ -1,11 +1,25 @@
-{%- comment -%}
-  Image with Trust Card & Text - Animated & Video Ready
-{%- endcomment -%}
+{% comment %}
+  ============================================================
+  PRO IMAGE & TRUST TEXT SECTION
+  Refactored for full customization from Theme Editor
+  ============================================================
+{% endcomment %}
 
-{%- style -%}
-  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap');
+{%- liquid
+  assign section_id = section.id
+  assign title_font = section.settings.title_font
+  assign body_font = section.settings.body_font
+  assign accent_font = section.settings.accent_font
+  assign hand_font = section.settings.hand_font
+-%}
 
-  #ImageTrustSection-{{ section.id }} {
+<style>
+  {{ title_font | font_face: font_display: 'swap' }}
+  {{ body_font | font_face: font_display: 'swap' }}
+  {{ accent_font | font_face: font_display: 'swap' }}
+  {{ hand_font | font_face: font_display: 'swap' }}
+
+  #ImageTrustSection-{{ section_id }} {
     /* Section Padding */
     --padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
     --padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
@@ -13,17 +27,34 @@
     --padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
     --max-width: {{ section.settings.max_width }}px;
 
-    /* Typography - Desktop */
+    /* Typography - Header */
+    --title-font: {{ title_font.family }}, {{ title_font.fallback_families }};
     --title-size-desk: {{ section.settings.title_size_desk }}px;
-    --subtitle-size-desk: {{ section.settings.subtitle_size_desk }}px;
-    --text-size-desk: {{ section.settings.text_size_desk }}px;
-    --handwriting-size-desk: {{ section.settings.handwriting_size_desk }}px;
-
-    /* Typography - Mobile */
     --title-size-mob: {{ section.settings.title_size_mob }}px;
+    --title-weight: {{ section.settings.title_weight | default: title_font.weight }};
+    --title-lh: {{ section.settings.title_lh }};
+    --title-ls: {{ section.settings.title_ls }}em;
+    --title-transform: {{ section.settings.title_transform }};
+
+    --subtitle-font: {{ accent_font.family }}, {{ accent_font.fallback_families }};
+    --subtitle-size-desk: {{ section.settings.subtitle_size_desk }}px;
     --subtitle-size-mob: {{ section.settings.subtitle_size_mob }}px;
+    --subtitle-weight: {{ section.settings.subtitle_weight | default: accent_font.weight }};
+    --subtitle-ls: {{ section.settings.subtitle_ls }}em;
+    --subtitle-transform: {{ section.settings.subtitle_transform }};
+
+    /* Typography - Body */
+    --text-font: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --text-size-desk: {{ section.settings.text_size_desk }}px;
     --text-size-mob: {{ section.settings.text_size_mob }}px;
+    --text-weight: {{ section.settings.text_weight | default: body_font.weight }};
+    --text-lh: {{ section.settings.text_lh }};
+
+    /* Typography - Hand */
+    --hand-font: {{ hand_font.family }}, {{ hand_font.fallback_families }};
+    --handwriting-size-desk: {{ section.settings.handwriting_size_desk }}px;
     --handwriting-size-mob: {{ section.settings.handwriting_size_mob }}px;
+    --handwriting-weight: {{ section.settings.hand_weight | default: hand_font.weight }};
 
     /* Colors */
     --bg-color: {{ section.settings.bg_color }};
@@ -33,23 +64,24 @@
     
     --btn-bg: {{ section.settings.btn_bg }};
     --btn-text-color: {{ section.settings.btn_text_color }};
+    --btn-radius: {{ section.settings.btn_radius }}px;
     
     --feature-bg: {{ section.settings.feature_bg }};
     --feature-border: {{ section.settings.feature_border }};
+    --feature-radius: {{ section.settings.feature_radius }}px;
     
     --card-bg: {{ section.settings.card_bg }};
+    --card-radius: {{ section.settings.card_radius }}px;
   }
 
-  #ImageTrustSection-{{ section.id }} {
+  #ImageTrustSection-{{ section_id }} {
     background-color: var(--bg-color);
     padding-top: var(--padding-top-desktop);
     padding-bottom: var(--padding-bottom-desktop);
-    overflow: hidden; /* Crucial for animation */
+    overflow: hidden;
   }
 
-  #ImageTrustSection-{{ section.id }} * {
-    box-sizing: border-box;
-  }
+  #ImageTrustSection-{{ section_id }} * { box-sizing: border-box; }
 
   .itt-container {
     max-width: var(--max-width);
@@ -57,77 +89,69 @@
     padding: 0 20px;
     display: grid;
     grid-template-columns: 1fr 1.1fr;
-    gap: 60px;
+    gap: {{ section.settings.column_gap }}px;
     align-items: center;
   }
 
-  /* =====================================
-     SCROLL ANIMATIONS (Left & Right)
-  ====================================== */
+  /* Animations */
   .itt-animate {
     opacity: 0;
-    /* Duration increased to 1.5s for smoother effect */
-    transition: opacity 1.5s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: opacity 1.2s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
   
-  .itt-animate.slide-left {
-    /* Comes from further away */
-    transform: translateX(-150px);
-  }
-  
-  .itt-animate.slide-right {
-    /* Comes from further away */
-    transform: translateX(150px);
-  }
-  
-  .itt-animate.itt-visible {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  .itt-animate.slide-left { transform: translateX(-80px); }
+  .itt-animate.slide-right { transform: translateX(80px); }
+  .itt-animate.itt-visible { opacity: 1; transform: translateX(0); }
 
-  /* =====================================
-     LEFT COLUMN: CONTENT
-  ====================================== */
+  /* Left Column */
   .itt-content {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    text-align: {{ section.settings.text_align }};
+    align-items: {{ section.settings.text_align | replace: 'left', 'flex-start' | replace: 'right', 'flex-end' }};
+    order: {{ section.settings.media_position | liquid_if_true: '2', '1' }};
   }
 
   .itt-subtitle {
+    font-family: var(--subtitle-font);
     font-size: var(--subtitle-size-desk);
     color: var(--highlight-color);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-weight: var(--subtitle-weight);
+    text-transform: var(--subtitle-transform);
+    letter-spacing: var(--subtitle-ls);
     margin: 0;
   }
 
   .itt-title {
+    font-family: var(--title-font);
     font-size: var(--title-size-desk);
     color: var(--title-color);
-    line-height: 1.2;
-    font-weight: 800;
+    line-height: var(--title-lh);
+    letter-spacing: var(--title-ls);
+    text-transform: var(--title-transform);
+    font-weight: var(--title-weight);
     margin: 0;
   }
 
   .itt-text {
+    font-family: var(--text-font);
     font-size: var(--text-size-desk);
+    font-weight: var(--text-weight);
     color: var(--text-color);
-    line-height: 1.6;
+    line-height: var(--text-lh);
     margin: 0;
   }
 
   .itt-text p { margin: 0 0 10px 0; }
   .itt-text p:last-child { margin: 0; }
 
-  /* Feature Tags */
   .itt-features {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 10px;
-    margin-bottom: 15px;
+    justify-content: {{ section.settings.text_align | replace: 'left', 'flex-start' | replace: 'right', 'flex-end' }};
   }
 
   .itt-feature-tag {
@@ -137,20 +161,14 @@
     background: var(--feature-bg);
     border: 1px solid var(--feature-border);
     padding: 8px 14px;
-    border-radius: 6px;
+    border-radius: var(--feature-radius);
     font-size: 12px;
     font-weight: 600;
     color: var(--title-color);
   }
 
-  .itt-feature-tag svg {
-    width: 16px;
-    height: 16px;
-    color: var(--highlight-color);
-    flex-shrink: 0;
-  }
+  .itt-feature-tag svg { width: 16px; height: 16px; color: var(--highlight-color); flex-shrink: 0; }
 
-  /* Button */
   .itt-btn {
     display: inline-flex;
     align-items: center;
@@ -159,119 +177,87 @@
     background: var(--btn-bg);
     color: var(--btn-text-color);
     padding: 16px 28px;
-    border-radius: 6px;
+    border-radius: var(--btn-radius);
     text-decoration: none;
     font-weight: 700;
     font-size: 14px;
     text-transform: uppercase;
-    width: fit-content;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .itt-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    color: #fff;
-  }
+  .itt-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+  .itt-btn svg { width: 14px; height: 14px; }
 
-  .itt-btn svg {
-    width: 14px;
-    height: 14px;
-    fill: var(--highlight-color);
-  }
-
-  /* =====================================
-     RIGHT COLUMN: MEDIA CARD
-  ====================================== */
+  /* Right Column */
   .itt-media-card {
     background: var(--card-bg);
-    border-radius: 16px;
+    border-radius: var(--card-radius);
     box-shadow: 0 20px 40px rgba(0,0,0,0.08);
     display: flex;
     flex-direction: column;
     position: relative;
-    overflow: visible;
+    order: {{ section.settings.media_position | liquid_if_true: '1', '2' }};
   }
 
   .itt-image-wrap {
     position: relative;
     width: 100%;
     padding-bottom: 60%;
-    border-radius: 16px 16px 0 0;
+    border-radius: var(--card-radius) var(--card-radius) 0 0;
     overflow: hidden;
   }
 
   .itt-image-wrap img, .itt-image-wrap video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
   }
 
   .itt-image-overlay {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%);
   }
 
-  /* Handwritten Text */
   .itt-handwriting-wrap {
     position: absolute;
-    top: 15%;
-    left: 6%;
+    top: {{ section.settings.hand_pos_v }}%;
+    left: {{ section.settings.hand_pos_h }}%;
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
+    transform: rotate({{ section.settings.hand_rotation }}deg);
   }
 
   .itt-handwriting {
+    font-family: var(--hand-font);
     font-size: var(--handwriting-size-desk);
+    font-weight: var(--handwriting-weight);
     color: #fff;
     line-height: 1.2;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    white-space: pre-line;
   }
 
   .itt-arrow-svg {
-    width: 40px;
+    width: {{ section.settings.arrow_size }}px;
     height: auto;
     margin-top: 5px;
-    margin-left: 50px;
     stroke: #fff;
     filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+    display: {{ section.settings.show_arrow | liquid_if_true: 'block', 'none' }};
   }
 
-  /* Play Button */
   .itt-play-btn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 70px;
-    height: 70px;
-    background: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    z-index: 2;
-    cursor: pointer;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 70px; height: 70px;
+    background: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2; cursor: pointer;
     box-shadow: 0 0 0 8px rgba(255,255,255,0.2), 0 10px 20px rgba(0,0,0,0.2);
     transition: transform 0.3s ease;
   }
 
-  .itt-play-btn:hover {
-    transform: translate(-50%, -50%) scale(1.05);
-  }
-
-  .itt-play-btn svg {
-    width: 24px;
-    height: 24px;
-    fill: #000;
-    margin-left: 4px;
-  }
+  .itt-play-btn:hover { transform: translate(-50%, -50%) scale(1.05); }
+  .itt-play-btn svg { width: 24px; height: 24px; fill: #000; margin-left: 4px; }
 
   /* Trust Bar */
   .itt-trust-bar {
@@ -280,169 +266,70 @@
     justify-content: space-between;
     padding: 20px 24px;
     background: var(--card-bg);
-    border-radius: 0 0 16px 16px;
+    border-radius: 0 0 var(--card-radius) var(--card-radius);
     flex-wrap: wrap;
     gap: 16px;
   }
 
-  .itt-trust-left, .itt-trust-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .itt-avatars {
-    display: flex;
-    align-items: center;
-  }
-
+  .itt-trust-left, .itt-trust-right { display: flex; align-items: center; gap: 12px; }
+  .itt-avatars { display: flex; align-items: center; }
   .itt-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 2px solid var(--card-bg);
-    object-fit: cover;
-    margin-left: -12px;
-    background-color: #eee;
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 2px solid var(--card-bg); object-fit: cover;
+    margin-left: -12px; background-color: #eee;
   }
   .itt-avatar:first-child { margin-left: 0; }
 
-  .itt-trust-text {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--title-color);
-    line-height: 1.3;
-  }
-  .itt-trust-text span {
-    display: block;
-    font-weight: 400;
-    color: var(--text-color);
-    font-size: 12px;
-  }
+  .itt-trust-text { font-size: 13px; font-weight: 600; color: var(--title-color); line-height: 1.3; }
+  .itt-trust-text span { display: block; font-weight: 400; color: var(--text-color); font-size: 12px; }
 
   .itt-rating-box {
     border: 1px solid var(--feature-border);
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 16px;
-    color: var(--title-color);
+    padding: 4px 10px; border-radius: 20px;
+    font-weight: 700; font-size: 16px; color: var(--title-color);
   }
 
-  .itt-stars-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  
+  .itt-stars-wrap { display: flex; flex-direction: column; gap: 2px; }
   .itt-stars { display: flex; gap: 2px; color: var(--highlight-color); }
   .itt-stars svg { width: 14px; height: 14px; fill: currentColor; }
   .itt-reviews-count { font-size: 11px; color: var(--highlight-color); font-weight: 500; }
 
-  /* =====================================
-     VIDEO MODAL (LIGHTBOX)
-  ====================================== */
+  /* Modal */
   .itt-video-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
+    position: fixed; inset: 0; z-index: 99999;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
   }
+  .itt-video-modal.active { opacity: 1; pointer-events: auto; }
+  .itt-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); }
+  .itt-modal-content { position: relative; width: 90%; max-width: 1000px; z-index: 2; transform: scale(0.95); transition: transform 0.4s ease; }
+  .itt-video-modal.active .itt-modal-content { transform: scale(1); }
+  .itt-video-modal video { width: 100%; border-radius: 12px; }
+  .itt-close-btn { position: absolute; top: -45px; right: 0; color: #fff; background: none; border: none; font-size: 32px; cursor: pointer; }
 
-  .itt-video-modal.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .itt-modal-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(5px);
-    cursor: pointer;
-  }
-
-  .itt-modal-content {
-    position: relative;
-    width: 90%;
-    max-width: 1000px;
-    z-index: 2;
-    transform: scale(0.95);
-    transition: transform 0.4s ease;
-  }
-
-  .itt-video-modal.active .itt-modal-content {
-    transform: scale(1);
-  }
-
-  .itt-modal-content video {
-    width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    outline: none;
-  }
-
-  .itt-close-btn {
-    position: absolute;
-    top: -45px;
-    right: 0;
-    color: #fff;
-    background: none;
-    border: none;
-    font-size: 32px;
-    cursor: pointer;
-    line-height: 1;
-    padding: 5px;
-  }
-
-  .itt-close-btn:hover { color: var(--highlight-color); }
-
-  /* =====================================
-     MOBILE RESPONSIVE
-  ====================================== */
+  /* Mobile */
   @media screen and (max-width: 990px) {
-    #ImageTrustSection-{{ section.id }} {
-      padding-top: var(--padding-top-mobile);
-      padding-bottom: var(--padding-bottom-mobile);
-    }
-    .itt-container {
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-    
-    /* Smooth vertical fade up for mobile */
-    .itt-animate.slide-left, .itt-animate.slide-right { transform: translateY(60px); }
+    #ImageTrustSection-{{ section_id }} { padding-top: var(--padding-top-mobile); padding-bottom: var(--padding-bottom-mobile); }
+    .itt-container { grid-template-columns: 1fr; gap: 40px; }
+    .itt-animate.slide-left, .itt-animate.slide-right { transform: translateY(40px); }
     .itt-animate.itt-visible { transform: translateY(0); }
-    
     .itt-title { font-size: var(--title-size-mob); }
     .itt-subtitle { font-size: var(--subtitle-size-mob); }
     .itt-text { font-size: var(--text-size-mob); }
     .itt-handwriting { font-size: var(--handwriting-size-mob); }
-
-    .itt-features { justify-content: center; }
-    .itt-content { align-items: center; text-align: center; }
+    .itt-content { align-items: center; text-align: center; order: 2; }
+    .itt-media-card { order: 1; }
     .itt-btn { width: 100%; }
-
     .itt-image-wrap { padding-bottom: 75%; }
-    .itt-handwriting-wrap { top: 10%; }
-    .itt-arrow-svg { width: 30px; margin-left: 30px; }
-    .itt-play-btn { width: 60px; height: 60px; }
-
     .itt-trust-bar { flex-direction: column; text-align: center; padding: 20px; }
     .itt-trust-left { flex-direction: column; }
     .itt-trust-right { justify-content: center; }
   }
-{%- endstyle -%}
+</style>
 
-<section id="ImageTrustSection-{{ section.id }}">
+<section id="ImageTrustSection-{{ section_id }}">
   <div class="itt-container">
     
-    <!-- LEFT COLUMN (Slides from Left) -->
     <div class="itt-content itt-animate slide-left">
       {% if section.settings.subtitle != blank %}
         <h4 class="itt-subtitle">{{ section.settings.subtitle }}</h4>
@@ -456,7 +343,6 @@
         <div class="itt-text">{{ section.settings.text }}</div>
       {% endif %}
 
-      <!-- Feature Tags -->
       {% if section.blocks.size > 0 %}
         <div class="itt-features">
           {% for block in section.blocks %}
@@ -471,18 +357,14 @@
         </div>
       {% endif %}
 
-      <!-- Button -->
       {% if section.settings.btn_text != blank %}
         <a href="{{ section.settings.btn_link }}" class="itt-btn">
           {{ section.settings.btn_text }}
-          <svg viewBox="0 0 24 24">
-            <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       {% endif %}
     </div>
 
-    <!-- RIGHT COLUMN (Slides from Right) -->
     <div class="itt-media-card itt-animate slide-right">
       <div class="itt-image-wrap">
         {% if section.settings.image != blank %}
@@ -495,7 +377,7 @@
 
         {% if section.settings.handwriting_text != blank %}
           <div class="itt-handwriting-wrap">
-            <div class="itt-handwriting">{{ section.settings.handwriting_text | newline_to_br }}</div>
+            <div class="itt-handwriting">{{ section.settings.handwriting_text }}</div>
             <svg class="itt-arrow-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M10 20 Q 30 70, 80 80" stroke-width="4" stroke-linecap="round" fill="transparent"/>
               <path d="M60 70 L 80 80 L 70 95" stroke-width="4" stroke-linecap="round" fill="transparent"/>
@@ -504,13 +386,12 @@
         {% endif %}
 
         {% if section.settings.hosted_video != blank %}
-          <div class="itt-play-btn">
+          <div class="itt-play-btn" role="button" aria-label="Play video">
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
           </div>
         {% endif %}
       </div>
 
-      <!-- Trust Bar Bottom -->
       {% if section.settings.show_trust_bar %}
         <div class="itt-trust-bar">
           <div class="itt-trust-left">
@@ -535,11 +416,9 @@
             <div class="itt-rating-box">{{ section.settings.rating_score }}</div>
             <div class="itt-stars-wrap">
               <div class="itt-stars">
-                <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
+                {%- for i in (1..5) -%}
+                  <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
+                {%- endfor -%}
               </div>
               <div class="itt-reviews-count">{{ section.settings.review_count_text }}</div>
             </div>
@@ -547,15 +426,13 @@
         </div>
       {% endif %}
     </div>
-
   </div>
 
-  <!-- Hidden Video Lightbox Modal -->
   {% if section.settings.hosted_video != blank %}
-    <div class="itt-video-modal">
+    <div class="itt-video-modal" role="dialog" aria-modal="true" aria-label="Video Player">
       <div class="itt-modal-overlay"></div>
       <div class="itt-modal-content">
-        <button class="itt-close-btn">&times;</button>
+        <button class="itt-close-btn" aria-label="Close video">&times;</button>
         {{ section.settings.hosted_video | video_tag: controls: true, autoplay: false, loop: false, width: '100%' }}
       </div>
     </div>
@@ -564,30 +441,20 @@
 
 <script>
   (function() {
-    function initImageTrustSection() {
-      const section = document.querySelector("#ImageTrustSection-{{ section.id }}");
+    function initSection() {
+      const section = document.querySelector("#ImageTrustSection-{{ section_id }}");
       if (!section) return;
 
-      // --- 1. Intersection Observer for Scroll Animations ---
-      const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.15
-      };
-      
-      const observer = new IntersectionObserver((entries, obs) => {
+      const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('itt-visible');
-            obs.unobserve(entry.target); // Only animate once
           }
         });
-      }, observerOptions);
+      }, { threshold: 0.15 });
 
-      const animatedElements = section.querySelectorAll('.itt-animate');
-      animatedElements.forEach(el => observer.observe(el));
+      section.querySelectorAll('.itt-animate').forEach(el => observer.observe(el));
 
-      // --- 2. Video Modal Logic ---
       const playBtn = section.querySelector('.itt-play-btn');
       const modal = section.querySelector('.itt-video-modal');
       
@@ -596,106 +463,99 @@
         const overlay = modal.querySelector('.itt-modal-overlay');
         const videoEl = modal.querySelector('video');
 
-        const openModal = () => {
-          modal.classList.add('active');
-          if(videoEl) videoEl.play();
-        };
-
-        const closeModal = () => {
-          modal.classList.remove('active');
-          if(videoEl) videoEl.pause();
-        };
-
-        playBtn.addEventListener('click', openModal);
-        closeBtn.addEventListener('click', closeModal);
-        overlay.addEventListener('click', closeModal);
+        playBtn.addEventListener('click', () => { modal.classList.add('active'); videoEl?.play(); });
+        [closeBtn, overlay].forEach(el => el.addEventListener('click', () => { modal.classList.remove('active'); videoEl?.pause(); }));
       }
     }
 
-    // Run normally on page load
-    document.addEventListener("DOMContentLoaded", initImageTrustSection);
-    
-    // FIX FOR SHOPIFY THEME EDITOR BLANK ISSUE
-    if (window.Shopify && Shopify.designMode) {
-      document.addEventListener('shopify:section:load', function(event) {
-        if (event.detail.sectionId === '{{ section.id }}') {
-          initImageTrustSection();
-        }
-      });
+    document.addEventListener("DOMContentLoaded", initSection);
+    if (Shopify.designMode) {
+      document.addEventListener('shopify:section:load', e => { if (e.detail.sectionId === '{{ section_id }}') initSection(); });
     }
   })();
 </script>
 
 {% schema %}
 {
-  "name": "Image & Trust Text",
+  "name": "PRO Image & Trust Text",
   "settings": [
     {
       "type": "header",
-      "content": "Layout Spacing"
+      "content": "━━ Layout ━━"
     },
     {
-      "type": "range", "id": "max_width", "min": 800, "max": 1800, "step": 10, "unit": "px",
-      "label": "Section Max Width", "default": 1300
+      "type": "range", "id": "max_width", "min": 800, "max": 1800, "step": 20, "unit": "px", "label": "Container Width", "default": 1300
     },
     {
-      "type": "range", "id": "padding_top_desktop", "min": 0, "max": 150, "step": 10, "unit": "px",
-      "label": "Padding Top (Desktop)", "default": 80
+      "type": "range", "id": "column_gap", "min": 20, "max": 120, "step": 5, "unit": "px", "label": "Column Gap", "default": 60
     },
     {
-      "type": "range", "id": "padding_bottom_desktop", "min": 0, "max": 150, "step": 10, "unit": "px",
-      "label": "Padding Bottom (Desktop)", "default": 80
+      "type": "select", "id": "media_position", "label": "Media Position",
+      "options": [
+        { "value": "false", "label": "Right" },
+        { "value": "true", "label": "Left" }
+      ],
+      "default": "false"
     },
     {
-      "type": "range", "id": "padding_top_mobile", "min": 0, "max": 100, "step": 10, "unit": "px",
-      "label": "Padding Top (Mobile)", "default": 50
-    },
-    {
-      "type": "range", "id": "padding_bottom_mobile", "min": 0, "max": 100, "step": 10, "unit": "px",
-      "label": "Padding Bottom (Mobile)", "default": 50
+      "type": "select", "id": "text_align", "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
     },
     {
       "type": "header",
-      "content": "Content - Left Column"
+      "content": "━━ Content ━━"
     },
     {
-      "type": "text", "id": "subtitle", "label": "Subtitle",
-      "default": "YOUR FUTURE IS OFFSHORE"
+      "type": "text", "id": "subtitle", "label": "Subtitle", "default": "YOUR FUTURE IS OFFSHORE"
     },
     {
-      "type": "textarea", "id": "title", "label": "Heading",
-      "default": "We Help You Get Hired in the Norwegian Offshore Industry"
+      "type": "textarea", "id": "title", "label": "Heading", "default": "We Help You Get Hired in the Norwegian Offshore Industry"
     },
     {
-      "type": "richtext", "id": "text", "label": "Paragraph",
-      "default": "<p>Work Offshore is your trusted guide to enter the offshore oil and gas industry in Norway. We provide step-by-step guidance, professional CV services and career resources that help you stand out and get hired faster.</p>"
+      "type": "richtext", "id": "text", "label": "Paragraph", "default": "<p>Work Offshore is your trusted guide to enter the offshore oil and gas industry in Norway. We provide step-by-step guidance, professional CV services and career resources that help you stand out and get hired faster.</p>"
     },
     {
-      "type": "text", "id": "btn_text", "label": "Button Text",
-      "default": "LEARN MORE ABOUT US"
+      "type": "text", "id": "btn_text", "label": "Button Text", "default": "LEARN MORE ABOUT US"
     },
     {
       "type": "url", "id": "btn_link", "label": "Button Link"
     },
     {
       "type": "header",
-      "content": "Media Card - Right Column"
+      "content": "━━ Media & Effects ━━"
     },
     {
       "type": "image_picker", "id": "image", "label": "Cover Image"
     },
     {
-      "type": "video", "id": "hosted_video", "label": "Upload Video",
-      "info": "Selecting a video will automatically show the play button and open the video when clicked."
+      "type": "video", "id": "hosted_video", "label": "Upload Video"
     },
     {
-      "type": "textarea", "id": "handwriting_text", "label": "Handwritten Text",
-      "default": "Real people.\nReal jobs.\nReal freedom.",
-      "info": "Use Enter for line breaks."
+      "type": "textarea", "id": "handwriting_text", "label": "Handwritten Text", "default": "Real people.\nReal jobs.\nReal freedom."
+    },
+    {
+      "type": "checkbox", "id": "show_arrow", "label": "Show Arrow Icon", "default": true
+    },
+    {
+      "type": "range", "id": "arrow_size", "min": 20, "max": 100, "step": 2, "unit": "px", "label": "Arrow Size", "default": 40
+    },
+    {
+      "type": "range", "id": "hand_pos_v", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Handwriting Position V", "default": 15
+    },
+    {
+      "type": "range", "id": "hand_pos_h", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Handwriting Position H", "default": 6
+    },
+    {
+      "type": "range", "id": "hand_rotation", "min": -45, "max": 45, "step": 1, "unit": "deg", "label": "Handwriting Rotation", "default": 0
     },
     {
       "type": "header",
-      "content": "Trust Bar (Bottom of Card)"
+      "content": "━━ Trust Bar ━━"
     },
     {
       "type": "checkbox", "id": "show_trust_bar", "label": "Show Trust Bar", "default": true
@@ -710,74 +570,161 @@
       "type": "image_picker", "id": "avatar_3", "label": "Avatar 3"
     },
     {
-      "type": "text", "id": "trust_text_bold", "label": "Main Text",
-      "default": "Join thousands who changed their life"
+      "type": "text", "id": "trust_text_bold", "label": "Main Text", "default": "Join thousands who changed their life"
     },
     {
-      "type": "text", "id": "trust_text_sub", "label": "Sub Text",
-      "default": "with an offshore career"
+      "type": "text", "id": "trust_text_sub", "label": "Sub Text", "default": "with an offshore career"
     },
     {
-      "type": "text", "id": "rating_score", "label": "Rating Score",
-      "default": "4.9/5"
+      "type": "text", "id": "rating_score", "label": "Rating Score", "default": "4.9/5"
     },
     {
-      "type": "text", "id": "review_count_text", "label": "Review Count Text",
-      "default": "From 1,000+ reviews"
+      "type": "text", "id": "review_count_text", "label": "Review Count Text", "default": "From 1,000+ reviews"
     },
     {
       "type": "header",
-      "content": "Typography - Desktop"
+      "content": "━━ Typography Header ━━"
     },
     {
-      "type": "range", "id": "title_size_desk", "min": 24, "max": 64, "step": 2, "unit": "px",
-      "label": "Heading Size", "default": 42
+      "type": "font_picker", "id": "title_font", "label": "Heading Font", "default": "assistant_n8"
     },
     {
-      "type": "range", "id": "subtitle_size_desk", "min": 10, "max": 24, "step": 1, "unit": "px",
-      "label": "Subtitle Size", "default": 14
+      "type": "range", "id": "title_size_desk", "min": 20, "max": 80, "step": 2, "unit": "px", "label": "Heading Size Desktop", "default": 42
     },
     {
-      "type": "range", "id": "text_size_desk", "min": 12, "max": 24, "step": 1, "unit": "px",
-      "label": "Paragraph Size", "default": 16
+      "type": "range", "id": "title_size_mob", "min": 18, "max": 50, "step": 2, "unit": "px", "label": "Heading Size Mobile", "default": 32
     },
     {
-      "type": "range", "id": "handwriting_size_desk", "min": 20, "max": 60, "step": 2, "unit": "px",
-      "label": "Handwriting Size", "default": 36
+      "type": "select", "id": "title_weight", "label": "Heading Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-Bold" }
+      ],
+      "default": "800"
     },
     {
-      "type": "header",
-      "content": "Typography - Mobile"
+      "type": "range", "id": "title_lh", "min": 0.8, "max": 2.0, "step": 0.1, "label": "Heading Line Height", "default": 1.2
     },
     {
-      "type": "range", "id": "title_size_mob", "min": 20, "max": 50, "step": 2, "unit": "px",
-      "label": "Heading Size", "default": 32
+      "type": "range", "id": "title_ls", "min": -0.05, "max": 0.2, "step": 0.01, "unit": "em", "label": "Heading Letter Spacing", "default": 0
     },
     {
-      "type": "range", "id": "subtitle_size_mob", "min": 10, "max": 20, "step": 1, "unit": "px",
-      "label": "Subtitle Size", "default": 12
-    },
-    {
-      "type": "range", "id": "text_size_mob", "min": 12, "max": 20, "step": 1, "unit": "px",
-      "label": "Paragraph Size", "default": 15
-    },
-    {
-      "type": "range", "id": "handwriting_size_mob", "min": 16, "max": 40, "step": 1, "unit": "px",
-      "label": "Handwriting Size", "default": 24
+      "type": "select", "id": "title_transform", "label": "Heading Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
     },
     {
       "type": "header",
-      "content": "Colors"
+      "content": "━━ Typography Subtitle ━━"
     },
-    { "type": "color", "id": "bg_color", "label": "Section Background", "default": "#FAFAFA" },
-    { "type": "color", "id": "title_color", "label": "Heading & Dark Text", "default": "#0B192C" },
-    { "type": "color", "id": "text_color", "label": "Paragraph Color", "default": "#555555" },
-    { "type": "color", "id": "highlight_color", "label": "Highlight Color (Gold)", "default": "#C79A3A" },
-    { "type": "color", "id": "btn_bg", "label": "Button Background", "default": "#0B192C" },
-    { "type": "color", "id": "btn_text_color", "label": "Button Text Color", "default": "#FFFFFF" },
-    { "type": "color", "id": "feature_bg", "label": "Feature Box Background", "default": "#FFFFFF" },
+    {
+      "type": "font_picker", "id": "accent_font", "label": "Subtitle Font", "default": "assistant_n7"
+    },
+    {
+      "type": "range", "id": "subtitle_size_desk", "min": 10, "max": 24, "step": 1, "unit": "px", "label": "Subtitle Size Desktop", "default": 14
+    },
+    {
+      "type": "range", "id": "subtitle_size_mob", "min": 10, "max": 20, "step": 1, "unit": "px", "label": "Subtitle Size Mobile", "default": 12
+    },
+    {
+      "type": "select", "id": "subtitle_weight", "label": "Subtitle Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range", "id": "subtitle_ls", "min": 0, "max": 0.5, "step": 0.05, "unit": "em", "label": "Subtitle Letter Spacing", "default": 0.1
+    },
+    {
+      "type": "select", "id": "subtitle_transform", "label": "Subtitle Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography Body ━━"
+    },
+    {
+      "type": "font_picker", "id": "body_font", "label": "Body Font", "default": "assistant_n4"
+    },
+    {
+      "type": "range", "id": "text_size_desk", "min": 12, "max": 24, "step": 1, "unit": "px", "label": "Body Size Desktop", "default": 16
+    },
+    {
+      "type": "range", "id": "text_size_mob", "min": 12, "max": 20, "step": 1, "unit": "px", "label": "Body Size Mobile", "default": 15
+    },
+    {
+      "type": "select", "id": "text_weight", "label": "Body Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range", "id": "text_lh", "min": 1.0, "max": 2.0, "step": 0.1, "label": "Body Line Height", "default": 1.6
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography Handwriting ━━"
+    },
+    {
+      "type": "font_picker", "id": "hand_font", "label": "Handwriting Font", "default": "assistant_n4"
+    },
+    {
+      "type": "range", "id": "handwriting_size_desk", "min": 20, "max": 80, "step": 2, "unit": "px", "label": "Size Desktop", "default": 36
+    },
+    {
+      "type": "range", "id": "handwriting_size_mob", "min": 16, "max": 40, "step": 1, "unit": "px", "label": "Size Mobile", "default": 24
+    },
+    {
+      "type": "header",
+      "content": "━━ Colors ━━"
+    },
+    { "type": "color", "id": "bg_color", "label": "Section BG", "default": "#FAFAFA" },
+    { "type": "color", "id": "title_color", "label": "Heading Color", "default": "#0B192C" },
+    { "type": "color", "id": "text_color", "label": "Body Color", "default": "#555555" },
+    { "type": "color", "id": "highlight_color", "label": "Accent Color", "default": "#C79A3A" },
+    { "type": "color", "id": "btn_bg", "label": "Button BG", "default": "#0B192C" },
+    { "type": "color", "id": "btn_text_color", "label": "Button Text", "default": "#FFFFFF" },
+    { "type": "color", "id": "feature_bg", "label": "Feature Box BG", "default": "#FFFFFF" },
     { "type": "color", "id": "feature_border", "label": "Feature Box Border", "default": "#EAEAEA" },
-    { "type": "color", "id": "card_bg", "label": "Trust Card Background", "default": "#FFFFFF" }
+    { "type": "color", "id": "card_bg", "label": "Trust Card BG", "default": "#FFFFFF" },
+    {
+      "type": "header",
+      "content": "━━ Spacing ━━"
+    },
+    {
+      "type": "range", "id": "padding_top_desktop", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "Top Padding Desktop", "default": 80
+    },
+    {
+      "type": "range", "id": "padding_bottom_desktop", "min": 0, "max": 160, "step": 4, "unit": "px", "label": "Bottom Padding Desktop", "default": 80
+    },
+    {
+      "type": "range", "id": "padding_top_mobile", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Top Padding Mobile", "default": 50
+    },
+    {
+      "type": "range", "id": "padding_bottom_mobile", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Bottom Padding Mobile", "default": 50
+    },
+    {
+      "type": "range", "id": "btn_radius", "min": 0, "max": 40, "step": 2, "unit": "px", "label": "Button Radius", "default": 6
+    },
+    {
+      "type": "range", "id": "feature_radius", "min": 0, "max": 20, "step": 2, "unit": "px", "label": "Feature Radius", "default": 6
+    },
+    {
+      "type": "range", "id": "card_radius", "min": 0, "max": 40, "step": 2, "unit": "px", "label": "Card Radius", "default": 16
+    }
   ],
   "blocks": [
     {
@@ -793,7 +740,7 @@
   ],
   "presets": [
     {
-      "name": "Image & Trust Text",
+      "name": "PRO Image & Trust Text",
       "blocks": [
         { "type": "feature", "settings": { "title": "Proven Strategy" } },
         { "type": "feature", "settings": { "title": "Industry Knowledge" } },

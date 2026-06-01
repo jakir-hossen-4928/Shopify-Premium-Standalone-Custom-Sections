@@ -1,81 +1,180 @@
-{%- comment -%}
-  Guides & Services Pricing Section — Final
-  Layout: 3-column grid, each card = image (left) + content (right) flex row
-{%- endcomment -%}
+{% comment %}
+  ============================================================
+  PRO PRODUCT BUNDLE SECTION
+  Refactored for full customization from Theme Editor
+  ============================================================
+{% endcomment %}
 
-{%- style -%}
+{%- liquid
+  assign section_id = section.id
+  assign title_font = section.settings.title_font
+  assign body_font = section.settings.body_font
+  assign meta_font = section.settings.meta_font
 
-  #PricingCards-{{ section.id }} {
-    --accent: {{ section.settings.highlight_color }};
-    --btn-text: {{ section.settings.btn_text_color }};
-    --card-dark: {{ section.settings.card_dark_bg }};
-    background-color: {{ section.settings.bg_color }};
-    padding-top: {{ section.settings.padding_top_desktop }}px;
-    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+  assign title_font_bold = title_font | font_modify: 'weight', 'bold'
+  assign title_font_italic = title_font | font_modify: 'style', 'italic'
+  assign title_font_bold_italic = title_font_bold | font_modify: 'style', 'italic'
+
+  assign body_font_bold = body_font | font_modify: 'weight', 'bold'
+  assign body_font_italic = body_font | font_modify: 'style', 'italic'
+  assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+-%}
+
+<style>
+  {{ title_font | font_face: font_display: 'swap' }}
+  {{ title_font_bold | font_face: font_display: 'swap' }}
+  {{ title_font_italic | font_face: font_display: 'swap' }}
+  {{ title_font_bold_italic | font_face: font_display: 'swap' }}
+
+  {{ body_font | font_face: font_display: 'swap' }}
+  {{ body_font_bold | font_face: font_display: 'swap' }}
+  {{ body_font_italic | font_face: font_display: 'swap' }}
+  {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+
+  {{ meta_font | font_face: font_display: 'swap' }}
+
+  #PricingCards-{{ section_id }} {
+    /* Colors */
+    --wo-bg: {{ section.settings.bg_color }};
+    --wo-accent: {{ section.settings.highlight_color }};
+    --wo-btn-text: {{ section.settings.btn_text_color }};
+    --wo-card-dark: {{ section.settings.card_dark_bg }};
+    --wo-title-color: {{ section.settings.heading_color }};
+    --wo-ribbon-bg: {{ section.settings.ribbon_bg_color | default: section.settings.highlight_color }};
+    --wo-ribbon-text: {{ section.settings.ribbon_text_color | default: '#000000' }};
+
+    /* Typography - Header */
+    --wo-title-font: {{ title_font.family }}, {{ title_font.fallback_families }};
+    --wo-title-size: {{ section.settings.title_size_desktop }}px;
+    --wo-title-weight: {{ section.settings.title_weight | default: title_font.weight }};
+    --wo-title-ls: {{ section.settings.title_ls }}em;
+    --wo-title-lh: {{ section.settings.title_lh }};
+    --wo-title-transform: {{ section.settings.title_transform }};
+
+    --wo-sub-font: {{ meta_font.family }}, {{ meta_font.fallback_families }};
+    --wo-sub-size: {{ section.settings.subtitle_size_desktop }}px;
+    --wo-sub-weight: {{ section.settings.subtitle_weight }};
+    --wo-sub-ls: {{ section.settings.subtitle_ls }}em;
+    --wo-sub-transform: {{ section.settings.subtitle_transform }};
+
+    /* Typography - Card */
+    --wo-ctitle-font: {{ title_font.family }}, {{ title_font.fallback_families }};
+    --wo-ctitle-size: {{ section.settings.card_title_size }}px;
+    --wo-ctitle-weight: {{ section.settings.card_title_weight }};
+
+    --wo-cdesc-font: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --wo-cdesc-size: {{ section.settings.card_text_size }}px;
+    --wo-cdesc-weight: {{ section.settings.card_text_weight }};
+
+    --wo-feat-font: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --wo-feat-size: {{ section.settings.feature_text_size }}px;
+    --wo-feat-weight: {{ section.settings.feature_text_weight }};
+
+    --wo-price-font: {{ title_font.family }}, {{ title_font.fallback_families }};
+    --wo-price-size: {{ section.settings.price_size }}px;
+    --wo-price-weight: {{ section.settings.price_weight }};
+
+    --wo-btn-font: {{ meta_font.family }}, {{ meta_font.fallback_families }};
+    --wo-btn-size: {{ section.settings.btn_size }}px;
+    --wo-btn-weight: {{ section.settings.btn_weight }};
+    --wo-btn-ls: {{ section.settings.btn_ls }}em;
+    --wo-btn-transform: {{ section.settings.btn_transform }};
+
+    /* Layout & Sizes */
+    --wo-max-w: {{ section.settings.container_width }}px;
+    --wo-img-col-w: {{ section.settings.image_column_width }}px;
+    --wo-card-radius: {{ section.settings.card_radius }}px;
+    --wo-btn-radius: {{ section.settings.btn_radius }}px;
+    --wo-grid-gap: {{ section.settings.grid_gap }}px;
+
+    /* Spacing */
+    --wo-pt-d: {{ section.settings.padding_top_desktop }}px;
+    --wo-pb-d: {{ section.settings.padding_bottom_desktop }}px;
+    --wo-pt-m: {{ section.settings.padding_top_mobile }}px;
+    --wo-pb-m: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  #PricingCards-{{ section_id }} {
+    background-color: var(--wo-bg);
+    padding: var(--wo-pt-d) 20px var(--wo-pb-d);
     overflow: hidden;
     position: relative;
   }
-  #PricingCards-{{ section.id }} * { box-sizing: border-box; }
 
-  .pc-container { max-width: 1580px; margin: 0 auto; padding: 0 20px; }
+  #PricingCards-{{ section_id }} * { box-sizing: border-box; }
+
+  .pc-container {
+    max-width: var(--wo-max-w);
+    margin: 0 auto;
+  }
 
   /* ── Header ── */
-  .pc-header { text-align: center; margin-bottom: 48px; }
-  .pc-eyebrow {
-    display: inline-block;
-    color: var(--accent);
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .pc-heading {
-    color: {{ section.settings.heading_color }};
-    font-size: 36px;
-    font-weight: 900;
-    margin: 0;
-    line-height: 1.15;
-    letter-spacing: -0.6px;
+  .pc-header {
+    text-align: {{ section.settings.header_align }};
+    margin-bottom: {{ section.settings.header_margin_bottom }}px;
   }
 
-  /* ── 3-column grid ── */
+  .pc-eyebrow {
+    display: inline-block;
+    font-family: var(--wo-sub-font);
+    font-size: var(--wo-sub-size);
+    font-weight: var(--wo-sub-weight);
+    letter-spacing: var(--wo-sub-ls);
+    text-transform: var(--wo-sub-transform);
+    color: var(--wo-accent);
+    margin-bottom: 12px;
+  }
+
+  .pc-heading {
+    font-family: var(--wo-title-font);
+    font-size: var(--wo-title-size);
+    font-weight: var(--wo-title-weight);
+    line-height: var(--wo-title-lh);
+    letter-spacing: var(--wo-title-ls);
+    text-transform: var(--wo-title-transform);
+    color: var(--wo-title-color);
+    margin: 0;
+  }
+
+  /* ── Grid ── */
   .pc-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: var(--wo-grid-gap);
     align-items: stretch;
   }
 
-  /* ── Card: flex row — image left, content right ── */
+  /* ── Card ── */
   .pc-card-wrapper {
-    border-radius: 13px;
+    border-radius: var(--wo-card-radius);
     overflow: hidden;
     position: relative;
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    transition: transform 0.45s cubic-bezier(0.22,1,0.36,1),
-                box-shadow 0.45s ease,
-                border-color 0.3s ease;
+    transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), box-shadow 0.45s ease, border-color 0.3s ease;
   }
 
   .pc-theme-dark {
-    background: linear-gradient(150deg, #0d1f33 0%, var(--card-dark) 100%);
+    background: linear-gradient(150deg, #0d1f33 0%, var(--wo-card-dark) 100%);
     border: 1.5px solid rgba(228,168,54,0.28);
   }
+
   .pc-theme-dark:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 45px rgba(0,0,0,0.5), 0 0 0 1px rgba(228,168,54,0.5);
-    border-color: rgba(228,168,54,0.55);
+    transform: translateY(-8px);
+    box-shadow: 0 24px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(228,168,54,0.4);
+    border-color: rgba(228,168,54,0.5);
   }
+
   .pc-theme-light {
     background: #ffffff;
-    box-shadow: 0 24px 55px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
   }
+
   .pc-theme-light:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 36px 70px rgba(0,0,0,0.65);
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.15);
   }
 
   /* ── Ribbon ── */
@@ -83,202 +182,185 @@
     position: absolute;
     top: 25px;
     right: -45px;
-    background: var(--accent);
-    color: #071219;
+    background: var(--wo-ribbon-bg);
+    color: var(--wo-ribbon-text);
+    font-family: var(--wo-sub-font);
     font-size: 9px;
     font-weight: 800;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    padding: 5px 44px;
+    padding: 6px 44px;
     transform: rotate(45deg);
     z-index: 10;
     white-space: nowrap;
   }
 
-  /* ── Image: left column, full card height ── */
+  /* ── Image ── */
   .pc-img-col {
-    flex: 0 0 140px;
-    width: 140px;
+    flex: 0 0 var(--wo-img-col-w);
+    width: var(--wo-img-col-w);
     overflow: hidden;
     background: rgba(255,255,255,0.03);
     flex-shrink: 0;
   }
-  .pc-theme-light .pc-img-col { background: #eef0f3; }
+
+  .pc-theme-light .pc-img-col { background: #f4f6f9; }
+
   .pc-img-col img {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: cover;
     object-position: center top;
     display: block;
     transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
   }
-  @media(max-width: 764px){
-    .pc-img-col img{
-      object-position: center center;
-    }
-  }
-  .pc-card-wrapper:hover .pc-img-col img { transform: scale(1.05); }
 
-  /* ── Content: right column ── */
+  .pc-card-wrapper:hover .pc-img-col img { transform: scale(1.08); }
+
+  /* ── Content ── */
   .pc-body {
     flex: 1;
-    padding: 22px 18px;
+    padding: 24px 20px;
     display: flex;
     flex-direction: column;
     min-width: 0;
   }
 
   .pc-card-title {
-    font-size: 35px;
-    font-weight: 600;
-    margin: 0 0 16px;
-    letter-spacing: -0.3px;
+    font-family: var(--wo-ctitle-font);
+    font-size: var(--wo-ctitle-size);
+    font-weight: var(--wo-ctitle-weight);
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
     color: #ffffff;
     line-height: 1.2;
   }
+
   .pc-theme-light .pc-card-title { color: #071219; }
 
   .pc-desc {
-    font-size: 14px;
-    line-height: 1.65;
-    margin: 0px 45px 20px 0;
-    color: rgba(255,255,255,0.62);
-    font-weight: 400;
+    font-family: var(--wo-cdesc-font);
+    font-size: var(--wo-cdesc-size);
+    font-weight: var(--wo-cdesc-weight);
+    line-height: 1.6;
+    margin: 0 0 20px;
+    color: rgba(255,255,255,0.7);
   }
-  .pc-theme-light .pc-desc { color: #4a5568; }
+
+  .pc-theme-light .pc-desc { color: #4b5563; }
 
   .pc-features {
     list-style: none;
-    padding: 0;
-    margin: 0 0 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    padding: 0; margin: 0 0 24px;
+    display: flex; flex-direction: column; gap: 14px;
     flex-grow: 1;
   }
+
   .pc-features li {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 12px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.82);
+    display: flex; align-items: flex-start; gap: 10px;
+    font-family: var(--wo-feat-font);
+    font-size: var(--wo-feat-size);
+    font-weight: var(--wo-feat-weight);
+    color: rgba(255,255,255,0.9);
   }
+
   .pc-theme-light .pc-features li { color: #374151; }
 
   .pc-check {
-    width: 16px;
-    height: 16px;
-    min-width: 16px;
+    width: 18px; height: 18px;
     border-radius: 50%;
-    background: var(--accent);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+    background: var(--wo-accent);
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
   }
+
   .pc-check::after {
     content: '';
-    width: 3.5px;
-    height: 7px;
-    border: 2px solid #071219;
-    border-top: none;
-    border-left: none;
-    transform: rotate(45deg) translate(-0.5px,-1px);
-    display: block;
+    width: 4px; height: 8px;
+    border: 2px solid #000;
+    border-top: none; border-left: none;
+    transform: rotate(45deg) translate(-0.5px, -1px);
   }
+
   .pc-theme-light .pc-check::after { border-color: #fff; }
 
   .pc-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(228,168,54,0.25), transparent);
-    margin: 0 0 12px;
-  }
-  .pc-theme-light .pc-divider {
-    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(228,168,54,0.3), transparent);
+    margin: 0 0 20px;
   }
 
-  .pc-price-wrap {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    margin-bottom: 20px;
-  }
+  .pc-theme-light .pc-divider { background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent); }
+
+  .pc-price-wrap { display: flex; align-items: baseline; gap: 10px; margin-bottom: 24px; }
+
   .pc-price {
-    font-size: 26px;
-    font-weight: 900;
-    color: var(--accent);
-    letter-spacing: -0.8px;
+    font-family: var(--wo-price-font);
+    font-size: var(--wo-price-size);
+    font-weight: var(--wo-price-weight);
+    color: var(--wo-accent);
+    letter-spacing: -0.02em;
   }
+
   .pc-theme-light .pc-price { color: #071219; }
+
   .pc-compare {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 14px; font-weight: 500;
     text-decoration: line-through;
-    color: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.4);
   }
+
   .pc-theme-light .pc-compare { color: #9ca3af; }
 
   .pc-btn {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    background: var(--accent);
-    color: var(--btn-text);
-    padding: 11px 16px;
-    border-radius: 7px;
-    font-weight: 800;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    display: inline-flex; width: 100%;
+    align-items: center; justify-content: center; gap: 8px;
+    background: var(--wo-accent);
+    color: var(--wo-btn-text);
+    padding: 14px 20px;
+    border-radius: var(--wo-btn-radius);
+    font-family: var(--wo-btn-font);
+    font-size: var(--wo-btn-size);
+    font-weight: var(--wo-btn-weight);
+    letter-spacing: var(--wo-btn-ls);
+    text-transform: var(--wo-btn-transform);
     text-decoration: none;
-    transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  .pc-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 22px rgba(228,168,54,0.45);
-  }
-  .pc-btn-arrow { display: inline-block; transition: transform 0.25s ease; }
-  .pc-btn:hover .pc-btn-arrow { transform: translateX(4px); }
 
-  /* ── Scroll animation ── */
+  .pc-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(228,168,54,0.4);
+  }
+
+  .pc-btn-arrow { transition: transform 0.3s ease; }
+  .pc-btn:hover .pc-btn-arrow { transform: translateX(5px); }
+
+  /* ── Animations ── */
   .pc-anim {
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1),
-                transform 0.75s cubic-bezier(0.22,1,0.36,1);
+    transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
   }
+
   .pc-anim.pc-visible { opacity: 1; transform: translateY(0); }
-  .pc-header.pc-anim { transform: translateY(18px); }
-  .pc-grid .pc-card-wrapper:nth-child(1) { transition-delay: 0.05s; }
-  .pc-grid .pc-card-wrapper:nth-child(2) { transition-delay: 0.18s; }
-  .pc-grid .pc-card-wrapper:nth-child(3) { transition-delay: 0.31s; }
 
-  /* ── Tablet ── */
+  /* ── Responsive ── */
   @media screen and (max-width: 1024px) {
-    .pc-img-col { flex: 0 0 110px; width: 110px; }
+    .pc-grid { grid-template-columns: repeat(2, 1fr); }
+    .pc-img-col { flex: 0 0 120px; width: 120px; }
   }
 
-  /* ── Mobile ── */
-  @media screen and (max-width: 700px) {
-    #PricingCards-{{ section.id }} {
-      padding-top: {{ section.settings.padding_top_mobile }}px;
-      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
-    }
-    .pc-heading { font-size: 24px; }
-    .pc-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
+  @media screen and (max-width: 767px) {
+    #PricingCards-{{ section_id }} { padding: var(--wo-pt-m) 20px var(--wo-pb-m); }
+    .pc-heading { font-size: {{ section.settings.title_size_mobile }}px; }
+    .pc-grid { grid-template-columns: 1fr; gap: 24px; }
     .pc-card-wrapper { flex-direction: column; }
-    .pc-img-col { width: 100%; flex: 0 0 auto; height: 220px; }
+    .pc-img-col { width: 100%; flex: 0 0 200px; height: 200px; }
     .pc-theme-dark:hover, .pc-theme-light:hover { transform: none !important; }
-    .pc-grid .pc-card-wrapper:nth-child(1),
-    .pc-grid .pc-card-wrapper:nth-child(2),
-    .pc-grid .pc-card-wrapper:nth-child(3) { transition-delay: 0s; }
   }
-{%- endstyle -%}
+</style>
 
-<section id="PricingCards-{{ section.id }}">
+<section id="PricingCards-{{ section_id }}">
   <div class="pc-container">
 
     <div class="pc-header pc-anim">
@@ -300,19 +382,13 @@
             <div class="pc-ribbon">{{ block.settings.ribbon_text }}</div>
           {% endif %}
 
-          <!-- Image: left column -->
           {% if block.settings.image != blank %}
             <div class="pc-img-col">
-              {{ block.settings.image | image_url: width: 500 | image_tag:
-                loading: 'lazy',
-                widths: '200, 300, 500'
-              }}
+              {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy' }}
             </div>
           {% endif %}
 
-          <!-- Content: right column -->
           <div class="pc-body">
-
             {% if block.settings.title != blank %}
               <h3 class="pc-card-title">{{ block.settings.title }}</h3>
             {% endif %}
@@ -327,7 +403,7 @@
                   {% if feature != blank %}
                     <li>
                       <span class="pc-check" aria-hidden="true"></span>
-                      <span>{{ feature }}</span>
+                      <span>{{ feature | strip }}</span>
                     </li>
                   {% endif %}
                 {% endfor %}
@@ -351,7 +427,6 @@
                 <span class="pc-btn-arrow">→</span>
               </a>
             {% endif %}
-
           </div>
         </div>
       {% endfor %}
@@ -363,43 +438,490 @@
 <script>
 (function() {
   function init() {
-    var section = document.querySelector('#PricingCards-{{ section.id }}');
+    const section = document.querySelector('#PricingCards-{{ section_id }}');
     if (!section) return;
-    var obs = new IntersectionObserver(function(entries, o) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) { e.target.classList.add('pc-visible'); o.unobserve(e.target); }
+
+    const obs = new IntersectionObserver((entries, o) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('pc-visible');
+          o.unobserve(e.target);
+        }
       });
-    }, { threshold: 0.08 });
-    section.querySelectorAll('.pc-anim').forEach(function(el) { obs.observe(el); });
+    }, { threshold: 0.1 });
+
+    section.querySelectorAll('.pc-anim').forEach(el => obs.observe(el));
   }
-  document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();
-  if (window.Shopify && Shopify.designMode) {
-    document.addEventListener('shopify:section:load', function(e) {
-      if (e.detail.sectionId === '{{ section.id }}') init();
-    });
-  }
+
+  document.addEventListener('shopify:section:load', e => { if (e.detail.sectionId === '{{ section_id }}') init(); });
+  init();
 })();
 </script>
 
 {% schema %}
 {
-  "name": "Guides & Services Pro",
-  "max_blocks": 3,
+  "name": "PRO Product Bundle",
+  "max_blocks": 6,
   "settings": [
-    { "type": "header", "content": "Spacing" },
-    { "type": "range", "id": "padding_top_desktop", "min": 0, "max": 150, "step": 10, "unit": "px", "label": "Padding Top (Desktop)", "default": 80 },
-    { "type": "range", "id": "padding_bottom_desktop", "min": 0, "max": 150, "step": 10, "unit": "px", "label": "Padding Bottom (Desktop)", "default": 100 },
-    { "type": "range", "id": "padding_top_mobile", "min": 0, "max": 100, "step": 10, "unit": "px", "label": "Padding Top (Mobile)", "default": 50 },
-    { "type": "range", "id": "padding_bottom_mobile", "min": 0, "max": 100, "step": 10, "unit": "px", "label": "Padding Bottom (Mobile)", "default": 50 },
-    { "type": "header", "content": "Header" },
-    { "type": "text", "id": "subtitle", "label": "Eyebrow Text", "default": "OUR PRODUCTS" },
-    { "type": "text", "id": "title", "label": "Heading", "default": "Guides & Services to Boost Your Career" },
-    { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "bg_color", "label": "Section Background", "default": "#071b2e" },
-    { "type": "color", "id": "card_dark_bg", "label": "Dark Card Background", "default": "#071b2e" },
-    { "type": "color", "id": "heading_color", "label": "Heading Color", "default": "#ffffff" },
-    { "type": "color", "id": "highlight_color", "label": "Accent Color", "default": "#E4A836" },
-    { "type": "color", "id": "btn_text_color", "label": "Button Text Color", "default": "#000000" }
+    {
+      "type": "header",
+      "content": "━━ Content ━━"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Eyebrow Text",
+      "default": "OUR PRODUCTS"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Guides & Services to Boost Your Career"
+    },
+    {
+      "type": "select",
+      "id": "header_align",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "━━ Layout ━━"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 1000,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1580
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Cards Per Row (Desktop)",
+      "options": [
+        { "value": "2", "label": "2 Columns" },
+        { "value": "3", "label": "3 Columns" },
+        { "value": "4", "label": "4 Columns" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Grid Gap",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "━━ Card Style ━━"
+    },
+    {
+      "type": "range",
+      "id": "image_column_width",
+      "min": 100,
+      "max": 240,
+      "step": 5,
+      "unit": "px",
+      "label": "Image Column Width",
+      "default": 140
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Border Radius",
+      "default": 7
+    },
+    {
+      "type": "header",
+      "content": "━━ Colors ━━"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#071b2e"
+    },
+    {
+      "type": "color",
+      "id": "card_dark_bg",
+      "label": "Dark Card Background",
+      "default": "#071b2e"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Accent Color",
+      "default": "#E4A836"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Button Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "ribbon_bg_color",
+      "label": "Ribbon Background",
+      "default": "#E4A836"
+    },
+    {
+      "type": "color",
+      "id": "ribbon_text_color",
+      "label": "Ribbon Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography Header ━━"
+    },
+    {
+      "type": "font_picker",
+      "id": "title_font",
+      "label": "Heading Font",
+      "default": "assistant_n8"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size Desktop",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 18,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size Mobile",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Heading Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-Bold" },
+        { "value": "900", "label": "Black" }
+      ],
+      "default": "900"
+    },
+    {
+      "type": "range",
+      "id": "title_lh",
+      "min": 0.8,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Heading Line Height",
+      "default": 1.15
+    },
+    {
+      "type": "range",
+      "id": "title_ls",
+      "min": -0.05,
+      "max": 0.2,
+      "step": 0.01,
+      "unit": "em",
+      "label": "Heading Letter Spacing",
+      "default": -0.02
+    },
+    {
+      "type": "select",
+      "id": "title_transform",
+      "label": "Heading Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography Subtitle ━━"
+    },
+    {
+      "type": "font_picker",
+      "id": "meta_font",
+      "label": "Meta Font (Eyebrow/Button)",
+      "default": "assistant_n7"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_desktop",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle Size Desktop",
+      "default": 11
+    },
+    {
+      "type": "select",
+      "id": "subtitle_weight",
+      "label": "Subtitle Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-Bold" }
+      ],
+      "default": "800"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_ls",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.05,
+      "unit": "em",
+      "label": "Subtitle Letter Spacing",
+      "default": 0.25
+    },
+    {
+      "type": "select",
+      "id": "subtitle_transform",
+      "label": "Subtitle Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography Card ━━"
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "min": 14,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Title Size",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "card_title_weight",
+      "label": "Card Title Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Body Font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "range",
+      "id": "card_text_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Text Size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "card_text_weight",
+      "label": "Card Text Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "feature_text_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Feature Text Size",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "feature_text_weight",
+      "label": "Feature Text Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "price_size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Price Size",
+      "default": 26
+    },
+    {
+      "type": "select",
+      "id": "price_weight",
+      "label": "Price Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "700", "label": "Bold" },
+        { "value": "900", "label": "Black" }
+      ],
+      "default": "900"
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography Button ━━"
+    },
+    {
+      "type": "range",
+      "id": "btn_size",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Font Size",
+      "default": 11
+    },
+    {
+      "type": "select",
+      "id": "btn_weight",
+      "label": "Button Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-Bold" }
+      ],
+      "default": "800"
+    },
+    {
+      "type": "range",
+      "id": "btn_ls",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.05,
+      "unit": "em",
+      "label": "Button Letter Spacing",
+      "default": 0.1
+    },
+    {
+      "type": "select",
+      "id": "btn_transform",
+      "label": "Button Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "header",
+      "content": "━━ Spacing ━━"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding Desktop",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding Desktop",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding Mobile",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding Mobile",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "header_margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Header Margin Bottom",
+      "default": 48
+    }
   ],
   "blocks": [
     {
@@ -421,7 +943,7 @@
   ],
   "presets": [
     {
-      "name": "Guides & Services Pro",
+      "name": "PRO Product Bundle",
       "blocks": [
         { "type": "card", "settings": { "theme": "dark", "ribbon_text": "BESTSELLER", "title": "Offshore Guide", "text": "Step-by-step guide to help you understand the industry, requirements and how to get started.", "features": "Industry Overview\nJob Roles Explained\nHow to Get Hired\nInsider Tips & More", "price": "$49" } },
         { "type": "card", "settings": { "theme": "light", "title": "CV Service", "text": "Professional offshore CV writing service that gets you noticed.", "features": "Industry Specific CV\nOptimized for ATS\nProfessional Design\nHigher Interview Chance", "price": "$99" } },

@@ -1,339 +1,312 @@
 {% comment %}
   ============================================================
-  WORK OFFSHORE — HOW IT WORKS (Timeline with Icons)
-  Light theme · Dashed connector line · Circular icon badges
-  Numbered gold step labels · Icon per step via image picker
+  PRO PATH TIMELINE SECTION
+  Refactored for full customization from Theme Editor
   ============================================================
 {% endcomment %}
 
+{%- liquid
+  assign section_id = section.id
+  assign title_font = section.settings.title_font
+  assign body_font = section.settings.body_font
+  assign meta_font = section.settings.meta_font
+
+  assign title_font_bold = title_font | font_modify: 'weight', 'bold'
+  assign title_font_italic = title_font | font_modify: 'style', 'italic'
+  assign title_font_bold_italic = title_font_bold | font_modify: 'style', 'italic'
+
+  assign body_font_bold = body_font | font_modify: 'weight', 'bold'
+  assign body_font_italic = body_font | font_modify: 'style', 'italic'
+  assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+-%}
+
 <style>
-/* ============================================================
-   CSS VARIABLES
-============================================================ */
-#shopify-section-{{ section.id }} {
-  --wo-bg:           {{ section.settings.bg_color }};
-  --wo-accent:       {{ section.settings.accent_color }};
-  --wo-badge-bg:     {{ section.settings.badge_bg_color }};
-  --wo-text:         {{ section.settings.text_color_main }};
-  --wo-sub:          {{ section.settings.text_color_sub }};
-  --wo-eyebrow:      {{ section.settings.eyebrow_color }};
-  --wo-line:         {{ section.settings.line_color }};
+  {{ title_font | font_face: font_display: 'swap' }}
+  {{ title_font_bold | font_face: font_display: 'swap' }}
+  {{ title_font_italic | font_face: font_display: 'swap' }}
+  {{ title_font_bold_italic | font_face: font_display: 'swap' }}
 
-  --wo-title-d:      {{ section.settings.title_size_desktop }}px;
-  --wo-sub-d:        {{ section.settings.subtitle_size_desktop }}px;
-  --wo-stitle-d:     {{ section.settings.step_title_size_desktop }}px;
-  --wo-stext-d:      {{ section.settings.step_text_size_desktop }}px;
+  {{ body_font | font_face: font_display: 'swap' }}
+  {{ body_font_bold | font_face: font_display: 'swap' }}
+  {{ body_font_italic | font_face: font_display: 'swap' }}
+  {{ body_font_bold_italic | font_face: font_display: 'swap' }}
 
-  --wo-title-m:      {{ section.settings.title_size_mobile }}px;
-  --wo-sub-m:        {{ section.settings.subtitle_size_mobile }}px;
-  --wo-stitle-m:     {{ section.settings.step_title_size_mobile }}px;
-  --wo-stext-m:      {{ section.settings.step_text_size_mobile }}px;
+  {{ meta_font | font_face: font_display: 'swap' }}
 
-  --wo-pt-d: {{ section.settings.pad_top_desktop }}px;
-  --wo-pb-d: {{ section.settings.pad_bot_desktop }}px;
-  --wo-px-d: {{ section.settings.pad_x_desktop }}px;
-  --wo-pt-m: {{ section.settings.pad_top_mobile }}px;
-  --wo-pb-m: {{ section.settings.pad_bot_mobile }}px;
-  --wo-px-m: {{ section.settings.pad_x_mobile }}px;
-}
+  #shopify-section-{{ section_id }} {
+    /* Colors */
+    --wo-bg: {{ section.settings.bg_color }};
+    --wo-accent: {{ section.settings.accent_color }};
+    --wo-badge-bg: {{ section.settings.badge_bg_color }};
+    --wo-text-main: {{ section.settings.text_color_main }};
+    --wo-text-sub: {{ section.settings.text_color_sub }};
+    --wo-eyebrow-color: {{ section.settings.eyebrow_color }};
+    --wo-line-color: {{ section.settings.line_color }};
 
-/* ============================================================
-   SECTION
-============================================================ */
-.wo-hiw {
-  background: var(--wo-bg);
-  padding: var(--wo-pt-d) var(--wo-px-d) var(--wo-pb-d);
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif;
-  color: var(--wo-text);
-  overflow: hidden;
-}
+    /* Typography - Header */
+    --wo-title-font: {{ title_font.family }}, {{ title_font.fallback_families }};
+    --wo-title-weight: {{ section.settings.title_weight | default: title_font.weight }};
+    --wo-title-ls: {{ section.settings.title_ls }}em;
+    --wo-title-lh: {{ section.settings.title_lh }};
+    --wo-title-transform: {{ section.settings.title_transform }};
 
-.wo-hiw__inner {
-  max-width: 1200px;
-  margin: 0 auto;
-}
+    --wo-sub-font: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --wo-sub-size: {{ section.settings.subtitle_size_desktop }}px;
+    --wo-sub-weight: {{ section.settings.subtitle_weight }};
+    --wo-sub-ls: {{ section.settings.subtitle_ls }}em;
+    --wo-sub-transform: {{ section.settings.subtitle_transform }};
 
-/* ============================================================
-   HEADER
-============================================================ */
-.wo-hiw__header {
-  text-align: center;
-  margin-bottom: 64px;
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
+    --wo-eyebrow-font: {{ meta_font.family }}, {{ meta_font.fallback_families }};
+    --wo-eyebrow-size: {{ section.settings.eyebrow_size }}px;
+    --wo-eyebrow-weight: {{ section.settings.eyebrow_weight }};
+    --wo-eyebrow-ls: {{ section.settings.eyebrow_ls }}em;
+    --wo-eyebrow-transform: {{ section.settings.eyebrow_transform }};
 
-.wo-hiw__header.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+    /* Typography - Step */
+    --wo-stitle-font: {{ title_font.family }}, {{ title_font.fallback_families }};
+    --wo-stitle-size: {{ section.settings.step_title_size_desktop }}px;
+    --wo-stitle-weight: {{ section.settings.step_title_weight }};
+    --wo-stitle-ls: {{ section.settings.step_title_ls }}em;
+    --wo-stitle-transform: {{ section.settings.step_title_transform }};
 
-.wo-hiw__eyebrow {
-  display: block;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--wo-eyebrow);
-  margin-bottom: 12px;
-}
+    --wo-stext-font: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --wo-stext-size: {{ section.settings.step_text_size_desktop }}px;
+    --wo-stext-weight: {{ section.settings.step_text_weight }};
+    --wo-stext-lh: {{ section.settings.step_text_lh }};
 
-.wo-hiw__title {
-  font-size: var(--wo-title-d);
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
-  color: var(--wo-text);
-  margin: 0 0 14px;
-}
+    --wo-num-font: {{ meta_font.family }}, {{ meta_font.fallback_families }};
+    --wo-num-size: {{ section.settings.num_size }}px;
+    --wo-num-weight: {{ section.settings.num_weight }};
 
-.wo-hiw__subtitle {
-  font-size: var(--wo-sub-d);
-  color: var(--wo-sub);
-  margin: 0;
-  line-height: 1.5;
-}
+    /* Layout & Sizes */
+    --wo-max-w: {{ section.settings.container_width }}px;
+    --wo-icon-wrap-size: {{ section.settings.icon_wrap_size }}px;
+    --wo-icon-img-size: {{ section.settings.icon_img_size }}px;
+    --wo-icon-radius: {{ section.settings.icon_radius }}%;
+    --wo-line-h: {{ section.settings.line_thickness }}px;
+    --wo-line-dash: {{ section.settings.line_dash_length }}px;
+    --wo-line-gap: {{ section.settings.line_dash_gap }}px;
 
-/* ============================================================
-   TIMELINE WRAPPER
-============================================================ */
-.wo-hiw__timeline {
-  position: relative;
-}
-
-/* ============================================================
-   DASHED CONNECTOR LINE
-   Sits horizontally between the icon circles on desktop.
-   left/right offsets = half of one column width so the line
-   starts/ends at the centre of the first/last icon.
-============================================================ */
-.wo-hiw__line {
-  display: none;
-  position: absolute;
-  top: 46px;
-  left: calc(100% / ({{ section.blocks.size }} * 2));
-  right: calc(100% / ({{ section.blocks.size }} * 2));
-  height: 2px;
-  z-index: 0;
-  background-image: repeating-linear-gradient(
-    90deg,
-    var(--wo-line) 0,
-    var(--wo-line) 10px,
-    transparent 10px,
-    transparent 22px
-  );
-}
-
-/* ============================================================
-   STEPS GRID
-============================================================ */
-.wo-hiw__grid {
-  display: grid;
-  grid-template-columns: repeat({{ section.blocks.size }}, 1fr);
-  gap: 20px;
-  position: relative;
-}
-
-/* ============================================================
-   SINGLE STEP
-============================================================ */
-.wo-hiw__step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.wo-hiw__step.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ============================================================
-   ICON CIRCLE
-============================================================ */
-.wo-hiw__icon-wrap {
-  width: 92px;
-  height: 92px;
-  border-radius: 50%;
-  background: var(--wo-badge-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 24px;
-  flex-shrink: 0;
-  transition:
-    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.4s ease;
-}
-
-.wo-hiw__step:hover .wo-hiw__icon-wrap,
-.wo-hiw__step.is-active .wo-hiw__icon-wrap {
-  transform: translateY(-5px) scale(1.06);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.20);
-}
-
-.wo-hiw__icon-img {
-  width: 44px;
-  height: 44px;
-  object-fit: contain;
-  filter: brightness(0) invert(1);
-}
-
-/* Inline SVG fallback placeholders */
-.wo-hiw__icon-svg {
-  width: 40px;
-  height: 40px;
-  display: block;
-}
-
-/* ============================================================
-   STEP LABEL — numbered gold badge + title
-============================================================ */
-.wo-hiw__label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.wo-hiw__num {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--wo-accent);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 800;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  font-family: 'Space Mono', 'Courier New', monospace;
-}
-
-.wo-hiw__step-title {
-  font-size: var(--wo-stitle-d);
-  font-weight: 700;
-  color: var(--wo-text);
-  margin: 0;
-  letter-spacing: -0.01em;
-  transition: color 0.3s ease;
-}
-
-.wo-hiw__step.is-active .wo-hiw__step-title {
-  color: var(--wo-accent);
-}
-
-.wo-hiw__step-desc {
-  font-size: var(--wo-stext-d);
-  color: var(--wo-sub);
-  line-height: 1.65;
-  margin: 0;
-  max-width: 280px;
-}
-
-/* ============================================================
-   TABLET — 2-column
-============================================================ */
-@media (max-width: 992px) and (min-width: 769px) {
-  .wo-hiw__line { display: none !important; }
-  .wo-hiw__grid {
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 52px;
+    /* Spacing */
+    --wo-pt-d: {{ section.settings.pad_top_desktop }}px;
+    --wo-pb-d: {{ section.settings.pad_bot_desktop }}px;
+    --wo-pt-m: {{ section.settings.pad_top_mobile }}px;
+    --wo-pb-m: {{ section.settings.pad_bot_mobile }}px;
   }
-}
 
-/* ============================================================
-   MOBILE — vertical stacked cards (no scroll)
-============================================================ */
-@media (max-width: 768px) {
   .wo-hiw {
-    padding: var(--wo-pt-m) var(--wo-px-m) var(--wo-pb-m);
+    background: var(--wo-bg);
+    padding: var(--wo-pt-d) 20px var(--wo-pb-d);
+    color: var(--wo-text-main);
+    overflow: hidden;
   }
 
-  .wo-hiw__header { margin-bottom: 40px; }
-  .wo-hiw__title    { font-size: var(--wo-title-m); }
-  .wo-hiw__subtitle { font-size: var(--wo-sub-m); }
+  .wo-hiw__inner {
+    max-width: var(--wo-max-w);
+    margin: 0 auto;
+  }
 
-  .wo-hiw__line { display: none !important; }
+  /* ── Header ── */
+  .wo-hiw__header {
+    text-align: {{ section.settings.header_align }};
+    margin-bottom: {{ section.settings.header_margin_bottom }}px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
 
-  /* Vertical stack */
+  .wo-hiw__header.is-visible { opacity: 1; transform: translateY(0); }
+
+  .wo-hiw__eyebrow {
+    display: block;
+    font-family: var(--wo-eyebrow-font);
+    font-size: var(--wo-eyebrow-size);
+    font-weight: var(--wo-eyebrow-weight);
+    letter-spacing: var(--wo-eyebrow-ls);
+    text-transform: var(--wo-eyebrow-transform);
+    color: var(--wo-eyebrow-color);
+    margin-bottom: 12px;
+  }
+
+  .wo-hiw__title {
+    font-family: var(--wo-title-font);
+    font-size: {{ section.settings.title_size_desktop }}px;
+    font-weight: var(--wo-title-weight);
+    line-height: var(--wo-title-lh);
+    letter-spacing: var(--wo-title-ls);
+    text-transform: var(--wo-title-transform);
+    color: var(--wo-text-main);
+    margin: 0 0 16px;
+  }
+
+  .wo-hiw__subtitle {
+    font-family: var(--wo-sub-font);
+    font-size: var(--wo-sub-size);
+    font-weight: var(--wo-sub-weight);
+    letter-spacing: var(--wo-sub-ls);
+    text-transform: var(--wo-sub-transform);
+    color: var(--wo-text-sub);
+    line-height: 1.5;
+    margin: 0 auto;
+    max-width: 600px;
+  }
+
+  /* ── Timeline ── */
+  .wo-hiw__timeline { position: relative; }
+
+  .wo-hiw__line {
+    display: none;
+    position: absolute;
+    top: calc(var(--wo-icon-wrap-size) / 2);
+    left: calc(100% / ({{ section.blocks.size }} * 2));
+    right: calc(100% / ({{ section.blocks.size }} * 2));
+    height: var(--wo-line-h);
+    z-index: 0;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--wo-line-color) 0,
+      var(--wo-line-color) var(--wo-line-dash),
+      transparent var(--wo-line-dash),
+      transparent calc(var(--wo-line-dash) + var(--wo-line-gap))
+    );
+  }
+
   .wo-hiw__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.blocks.size }}, 1fr);
+    gap: 24px;
+    position: relative;
+  }
+
+  .wo-hiw__step {
     display: flex;
     flex-direction: column;
-    gap: 0;
-    grid-template-columns: unset;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
   }
 
-  /* Horizontal card row */
-  .wo-hiw__step {
-    flex-direction: row;
-    align-items: flex-start;
-    text-align: left;
-    gap: 18px;
-    padding: 22px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-    opacity: 1 !important;
-    transform: none !important;
-  }
+  .wo-hiw__step.is-visible { opacity: 1; transform: translateY(0); }
 
-  .wo-hiw__step:last-child { border-bottom: none; }
-
-  /* Smaller icon on mobile */
   .wo-hiw__icon-wrap {
-    width: 72px;
-    height: 72px;
+    width: var(--wo-icon-wrap-size);
+    height: var(--wo-icon-wrap-size);
+    border-radius: var(--wo-icon-radius);
+    background: var(--wo-badge-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
     flex-shrink: 0;
-    margin-bottom: 0;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
   }
-
-  .wo-hiw__icon-img { width: 34px; height: 34px; }
-  .wo-hiw__icon-svg { width: 34px; height: 34px; }
 
   .wo-hiw__step:hover .wo-hiw__icon-wrap,
   .wo-hiw__step.is-active .wo-hiw__icon-wrap {
-    transform: none;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
   }
 
-  /* Text block */
-  .wo-hiw__body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-top: 2px;
-    min-width: 0;
+  .wo-hiw__icon-img {
+    width: var(--wo-icon-img-size);
+    height: var(--wo-icon-img-size);
+    object-fit: contain;
+    {% if section.settings.icon_invert %}filter: brightness(0) invert(1);{% endif %}
+  }
+
+  .wo-hiw__icon-svg {
+    width: var(--wo-icon-img-size);
+    height: var(--wo-icon-img-size);
+    display: block;
   }
 
   .wo-hiw__label {
-    justify-content: flex-start;
-    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 12px;
   }
 
-  .wo-hiw__step-title { font-size: var(--wo-stitle-m); }
-  .wo-hiw__step-desc  { font-size: var(--wo-stext-m); max-width: none; }
-}
+  .wo-hiw__num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--wo-accent);
+    color: #fff;
+    font-family: var(--wo-num-font);
+    font-size: var(--wo-num-size);
+    font-weight: var(--wo-num-weight);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
 
-/* ============================================================
-   DESKTOP — show dashed line
-============================================================ */
-@media (min-width: 993px) {
-  .wo-hiw__line { display: block; }
-}
+  .wo-hiw__step-title {
+    font-family: var(--wo-stitle-font);
+    font-size: var(--wo-stitle-size);
+    font-weight: var(--wo-stitle-weight);
+    letter-spacing: var(--wo-stitle-ls);
+    text-transform: var(--wo-stitle-transform);
+    color: var(--wo-text-main);
+    margin: 0;
+    transition: color 0.3s ease;
+  }
+
+  .wo-hiw__step.is-active .wo-hiw__step-title { color: var(--wo-accent); }
+
+  .wo-hiw__step-desc {
+    font-family: var(--wo-stext-font);
+    font-size: var(--wo-stext-size);
+    font-weight: var(--wo-stext-weight);
+    color: var(--wo-text-sub);
+    line-height: var(--wo-stext-lh);
+    margin: 0 auto;
+    max-width: 300px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    .wo-hiw__grid { grid-template-columns: repeat(2, 1fr); row-gap: 48px; }
+    .wo-hiw__line { display: none !important; }
+  }
+
+  @media (max-width: 767px) {
+    .wo-hiw { padding: var(--wo-pt-m) 20px var(--wo-pb-m); }
+    .wo-hiw__title { font-size: {{ section.settings.title_size_mobile }}px; }
+    .wo-hiw__grid { display: flex; flex-direction: column; gap: 0; }
+    .wo-hiw__step {
+      flex-direction: row;
+      align-items: flex-start;
+      text-align: left;
+      gap: 20px;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      opacity: 1 !important; transform: none !important;
+    }
+    .wo-hiw__step:last-child { border-bottom: none; }
+    .wo-hiw__icon-wrap { width: 72px; height: 72px; margin-bottom: 0; }
+    .wo-hiw__icon-img, .wo-hiw__icon-svg { width: 34px; height: 34px; }
+    .wo-hiw__body { display: flex; flex-direction: column; padding-top: 4px; }
+    .wo-hiw__label { justify-content: flex-start; margin-bottom: 8px; }
+    .wo-hiw__step-title { font-size: {{ section.settings.step_title_size_mobile }}px; }
+    .wo-hiw__step-desc { font-size: {{ section.settings.step_text_size_mobile }}px; max-width: none; }
+  }
+
+  @media (min-width: 1025px) {
+    .wo-hiw__line { display: block; }
+  }
 </style>
 
-<section class="wo-hiw" id="wo-hiw-{{ section.id }}">
+<section class="wo-hiw" id="wo-hiw-{{ section_id }}">
   <div class="wo-hiw__inner">
 
-    <div class="wo-hiw__header" id="wo-hiw-header-{{ section.id }}">
+    <div class="wo-hiw__header" id="wo-header-{{ section_id }}">
       {%- if section.settings.eyebrow != blank -%}
         <span class="wo-hiw__eyebrow">{{ section.settings.eyebrow }}</span>
       {%- endif -%}
@@ -348,63 +321,20 @@
     <div class="wo-hiw__timeline">
       <div class="wo-hiw__line" aria-hidden="true"></div>
 
-      <div class="wo-hiw__grid" id="wo-hiw-grid-{{ section.id }}">
+      <div class="wo-hiw__grid" id="wo-grid-{{ section_id }}">
         {%- for block in section.blocks -%}
           <div class="wo-hiw__step" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
-
-            <!-- Icon circle -->
             <div class="wo-hiw__icon-wrap">
               {%- if block.settings.icon != blank -%}
-                <img
-                  class="wo-hiw__icon-img"
-                  src="{{ block.settings.icon | image_url: width: 88 }}"
-                  alt="{{ block.settings.title | escape }}"
-                  width="44" height="44"
-                  loading="lazy"
-                >
+                <img class="wo-hiw__icon-img" src="{{ block.settings.icon | image_url: width: 120 }}" alt="{{ block.settings.title | escape }}" width="60" height="60" loading="lazy">
               {%- else -%}
-                {%- case forloop.index -%}
-                  {%- when 1 -%}
-                    <svg class="wo-hiw__icon-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path d="M8 6h10a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
-                      <path d="M22 6h10a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H22a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
-                      <path d="M10 12h6M10 16h6M10 20h4M24 12h6M24 16h6M24 20h4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                  {%- when 2 -%}
-                    <svg class="wo-hiw__icon-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <rect x="8" y="5" width="24" height="30" rx="3" stroke="white" stroke-width="2"/>
-                      <path d="M14 2v6M26 2v6" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                      <path d="M13 18h14M13 24h10" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                      <circle cx="27" cy="27" r="6" fill="#1a1a2e" stroke="white" stroke-width="1.5"/>
-                      <path d="M25 27l1.5 1.5L29 25" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  {%- when 3 -%}
-                    <svg class="wo-hiw__icon-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path d="M34 6L6 18l10 4 4 10 14-26z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M16 22l6-6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                  {%- when 4 -%}
-                    <svg class="wo-hiw__icon-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <rect x="5" y="16" width="30" height="19" rx="3" stroke="white" stroke-width="2"/>
-                      <path d="M13 16V12a7 7 0 0 1 14 0v4" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                      <circle cx="20" cy="25" r="3" fill="white"/>
-                      <path d="M20 28v3" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                  {%- when 5 -%}
-                    <svg class="wo-hiw__icon-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <circle cx="20" cy="20" r="13" stroke="white" stroke-width="2"/>
-                      <path d="M20 13v7l4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  {%- else -%}
-                    <svg class="wo-hiw__icon-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <circle cx="20" cy="20" r="13" stroke="white" stroke-width="2"/>
-                      <path d="M20 14v12M14 20h12" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                {%- endcase -%}
+                <svg class="wo-hiw__icon-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <circle cx="20" cy="20" r="13" stroke="white" stroke-width="2"/>
+                  <path d="M20 14v12M14 20h12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                </svg>
               {%- endif -%}
             </div>
 
-            <!-- Text body (wrapper needed for mobile row layout) -->
             <div class="wo-hiw__body">
               <div class="wo-hiw__label">
                 <span class="wo-hiw__num">{{ forloop.index }}</span>
@@ -416,7 +346,6 @@
                 <p class="wo-hiw__step-desc">{{ block.settings.text }}</p>
               {%- endif -%}
             </div>
-
           </div>
         {%- endfor -%}
       </div>
@@ -428,109 +357,57 @@
 <script>
 (function () {
   'use strict';
+  
+  function initSection() {
+    const sid = '{{ section_id }}';
+    const sec = document.getElementById('wo-hiw-' + sid);
+    const header = document.getElementById('wo-header-' + sid);
+    const grid = document.getElementById('wo-grid-' + sid);
+    if (!sec || !grid) return;
 
-  var SID   = '{{ section.id }}';
-  var TOTAL = {{ section.blocks.size }};
+    const items = Array.from(grid.querySelectorAll('.wo-hiw__step'));
+    const total = items.length;
 
-  var sec    = document.getElementById('wo-hiw-' + SID);
-  var header = document.getElementById('wo-hiw-header-' + SID);
-  var grid   = document.getElementById('wo-hiw-grid-' + SID);
-
-  if (!sec || !grid) return;
-
-  var items = Array.from(grid.querySelectorAll('.wo-hiw__step'));
-
-  function isMobile()   { return window.innerWidth <= 768; }
-  function clearActive(){ items.forEach(function (el) { el.classList.remove('is-active'); }); }
-  function setActive(i) { items.forEach(function (el, j) { el.classList.toggle('is-active', j === i); }); }
-
-  /* ── Desktop: scroll-driven progress + active step ── */
-  var scrollHandler = null;
-
-  function onDesktopScroll() {
-    var rect  = sec.getBoundingClientRect();
-    var winH  = window.innerHeight;
-    if (rect.top > winH || rect.bottom < 0) { clearActive(); return; }
-    var progress = Math.min(Math.max(-(rect.top - winH / 2) / rect.height, 0), 1);
-    var active = -1;
-    for (var i = 0; i < TOTAL; i++) {
-      if (progress >= (i === 0 ? 0 : (i / TOTAL) * 0.85)) active = i;
-    }
-    if (active < 0) clearActive(); else setActive(active);
-  }
-
-  function initDesktop() {
-    if (header) {
-      new IntersectionObserver(function (entries, obs) {
-        if (entries[0].isIntersecting) { header.classList.add('is-visible'); obs.disconnect(); }
-      }, { threshold: 0.4 }).observe(header);
-    }
-
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        var i = parseInt(e.target.getAttribute('data-index'), 10);
-        setTimeout(function () { e.target.classList.add('is-visible'); }, i * 130);
-        io.unobserve(e.target);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          if (e.target.id.includes('wo-header')) {
+            e.target.classList.add('is-visible');
+          } else {
+            const i = parseInt(e.target.getAttribute('data-index'), 10);
+            setTimeout(() => e.target.classList.add('is-visible'), i * 150);
+            observer.unobserve(e.target);
+          }
+        }
       });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.2 });
 
-    items.forEach(function (el) { io.observe(el); });
-    scrollHandler = onDesktopScroll;
-    window.addEventListener('scroll', scrollHandler, { passive: true });
-    onDesktopScroll();
+    if (header) observer.observe(header);
+    items.forEach(el => observer.observe(el));
+
+    // Scroll progress active states
+    window.addEventListener('scroll', () => {
+      const rect = sec.getBoundingClientRect();
+      const winH = window.innerHeight;
+      if (rect.top > winH || rect.bottom < 0) return;
+      
+      const progress = Math.min(Math.max(-(rect.top - winH / 2) / rect.height, 0), 1);
+      let active = -1;
+      for (let i = 0; i < total; i++) {
+        if (progress >= (i / total) * 0.8) active = i;
+      }
+      items.forEach((el, j) => el.classList.toggle('is-active', j === active));
+    }, { passive: true });
   }
 
-  /* ── Mobile: highlight most visible card via IntersectionObserver ── */
-  function initMobile() {
-    if (header) {
-      new IntersectionObserver(function (entries, obs) {
-        if (entries[0].isIntersecting) { header.classList.add('is-visible'); obs.disconnect(); }
-      }, { threshold: 0.2 }).observe(header);
-    }
-
-    clearActive();
-    var ratios = new Array(TOTAL).fill(0);
-
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        ratios[parseInt(e.target.getAttribute('data-index'), 10)] = e.intersectionRatio;
-      });
-      var best = -1, bestR = 0;
-      ratios.forEach(function (r, i) { if (r > bestR) { bestR = r; best = i; } });
-      if (best >= 0 && bestR > 0.15) setActive(best); else clearActive();
-    }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
-
-    items.forEach(function (el) { io.observe(el); });
-  }
-
-  /* ── Boot / resize ── */
-  var mode = null;
-
-  function boot() {
-    var next = isMobile() ? 'mobile' : 'desktop';
-    if (next === mode) return;
-    mode = next;
-    if (scrollHandler) { window.removeEventListener('scroll', scrollHandler); scrollHandler = null; }
-    clearActive();
-    if (next === 'mobile') {
-      items.forEach(function (el) { el.classList.add('is-visible'); });
-      initMobile();
-    } else {
-      items.forEach(function (el) { el.classList.remove('is-visible'); });
-      initDesktop();
-    }
-  }
-
-  var resizeTimer;
-  window.addEventListener('resize', function () { clearTimeout(resizeTimer); resizeTimer = setTimeout(boot, 200); });
-  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', boot); } else { boot(); }
-}());
+  document.addEventListener('shopify:section:load', e => { if (e.detail.sectionId === '{{ section_id }}') initSection(); });
+  initSection();
+})();
 </script>
 
 {% schema %}
 {
-  "name": "WO How It Works",
+  "name": "PRO Path Timeline",
   "tag": "section",
   "settings": [
     {
@@ -556,6 +433,105 @@
       "default": "Your journey to an offshore career made simple."
     },
     {
+      "type": "select",
+      "id": "header_align",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "━━ Layout ━━"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1200
+    },
+    {
+      "type": "header",
+      "content": "━━ Icon Style ━━"
+    },
+    {
+      "type": "range",
+      "id": "icon_wrap_size",
+      "min": 40,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon Wrap Size",
+      "default": 92
+    },
+    {
+      "type": "range",
+      "id": "icon_img_size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon Image Size",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "icon_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "%",
+      "label": "Icon Border Radius",
+      "default": 50
+    },
+    {
+      "type": "checkbox",
+      "id": "icon_invert",
+      "label": "Invert Icon Color (White)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "━━ Connector Line ━━"
+    },
+    {
+      "type": "range",
+      "id": "line_thickness",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Line Thickness",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "line_dash_length",
+      "min": 2,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Dash Length",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "line_dash_gap",
+      "min": 2,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Dash Gap",
+      "default": 12
+    },
+    {
       "type": "header",
       "content": "━━ Colors ━━"
     },
@@ -568,13 +544,13 @@
     {
       "type": "color",
       "id": "badge_bg_color",
-      "label": "Icon Circle Background",
+      "label": "Icon Circle BG",
       "default": "#1a1a2e"
     },
     {
       "type": "color",
       "id": "accent_color",
-      "label": "Accent / Number Badge",
+      "label": "Accent / Number BG",
       "default": "#e8a020"
     },
     {
@@ -586,7 +562,7 @@
     {
       "type": "color",
       "id": "line_color",
-      "label": "Connector Line Color",
+      "label": "Connector Line",
       "default": "#e8a020"
     },
     {
@@ -598,122 +574,353 @@
     {
       "type": "color",
       "id": "text_color_sub",
-      "label": "Sub / Description Text",
+      "label": "Description Text",
       "default": "#6b7280"
     },
     {
       "type": "header",
-      "content": "━━ Typography Desktop ━━"
+      "content": "━━ Typography Header ━━"
+    },
+    {
+      "type": "font_picker",
+      "id": "title_font",
+      "label": "Heading Font",
+      "default": "assistant_n8"
     },
     {
       "type": "range",
       "id": "title_size_desktop",
-      "min": 24, "max": 64, "step": 2, "unit": "px",
-      "label": "Title Size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size Desktop",
       "default": 42
     },
     {
       "type": "range",
+      "id": "title_size_mobile",
+      "min": 18,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size Mobile",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Heading Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-Bold" }
+      ],
+      "default": "800"
+    },
+    {
+      "type": "range",
+      "id": "title_lh",
+      "min": 0.8,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Heading Line Height",
+      "default": 1.2
+    },
+    {
+      "type": "range",
+      "id": "title_ls",
+      "min": -0.05,
+      "max": 0.2,
+      "step": 0.01,
+      "unit": "em",
+      "label": "Heading Letter Spacing",
+      "default": -0.02
+    },
+    {
+      "type": "select",
+      "id": "title_transform",
+      "label": "Heading Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography Subtitle ━━"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Body Font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "range",
       "id": "subtitle_size_desktop",
-      "min": 12, "max": 22, "step": 1, "unit": "px",
-      "label": "Subtitle Size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle Size Desktop",
       "default": 15
+    },
+    {
+      "type": "select",
+      "id": "subtitle_weight",
+      "label": "Subtitle Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_ls",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.05,
+      "unit": "em",
+      "label": "Subtitle Letter Spacing",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "subtitle_transform",
+      "label": "Subtitle Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography Eyebrow ━━"
+    },
+    {
+      "type": "font_picker",
+      "id": "meta_font",
+      "label": "Meta Font (Eyebrow/Numbers)",
+      "default": "assistant_n7"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Eyebrow Size",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_weight",
+      "label": "Eyebrow Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_ls",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.01,
+      "unit": "em",
+      "label": "Eyebrow Letter Spacing",
+      "default": 0.14
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_transform",
+      "label": "Eyebrow Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "header",
+      "content": "━━ Typography Steps ━━"
     },
     {
       "type": "range",
       "id": "step_title_size_desktop",
-      "min": 14, "max": 28, "step": 1, "unit": "px",
-      "label": "Step Title Size",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Step Title Size Desktop",
       "default": 18
     },
     {
       "type": "range",
-      "id": "step_text_size_desktop",
-      "min": 12, "max": 18, "step": 1, "unit": "px",
-      "label": "Step Text Size",
-      "default": 14
-    },
-    {
-      "type": "header",
-      "content": "━━ Typography Mobile ━━"
-    },
-    {
-      "type": "range",
-      "id": "title_size_mobile",
-      "min": 20, "max": 48, "step": 1, "unit": "px",
-      "label": "Title Size",
-      "default": 32
-    },
-    {
-      "type": "range",
-      "id": "subtitle_size_mobile",
-      "min": 12, "max": 18, "step": 1, "unit": "px",
-      "label": "Subtitle Size",
-      "default": 14
-    },
-    {
-      "type": "range",
       "id": "step_title_size_mobile",
-      "min": 14, "max": 24, "step": 1, "unit": "px",
-      "label": "Step Title Size",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Step Title Size Mobile",
       "default": 17
+    },
+    {
+      "type": "select",
+      "id": "step_title_weight",
+      "label": "Step Title Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "step_title_ls",
+      "min": -0.05,
+      "max": 0.2,
+      "step": 0.01,
+      "unit": "em",
+      "label": "Step Title Letter Spacing",
+      "default": -0.01
+    },
+    {
+      "type": "select",
+      "id": "step_title_transform",
+      "label": "Step Title Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "step_text_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Step Text Size Desktop",
+      "default": 14
     },
     {
       "type": "range",
       "id": "step_text_size_mobile",
-      "min": 12, "max": 16, "step": 1, "unit": "px",
-      "label": "Step Text Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Step Text Size Mobile",
       "default": 13
     },
     {
+      "type": "select",
+      "id": "step_text_weight",
+      "label": "Step Text Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "step_text_lh",
+      "min": 1.0,
+      "max": 2.5,
+      "step": 0.1,
+      "label": "Step Text Line Height",
+      "default": 1.6
+    },
+    {
       "type": "header",
-      "content": "━━ Padding Desktop ━━"
+      "content": "━━ Typography Numbers ━━"
+    },
+    {
+      "type": "range",
+      "id": "num_size",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Number Size",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "num_weight",
+      "label": "Number Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-Bold" }
+      ],
+      "default": "800"
+    },
+    {
+      "type": "header",
+      "content": "━━ Spacing ━━"
     },
     {
       "type": "range",
       "id": "pad_top_desktop",
-      "min": 0, "max": 120, "step": 4, "unit": "px",
-      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding Desktop",
       "default": 80
     },
     {
       "type": "range",
       "id": "pad_bot_desktop",
-      "min": 0, "max": 120, "step": 4, "unit": "px",
-      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding Desktop",
       "default": 80
     },
     {
       "type": "range",
-      "id": "pad_x_desktop",
-      "min": 0, "max": 100, "step": 4, "unit": "px",
-      "label": "Horizontal",
-      "default": 40
-    },
-    {
-      "type": "header",
-      "content": "━━ Padding Mobile ━━"
-    },
-    {
-      "type": "range",
       "id": "pad_top_mobile",
-      "min": 0, "max": 100, "step": 4, "unit": "px",
-      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding Mobile",
       "default": 48
     },
     {
       "type": "range",
       "id": "pad_bot_mobile",
       "min": 0, "max": 100, "step": 4, "unit": "px",
-      "label": "Bottom",
+      "label": "Bottom Padding Mobile",
       "default": 48
     },
     {
       "type": "range",
-      "id": "pad_x_mobile",
-      "min": 0, "max": 60, "step": 2, "unit": "px",
-      "label": "Horizontal",
-      "default": 20
+      "id": "header_margin_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Header Margin Bottom",
+      "default": 64
     }
   ],
   "blocks": [
@@ -725,8 +932,7 @@
         {
           "type": "image_picker",
           "id": "icon",
-          "label": "Step Icon",
-          "info": "White icon on transparent background recommended. PNG or SVG, min 88×88px. If left empty, a default icon is shown."
+          "label": "Step Icon"
         },
         {
           "type": "text",
@@ -745,35 +951,23 @@
   ],
   "presets": [
     {
-      "name": "WO How It Works",
+      "name": "PRO Path Timeline",
       "blocks": [
         {
           "type": "step",
-          "settings": {
-            "title": "Learn",
-            "text": "Get the knowledge and guidance you need about offshore jobs."
-          }
+          "settings": { "title": "Learn", "text": "Get the knowledge and guidance you need about offshore jobs." }
         },
         {
           "type": "step",
-          "settings": {
-            "title": "Prepare",
-            "text": "Improve your CV and get job-ready with our expert services."
-          }
+          "settings": { "title": "Prepare", "text": "Improve your CV and get job-ready with our expert services." }
         },
         {
           "type": "step",
-          "settings": {
-            "title": "Apply",
-            "text": "Apply with confidence to the right companies and opportunities."
-          }
+          "settings": { "title": "Apply", "text": "Apply with confidence to the right companies and opportunities." }
         },
         {
           "type": "step",
-          "settings": {
-            "title": "Get Hired",
-            "text": "Start your offshore career and build the life you deserve."
-          }
+          "settings": { "title": "Get Hired", "text": "Start your offshore career and build the life you deserve." }
         }
       ]
     }
