@@ -98,9 +98,9 @@
     inset: 0;
     background: linear-gradient(
       105deg,
-      rgba(0,0,0,{{ section.settings.gradient_opacity_1 }}) 0%,
-      rgba(0,0,0,{{ section.settings.gradient_opacity_2 }}) 50%,
-      rgba(0,0,0,{{ section.settings.gradient_opacity_3 }}) 100%
+      rgba(0,0,0,{{ section.settings.gradient_opacity_1 | divided_by: 100.0 }}) 0%,
+      rgba(0,0,0,{{ section.settings.gradient_opacity_2 | divided_by: 100.0 }}) 50%,
+      rgba(0,0,0,{{ section.settings.gradient_opacity_3 | divided_by: 100.0 }}) 100%
     );
     z-index: 2;
   }
@@ -139,7 +139,7 @@
     gap: 10px;
     font-size: var(--wo-cta-label-desk);
     font-weight: {{ section.settings.font_weight_eyebrow }};
-    letter-spacing: {{ section.settings.letter_spacing_eyebrow }}px;
+    letter-spacing: {{ section.settings.letter_spacing_eyebrow | divided_by: 10.0 }}px;
     text-transform: {{ section.settings.text_transform_eyebrow }};
     color: var(--wo-cta-accent);
     margin-bottom: 20px;
@@ -160,7 +160,7 @@
     font-weight: {{ section.settings.font_weight_title }};
     color: var(--wo-cta-title);
     line-height: {{ section.settings.line_height_title }};
-    letter-spacing: {{ section.settings.letter_spacing_title }}px;
+    letter-spacing: {{ section.settings.letter_spacing_title | divided_by: 10.0 }}px;
     margin: 0 0 24px 0;
     text-transform: {{ section.settings.text_transform_title }};
   }
@@ -382,7 +382,7 @@
     color: var(--wo-cta-btn-text);
     font-size: {{ section.settings.btn_font_size }}px;
     font-weight: {{ section.settings.btn_font_weight }};
-    letter-spacing: {{ section.settings.btn_letter_spacing }}px;
+    letter-spacing: {{ section.settings.btn_letter_spacing | divided_by: 10.0 }}px;
     text-transform: {{ section.settings.btn_text_transform }};
     text-decoration: none;
     border-radius: {{ section.settings.btn_border_radius }}px;
@@ -799,7 +799,7 @@
   "tag": "section",
   "settings": [
     { "type": "header", "content": "Layout Settings" },
-    { "type": "range", "id": "container_max_width", "min": 1000, "max": 1800, "step": 50, "unit": "px", "label": "Container Max Width", "default": 1560 },
+    { "type": "range", "id": "container_max_width", "min": 1000, "max": 1800, "step": 50, "unit": "px", "label": "Container Max Width", "default": 1550 },
     { "type": "select", "id": "mobile_order", "label": "Mobile Stacking", "options": [{"value":"-1","label":"Image Top"},{"value":"1","label":"Content Top"}], "default": "-1" },
     { "type": "header", "content": "Section Background Image" },
     { "type": "image_picker", "id": "section_bg_image", "label": "Section Background Image" },
@@ -807,9 +807,9 @@
     { "type": "color", "id": "section_overlay_color", "label": "Overlay Color", "default": "#000000" },
     { "type": "range", "id": "section_overlay_opacity", "min": 0, "max": 95, "step": 5, "unit": "%", "label": "Overlay Opacity", "default": 60 },
     { "type": "checkbox", "id": "section_bg_grad", "label": "Enable Readability Gradient", "default": true },
-    { "type": "range", "id": "gradient_opacity_1", "min": 0, "max": 1, "step": 0.05, "label": "Gradient Step 1", "default": 0.55 },
-    { "type": "range", "id": "gradient_opacity_2", "min": 0, "max": 1, "step": 0.05, "label": "Gradient Step 2", "default": 0.25 },
-    { "type": "range", "id": "gradient_opacity_3", "min": 0, "max": 1, "step": 0.05, "label": "Gradient Step 3", "default": 0.4 },
+    { "type": "range", "id": "gradient_opacity_1", "min": 0, "max": 100, "step": 10, "unit": "%", "label": "Gradient Step 1", "default": 60 },
+    { "type": "range", "id": "gradient_opacity_2", "min": 0, "max": 100, "step": 10, "unit": "%", "label": "Gradient Step 2", "default": 30 },
+    { "type": "range", "id": "gradient_opacity_3", "min": 0, "max": 100, "step": 10, "unit": "%", "label": "Gradient Step 3", "default": 40 },
     { "type": "header", "content": "Typography: Fonts" },
     { "type": "font_picker", "id": "font_title", "label": "Heading Font", "default": "helvetica_n4" },
     { "type": "font_picker", "id": "font_eyebrow", "label": "Eyebrow Font", "default": "helvetica_n4" },
@@ -821,13 +821,13 @@
     { "type": "range", "id": "title_size_mob", "min": 24, "max": 60, "step": 2, "unit": "px", "label": "Mobile Size", "default": 38 },
     { "type": "select", "id": "font_weight_title", "label": "Weight", "options": [{"value":"400","label":"Normal"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"},{"value":"900","label":"Black"}], "default": "800" },
     { "type": "text", "id": "line_height_title", "label": "Line Height", "default": "1.1" },
-    { "type": "range", "id": "letter_spacing_title", "min": -5, "max": 5, "step": 0.5, "unit": "px", "label": "Letter Spacing", "default": -1.5 },
+    { "type": "range", "id": "letter_spacing_title", "min": -50, "max": 50, "step": 5, "unit": "px", "label": "Letter Spacing", "default": -15 },
     { "type": "select", "id": "text_transform_title", "label": "Text Transform", "options": [{"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"}], "default": "none" },
     { "type": "header", "content": "Typography: Eyebrow" },
     { "type": "text", "id": "eyebrow", "label": "Text", "default": "Work Offshore" },
     { "type": "range", "id": "label_size_desk", "min": 9, "max": 16, "step": 1, "unit": "px", "label": "Size", "default": 11 },
     { "type": "select", "id": "font_weight_eyebrow", "label": "Weight", "options": [{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"}], "default": "600" },
-    { "type": "range", "id": "letter_spacing_eyebrow", "min": 0, "max": 10, "step": 0.5, "unit": "px", "label": "Letter Spacing", "default": 2 },
+    { "type": "range", "id": "letter_spacing_eyebrow", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Letter Spacing", "default": 20 },
     { "type": "select", "id": "text_transform_eyebrow", "label": "Text Transform", "options": [{"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"}], "default": "uppercase" },
     { "type": "checkbox", "id": "show_eyebrow_line", "label": "Show Decorative Line", "default": true },
     { "type": "header", "content": "Typography: Description" },
@@ -844,7 +844,7 @@
     { "type": "textarea", "id": "btn_icon_svg", "label": "Custom SVG Icon" },
     { "type": "range", "id": "btn_font_size", "min": 10, "max": 20, "step": 1, "unit": "px", "label": "Font Size", "default": 12 },
     { "type": "select", "id": "btn_font_weight", "label": "Weight", "options": [{"value":"400","label":"Normal"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "700" },
-    { "type": "range", "id": "btn_letter_spacing", "min": 0, "max": 5, "step": 0.5, "unit": "px", "label": "Letter Spacing", "default": 1.5 },
+    { "type": "range", "id": "btn_letter_spacing", "min": 0, "max": 50, "step": 5, "unit": "px", "label": "Letter Spacing", "default": 15 },
     { "type": "select", "id": "btn_text_transform", "label": "Text Transform", "options": [{"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"}], "default": "uppercase" },
     { "type": "range", "id": "btn_padding_vertical", "min": 10, "max": 40, "step": 2, "unit": "px", "label": "Vertical Padding", "default": 20 },
     { "type": "range", "id": "btn_padding_horizontal", "min": 20, "max": 80, "step": 2, "unit": "px", "label": "Horizontal Padding", "default": 40 },

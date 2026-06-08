@@ -384,6 +384,57 @@ Below is a visual guide to the premium custom sections in this repository. Each 
 
 ---
 
+### 26. FG Bestselling Grid
+*A premium product showcase grid built for bestseller collections and high-impact merchandising.*
+
+![Bestselling Grid](./images/bestselling-custom-section.png)
+
+👉 **Source Code:** [`bestselling-custom-section.liquid`](./bestselling-custom-section.liquid)
+
+*   **Key Features**:
+    *   **Flexible Card Layout**: Auto-adjusts between single-column mobile and multi-column desktop grids.
+    *   **Expandable Promo Banner**: Central promo card with overlay support, title, description, and CTA.
+    *   **Hover Elevation**: Product card lift effect with dynamic shadow on hover.
+    *   **Dual Image Support**: Primary and secondary product images with fade-on-hover transitions.
+    *   **Customizable Typography**: Separate desktop and mobile sizing for headings, subheadings, and promo text.
+    *   **Merchant Friendly Controls**: Background, spacing, card styling, and button colors are all editable in the theme editor.
+
+---
+
+### 27. Custom Pantry Grid
+*A modern category/product grid section designed for lifestyle brands with bold navigation and content overlays.*
+
+![Pantry Grid](./images/category-product-custom-section.png)
+
+👉 **Source Code:** [`category-product-custom-section.liquid`](./category-product-custom-section.liquid)
+
+*   **Key Features**:
+    *   **Responsive Grid System**: Mobile and desktop column controls with adaptive gap spacing.
+    *   **Custom Card Styling**: Rounded cards, border options, background overlays, and hover transform effects.
+    *   **Tall Card Support**: Featured tall card spans multiple rows for elegant visual hierarchy.
+    *   **Image Hover Zoom**: Smooth image scale effect on hover for immersive storytelling.
+    *   **Overlay Gradient Control**: Fully editable overlay direction, colors, opacity, and stop positions.
+    *   **Modern CTA Arrows**: Icon-based arrow buttons with hover-ready color transitions.
+
+---
+
+### 28. Vertical Testimonial
+*A polished vertical testimonial section with a left feature image and scrollable review feed.*
+
+![Premium Organic Testimonial](./images/premium-organic-testimonial.png)
+
+👉 **Source Code:** [`premium-organic-testimonial.liquid`](./premium-organic-testimonial.liquid)
+
+*   **Key Features**:
+    *   **Vertical Review Carousel**: Smooth snap-scrolling testimonial cards with optional autoplay.
+    *   **Responsive Two-Column Layout**: Left hero image and right-hand carousel on desktop.
+    *   **Highlight Active Review**: Active card accent border and shadow for better focus.
+    *   **Dot Navigation**: Clickable dot indicators with active state highlighting.
+    *   **Full Theme Control**: Adjustable section spacing, colors, typography, and card styling.
+    *   **Rich Content Support**: Avatar, star rating, title, review text, and customer name display.
+
+---
+
 ## 🛠️ Step-by-Step Installation Guide
 
 Implementing any of these custom sections on your Shopify store is quick and completely code-free:

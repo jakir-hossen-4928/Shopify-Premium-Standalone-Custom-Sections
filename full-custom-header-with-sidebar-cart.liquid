@@ -42,7 +42,7 @@
     --wo-logo-color: {{ section.settings.logo_text_color }};
     --wo-logo-size: {{ section.settings.logo_font_size }}px;
     --wo-logo-weight: {{ section.settings.logo_font_weight | default: logo_font.weight }};
-    --wo-logo-ls: {{ section.settings.logo_letter_spacing }}em;
+    --wo-logo-ls: {{ section.settings.logo_letter_spacing | divided_by: 100.0 }}em;
     --wo-logo-transform: {{ section.settings.logo_text_transform }};
 
     /* Nav Typography */
@@ -53,7 +53,7 @@
     --wo-nav-size: {{ section.settings.nav_font_size }}px;
     --wo-nav-weight: {{ section.settings.nav_font_weight | default: nav_font.weight }};
     --wo-nav-gap: {{ section.settings.nav_spacing }}px;
-    --wo-nav-tracking: {{ section.settings.nav_letter_spacing }}em;
+    --wo-nav-tracking: {{ section.settings.nav_letter_spacing | divided_by: 100.0 }}em;
     --wo-nav-transform: {{ section.settings.nav_text_transform }};
 
     /* Cart Icon & Badge */
@@ -70,13 +70,13 @@
     --wo-cta-radius: {{ section.settings.cta_border_radius }}px;
     --wo-cta-border: {{ section.settings.cta_border_color }};
     --wo-cta-weight: {{ section.settings.cta_font_weight | default: cta_font.weight }};
-    --wo-cta-ls: {{ section.settings.cta_letter_spacing }}em;
+    --wo-cta-ls: {{ section.settings.cta_letter_spacing | divided_by: 100.0 }}em;
     --wo-cta-transform: {{ section.settings.cta_text_transform }};
 
     /* Drawer & Mobile Menu */
     --wo-mob-bg: {{ section.settings.mobile_menu_bg }};
     --wo-drawer-bg: {{ section.settings.drawer_bg }};
-    --wo-overlay-op: {{ section.settings.overlay_opacity }};
+    --wo-overlay-op: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
     --wo-speed: {{ section.settings.animation_speed }}ms;
     --wo-ease: cubic-bezier(0.16, 1, 0.3, 1);
     --wo-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -661,12 +661,12 @@
     {
       "type": "range",
       "id": "logo_letter_spacing",
-      "min": -0.05,
-      "max": 0.5,
-      "step": 0.01,
+      "min": -10,
+      "max": 50,
+      "step": 10,
       "unit": "em",
       "label": "Logo Letter Spacing",
-      "default": 0.05
+      "default": 10
     },
     {
       "type": "range",
@@ -788,11 +788,11 @@
       "type": "range",
       "id": "nav_letter_spacing",
       "min": 0,
-      "max": 0.5,
-      "step": 0.01,
+      "max": 50,
+      "step": 10,
       "unit": "em",
       "label": "Nav Letter Spacing",
-      "default": 0.06
+      "default": 10
     },
     {
       "type": "select",
@@ -917,11 +917,11 @@
       "type": "range",
       "id": "cta_letter_spacing",
       "min": 0,
-      "max": 0.5,
-      "step": 0.01,
+      "max": 50,
+      "step": 10,
       "unit": "em",
       "label": "CTA Letter Spacing",
-      "default": 0.09
+      "default": 10
     },
     {
       "type": "select",
@@ -1055,10 +1055,11 @@
       "type": "range",
       "id": "overlay_opacity",
       "min": 0,
-      "max": 1,
-      "step": 0.1,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
       "label": "Overlay Opacity",
-      "default": 0.6
+      "default": 60
     },
     {
       "type": "range",

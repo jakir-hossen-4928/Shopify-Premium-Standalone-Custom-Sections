@@ -1,1110 +1,1110 @@
-{%- comment -%}
-  Cinematic Hero Section - Fully Customizable Refactor
-{%- endcomment -%}
+  {%- comment -%}
+    Cinematic Hero Section - Fully Customizable Refactor
+  {%- endcomment -%}
 
-{%- liquid
-  assign font_title = section.settings.font_title
-  assign font_subtitle = section.settings.font_subtitle
-  assign font_text = section.settings.font_text
-  assign font_btn = section.settings.font_btn
--%}
+  {%- liquid
+    assign font_title = section.settings.font_title
+    assign font_subtitle = section.settings.font_subtitle
+    assign font_text = section.settings.font_text
+    assign font_btn = section.settings.font_btn
+  -%}
 
-<style>
-  {{ font_title | font_face: display: 'swap' }}
-  {{ font_subtitle | font_face: display: 'swap' }}
-  {{ font_text | font_face: display: 'swap' }}
-  {{ font_btn | font_face: display: 'swap' }}
+  <style>
+    {{ font_title | font_face: display: 'swap' }}
+    {{ font_subtitle | font_face: display: 'swap' }}
+    {{ font_text | font_face: display: 'swap' }}
+    {{ font_btn | font_face: display: 'swap' }}
 
-  #CinematicHero-{{ section.id }} {
-    --padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
-    --padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
-    --padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
-    --padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
-    --content-spacing-left-desktop: {{ section.settings.content_left_desktop }}px;
-    --content-spacing-left-mobile: {{ section.settings.content_left_mobile }}px;
-    --section-gap: {{ section.settings.section_gap }}px;
-    --button-spacing: {{ section.settings.button_gap }}px;
+    #CinematicHero-{{ section.id }} {
+      --padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+      --padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+      --padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+      --padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+      --content-spacing-left-desktop: {{ section.settings.content_left_desktop }}px;
+      --content-spacing-left-mobile: {{ section.settings.content_left_mobile }}px;
+      --section-gap: {{ section.settings.section_gap }}px;
+      --button-spacing: {{ section.settings.button_gap }}px;
 
-    --font-family-title: {{ font_title.family }}, {{ font_title.fallback_families }};
-    --font-family-subtitle: {{ font_subtitle.family }}, {{ font_subtitle.fallback_families }};
-    --font-family-text: {{ font_text.family }}, {{ font_text.fallback_families }};
-    --font-family-btn: {{ font_btn.family }}, {{ font_btn.fallback_families }};
+      --font-family-title: {{ font_title.family }}, {{ font_title.fallback_families }};
+      --font-family-subtitle: {{ font_subtitle.family }}, {{ font_subtitle.fallback_families }};
+      --font-family-text: {{ font_text.family }}, {{ font_text.fallback_families }};
+      --font-family-btn: {{ font_btn.family }}, {{ font_btn.fallback_families }};
 
-    --title-size-desktop: {{ section.settings.title_size_desktop }}px;
-    --subtitle-size-desktop: {{ section.settings.subtitle_size_desktop }}px;
-    --text-size-desktop: {{ section.settings.text_size_desktop }}px;
-    --btn-size-desktop: {{ section.settings.btn_size_desktop }}px;
+      --title-size-desktop: {{ section.settings.title_size_desktop }}px;
+      --subtitle-size-desktop: {{ section.settings.subtitle_size_desktop }}px;
+      --text-size-desktop: {{ section.settings.text_size_desktop }}px;
+      --btn-size-desktop: {{ section.settings.btn_size_desktop }}px;
 
-    --title-size-mobile: {{ section.settings.title_size_mobile }}px;
-    --subtitle-size-mobile: {{ section.settings.subtitle_size_mobile }}px;
-    --text-size-mobile: {{ section.settings.text_size_mobile }}px;
-    --btn-size-mobile: {{ section.settings.btn_size_mobile }}px;
+      --title-size-mobile: {{ section.settings.title_size_mobile }}px;
+      --subtitle-size-mobile: {{ section.settings.subtitle_size_mobile }}px;
+      --text-size-mobile: {{ section.settings.text_size_mobile }}px;
+      --btn-size-mobile: {{ section.settings.btn_size_mobile }}px;
 
-    --color-title: {{ section.settings.color_title }};
-    --color-highlight: {{ section.settings.color_highlight }};
-    --color-subtitle: {{ section.settings.color_subtitle }};
-    --color-text: {{ section.settings.color_text }};
-    --color-btn-primary-bg: {{ section.settings.color_btn_primary_bg }};
-    --color-btn-primary-text: {{ section.settings.color_btn_primary_text }};
-    --color-btn-secondary-border: {{ section.settings.color_btn_secondary_border }};
-    --color-btn-secondary-text: {{ section.settings.color_btn_secondary_text }};
-    --color-stats-text: {{ section.settings.color_stats_text }};
-    --color-pagination: {{ section.settings.color_pagination }};
-    --color-pagination-active: {{ section.settings.color_highlight }};
-    --color-review-text: {{ section.settings.color_review_text }};
+      --color-title: {{ section.settings.color_title }};
+      --color-highlight: {{ section.settings.color_highlight }};
+      --color-subtitle: {{ section.settings.color_subtitle }};
+      --color-text: {{ section.settings.color_text }};
+      --color-btn-primary-bg: {{ section.settings.color_btn_primary_bg }};
+      --color-btn-primary-text: {{ section.settings.color_btn_primary_text }};
+      --color-btn-secondary-border: {{ section.settings.color_btn_secondary_border }};
+      --color-btn-secondary-text: {{ section.settings.color_btn_secondary_text }};
+      --color-stats-text: {{ section.settings.color_stats_text }};
+      --color-pagination: {{ section.settings.color_pagination }};
+      --color-pagination-active: {{ section.settings.color_highlight }};
+      --color-review-text: {{ section.settings.color_review_text }};
 
-    --overlay-color: {{ section.settings.overlay_color }};
-    --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
-    --overlay-blur: {{ section.settings.overlay_blur }}px;
-    
-    --container-max-width: {{ section.settings.container_max_width }}px;
-    --section-height-desktop: {{ section.settings.desktop_height }}vh;
-    --section-height-mobile: {{ section.settings.mobile_height }}vh;
-  }
+      --overlay-color: {{ section.settings.overlay_color }};
+      --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+      --overlay-blur: {{ section.settings.overlay_blur }}px;
+      
+      --container-max-width: {{ section.settings.container_max_width }}px;
+      --section-height-desktop: {{ section.settings.desktop_height }}vh;
+      --section-height-mobile: {{ section.settings.mobile_height }}vh;
+    }
 
-  #CinematicHero-{{ section.id }} * {
-    box-sizing: border-box;
-  }
+    #CinematicHero-{{ section.id }} * {
+      box-sizing: border-box;
+    }
 
-  /* =============================================
-     WRAPPER
-  ============================================= */
-  #CinematicHero-{{ section.id }} .ch-wrapper {
-    position: relative;
-    width: 100%;
-    height: var(--section-height-desktop);
-    min-height: {{ section.settings.min_height_desktop }}px;
-    max-height: {{ section.settings.max_height_desktop }}px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; 
-    background-color: {{ section.settings.bg_color_fallback }};
-    margin-top: calc(-1 * var(--header-height, 0px));
-  }
-
-  /* =============================================
-     BACKGROUND
-  ============================================= */
-  #CinematicHero-{{ section.id }} .ch-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-bg-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-bg-img.mobile { display: none; }
-
-  #CinematicHero-{{ section.id }} .ch-bg-img.parallax-enabled {
-    animation: ch-zoomInOut-{{ section.id }} {{ section.settings.parallax_speed }}s infinite alternate ease-in-out;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-overlay {
-    position: absolute;
-    inset: 0;
-    background: var(--overlay-color);
-    opacity: var(--overlay-opacity);
-    backdrop-filter: blur(var(--overlay-blur));
-    -webkit-backdrop-filter: blur(var(--overlay-blur));
-    z-index: 2;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-overlay-gradient {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(to right, rgba(0,0,0,{{ section.settings.gradient_opacity_1 }}) 0%, rgba(0,0,0,{{ section.settings.gradient_opacity_2 }}) 60%, transparent 100%),
-      linear-gradient(to top, rgba(0,0,0,{{ section.settings.gradient_opacity_3 }}) 0%, transparent 55%);
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  /* =============================================
-     INNER
-  ============================================= */
-  #CinematicHero-{{ section.id }} .ch-inner {
-    position: relative;
-    z-index: 3;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    padding-top: var(--header-height, 80px);
-  }
-
-  /* =============================================
-     MAIN ROW
-  ============================================= */
-  #CinematicHero-{{ section.id }} .ch-main-row {
-    flex: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: var(--container-max-width);
-    margin: 0 auto;
-    padding-top: var(--padding-top-desktop);
-    padding-bottom: var(--padding-bottom-desktop);
-    padding-left: var(--content-spacing-left-desktop);
-    padding-right: var(--content-spacing-left-desktop);
-    overflow: visible; 
-  }
-
-  /* =============================================
-     CONTENT BLOCK
-  ============================================= */
-  #CinematicHero-{{ section.id }} .ch-content {
-    max-width: {{ section.settings.content_max_width }}px;
-    display: flex;
-    flex-direction: column;
-    gap: var(--section-gap);
-    {% if section.settings.text_alignment == 'center' %}
-      align-items: center;
-      text-align: center;
-      margin: 0 auto;
-    {% else %}
-      align-items: flex-start;
-      text-align: left;
-    {% endif %}
-  }
-
-  /* =============================================
-     SUBTITLE
-  ============================================= */
-  #CinematicHero-{{ section.id }} .ch-subtitle-wrap {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    animation: ch-fadeUp-{{ section.id }} 0.8s ease forwards;
-    opacity: 0;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-subtitle-line {
-    {% if section.settings.show_subtitle_line %}display: block;{% else %}display: none;{% endif %}
-    width: {{ section.settings.subtitle_line_width }}px;
-    height: {{ section.settings.subtitle_line_height }}px;
-    background: var(--color-subtitle);
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-subtitle {
-    font-family: var(--font-family-subtitle);
-    font-size: var(--subtitle-size-desktop);
-    color: var(--color-subtitle);
-    font-weight: {{ section.settings.font_weight_subtitle }};
-    letter-spacing: {{ section.settings.letter_spacing_subtitle }}px;
-    text-transform: {{ section.settings.text_transform_subtitle }};
-    margin: 0;
-    padding: 0;
-    line-height: {{ section.settings.line_height_subtitle }};
-  }
-
-  /* =============================================
-     TITLE
-  ============================================= */
-  #CinematicHero-{{ section.id }} .ch-title {
-    font-family: var(--font-family-title);
-    font-size: var(--title-size-desktop);
-    color: var(--color-title);
-    font-weight: {{ section.settings.font_weight_title }};
-    line-height: {{ section.settings.line_height_title }};
-    letter-spacing: {{ section.settings.letter_spacing_title }}px;
-    margin: 0;
-    padding: 0;
-    text-shadow: 0 4px 24px rgba(0,0,0,0.4);
-    animation: ch-fadeUp-{{ section.id }} 0.8s ease 0.15s forwards;
-    opacity: 0;
-    word-wrap: break-word;
-    text-transform: {{ section.settings.text_transform_title }};
-  }
-
-  #CinematicHero-{{ section.id }} .ch-title span {
-    color: var(--color-highlight);
-    text-shadow: 0 0 40px rgba(248,197,58,0.35);
-  }
-
-  /* =============================================
-     PARAGRAPH
-  ============================================= */
-  #CinematicHero-{{ section.id }} .ch-text {
-    font-family: var(--font-family-text);
-    font-size: var(--text-size-desktop);
-    color: var(--color-text);
-    line-height: {{ section.settings.line_height_text }};
-    font-weight: {{ section.settings.font_weight_text }};
-    margin: 0;
-    padding: 0;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
-    max-width: {{ section.settings.paragraph_max_width }}%;
-    animation: ch-fadeUp-{{ section.id }} 0.8s ease 0.3s forwards;
-    opacity: 0;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-text p { margin: 0; }
-
-  /* =============================================
-     BUTTONS
-  ============================================= */
-  #CinematicHero-{{ section.id }} .ch-actions {
-    display: flex;
-    gap: var(--button-spacing);
-    margin-top: 10px;
-    animation: ch-fadeUp-{{ section.id }} 0.8s ease 0.45s forwards;
-    opacity: 0;
-    flex-wrap: wrap;
-    {% if section.settings.text_alignment == 'center' %}
-      justify-content: center;
-    {% endif %}
-  }
-
-  #CinematicHero-{{ section.id }} .ch-btn {
-    font-family: var(--font-family-btn);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-size: var(--btn-size-desktop);
-    font-weight: {{ section.settings.font_weight_btn }};
-    letter-spacing: {{ section.settings.letter_spacing_btn }}px;
-    text-transform: {{ section.settings.text_transform_btn }};
-    padding: {{ section.settings.btn_padding_vertical }}px {{ section.settings.btn_padding_horizontal }}px;
-    border-radius: {{ section.settings.btn_border_radius }}px;
-    text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-    line-height: 1;
-    cursor: pointer;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-btn-primary {
-    background: var(--color-btn-primary-bg);
-    color: var(--color-btn-primary-text);
-    border: 2px solid var(--color-btn-primary-bg);
-    box-shadow: 0 4px 20px rgba(248,197,58,0.3);
-  }
-
-  #CinematicHero-{{ section.id }} .ch-btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(248,197,58,0.45);
-    filter: brightness(1.05);
-  }
-
-  #CinematicHero-{{ section.id }} .ch-btn-secondary {
-    background: {{ section.settings.color_btn_secondary_bg }};
-    color: var(--color-btn-secondary-text);
-    border: 2px solid var(--color-btn-secondary-border);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-
-  #CinematicHero-{{ section.id }} .ch-btn-secondary:hover {
-    background: {{ section.settings.color_btn_secondary_bg_hover }};
-    border-color: {{ section.settings.color_btn_secondary_border_hover }};
-    transform: translateY(-3px);
-  }
-
-  #CinematicHero-{{ section.id }} .ch-btn svg {
-    width: {{ section.settings.btn_icon_size }}px;
-    height: {{ section.settings.btn_icon_size }}px;
-    flex-shrink: 0;
-  }
-
-  /* =============================================
-     TRUST / REVIEW BADGE
-  ============================================= */
-  #CinematicHero-{{ section.id }} .ch-reviews {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: 5px; 
-    animation: ch-fadeUp-{{ section.id }} 0.8s ease 0.6s forwards;
-    opacity: 0;
-    {% if section.settings.text_alignment == 'center' %}
-      justify-content: center;
-      text-align: left; 
-    {% endif %}
-  }
-
-  #CinematicHero-{{ section.id }} .ch-reviews-avatars {
-    display: flex;
-    align-items: center;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-avatar {
-    width: {{ section.settings.avatar_size }}px;
-    height: {{ section.settings.avatar_size }}px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--overlay-color, #061014); 
-    margin-left: -14px;
-    position: relative;
-    background-color: #222; 
-  }
-
-  #CinematicHero-{{ section.id }} .ch-avatar:nth-child(1) { z-index: 4; margin-left: 0; }
-  #CinematicHero-{{ section.id }} .ch-avatar:nth-child(2) { z-index: 3; }
-  #CinematicHero-{{ section.id }} .ch-avatar:nth-child(3) { z-index: 2; }
-  #CinematicHero-{{ section.id }} .ch-avatar:nth-child(4) { z-index: 1; }
-
-  #CinematicHero-{{ section.id }} .ch-reviews-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-reviews-stars {
-    display: flex;
-    gap: 3px;
-    color: var(--color-highlight);
-  }
-
-  #CinematicHero-{{ section.id }} .ch-reviews-stars svg {
-    width: 16px;
-    height: 16px;
-    fill: currentColor;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-reviews-text {
-    font-family: var(--font-family-text);
-    font-size: 13px;
-    color: var(--color-review-text);
-    margin: 0;
-    line-height: 1.2;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-  }
-
-
-  /* =============================================
-     VERTICAL PAGINATION (desktop only)
-  ============================================= */
-  #CinematicHero-{{ section.id }} .ch-pagination {
-    display: none;
-    flex-direction: column;
-    gap: 30px;
-    align-items: flex-end;
-    animation: ch-fadeRight-{{ section.id }} 1s ease 1s forwards;
-    opacity: 0;
-    flex-shrink: 0;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-page-num {
-    color: var(--color-pagination);
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    transition: color 0.3s;
-    cursor: pointer;
-    opacity: 0.5;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-page-num.active {
-    color: var(--color-pagination-active);
-    opacity: 1;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-page-num.active::after {
-    content: '';
-    position: absolute;
-    left: 100%;
-    margin-left: 15px;
-    width: 40px;
-    height: 2px;
-    background: var(--color-pagination-active);
-    border-radius: 2px;
-  }
-
-  /* =============================================
-     STATS BAR — desktop
-  ============================================= */
-  #CinematicHero-{{ section.id }} .ch-stats-wrapper {
-    width: 100%;
-    z-index: 4;
-    padding-left: var(--content-spacing-left-desktop);
-    padding-right: var(--content-spacing-left-desktop);
-    padding-bottom: {{ section.settings.stats_bottom_spacing }}px;
-    animation: ch-fadeUp-{{ section.id }} 1s ease 0.8s forwards;
-    opacity: 0;
-    flex-shrink: 0;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-stats {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: {{ section.settings.color_stats_bg | color_modify: 'alpha', 0.55 }};
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-top: 1px solid rgba(255,255,255,0.18);
-    border-radius: {{ section.settings.stats_border_radius }}px;
-    padding: 22px 36px;
-    max-width: {{ section.settings.stats_container_max_width }}px;
-    margin: 0 auto;
-    box-shadow:
-      0 24px 48px rgba(0,0,0,0.5),
-      inset 0 1px 0 rgba(255,255,255,0.08);
-  }
-
-  #CinematicHero-{{ section.id }} .ch-stat-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    position: relative;
-    transition: transform 0.3s ease;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-stat-item:hover {
-    transform: translateY(-4px);
-  }
-
-  #CinematicHero-{{ section.id }} .ch-stat-item:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    right: -28px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 1px;
-    height: 36px;
-    background: rgba(255,255,255,0.12);
-  }
-
-  #CinematicHero-{{ section.id }} .ch-stat-icon {
-    width: {{ section.settings.stat_icon_size }}px;
-    height: {{ section.settings.stat_icon_size }}px;
-    color: var(--color-highlight);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: {{ section.settings.color_highlight | color_modify: 'alpha', 0.12 }};
-    border-radius: 8px;
-    padding: 6px;
-    flex-shrink: 0;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-stat-icon svg {
-    width: 100%;
-    height: 100%;
-    fill: currentColor;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-stat-content {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-stat-value {
-    color: {{ section.settings.color_stat_value }} !important;
-    font-size: {{ section.settings.stat_value_size }}px !important;
-    font-weight: {{ section.settings.stat_value_weight }} !important;
-    line-height: 1 !important;
-    letter-spacing: -0.5px !important;
-  }
-
-  #CinematicHero-{{ section.id }} .ch-stat-label {
-    color: var(--color-stats-text) !important;
-    font-size: {{ section.settings.stat_label_size }}px !important;
-    font-weight: 400 !important;
-    opacity: 0.65 !important;
-    line-height: 1.3 !important;
-    max-width: 130px;
-  }
-
-  /* =============================================
-     KEYFRAMES
-  ============================================= */
-  @keyframes ch-fadeUp-{{ section.id }} {
-    0%   { opacity: 0; transform: translateY(24px); }
-    100% { opacity: 1; transform: translateY(0);    }
-  }
-
-  @keyframes ch-fadeRight-{{ section.id }} {
-    0%   { opacity: 0; transform: translateX(24px); }
-    100% { opacity: 1; transform: translateX(0);    }
-  }
-
-  @keyframes ch-zoomInOut-{{ section.id }} {
-    0%   { transform: scale(1);    }
-    100% { transform: scale(1.06); }
-  }
-
-  /* =============================================
-     TABLET 
-  ============================================= */
-  @media screen and (max-width: 1200px) {
-    #CinematicHero-{{ section.id }} .ch-stats { padding: 18px 24px; }
-    #CinematicHero-{{ section.id }} .ch-stat-value { font-size: 17px !important; }
-    #CinematicHero-{{ section.id }} .ch-stat-label { font-size: 10px !important; }
-    #CinematicHero-{{ section.id }} .ch-stat-item:not(:last-child)::after { right: -14px; }
-    #CinematicHero-{{ section.id }} .ch-stat-icon { width: 28px; height: 28px; }
-  }
-
-  /* =============================================
-     MOBILE ≤ 768px (HEAVILY OPTIMIZED)
-  ============================================= */
-  @media screen and (max-width: 768px) {
-
-    /* Wrapper height - Allow it to grow natively */
+    /* =============================================
+      WRAPPER
+    ============================================= */
     #CinematicHero-{{ section.id }} .ch-wrapper {
-      height: auto;
-      min-height: var(--section-height-mobile);
-      max-height: none; 
-    }
-
-    /* Switch images */
-    #CinematicHero-{{ section.id }} .ch-bg-img.desktop { display: none; }
-    #CinematicHero-{{ section.id }} .ch-bg-img.mobile  { display: block; }
-
-    /* Inner padding */
-    #CinematicHero-{{ section.id }} .ch-inner {
-      padding-top: var(--header-height, 60px);
-      gap: 30px; /* Space between text block and stats block */
-    }
-
-    /* Main Row */
-    #CinematicHero-{{ section.id }} .ch-main-row {
-      flex: 0 0 auto;
-      padding-top: var(--padding-top-mobile);
-      padding-bottom: 0; 
-      padding-left: var(--content-spacing-left-mobile);
-      padding-right: var(--content-spacing-left-mobile);
-    }
-
-    /* Content block */
-    #CinematicHero-{{ section.id }} .ch-content {
-      max-width: 100%;
+      position: relative;
       width: 100%;
-      gap: 16px;
-    }
-
-    #CinematicHero-{{ section.id }} .ch-pagination { display: none; }
-
-    /* Typography */
-    #CinematicHero-{{ section.id }} .ch-title {
-      font-size: var(--title-size-mobile);
-      letter-spacing: 0px;
-    }
-    #CinematicHero-{{ section.id }} .ch-subtitle {
-      font-size: var(--subtitle-size-mobile);
-    }
-    #CinematicHero-{{ section.id }} .ch-text {
-      font-size: var(--text-size-mobile);
-      max-width: 100%;
-    }
-
-    /* Buttons */
-    #CinematicHero-{{ section.id }} .ch-actions {
+      height: var(--section-height-desktop);
+      min-height: {{ section.settings.min_height_desktop }}px;
+      max-height: {{ section.settings.max_height_desktop }}px;
+      display: flex;
       flex-direction: column;
-      width: 100%;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    #CinematicHero-{{ section.id }} .ch-btn {
-      font-size: var(--btn-size-mobile);
-      width: 100%;
-      padding: 16px 20px;
+      overflow: hidden; 
+      background-color: {{ section.settings.bg_color_fallback }};
+      margin-top: calc(-1 * var(--header-height, 0px));
     }
 
-    /* Reviews Mobile */
-    #CinematicHero-{{ section.id }} .ch-reviews {
-      margin-top: 5px;
+    /* =============================================
+      BACKGROUND
+    ============================================= */
+    #CinematicHero-{{ section.id }} .ch-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-bg-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-bg-img.mobile { display: none; }
+
+    #CinematicHero-{{ section.id }} .ch-bg-img.parallax-enabled {
+      animation: ch-zoomInOut-{{ section.id }} {{ section.settings.parallax_speed }}s infinite alternate ease-in-out;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--overlay-color);
+      opacity: var(--overlay-opacity);
+      backdrop-filter: blur(var(--overlay-blur));
+      -webkit-backdrop-filter: blur(var(--overlay-blur));
+      z-index: 2;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-overlay-gradient {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(0,0,0,{{ section.settings.gradient_opacity_1 | divided_by: 100.0 }}) 0%, rgba(0,0,0,{{ section.settings.gradient_opacity_2 | divided_by: 100.0 }}) 60%, transparent 100%),
+        linear-gradient(to top, rgba(0,0,0,{{ section.settings.gradient_opacity_3 | divided_by: 100.0 }}) 0%, transparent 55%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* =============================================
+      INNER
+    ============================================= */
+    #CinematicHero-{{ section.id }} .ch-inner {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      padding-top: var(--header-height, 80px);
+    }
+
+    /* =============================================
+      MAIN ROW
+    ============================================= */
+    #CinematicHero-{{ section.id }} .ch-main-row {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: var(--container-max-width);
+      margin: 0 auto;
+      padding-top: var(--padding-top-desktop);
+      padding-bottom: var(--padding-bottom-desktop);
+      padding-left: var(--content-spacing-left-desktop);
+      padding-right: var(--content-spacing-left-desktop);
+      overflow: visible; 
+    }
+
+    /* =============================================
+      CONTENT BLOCK
+    ============================================= */
+    #CinematicHero-{{ section.id }} .ch-content {
+      max-width: {{ section.settings.content_max_width }}px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--section-gap);
+      {% if section.settings.text_alignment == 'center' %}
+        align-items: center;
+        text-align: center;
+        margin: 0 auto;
+      {% else %}
+        align-items: flex-start;
+        text-align: left;
+      {% endif %}
+    }
+
+    /* =============================================
+      SUBTITLE
+    ============================================= */
+    #CinematicHero-{{ section.id }} .ch-subtitle-wrap {
+      display: inline-flex;
+      align-items: center;
       gap: 10px;
-      flex-wrap: wrap; /* Prevent overlap */
-    }
-    #CinematicHero-{{ section.id }} .ch-avatar {
-      width: 38px;
-      height: 38px;
-    }
-    #CinematicHero-{{ section.id }} .ch-reviews-text {
-      font-size: 11px;
+      animation: ch-fadeUp-{{ section.id }} 0.8s ease forwards;
+      opacity: 0;
     }
 
-    /* ── BENTO BOX STATS GRID FOR MOBILE ── */
+    #CinematicHero-{{ section.id }} .ch-subtitle-line {
+      {% if section.settings.show_subtitle_line %}display: block;{% else %}display: none;{% endif %}
+      width: {{ section.settings.subtitle_line_width }}px;
+      height: {{ section.settings.subtitle_line_height }}px;
+      background: var(--color-subtitle);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-subtitle {
+      font-family: var(--font-family-subtitle);
+      font-size: var(--subtitle-size-desktop);
+      color: var(--color-subtitle);
+      font-weight: {{ section.settings.font_weight_subtitle }};
+      letter-spacing: {{ section.settings.letter_spacing_subtitle | divided_by: 10.0 }}px;
+      text-transform: {{ section.settings.text_transform_subtitle }};
+      margin: 0;
+      padding: 0;
+      line-height: {{ section.settings.line_height_subtitle }};
+    }
+
+    /* =============================================
+      TITLE
+    ============================================= */
+    #CinematicHero-{{ section.id }} .ch-title {
+      font-family: var(--font-family-title);
+      font-size: var(--title-size-desktop);
+      color: var(--color-title);
+      font-weight: {{ section.settings.font_weight_title }};
+      line-height: {{ section.settings.line_height_title }};
+      letter-spacing: {{ section.settings.letter_spacing_title | divided_by: 10.0 }}px;
+      margin: 0;
+      padding: 0;
+      text-shadow: 0 4px 24px rgba(0,0,0,0.4);
+      animation: ch-fadeUp-{{ section.id }} 0.8s ease 0.15s forwards;
+      opacity: 0;
+      word-wrap: break-word;
+      text-transform: {{ section.settings.text_transform_title }};
+    }
+
+    #CinematicHero-{{ section.id }} .ch-title span {
+      color: var(--color-highlight);
+      text-shadow: 0 0 40px rgba(248,197,58,0.35);
+    }
+
+    /* =============================================
+      PARAGRAPH
+    ============================================= */
+    #CinematicHero-{{ section.id }} .ch-text {
+      font-family: var(--font-family-text);
+      font-size: var(--text-size-desktop);
+      color: var(--color-text);
+      line-height: {{ section.settings.line_height_text }};
+      font-weight: {{ section.settings.font_weight_text }};
+      margin: 0;
+      padding: 0;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      max-width: {{ section.settings.paragraph_max_width }}%;
+      animation: ch-fadeUp-{{ section.id }} 0.8s ease 0.3s forwards;
+      opacity: 0;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-text p { margin: 0; }
+
+    /* =============================================
+      BUTTONS
+    ============================================= */
+    #CinematicHero-{{ section.id }} .ch-actions {
+      display: flex;
+      gap: var(--button-spacing);
+      margin-top: 10px;
+      animation: ch-fadeUp-{{ section.id }} 0.8s ease 0.45s forwards;
+      opacity: 0;
+      flex-wrap: wrap;
+      {% if section.settings.text_alignment == 'center' %}
+        justify-content: center;
+      {% endif %}
+    }
+
+    #CinematicHero-{{ section.id }} .ch-btn {
+      font-family: var(--font-family-btn);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: var(--btn-size-desktop);
+      font-weight: {{ section.settings.font_weight_btn }};
+      letter-spacing: {{ section.settings.letter_spacing_btn | divided_by: 10.0 }}px;
+      text-transform: {{ section.settings.text_transform_btn }};
+      padding: {{ section.settings.btn_padding_vertical }}px {{ section.settings.btn_padding_horizontal }}px;
+      border-radius: {{ section.settings.btn_border_radius }}px;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-btn-primary {
+      background: var(--color-btn-primary-bg);
+      color: var(--color-btn-primary-text);
+      border: 2px solid var(--color-btn-primary-bg);
+      box-shadow: 0 4px 20px rgba(248,197,58,0.3);
+    }
+
+    #CinematicHero-{{ section.id }} .ch-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(248,197,58,0.45);
+      filter: brightness(1.05);
+    }
+
+    #CinematicHero-{{ section.id }} .ch-btn-secondary {
+      background: {{ section.settings.color_btn_secondary_bg }};
+      color: var(--color-btn-secondary-text);
+      border: 2px solid var(--color-btn-secondary-border);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    #CinematicHero-{{ section.id }} .ch-btn-secondary:hover {
+      background: {{ section.settings.color_btn_secondary_bg_hover }};
+      border-color: {{ section.settings.color_btn_secondary_border_hover }};
+      transform: translateY(-3px);
+    }
+
+    #CinematicHero-{{ section.id }} .ch-btn svg {
+      width: {{ section.settings.btn_icon_size }}px;
+      height: {{ section.settings.btn_icon_size }}px;
+      flex-shrink: 0;
+    }
+
+    /* =============================================
+      TRUST / REVIEW BADGE
+    ============================================= */
+    #CinematicHero-{{ section.id }} .ch-reviews {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 5px; 
+      animation: ch-fadeUp-{{ section.id }} 0.8s ease 0.6s forwards;
+      opacity: 0;
+      {% if section.settings.text_alignment == 'center' %}
+        justify-content: center;
+        text-align: left; 
+      {% endif %}
+    }
+
+    #CinematicHero-{{ section.id }} .ch-reviews-avatars {
+      display: flex;
+      align-items: center;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-avatar {
+      width: {{ section.settings.avatar_size }}px;
+      height: {{ section.settings.avatar_size }}px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--overlay-color, #061014); 
+      margin-left: -14px;
+      position: relative;
+      background-color: #222; 
+    }
+
+    #CinematicHero-{{ section.id }} .ch-avatar:nth-child(1) { z-index: 4; margin-left: 0; }
+    #CinematicHero-{{ section.id }} .ch-avatar:nth-child(2) { z-index: 3; }
+    #CinematicHero-{{ section.id }} .ch-avatar:nth-child(3) { z-index: 2; }
+    #CinematicHero-{{ section.id }} .ch-avatar:nth-child(4) { z-index: 1; }
+
+    #CinematicHero-{{ section.id }} .ch-reviews-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-reviews-stars {
+      display: flex;
+      gap: 3px;
+      color: var(--color-highlight);
+    }
+
+    #CinematicHero-{{ section.id }} .ch-reviews-stars svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-reviews-text {
+      font-family: var(--font-family-text);
+      font-size: 13px;
+      color: var(--color-review-text);
+      margin: 0;
+      line-height: 1.2;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+
+    /* =============================================
+      VERTICAL PAGINATION (desktop only)
+    ============================================= */
+    #CinematicHero-{{ section.id }} .ch-pagination {
+      display: none;
+      flex-direction: column;
+      gap: 30px;
+      align-items: flex-end;
+      animation: ch-fadeRight-{{ section.id }} 1s ease 1s forwards;
+      opacity: 0;
+      flex-shrink: 0;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-page-num {
+      color: var(--color-pagination);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s;
+      cursor: pointer;
+      opacity: 0.5;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-page-num.active {
+      color: var(--color-pagination-active);
+      opacity: 1;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-page-num.active::after {
+      content: '';
+      position: absolute;
+      left: 100%;
+      margin-left: 15px;
+      width: 40px;
+      height: 2px;
+      background: var(--color-pagination-active);
+      border-radius: 2px;
+    }
+
+    /* =============================================
+      STATS BAR — desktop
+    ============================================= */
     #CinematicHero-{{ section.id }} .ch-stats-wrapper {
-      padding-left: var(--content-spacing-left-mobile);
-      padding-right: var(--content-spacing-left-mobile);
-      padding-bottom: var(--padding-bottom-mobile);
-      margin-top: auto; /* Pushes to bottom if there's extra space */
+      width: 100%;
+      z-index: 4;
+      padding-left: var(--content-spacing-left-desktop);
+      padding-right: var(--content-spacing-left-desktop);
+      padding-bottom: {{ section.settings.stats_bottom_spacing }}px;
+      animation: ch-fadeUp-{{ section.id }} 1s ease 0.8s forwards;
+      opacity: 0;
+      flex-shrink: 0;
     }
 
     #CinematicHero-{{ section.id }} .ch-stats {
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      padding: 0;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-    /* Remove Desktop Dividers */
-    #CinematicHero-{{ section.id }} .ch-stat-item::after { display: none; }
-
-    /* Bento Box Individual Cards */
-    #CinematicHero-{{ section.id }} .ch-stat-item {
-      background: {{ section.settings.color_stats_bg | color_modify: 'alpha', 0.7 }};
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 16px 14px;
-      
-      /* Stack icon and text vertically for better fit */
-      flex-direction: column; 
-      align-items: flex-start;
-      justify-content: flex-start;
-      gap: 10px;
-      width: 100%;
-    }
-
-    /* If odd number of stats (e.g. 5), make the last one span full width */
-    #CinematicHero-{{ section.id }} .ch-stat-item:last-child:nth-child(odd) {
-      grid-column: 1 / -1;
-      flex-direction: row; /* Put icon back inline for the wide block */
+      display: flex;
       align-items: center;
+      justify-content: space-between;
+      background: {{ section.settings.color_stats_bg | color_modify: 'alpha', 0.55 }};
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top: 1px solid rgba(255,255,255,0.18);
+      border-radius: {{ section.settings.stats_border_radius }}px;
+      padding: 22px 36px;
+      max-width: {{ section.settings.stats_container_max_width }}px;
+      margin: 0 auto;
+      box-shadow:
+        0 24px 48px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    #CinematicHero-{{ section.id }} .ch-stat-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-stat-item:hover {
+      transform: translateY(-4px);
+    }
+
+    #CinematicHero-{{ section.id }} .ch-stat-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -28px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 36px;
+      background: rgba(255,255,255,0.12);
     }
 
     #CinematicHero-{{ section.id }} .ch-stat-icon {
-      width: 30px;
-      height: 30px;
+      width: {{ section.settings.stat_icon_size }}px;
+      height: {{ section.settings.stat_icon_size }}px;
+      color: var(--color-highlight);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: {{ section.settings.color_highlight | color_modify: 'alpha', 0.12 }};
+      border-radius: 8px;
       padding: 6px;
+      flex-shrink: 0;
     }
 
-    #CinematicHero-{{ section.id }} .ch-stat-content { gap: 2px; }
+    #CinematicHero-{{ section.id }} .ch-stat-icon svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
 
-    #CinematicHero-{{ section.id }} .ch-stat-value { font-size: 16px; }
+    #CinematicHero-{{ section.id }} .ch-stat-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    #CinematicHero-{{ section.id }} .ch-stat-value {
+      color: {{ section.settings.color_stat_value }} !important;
+      font-size: {{ section.settings.stat_value_size }}px !important;
+      font-weight: {{ section.settings.stat_value_weight }} !important;
+      line-height: 1 !important;
+      letter-spacing: -0.5px !important;
+    }
 
     #CinematicHero-{{ section.id }} .ch-stat-label {
-      font-size: 11px;
-      max-width: 100%;
-      opacity: 0.8;
+      color: var(--color-stats-text) !important;
+      font-size: {{ section.settings.stat_label_size }}px !important;
+      font-weight: 400 !important;
+      opacity: 0.65 !important;
+      line-height: 1.3 !important;
+      max-width: 130px;
     }
-  }
 
-  /* =============================================
-     VERY SMALL — ≤ 480px
-  ============================================= */
-  @media screen and (max-width: 480px) {
-    #CinematicHero-{{ section.id }} .ch-stat-item { padding: 14px 12px; }
-    #CinematicHero-{{ section.id }} .ch-stat-value { font-size: 15px; }
-    #CinematicHero-{{ section.id }} .ch-stat-label { font-size: 10px; }
-  }
-</style>
+    /* =============================================
+      KEYFRAMES
+    ============================================= */
+    @keyframes ch-fadeUp-{{ section.id }} {
+      0%   { opacity: 0; transform: translateY(24px); }
+      100% { opacity: 1; transform: translateY(0);    }
+    }
 
-<div id="CinematicHero-{{ section.id }}">
-  <div class="ch-wrapper">
+    @keyframes ch-fadeRight-{{ section.id }} {
+      0%   { opacity: 0; transform: translateX(24px); }
+      100% { opacity: 1; transform: translateX(0);    }
+    }
 
-    <!-- ── Background ── -->
-    <div class="ch-bg">
-      {%- if section.settings.image_desktop != blank -%}
-        {{
-          section.settings.image_desktop
-          | image_url: width: 2500
-          | image_tag:
-            class: 'ch-bg-img desktop parallax-enabled',
-            loading: 'eager',
-            fetchpriority: 'high'
-        }}
-      {%- else -%}
-        {{ 'lifestyle-2' | placeholder_svg_tag: 'ch-bg-img desktop' }}
-      {%- endif -%}
+    @keyframes ch-zoomInOut-{{ section.id }} {
+      0%   { transform: scale(1);    }
+      100% { transform: scale(1.06); }
+    }
 
-      {%- if section.settings.image_mobile != blank -%}
-        {{
-          section.settings.image_mobile
-          | image_url: width: 1000
-          | image_tag:
-            class: 'ch-bg-img mobile parallax-enabled',
-            loading: 'eager',
-            fetchpriority: 'high'
-        }}
-      {%- elsif section.settings.image_desktop != blank -%}
-        {{
-          section.settings.image_desktop
-          | image_url: width: 1000
-          | image_tag:
-            class: 'ch-bg-img mobile parallax-enabled',
-            loading: 'eager',
-            fetchpriority: 'high'
-        }}
-      {%- else -%}
-        {{ 'lifestyle-2' | placeholder_svg_tag: 'ch-bg-img mobile' }}
-      {%- endif -%}
+    /* =============================================
+      TABLET 
+    ============================================= */
+    @media screen and (max-width: 1200px) {
+      #CinematicHero-{{ section.id }} .ch-stats { padding: 18px 24px; }
+      #CinematicHero-{{ section.id }} .ch-stat-value { font-size: 17px !important; }
+      #CinematicHero-{{ section.id }} .ch-stat-label { font-size: 10px !important; }
+      #CinematicHero-{{ section.id }} .ch-stat-item:not(:last-child)::after { right: -14px; }
+      #CinematicHero-{{ section.id }} .ch-stat-icon { width: 28px; height: 28px; }
+    }
 
-      <div class="ch-overlay"></div>
-      <div class="ch-overlay-gradient"></div>
-    </div>
+    /* =============================================
+      MOBILE ≤ 768px (HEAVILY OPTIMIZED)
+    ============================================= */
+    @media screen and (max-width: 768px) {
 
-    <!-- ── Inner ── -->
-    <div class="ch-inner">
+      /* Wrapper height - Allow it to grow natively */
+      #CinematicHero-{{ section.id }} .ch-wrapper {
+        height: auto;
+        min-height: var(--section-height-mobile);
+        max-height: none; 
+      }
 
-      <!-- Main row: content + pagination -->
-      <div class="ch-main-row">
-        <div class="ch-content">
+      /* Switch images */
+      #CinematicHero-{{ section.id }} .ch-bg-img.desktop { display: none; }
+      #CinematicHero-{{ section.id }} .ch-bg-img.mobile  { display: block; }
 
-          {%- if section.settings.subtitle != blank -%}
-            <div class="ch-subtitle-wrap">
-              <span class="ch-subtitle-line"></span>
-              <p class="ch-subtitle">{{ section.settings.subtitle }}</p>
-            </div>
-          {%- endif -%}
+      /* Inner padding */
+      #CinematicHero-{{ section.id }} .ch-inner {
+        padding-top: var(--header-height, 60px);
+        gap: 30px; /* Space between text block and stats block */
+      }
 
-          {%- if section.settings.title != blank -%}
-            <h1 class="ch-title">{{ section.settings.title }}</h1>
-          {%- endif -%}
+      /* Main Row */
+      #CinematicHero-{{ section.id }} .ch-main-row {
+        flex: 0 0 auto;
+        padding-top: var(--padding-top-mobile);
+        padding-bottom: 0; 
+        padding-left: var(--content-spacing-left-mobile);
+        padding-right: var(--content-spacing-left-mobile);
+      }
 
-          {%- if section.settings.text != blank -%}
-            <div class="ch-text">{{ section.settings.text }}</div>
-          {%- endif -%}
+      /* Content block */
+      #CinematicHero-{{ section.id }} .ch-content {
+        max-width: 100%;
+        width: 100%;
+        gap: 16px;
+      }
 
-          <div class="ch-actions">
-            {%- if section.settings.btn_1_text != blank -%}
-              <a href="{{ section.settings.btn_1_link }}" class="ch-btn ch-btn-primary" aria-label="{{ section.settings.btn_1_text }}">
-                {{ section.settings.btn_1_text }}
-                {%- if section.settings.show_btn_1_icon -%}
-                  {{ section.settings.btn_1_icon_svg | default: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>' }}
-                {%- endif -%}
-              </a>
-            {%- endif -%}
+      #CinematicHero-{{ section.id }} .ch-pagination { display: none; }
 
-            {%- if section.settings.btn_2_text != blank -%}
-              <a href="{{ section.settings.btn_2_link }}" class="ch-btn ch-btn-secondary" aria-label="{{ section.settings.btn_2_text }}">
-                {%- if section.settings.show_btn_2_icon -%}
-                  {{ section.settings.btn_2_icon_svg | default: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.15)"/><path d="M10 8l6 4-6 4V8z"/></svg>' }}
-                {%- endif -%}
-                {{ section.settings.btn_2_text }}
-              </a>
-            {%- endif -%}
-          </div>
+      /* Typography */
+      #CinematicHero-{{ section.id }} .ch-title {
+        font-size: var(--title-size-mobile);
+        letter-spacing: 0px;
+      }
+      #CinematicHero-{{ section.id }} .ch-subtitle {
+        font-size: var(--subtitle-size-mobile);
+      }
+      #CinematicHero-{{ section.id }} .ch-text {
+        font-size: var(--text-size-mobile);
+        max-width: 100%;
+      }
 
-          <!-- Reviews Widget -->
-          {%- if section.settings.show_reviews -%}
-            <div class="ch-reviews">
-              <div class="ch-reviews-avatars">
-                {%- for i in (1..4) -%}
-                  {%- assign avatar_key = 'avatar_' | append: i -%}
-                  {%- if section.settings[avatar_key] != blank -%}
-                    {{ section.settings[avatar_key] | image_url: width: 100 | image_tag: class: 'ch-avatar', loading: 'lazy' }}
-                  {%- endif -%}
-                {%- endfor -%}
-              </div>
-              <div class="ch-reviews-info">
-                <div class="ch-reviews-stars">
-                  {%- for i in (1..5) -%}
-                    <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
-                  {%- endfor -%}
-                </div>
-                {%- if section.settings.review_text != blank -%}
-                  <p class="ch-reviews-text">{{ section.settings.review_text }}</p>
-                {%- endif -%}
-              </div>
-            </div>
-          {%- endif -%}
+      /* Buttons */
+      #CinematicHero-{{ section.id }} .ch-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+        margin-top: 10px;
+      }
+      #CinematicHero-{{ section.id }} .ch-btn {
+        font-size: var(--btn-size-mobile);
+        width: 100%;
+        padding: 16px 20px;
+      }
 
-        </div>
+      /* Reviews Mobile */
+      #CinematicHero-{{ section.id }} .ch-reviews {
+        margin-top: 5px;
+        gap: 10px;
+        flex-wrap: wrap; /* Prevent overlap */
+      }
+      #CinematicHero-{{ section.id }} .ch-avatar {
+        width: 38px;
+        height: 38px;
+      }
+      #CinematicHero-{{ section.id }} .ch-reviews-text {
+        font-size: 11px;
+      }
 
-        <!-- Vertical Pagination (desktop only) -->
-        {%- if section.settings.show_pagination -%}
-          <div class="ch-pagination">
-            {%- for i in (1..5) -%}
-              <div class="ch-page-num {% if forloop.first %}active{% endif %}">0{{ i }}</div>
-            {%- endfor -%}
-          </div>
+      /* ── BENTO BOX STATS GRID FOR MOBILE ── */
+      #CinematicHero-{{ section.id }} .ch-stats-wrapper {
+        padding-left: var(--content-spacing-left-mobile);
+        padding-right: var(--content-spacing-left-mobile);
+        padding-bottom: var(--padding-bottom-mobile);
+        margin-top: auto; /* Pushes to bottom if there's extra space */
+      }
+
+      #CinematicHero-{{ section.id }} .ch-stats {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      /* Remove Desktop Dividers */
+      #CinematicHero-{{ section.id }} .ch-stat-item::after { display: none; }
+
+      /* Bento Box Individual Cards */
+      #CinematicHero-{{ section.id }} .ch-stat-item {
+        background: {{ section.settings.color_stats_bg | color_modify: 'alpha', 0.7 }};
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 16px 14px;
+        
+        /* Stack icon and text vertically for better fit */
+        flex-direction: column; 
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 10px;
+        width: 100%;
+      }
+
+      /* If odd number of stats (e.g. 5), make the last one span full width */
+      #CinematicHero-{{ section.id }} .ch-stat-item:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        flex-direction: row; /* Put icon back inline for the wide block */
+        align-items: center;
+      }
+
+      #CinematicHero-{{ section.id }} .ch-stat-icon {
+        width: 30px;
+        height: 30px;
+        padding: 6px;
+      }
+
+      #CinematicHero-{{ section.id }} .ch-stat-content { gap: 2px; }
+
+      #CinematicHero-{{ section.id }} .ch-stat-value { font-size: 16px; }
+
+      #CinematicHero-{{ section.id }} .ch-stat-label {
+        font-size: 11px;
+        max-width: 100%;
+        opacity: 0.8;
+      }
+    }
+
+    /* =============================================
+      VERY SMALL — ≤ 480px
+    ============================================= */
+    @media screen and (max-width: 480px) {
+      #CinematicHero-{{ section.id }} .ch-stat-item { padding: 14px 12px; }
+      #CinematicHero-{{ section.id }} .ch-stat-value { font-size: 15px; }
+      #CinematicHero-{{ section.id }} .ch-stat-label { font-size: 10px; }
+    }
+  </style>
+
+  <div id="CinematicHero-{{ section.id }}">
+    <div class="ch-wrapper">
+
+      <!-- ── Background ── -->
+      <div class="ch-bg">
+        {%- if section.settings.image_desktop != blank -%}
+          {{
+            section.settings.image_desktop
+            | image_url: width: 2500
+            | image_tag:
+              class: 'ch-bg-img desktop parallax-enabled',
+              loading: 'eager',
+              fetchpriority: 'high'
+          }}
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'ch-bg-img desktop' }}
         {%- endif -%}
+
+        {%- if section.settings.image_mobile != blank -%}
+          {{
+            section.settings.image_mobile
+            | image_url: width: 1000
+            | image_tag:
+              class: 'ch-bg-img mobile parallax-enabled',
+              loading: 'eager',
+              fetchpriority: 'high'
+          }}
+        {%- elsif section.settings.image_desktop != blank -%}
+          {{
+            section.settings.image_desktop
+            | image_url: width: 1000
+            | image_tag:
+              class: 'ch-bg-img mobile parallax-enabled',
+              loading: 'eager',
+              fetchpriority: 'high'
+          }}
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'ch-bg-img mobile' }}
+        {%- endif -%}
+
+        <div class="ch-overlay"></div>
+        <div class="ch-overlay-gradient"></div>
       </div>
 
-      <!-- Stats Bar -->
-      {%- if section.blocks.size > 0 -%}
-        <div class="ch-stats-wrapper">
-          <div class="ch-stats">
-            {%- for block in section.blocks -%}
-              <div class="ch-stat-item" {{ block.shopify_attributes }}>
-                <div class="ch-stat-icon">
-                  {%- if block.settings.custom_svg != blank -%}
-                    {{ block.settings.custom_svg }}
-                  {%- else -%}
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                    </svg>
+      <!-- ── Inner ── -->
+      <div class="ch-inner">
+
+        <!-- Main row: content + pagination -->
+        <div class="ch-main-row">
+          <div class="ch-content">
+
+            {%- if section.settings.subtitle != blank -%}
+              <div class="ch-subtitle-wrap">
+                <span class="ch-subtitle-line"></span>
+                <p class="ch-subtitle">{{ section.settings.subtitle }}</p>
+              </div>
+            {%- endif -%}
+
+            {%- if section.settings.title != blank -%}
+              <h1 class="ch-title">{{ section.settings.title }}</h1>
+            {%- endif -%}
+
+            {%- if section.settings.text != blank -%}
+              <div class="ch-text">{{ section.settings.text }}</div>
+            {%- endif -%}
+
+            <div class="ch-actions">
+              {%- if section.settings.btn_1_text != blank -%}
+                <a href="{{ section.settings.btn_1_link }}" class="ch-btn ch-btn-primary" aria-label="{{ section.settings.btn_1_text }}">
+                  {{ section.settings.btn_1_text }}
+                  {%- if section.settings.show_btn_1_icon -%}
+                    {{ section.settings.btn_1_icon_svg | default: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>' }}
+                  {%- endif -%}
+                </a>
+              {%- endif -%}
+
+              {%- if section.settings.btn_2_text != blank -%}
+                <a href="{{ section.settings.btn_2_link }}" class="ch-btn ch-btn-secondary" aria-label="{{ section.settings.btn_2_text }}">
+                  {%- if section.settings.show_btn_2_icon -%}
+                    {{ section.settings.btn_2_icon_svg | default: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.15)"/><path d="M10 8l6 4-6 4V8z"/></svg>' }}
+                  {%- endif -%}
+                  {{ section.settings.btn_2_text }}
+                </a>
+              {%- endif -%}
+            </div>
+
+            <!-- Reviews Widget -->
+            {%- if section.settings.show_reviews -%}
+              <div class="ch-reviews">
+                <div class="ch-reviews-avatars">
+                  {%- for i in (1..4) -%}
+                    {%- assign avatar_key = 'avatar_' | append: i -%}
+                    {%- if section.settings[avatar_key] != blank -%}
+                      {{ section.settings[avatar_key] | image_url: width: 100 | image_tag: class: 'ch-avatar', loading: 'lazy' }}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+                <div class="ch-reviews-info">
+                  <div class="ch-reviews-stars">
+                    {%- for i in (1..5) -%}
+                      <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
+                    {%- endfor -%}
+                  </div>
+                  {%- if section.settings.review_text != blank -%}
+                    <p class="ch-reviews-text">{{ section.settings.review_text }}</p>
                   {%- endif -%}
                 </div>
-                <div class="ch-stat-content">
-                  <span class="ch-stat-value">{{ block.settings.value }}</span>
-                  <span class="ch-stat-label">{{ block.settings.label }}</span>
-                </div>
               </div>
-            {%- endfor -%}
+            {%- endif -%}
+
           </div>
+
+          <!-- Vertical Pagination (desktop only) -->
+          {%- if section.settings.show_pagination -%}
+            <div class="ch-pagination">
+              {%- for i in (1..5) -%}
+                <div class="ch-page-num {% if forloop.first %}active{% endif %}">0{{ i }}</div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
         </div>
-      {%- endif -%}
 
-    </div><!-- /.ch-inner -->
+        <!-- Stats Bar -->
+        {%- if section.blocks.size > 0 -%}
+          <div class="ch-stats-wrapper">
+            <div class="ch-stats">
+              {%- for block in section.blocks -%}
+                <div class="ch-stat-item" {{ block.shopify_attributes }}>
+                  <div class="ch-stat-icon">
+                    {%- if block.settings.custom_svg != blank -%}
+                      {{ block.settings.custom_svg }}
+                    {%- else -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                      </svg>
+                    {%- endif -%}
+                  </div>
+                  <div class="ch-stat-content">
+                    <span class="ch-stat-value">{{ block.settings.value }}</span>
+                    <span class="ch-stat-label">{{ block.settings.label }}</span>
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
 
-  </div><!-- /.ch-wrapper -->
-</div>
+      </div><!-- /.ch-inner -->
 
-{% schema %}
-{
-  "name": "Cinematic Hero Pro",
-  "tag": "section",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Layout Settings"
-    },
-    {
-      "type": "range", "id": "container_max_width",
-      "min": 1000, "max": 2000, "step": 50, "unit": "px",
-      "label": "Container Max Width", "default": 1700
-    },
-    {
-      "type": "range", "id": "desktop_height",
-      "min": 50, "max": 100, "step": 5, "unit": "vh",
-      "label": "Desktop Height (vh)", "default": 85
-    },
-    {
-      "type": "range", "id": "min_height_desktop",
-      "min": 400, "max": 1000, "step": 50, "unit": "px",
-      "label": "Min Height (Desktop)", "default": 700
-    },
-    {
-      "type": "range", "id": "max_height_desktop",
-      "min": 600, "max": 1500, "step": 50, "unit": "px",
-      "label": "Max Height (Desktop)", "default": 1000
-    },
-    {
-      "type": "range", "id": "mobile_height",
-      "min": 50, "max": 100, "step": 5, "unit": "vh",
-      "label": "Minimum Mobile Height (vh)", "default": 100
-    },
-    {
-      "type": "header",
-      "content": "Images & Background"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_desktop",
-      "label": "Desktop Background Image"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_mobile",
-      "label": "Mobile Background Image"
-    },
-    {
-      "type": "color", "id": "bg_color_fallback", "label": "Fallback BG Color", "default": "#000000"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_parallax",
-      "label": "Enable subtle zoom animation",
-      "default": true
-    },
-    {
-      "type": "range", "id": "parallax_speed",
-      "min": 5, "max": 60, "step": 5, "unit": "s",
-      "label": "Animation Duration", "default": 20
-    },
-    {
-      "type": "color",
-      "id": "overlay_color",
-      "label": "Overlay Color",
-      "default": "#061014"
-    },
-    {
-      "type": "range",
-      "id": "overlay_opacity",
-      "min": 0, "max": 100, "step": 5, "unit": "%",
-      "label": "Overlay Opacity",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "overlay_blur",
-      "min": 0, "max": 20, "step": 1, "unit": "px",
-      "label": "Overlay Blur",
-      "default": 2
-    },
-    {
-      "type": "header",
-      "content": "Gradient Overlays"
-    },
-    {
-      "type": "range", "id": "gradient_opacity_1", "min": 0, "max": 1, "step": 0.05, "label": "Left Gradient Opacity", "default": 0.65
-    },
-    {
-      "type": "range", "id": "gradient_opacity_2", "min": 0, "max": 1, "step": 0.05, "label": "Center Gradient Opacity", "default": 0.1
-    },
-    {
-      "type": "range", "id": "gradient_opacity_3", "min": 0, "max": 1, "step": 0.05, "label": "Bottom Gradient Opacity", "default": 0.75
-    },
-    {
-      "type": "header",
-      "content": "Typography: Fonts"
-    },
-    { "type": "font_picker", "id": "font_title",    "label": "Heading Font",    "default": "helvetica_n4" },
-    { "type": "font_picker", "id": "font_subtitle", "label": "Subtitle Font",   "default": "helvetica_n4" },
-    { "type": "font_picker", "id": "font_text",     "label": "Paragraph Font", "default": "helvetica_n4" },
-    { "type": "font_picker", "id": "font_btn",      "label": "Button Font",    "default": "helvetica_n4" },
-    {
-      "type": "header",
-      "content": "Typography: Heading"
-    },
-    {
-      "type": "textarea",
-      "id": "title",
-      "label": "Heading Text",
-      "default": "WORK OFFSHORE.<br>EARN MORE.<br>LIVE <span>MORE.</span>"
-    },
-    { "type": "range", "id": "title_size_desktop", "min": 40, "max": 120, "step": 2, "unit": "px", "label": "Desktop Size", "default": 100 },
-    { "type": "range", "id": "title_size_mobile",  "min": 30, "max": 80,  "step": 2, "unit": "px", "label": "Mobile Size",  "default": 46  },
-    { "type": "select", "id": "font_weight_title", "label": "Weight", "options": [{"value":"400","label":"Normal"},{"value":"700","label":"Bold"},{"value":"900","label":"Black"}], "default": "900" },
-    { "type": "text",   "id": "line_height_title", "label": "Line Height", "default": "1.05" },
-    { "type": "range",  "id": "letter_spacing_title", "min": 0, "max": 10, "step": 0.5, "unit": "px", "label": "Letter Spacing", "default": 1 },
-    { "type": "select", "id": "text_transform_title", "label": "Text Transform", "options": [{"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"},{"value":"capitalize","label":"Capitalize"}], "default": "none" },
-    {
-      "type": "header",
-      "content": "Typography: Subtitle"
-    },
-    { "type": "text", "id": "subtitle", "label": "Subtitle Text", "default": "DREAM BIG. WORK OFFSHORE. LIVE FREELY." },
-    { "type": "range", "id": "subtitle_size_desktop", "min": 10, "max": 30, "step": 1, "unit": "px", "label": "Desktop Size", "default": 14 },
-    { "type": "range", "id": "subtitle_size_mobile",  "min": 10, "max": 24, "step": 1, "unit": "px", "label": "Mobile Size",  "default": 11 },
-    { "type": "select", "id": "font_weight_subtitle", "label": "Weight", "options": [{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"}], "default": "600" },
-    { "type": "text",   "id": "line_height_subtitle", "label": "Line Height", "default": "1.4" },
-    { "type": "range",  "id": "letter_spacing_subtitle", "min": 0, "max": 10, "step": 0.5, "unit": "px", "label": "Letter Spacing", "default": 2 },
-    { "type": "select", "id": "text_transform_subtitle", "label": "Text Transform", "options": [{"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"}], "default": "uppercase" },
-    { "type": "checkbox", "id": "show_subtitle_line", "label": "Show Decorative Line", "default": false },
-    { "type": "range", "id": "subtitle_line_width", "min": 10, "max": 100, "step": 2, "unit": "px", "label": "Line Width", "default": 32 },
-    { "type": "range", "id": "subtitle_line_height", "min": 1, "max": 10, "step": 1, "unit": "px", "label": "Line Height", "default": 2 },
-    {
-      "type": "header",
-      "content": "Typography: Paragraph"
-    },
-    { "type": "textarea", "id": "text", "label": "Paragraph Text", "default": "<p>High-paying offshore jobs. Long rotations.<br>More free time. Travel the world.<br>Build the life you've always wanted.</p>" },
-    { "type": "range", "id": "text_size_desktop", "min": 14, "max": 36, "step": 1, "unit": "px", "label": "Desktop Size", "default": 20 },
-    { "type": "range", "id": "text_size_mobile",  "min": 14, "max": 24, "step": 1, "unit": "px", "label": "Mobile Size",  "default": 15 },
-    { "type": "select", "id": "font_weight_text", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"}], "default": "400" },
-    { "type": "text",   "id": "line_height_text", "label": "Line Height", "default": "1.6" },
-    { "type": "range", "id": "paragraph_max_width", "min": 50, "max": 100, "step": 5, "unit": "%", "label": "Paragraph Max Width", "default": 90 },
-    {
-      "type": "header",
-      "content": "Buttons: General"
-    },
-    { "type": "select", "id": "text_alignment", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"}], "default": "left" },
-    { "type": "range", "id": "button_gap", "min": 10, "max": 40, "step": 2, "unit": "px", "label": "Gap Between Buttons", "default": 20 },
-    { "type": "range", "id": "btn_size_desktop", "min": 12, "max": 24, "step": 1, "unit": "px", "label": "Desktop Text Size", "default": 14 },
-    { "type": "range", "id": "btn_size_mobile",  "min": 12, "max": 24, "step": 1, "unit": "px", "label": "Mobile Text Size",  "default": 13 },
-    { "type": "select", "id": "font_weight_btn", "label": "Weight", "options": [{"value":"400","label":"Normal"},{"value":"700","label":"Bold"}], "default": "700" },
-    { "type": "range",  "id": "letter_spacing_btn", "min": 0, "max": 10, "step": 0.5, "unit": "px", "label": "Letter Spacing", "default": 1 },
-    { "type": "select", "id": "text_transform_btn", "label": "Text Transform", "options": [{"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"}], "default": "uppercase" },
-    { "type": "range", "id": "btn_padding_vertical",   "min": 8, "max": 30, "step": 2, "unit": "px", "label": "Vertical Padding", "default": 16 },
-    { "type": "range", "id": "btn_padding_horizontal", "min": 10, "max": 60, "step": 2, "unit": "px", "label": "Horizontal Padding", "default": 34 },
-    { "type": "range", "id": "btn_border_radius",      "min": 0, "max": 50, "step": 2, "unit": "px", "label": "Border Radius", "default": 4 },
-    { "type": "range", "id": "btn_icon_size",          "min": 10, "max": 30, "step": 1, "unit": "px", "label": "Icon Size", "default": 17 },
-    {
-      "type": "header",
-      "content": "Primary Button"
-    },
-    { "type": "text", "id": "btn_1_text", "label": "Text", "default": "EXPLORE JOBS" },
-    { "type": "url",  "id": "btn_1_link", "label": "Link" },
-    { "type": "checkbox", "id": "show_btn_1_icon", "label": "Show Icon", "default": true },
-    { "type": "textarea", "id": "btn_1_icon_svg", "label": "Custom Icon SVG" },
-    {
-      "type": "header",
-      "content": "Secondary Button"
-    },
-    { "type": "text", "id": "btn_2_text", "label": "Text", "default": "WATCH VIDEO" },
-    { "type": "url",  "id": "btn_2_link", "label": "Link" },
-    { "type": "checkbox", "id": "show_btn_2_icon", "label": "Show Icon", "default": true },
-    { "type": "textarea", "id": "btn_2_icon_svg", "label": "Custom Icon SVG" },
-    { "type": "color", "id": "color_btn_secondary_bg", "label": "Background Color", "default": "rgba(255,255,255,0.08)" },
-    { "type": "color", "id": "color_btn_secondary_bg_hover", "label": "Hover BG Color", "default": "rgba(255,255,255,0.18)" },
-    { "type": "color", "id": "color_btn_secondary_border_hover", "label": "Hover Border Color", "default": "#ffffff" },
-    {
-      "type": "header",
-      "content": "Trust Badge / Reviews"
-    },
-    { "type": "checkbox", "id": "show_reviews", "label": "Show Widget", "default": true },
-    { "type": "range", "id": "avatar_size", "min": 20, "max": 80, "step": 2, "unit": "px", "label": "Avatar Size", "default": 44 },
-    { "type": "image_picker", "id": "avatar_1", "label": "Reviewer Avatar 1" },
-    { "type": "image_picker", "id": "avatar_2", "label": "Reviewer Avatar 2" },
-    { "type": "image_picker", "id": "avatar_3", "label": "Reviewer Avatar 3" },
-    { "type": "image_picker", "id": "avatar_4", "label": "Reviewer Avatar 4" },
-    { "type": "text", "id": "review_text", "label": "Review Text", "default": "Trusted by 1,000+ people who started their offshore career" },
-    {
-      "type": "header",
-      "content": "Pagination & Stats"
-    },
-    { "type": "checkbox", "id": "show_pagination", "label": "Show Vertical Pagination", "default": true },
-    { "type": "range", "id": "stats_container_max_width", "min": 800, "max": 1800, "step": 50, "unit": "px", "label": "Stats Max Width", "default": 1550 },
-    { "type": "range", "id": "stat_icon_size", "min": 20, "max": 60, "step": 2, "unit": "px", "label": "Stat Icon Size", "default": 34 },
-    { "type": "range", "id": "stat_value_size", "min": 14, "max": 30, "step": 1, "unit": "px", "label": "Stat Value Size", "default": 20 },
-    { "type": "select", "id": "stat_value_weight", "label": "Stat Value Weight", "options": [{"value":"400","label":"Normal"},{"value":"700","label":"Bold"}], "default": "700" },
-    { "type": "range", "id": "stat_label_size", "min": 8, "max": 16, "step": 1, "unit": "px", "label": "Stat Label Size", "default": 11 },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    { "type": "color", "id": "color_title",                "label": "Heading Color",          "default": "#ffffff" },
-    { "type": "color", "id": "color_highlight",            "label": "Highlight Color",         "default": "#F8C53A" },
-    { "type": "color", "id": "color_subtitle",             "label": "Subtitle Color",          "default": "#F8C53A" },
-    { "type": "color", "id": "color_text",                 "label": "Paragraph Color",         "default": "#ffffff" },
-    { "type": "color", "id": "color_btn_primary_bg",       "label": "Primary Button BG",       "default": "#F8C53A" },
-    { "type": "color", "id": "color_btn_primary_text",     "label": "Primary Button Text",     "default": "#000000" },
-    { "type": "color", "id": "color_btn_secondary_border", "label": "Secondary Button Border", "default": "#ffffff" },
-    { "type": "color", "id": "color_btn_secondary_text",   "label": "Secondary Button Text",   "default": "#ffffff" },
-    { "type": "color", "id": "color_stats_bg",             "label": "Stats Card BG",           "default": "#0F1419" },
-    { "type": "color", "id": "color_stats_text",           "label": "Stats Label Color",       "default": "#ffffff" },
-    { "type": "color", "id": "color_stat_value",           "label": "Stat Value Color",       "default": "#ffffff" },
-    { "type": "color", "id": "color_pagination",           "label": "Pagination Color",        "default": "#ffffff" },
-    { "type": "color", "id": "color_review_text",           "label": "Review Text Color",       "default": "#ffffff" },
-    {
-      "type": "header",
-      "content": "Spacing"
-    },
-    { "type": "range", "id": "content_left_desktop", "min": 0, "max": 150, "step": 5, "unit": "px", "label": "Desktop Side Spacing", "default": 80 },
-    { "type": "range", "id": "content_left_mobile",  "min": 10, "max": 50, "step": 5, "unit": "px", "label": "Mobile Side Spacing",  "default": 20 },
-    { "type": "range", "id": "section_gap", "min": 10, "max": 60, "step": 5, "unit": "px", "label": "Gap Between Elements", "default": 20 },
-    { "type": "range", "id": "stats_bottom_spacing", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Stats Bottom Padding", "default": 32 },
-    { "type": "range", "id": "stats_border_radius",  "min": 0, "max": 30, "step": 2, "unit": "px", "label": "Stats Border Radius",  "default": 16 },
-    { "type": "range", "id": "padding_top_desktop",    "min": 0, "max": 120, "step": 10, "unit": "px", "label": "Desktop Padding Top", "default": 0 },
-    { "type": "range", "id": "padding_bottom_desktop", "min": 0, "max": 120, "step": 10, "unit": "px", "label": "Desktop Padding Bottom", "default": 20 },
-    { "type": "range", "id": "padding_top_mobile",      "min": 0, "max": 100, "step": 10, "unit": "px", "label": "Mobile Padding Top",  "default": 0 },
-    { "type": "range", "id": "padding_bottom_mobile",   "min": 0, "max": 100, "step": 10, "unit": "px", "label": "Mobile Padding Bottom", "default": 30 }
-  ],
-  "blocks": [
-    {
-      "type": "stat",
-      "name": "Stat Card",
-      "limit": 5,
-      "settings": [
-        { "type": "textarea", "id": "custom_svg", "label": "Custom SVG Icon" },
-        { "type": "text", "id": "value", "label": "Number / Value", "default": "€95,000+" },
-        { "type": "text", "id": "label", "label": "Label Text", "default": "Average Offshore Salary" }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Cinematic Hero Pro",
-      "blocks": [
-        { "type": "stat", "settings": { "value": "€95,000+", "label": "Average Offshore Salary" } },
-        { "type": "stat", "settings": { "value": "2/4", "label": "Work Rotation (2 Weeks On, 4 Off)" } },
-        { "type": "stat", "settings": { "value": "12,500+", "label": "Offshore Jobs Available" } },
-        { "type": "stat", "settings": { "value": "4.9/5", "label": "From 2,000+ Success Stories" } },
-        { "type": "stat", "settings": { "value": "90+", "label": "Countries Hiring" } }
-      ]
-    }
-  ]
-}
-{% endschema %}
+    </div><!-- /.ch-wrapper -->
+  </div>
+
+  {% schema %}
+  {
+    "name": "Cinematic Hero Pro",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Layout Settings"
+      },
+      {
+        "type": "range", "id": "container_max_width",
+        "min": 1000, "max": 2000, "step": 50, "unit": "px",
+        "label": "Container Max Width", "default": 1700
+      },
+      {
+        "type": "range", "id": "desktop_height",
+        "min": 50, "max": 100, "step": 5, "unit": "vh",
+        "label": "Desktop Height (vh)", "default": 85
+      },
+      {
+        "type": "range", "id": "min_height_desktop",
+        "min": 400, "max": 1000, "step": 50, "unit": "px",
+        "label": "Min Height (Desktop)", "default": 700
+      },
+      {
+        "type": "range", "id": "max_height_desktop",
+        "min": 600, "max": 1500, "step": 50, "unit": "px",
+        "label": "Max Height (Desktop)", "default": 1000
+      },
+      {
+        "type": "range", "id": "mobile_height",
+        "min": 50, "max": 100, "step": 5, "unit": "vh",
+        "label": "Minimum Mobile Height (vh)", "default": 100
+      },
+      {
+        "type": "header",
+        "content": "Images & Background"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop",
+        "label": "Desktop Background Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "Mobile Background Image"
+      },
+      {
+        "type": "color", "id": "bg_color_fallback", "label": "Fallback BG Color", "default": "#000000"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_parallax",
+        "label": "Enable subtle zoom animation",
+        "default": true
+      },
+      {
+        "type": "range", "id": "parallax_speed",
+        "min": 5, "max": 60, "step": 5, "unit": "s",
+        "label": "Animation Duration", "default": 20
+      },
+      {
+        "type": "color",
+        "id": "overlay_color",
+        "label": "Overlay Color",
+        "default": "#061014"
+      },
+      {
+        "type": "range",
+        "id": "overlay_opacity",
+        "min": 0, "max": 100, "step": 5, "unit": "%",
+        "label": "Overlay Opacity",
+        "default": 40
+      },
+      {
+        "type": "range",
+        "id": "overlay_blur",
+        "min": 0, "max": 20, "step": 1, "unit": "px",
+        "label": "Overlay Blur",
+        "default": 2
+      },
+      {
+        "type": "header",
+        "content": "Gradient Overlays"
+      },
+      {
+        "type": "range", "id": "gradient_opacity_1", "min": 0, "max": 100, "step": 10, "unit": "%", "label": "Left Gradient Opacity", "default": 60
+      },
+      {
+        "type": "range", "id": "gradient_opacity_2", "min": 0, "max": 100, "step": 10, "unit": "%", "label": "Center Gradient Opacity", "default": 10
+      },
+      {
+        "type": "range", "id": "gradient_opacity_3", "min": 0, "max": 100, "step": 10, "unit": "%", "label": "Bottom Gradient Opacity", "default": 70
+      },
+      {
+        "type": "header",
+        "content": "Typography: Fonts"
+      },
+      { "type": "font_picker", "id": "font_title",    "label": "Heading Font",    "default": "helvetica_n4" },
+      { "type": "font_picker", "id": "font_subtitle", "label": "Subtitle Font",   "default": "helvetica_n4" },
+      { "type": "font_picker", "id": "font_text",     "label": "Paragraph Font", "default": "helvetica_n4" },
+      { "type": "font_picker", "id": "font_btn",      "label": "Button Font",    "default": "helvetica_n4" },
+      {
+        "type": "header",
+        "content": "Typography: Heading"
+      },
+      {
+        "type": "textarea",
+        "id": "title",
+        "label": "Heading Text",
+        "default": "WORK OFFSHORE.<br>EARN MORE.<br>LIVE <span>MORE.</span>"
+      },
+      { "type": "range", "id": "title_size_desktop", "min": 40, "max": 120, "step": 2, "unit": "px", "label": "Desktop Size", "default": 100 },
+      { "type": "range", "id": "title_size_mobile",  "min": 30, "max": 80,  "step": 2, "unit": "px", "label": "Mobile Size",  "default": 46  },
+      { "type": "select", "id": "font_weight_title", "label": "Weight", "options": [{"value":"400","label":"Normal"},{"value":"700","label":"Bold"},{"value":"900","label":"Black"}], "default": "900" },
+      { "type": "text",   "id": "line_height_title", "label": "Line Height", "default": "1.05" },
+      { "type": "range",  "id": "letter_spacing_title", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Letter Spacing", "default": 10 },
+      { "type": "select", "id": "text_transform_title", "label": "Text Transform", "options": [{"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"},{"value":"capitalize","label":"Capitalize"}], "default": "none" },
+      {
+        "type": "header",
+        "content": "Typography: Subtitle"
+      },
+      { "type": "text", "id": "subtitle", "label": "Subtitle Text", "default": "DREAM BIG. WORK OFFSHORE. LIVE FREELY." },
+      { "type": "range", "id": "subtitle_size_desktop", "min": 10, "max": 30, "step": 1, "unit": "px", "label": "Desktop Size", "default": 14 },
+      { "type": "range", "id": "subtitle_size_mobile",  "min": 10, "max": 24, "step": 1, "unit": "px", "label": "Mobile Size",  "default": 11 },
+      { "type": "select", "id": "font_weight_subtitle", "label": "Weight", "options": [{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"}], "default": "600" },
+      { "type": "text",   "id": "line_height_subtitle", "label": "Line Height", "default": "1.4" },
+      { "type": "range",  "id": "letter_spacing_subtitle", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Letter Spacing", "default": 20 },
+      { "type": "select", "id": "text_transform_subtitle", "label": "Text Transform", "options": [{"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"}], "default": "uppercase" },
+      { "type": "checkbox", "id": "show_subtitle_line", "label": "Show Decorative Line", "default": false },
+      { "type": "range", "id": "subtitle_line_width", "min": 10, "max": 100, "step": 2, "unit": "px", "label": "Line Width", "default": 32 },
+      { "type": "range", "id": "subtitle_line_height", "min": 1, "max": 10, "step": 1, "unit": "px", "label": "Line Height", "default": 2 },
+      {
+        "type": "header",
+        "content": "Typography: Paragraph"
+      },
+      { "type": "textarea", "id": "text", "label": "Paragraph Text", "default": "<p>High-paying offshore jobs. Long rotations.<br>More free time. Travel the world.<br>Build the life you've always wanted.</p>" },
+      { "type": "range", "id": "text_size_desktop", "min": 14, "max": 36, "step": 1, "unit": "px", "label": "Desktop Size", "default": 20 },
+      { "type": "range", "id": "text_size_mobile",  "min": 14, "max": 24, "step": 1, "unit": "px", "label": "Mobile Size",  "default": 15 },
+      { "type": "select", "id": "font_weight_text", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"}], "default": "400" },
+      { "type": "text",   "id": "line_height_text", "label": "Line Height", "default": "1.6" },
+      { "type": "range", "id": "paragraph_max_width", "min": 50, "max": 100, "step": 5, "unit": "%", "label": "Paragraph Max Width", "default": 90 },
+      {
+        "type": "header",
+        "content": "Buttons: General"
+      },
+      { "type": "select", "id": "text_alignment", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"}], "default": "left" },
+      { "type": "range", "id": "button_gap", "min": 10, "max": 40, "step": 2, "unit": "px", "label": "Gap Between Buttons", "default": 20 },
+      { "type": "range", "id": "btn_size_desktop", "min": 12, "max": 24, "step": 1, "unit": "px", "label": "Desktop Text Size", "default": 14 },
+      { "type": "range", "id": "btn_size_mobile",  "min": 12, "max": 24, "step": 1, "unit": "px", "label": "Mobile Text Size",  "default": 13 },
+      { "type": "select", "id": "font_weight_btn", "label": "Weight", "options": [{"value":"400","label":"Normal"},{"value":"700","label":"Bold"}], "default": "700" },
+      { "type": "range",  "id": "letter_spacing_btn", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Letter Spacing", "default": 10 },
+      { "type": "select", "id": "text_transform_btn", "label": "Text Transform", "options": [{"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"}], "default": "uppercase" },
+      { "type": "range", "id": "btn_padding_vertical",   "min": 8, "max": 30, "step": 2, "unit": "px", "label": "Vertical Padding", "default": 16 },
+      { "type": "range", "id": "btn_padding_horizontal", "min": 10, "max": 60, "step": 2, "unit": "px", "label": "Horizontal Padding", "default": 34 },
+      { "type": "range", "id": "btn_border_radius",      "min": 0, "max": 50, "step": 2, "unit": "px", "label": "Border Radius", "default": 4 },
+      { "type": "range", "id": "btn_icon_size",          "min": 10, "max": 30, "step": 1, "unit": "px", "label": "Icon Size", "default": 17 },
+      {
+        "type": "header",
+        "content": "Primary Button"
+      },
+      { "type": "text", "id": "btn_1_text", "label": "Text", "default": "EXPLORE JOBS" },
+      { "type": "url",  "id": "btn_1_link", "label": "Link" },
+      { "type": "checkbox", "id": "show_btn_1_icon", "label": "Show Icon", "default": true },
+      { "type": "textarea", "id": "btn_1_icon_svg", "label": "Custom Icon SVG" },
+      {
+        "type": "header",
+        "content": "Secondary Button"
+      },
+      { "type": "text", "id": "btn_2_text", "label": "Text", "default": "WATCH VIDEO" },
+      { "type": "url",  "id": "btn_2_link", "label": "Link" },
+      { "type": "checkbox", "id": "show_btn_2_icon", "label": "Show Icon", "default": true },
+      { "type": "textarea", "id": "btn_2_icon_svg", "label": "Custom Icon SVG" },
+      { "type": "color", "id": "color_btn_secondary_bg", "label": "Background Color", "default": "rgba(255,255,255,0.08)" },
+      { "type": "color", "id": "color_btn_secondary_bg_hover", "label": "Hover BG Color", "default": "rgba(255,255,255,0.18)" },
+      { "type": "color", "id": "color_btn_secondary_border_hover", "label": "Hover Border Color", "default": "#ffffff" },
+      {
+        "type": "header",
+        "content": "Trust Badge / Reviews"
+      },
+      { "type": "checkbox", "id": "show_reviews", "label": "Show Widget", "default": true },
+      { "type": "range", "id": "avatar_size", "min": 20, "max": 80, "step": 2, "unit": "px", "label": "Avatar Size", "default": 44 },
+      { "type": "image_picker", "id": "avatar_1", "label": "Reviewer Avatar 1" },
+      { "type": "image_picker", "id": "avatar_2", "label": "Reviewer Avatar 2" },
+      { "type": "image_picker", "id": "avatar_3", "label": "Reviewer Avatar 3" },
+      { "type": "image_picker", "id": "avatar_4", "label": "Reviewer Avatar 4" },
+      { "type": "text", "id": "review_text", "label": "Review Text", "default": "Trusted by 1,000+ people who started their offshore career" },
+      {
+        "type": "header",
+        "content": "Pagination & Stats"
+      },
+      { "type": "checkbox", "id": "show_pagination", "label": "Show Vertical Pagination", "default": true },
+      { "type": "range", "id": "stats_container_max_width", "min": 800, "max": 1800, "step": 50, "unit": "px", "label": "Stats Max Width", "default": 1550 },
+      { "type": "range", "id": "stat_icon_size", "min": 20, "max": 60, "step": 2, "unit": "px", "label": "Stat Icon Size", "default": 34 },
+      { "type": "range", "id": "stat_value_size", "min": 14, "max": 30, "step": 1, "unit": "px", "label": "Stat Value Size", "default": 20 },
+      { "type": "select", "id": "stat_value_weight", "label": "Stat Value Weight", "options": [{"value":"400","label":"Normal"},{"value":"700","label":"Bold"}], "default": "700" },
+      { "type": "range", "id": "stat_label_size", "min": 8, "max": 16, "step": 1, "unit": "px", "label": "Stat Label Size", "default": 11 },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      { "type": "color", "id": "color_title",                "label": "Heading Color",          "default": "#ffffff" },
+      { "type": "color", "id": "color_highlight",            "label": "Highlight Color",         "default": "#F8C53A" },
+      { "type": "color", "id": "color_subtitle",             "label": "Subtitle Color",          "default": "#F8C53A" },
+      { "type": "color", "id": "color_text",                 "label": "Paragraph Color",         "default": "#ffffff" },
+      { "type": "color", "id": "color_btn_primary_bg",       "label": "Primary Button BG",       "default": "#F8C53A" },
+      { "type": "color", "id": "color_btn_primary_text",     "label": "Primary Button Text",     "default": "#000000" },
+      { "type": "color", "id": "color_btn_secondary_border", "label": "Secondary Button Border", "default": "#ffffff" },
+      { "type": "color", "id": "color_btn_secondary_text",   "label": "Secondary Button Text",   "default": "#ffffff" },
+      { "type": "color", "id": "color_stats_bg",             "label": "Stats Card BG",           "default": "#0F1419" },
+      { "type": "color", "id": "color_stats_text",           "label": "Stats Label Color",       "default": "#ffffff" },
+      { "type": "color", "id": "color_stat_value",           "label": "Stat Value Color",       "default": "#ffffff" },
+      { "type": "color", "id": "color_pagination",           "label": "Pagination Color",        "default": "#ffffff" },
+      { "type": "color", "id": "color_review_text",           "label": "Review Text Color",       "default": "#ffffff" },
+      {
+        "type": "header",
+        "content": "Spacing"
+      },
+      { "type": "range", "id": "content_left_desktop", "min": 0, "max": 150, "step": 5, "unit": "px", "label": "Desktop Side Spacing", "default": 80 },
+      { "type": "range", "id": "content_left_mobile",  "min": 10, "max": 50, "step": 5, "unit": "px", "label": "Mobile Side Spacing",  "default": 20 },
+      { "type": "range", "id": "section_gap", "min": 10, "max": 60, "step": 5, "unit": "px", "label": "Gap Between Elements", "default": 20 },
+      { "type": "range", "id": "stats_bottom_spacing", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Stats Bottom Padding", "default": 32 },
+      { "type": "range", "id": "stats_border_radius",  "min": 0, "max": 30, "step": 2, "unit": "px", "label": "Stats Border Radius",  "default": 16 },
+      { "type": "range", "id": "padding_top_desktop",    "min": 0, "max": 120, "step": 10, "unit": "px", "label": "Desktop Padding Top", "default": 0 },
+      { "type": "range", "id": "padding_bottom_desktop", "min": 0, "max": 120, "step": 10, "unit": "px", "label": "Desktop Padding Bottom", "default": 20 },
+      { "type": "range", "id": "padding_top_mobile",      "min": 0, "max": 100, "step": 10, "unit": "px", "label": "Mobile Padding Top",  "default": 0 },
+      { "type": "range", "id": "padding_bottom_mobile",   "min": 0, "max": 100, "step": 10, "unit": "px", "label": "Mobile Padding Bottom", "default": 30 }
+    ],
+    "blocks": [
+      {
+        "type": "stat",
+        "name": "Stat Card",
+        "limit": 5,
+        "settings": [
+          { "type": "textarea", "id": "custom_svg", "label": "Custom SVG Icon" },
+          { "type": "text", "id": "value", "label": "Number / Value", "default": "€95,000+" },
+          { "type": "text", "id": "label", "label": "Label Text", "default": "Average Offshore Salary" }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Cinematic Hero Pro",
+        "blocks": [
+          { "type": "stat", "settings": { "value": "€95,000+", "label": "Average Offshore Salary" } },
+          { "type": "stat", "settings": { "value": "2/4", "label": "Work Rotation (2 Weeks On, 4 Off)" } },
+          { "type": "stat", "settings": { "value": "12,500+", "label": "Offshore Jobs Available" } },
+          { "type": "stat", "settings": { "value": "4.9/5", "label": "From 2,000+ Success Stories" } },
+          { "type": "stat", "settings": { "value": "90+", "label": "Countries Hiring" } }
+        ]
+      }
+    ]
+  }
+  {% endschema %}

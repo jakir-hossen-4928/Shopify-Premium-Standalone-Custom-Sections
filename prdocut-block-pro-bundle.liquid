@@ -47,14 +47,14 @@
     --wo-title-font: {{ title_font.family }}, {{ title_font.fallback_families }};
     --wo-title-size: {{ section.settings.title_size_desktop }}px;
     --wo-title-weight: {{ section.settings.title_weight | default: title_font.weight }};
-    --wo-title-ls: {{ section.settings.title_ls }}em;
-    --wo-title-lh: {{ section.settings.title_lh }};
+    --wo-title-ls: {{ section.settings.title_ls | divided_by: 100.0 }}em;
+    --wo-title-lh: {{ section.settings.title_lh | divided_by: 10.0 }};
     --wo-title-transform: {{ section.settings.title_transform }};
 
     --wo-sub-font: {{ meta_font.family }}, {{ meta_font.fallback_families }};
     --wo-sub-size: {{ section.settings.subtitle_size_desktop }}px;
     --wo-sub-weight: {{ section.settings.subtitle_weight }};
-    --wo-sub-ls: {{ section.settings.subtitle_ls }}em;
+    --wo-sub-ls: {{ section.settings.subtitle_ls | divided_by: 100.0 }}em;
     --wo-sub-transform: {{ section.settings.subtitle_transform }};
 
     /* Typography - Card */
@@ -77,7 +77,7 @@
     --wo-btn-font: {{ meta_font.family }}, {{ meta_font.fallback_families }};
     --wo-btn-size: {{ section.settings.btn_size }}px;
     --wo-btn-weight: {{ section.settings.btn_weight }};
-    --wo-btn-ls: {{ section.settings.btn_ls }}em;
+    --wo-btn-ls: {{ section.settings.btn_ls | divided_by: 100.0 }}em;
     --wo-btn-transform: {{ section.settings.btn_transform }};
 
     /* Layout & Sizes */
@@ -651,21 +651,21 @@
     {
       "type": "range",
       "id": "title_lh",
-      "min": 0.8,
-      "max": 2.0,
-      "step": 0.1,
+      "min": 8,
+      "max": 20,
+      "step": 1,
       "label": "Heading Line Height",
-      "default": 1.15
+      "default": 12
     },
     {
       "type": "range",
       "id": "title_ls",
-      "min": -0.05,
-      "max": 0.2,
-      "step": 0.01,
+      "min": -10,
+      "max": 20,
+      "step": 10,
       "unit": "em",
       "label": "Heading Letter Spacing",
-      "default": -0.02
+      "default": 0
     },
     {
       "type": "select",
@@ -713,11 +713,11 @@
       "type": "range",
       "id": "subtitle_ls",
       "min": 0,
-      "max": 0.5,
-      "step": 0.05,
+      "max": 50,
+      "step": 10,
       "unit": "em",
       "label": "Subtitle Letter Spacing",
-      "default": 0.25
+      "default": 30
     },
     {
       "type": "select",
@@ -852,11 +852,11 @@
       "type": "range",
       "id": "btn_ls",
       "min": 0,
-      "max": 0.5,
-      "step": 0.05,
+      "max": 50,
+      "step": 10,
       "unit": "em",
       "label": "Button Letter Spacing",
-      "default": 0.1
+      "default": 10
     },
     {
       "type": "select",
@@ -900,7 +900,7 @@
       "step": 4,
       "unit": "px",
       "label": "Top Padding Mobile",
-      "default": 50
+      "default": 48
     },
     {
       "type": "range",
@@ -910,7 +910,7 @@
       "step": 4,
       "unit": "px",
       "label": "Bottom Padding Mobile",
-      "default": 50
+      "default": 48
     },
     {
       "type": "range",

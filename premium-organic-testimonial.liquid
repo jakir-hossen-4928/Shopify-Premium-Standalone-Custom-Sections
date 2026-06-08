@@ -1,0 +1,1823 @@
+{%- style -%}
+  :root {
+    /* Layout */
+    --pts-max-width: {{ section.settings.max_width }}px;
+    --pts-section-bg: {{ section.settings.section_bg_color }};
+    --pts-container-bg: {{ section.settings.container_bg_color }};
+    --pts-section-radius: {{ section.settings.section_border_radius }}px;
+    --pts-primary: {{ section.settings.primary_color }};
+
+    /* Section Padding - Desktop */
+    --pts-pad-top-d: {{ section.settings.padding_top_desktop }}px;
+    --pts-pad-bot-d: {{ section.settings.padding_bottom_desktop }}px;
+
+    /* Section Padding - Tablet */
+    --pts-pad-top-t: {{ section.settings.padding_top_tablet }}px;
+    --pts-pad-bot-t: {{ section.settings.padding_bottom_tablet }}px;
+
+    /* Section Padding - Mobile */
+    --pts-pad-top-m: {{ section.settings.padding_top_mobile }}px;
+    --pts-pad-bot-m: {{ section.settings.padding_bottom_mobile }}px;
+
+    /* Header Block */
+    --pts-header-mb: {{ section.settings.header_margin_bottom }}px;
+    --pts-header-align: {{ section.settings.header_alignment }};
+
+    /* Heading */
+    --pts-h-size-d: {{ section.settings.heading_size_desktop }}px;
+    --pts-h-size-m: {{ section.settings.heading_size_mobile }}px;
+    --pts-h-weight: {{ section.settings.heading_weight }};
+    --pts-h-color: {{ section.settings.heading_color }};
+    --pts-h-ls: {{ section.settings.heading_letter_spacing }}em;
+    --pts-h-lh: {{ section.settings.heading_line_height }};
+    --pts-h-mb: {{ section.settings.heading_margin_bottom }}px;
+    --pts-h-transform: {{ section.settings.heading_transform }};
+
+    /* Description */
+    --pts-d-size-d: {{ section.settings.desc_size_desktop }}px;
+    --pts-d-size-m: {{ section.settings.desc_size_mobile }}px;
+    --pts-d-color: {{ section.settings.desc_color }};
+    --pts-d-lh: {{ section.settings.desc_line_height }};
+    --pts-d-mw: {{ section.settings.desc_max_width }}%;
+    --pts-d-align: {{ section.settings.desc_alignment }};
+    --pts-d-mb: {{ section.settings.desc_margin_bottom }}px;
+
+    /* Left Image */
+    --pts-img-w-d: {{ section.settings.image_width_desktop }}px;
+    --pts-img-w-m: {{ section.settings.image_width_mobile }}px;
+    --pts-img-h-d: {{ section.settings.image_height_desktop }}px;
+    --pts-img-h-m: {{ section.settings.image_height_mobile }}px;
+    --pts-img-aspect: {{ section.settings.image_aspect_ratio }};
+    --pts-img-fit: {{ section.settings.image_object_fit }};
+    --pts-img-radius: {{ section.settings.image_border_radius }}px;
+    --pts-img-shadow: {{ section.settings.image_shadow }};
+    --pts-img-overlay: {{ section.settings.image_overlay_color }};
+    --pts-img-overlay-opacity: {{ section.settings.image_overlay_opacity }};
+
+    /* Grid */
+    --pts-grid-gap-d: {{ section.settings.grid_gap_desktop }}px;
+    --pts-grid-gap-t: {{ section.settings.grid_gap_tablet }}px;
+    --pts-grid-gap-m: {{ section.settings.grid_gap_mobile }}px;
+
+    /* Carousel */
+    --pts-car-height-d: {{ section.settings.carousel_height_desktop }}px;
+    --pts-car-height-t: {{ section.settings.carousel_height_tablet }}px;
+    --pts-car-height-m: {{ section.settings.carousel_height_mobile }}px;
+    --pts-car-gap: {{ section.settings.card_gap }}px;
+    --pts-car-pad: {{ section.settings.carousel_padding }}px;
+
+    /* Review Card */
+    --pts-card-bg: {{ section.settings.card_bg_color }};
+    --pts-card-bw: {{ section.settings.card_border_width }}px;
+    --pts-card-bs: {{ section.settings.card_border_style }};
+    --pts-card-bc: {{ section.settings.card_border_color }};
+    --pts-card-radius: {{ section.settings.card_border_radius }}px;
+    --pts-card-pad-d: {{ section.settings.card_padding_desktop }}px;
+    --pts-card-pad-m: {{ section.settings.card_padding_mobile }}px;
+    --pts-card-shadow: {{ section.settings.card_shadow }};
+    --pts-card-hover-shadow: {{ section.settings.card_hover_shadow }};
+    --pts-card-hover-scale: {{ section.settings.card_hover_scale }};
+    --pts-card-transition: {{ section.settings.card_transition }}ms;
+    --pts-card-active-border: {{ section.settings.card_active_border_color }};
+    --pts-card-active-shadow-color: {{ section.settings.card_active_border_color }};
+
+    /* Review Title */
+    --pts-rt-size-d: {{ section.settings.review_title_size_desktop }}px;
+    --pts-rt-size-m: {{ section.settings.review_title_size_mobile }}px;
+    --pts-rt-color: {{ section.settings.review_title_color }};
+    --pts-rt-weight: {{ section.settings.review_title_weight }};
+    --pts-rt-transform: {{ section.settings.review_title_transform }};
+    --pts-rt-mb: {{ section.settings.review_title_margin_bottom }}px;
+
+    /* Review Text */
+    --pts-rtx-size-d: {{ section.settings.review_text_size_desktop }}px;
+    --pts-rtx-size-m: {{ section.settings.review_text_size_mobile }}px;
+    --pts-rtx-color: {{ section.settings.review_text_color }};
+    --pts-rtx-lh: {{ section.settings.review_text_line_height }};
+    --pts-rtx-weight: {{ section.settings.review_text_weight }};
+    --pts-rtx-mb: {{ section.settings.review_text_margin_bottom }}px;
+
+    /* Customer Name */
+    --pts-name-size-d: {{ section.settings.name_size_desktop }}px;
+    --pts-name-size-m: {{ section.settings.name_size_mobile }}px;
+    --pts-name-color: {{ section.settings.name_color }};
+    --pts-name-weight: {{ section.settings.name_weight }};
+    --pts-name-transform: {{ section.settings.name_transform }};
+
+    /* Stars */
+    --pts-star-size-d: {{ section.settings.star_size_desktop }}px;
+    --pts-star-size-m: {{ section.settings.star_size_mobile }}px;
+    --pts-star-active: {{ section.settings.star_active_color }};
+    --pts-star-inactive: {{ section.settings.star_inactive_color }};
+    --pts-star-gap: {{ section.settings.star_gap }}px;
+    --pts-star-mb: {{ section.settings.star_margin_bottom }}px;
+
+    /* Avatar */
+    --pts-avatar-size: {{ section.settings.avatar_size }}px;
+    --pts-avatar-radius: {{ section.settings.avatar_border_radius }}%;
+    --pts-avatar-bw: {{ section.settings.avatar_border_width }}px;
+    --pts-avatar-bc: {{ section.settings.avatar_border_color }};
+
+    /* Dots Navigation */
+    --pts-dot-size: {{ section.settings.dot_size }}px;
+    --pts-dot-active-size: {{ section.settings.dot_active_size }}px;
+    --pts-dot-bg: {{ section.settings.dot_color }};
+    --pts-dot-active-bg: {{ section.settings.dot_active_color }};
+    --pts-dot-gap: {{ section.settings.dot_gap }}px;
+    --pts-dot-offset: {{ section.settings.dot_offset }}px;
+  }
+
+  /* ─── Base Section ─────────────────────────────────────────── */
+  .pts-section {
+    background-color: var(--pts-section-bg);
+    padding: var(--pts-pad-top-m) 0 var(--pts-pad-bot-m);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .pts-container {
+    max-width: var(--pts-max-width);
+    margin: 0 auto;
+    background-color: var(--pts-container-bg);
+    border-radius: var(--pts-section-radius);
+  }
+
+  /* ─── Header ───────────────────────────────────────────────── */
+  .pts-header {
+    text-align: var(--pts-header-align);
+    margin-bottom: var(--pts-header-mb);
+  }
+
+  .pts-heading {
+    font-size: var(--pts-h-size-m);
+    font-weight: var(--pts-h-weight);
+    color: var(--pts-h-color);
+    letter-spacing: var(--pts-h-ls);
+    line-height: var(--pts-h-lh);
+    margin: 0 0 var(--pts-h-mb) 0;
+    text-transform: var(--pts-h-transform);
+  }
+
+  .pts-description {
+    font-size: var(--pts-d-size-m);
+    color: var(--pts-d-color);
+    line-height: var(--pts-d-lh);
+    max-width: var(--pts-d-mw);
+    margin: 0 auto var(--pts-d-mb);
+    text-align: var(--pts-d-align);
+  }
+
+  /* ─── Grid ─────────────────────────────────────────────────── */
+  .pts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--pts-grid-gap-m);
+  }
+
+  /* ─── Left Image ────────────────────────────────────────────── */
+  .pts-image-block {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .pts-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: var(--pts-img-h-m);
+    aspect-ratio: var(--pts-img-aspect);
+    overflow: hidden;
+    border-radius: var(--pts-img-radius);
+    box-shadow: var(--pts-img-shadow);
+  }
+
+  .pts-image {
+    width: 100%;
+    height: 100%;
+    object-fit: var(--pts-img-fit);
+    display: block;
+  }
+
+  .pts-image-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--pts-img-overlay);
+    opacity: var(--pts-img-overlay-opacity);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* ─── Carousel Column ───────────────────────────────────────── */
+  .pts-carousel-block {
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  .pts-carousel-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .pts-carousel {
+    display: grid;
+    grid-auto-flow: row;
+    grid-auto-rows: auto;
+    height: var(--pts-car-height-m);
+    overflow-y: auto;
+    overflow-x: visible;
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: var(--pts-car-pad);
+    gap: var(--pts-car-gap);
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: var(--pts-car-pad) 4px var(--pts-car-pad) 4px;
+    flex: 1;
+  }
+
+  .pts-carousel::-webkit-scrollbar { display: none; }
+
+  /* ─── Card ──────────────────────────────────────────────────── */
+  .pts-card {
+    scroll-snap-align: start;
+    background: var(--pts-card-bg);
+    border: var(--pts-card-bw) var(--pts-card-bs) var(--pts-card-bc);
+    border-radius: var(--pts-card-radius);
+    padding: var(--pts-card-pad-m);
+    box-shadow: var(--pts-card-shadow);
+    transition: transform var(--pts-card-transition) cubic-bezier(0.2, 0, 0, 1),
+                box-shadow var(--pts-card-transition) cubic-bezier(0.2, 0, 0, 1),
+                border-color var(--pts-card-transition) ease;
+    cursor: pointer;
+    margin: 0;
+    position: relative;
+  }
+
+  .pts-card:hover {
+    transform: scale(var(--pts-card-hover-scale));
+    box-shadow: var(--pts-card-hover-shadow);
+    z-index: 2;
+  }
+
+  .pts-card.active {
+    border-color: var(--pts-card-active-border);
+    box-shadow: 0 0 0 2px var(--pts-card-active-shadow-color);
+  }
+
+  /* ─── Card Inner ────────────────────────────────────────────── */
+  .pts-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .pts-avatar {
+    width: var(--pts-avatar-size);
+    height: var(--pts-avatar-size);
+    border-radius: var(--pts-avatar-radius);
+    border: var(--pts-avatar-bw) solid var(--pts-avatar-bc);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .pts-avatar-placeholder {
+    width: var(--pts-avatar-size);
+    height: var(--pts-avatar-size);
+    border-radius: var(--pts-avatar-radius);
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    flex-shrink: 0;
+  }
+
+  .pts-card-info { flex: 1; }
+
+  .pts-stars {
+    display: flex;
+    gap: var(--pts-star-gap);
+    margin-bottom: var(--pts-star-mb);
+  }
+
+  .pts-star {
+    width: var(--pts-star-size-m);
+    height: var(--pts-star-size-m);
+    fill: var(--pts-star-inactive);
+  }
+
+  .pts-star.active { fill: var(--pts-star-active); }
+
+  .pts-review-title {
+    font-size: var(--pts-rt-size-m);
+    font-weight: var(--pts-rt-weight);
+    color: var(--pts-rt-color);
+    margin: 0 0 var(--pts-rt-mb) 0;
+    line-height: 1.3;
+    text-transform: var(--pts-rt-transform);
+  }
+
+  .pts-review-text {
+    font-size: var(--pts-rtx-size-m);
+    font-weight: var(--pts-rtx-weight);
+    color: var(--pts-rtx-color);
+    line-height: var(--pts-rtx-lh);
+    margin: 0 0 var(--pts-rtx-mb) 0;
+  }
+
+  .pts-customer-name {
+    font-size: var(--pts-name-size-m);
+    font-weight: var(--pts-name-weight);
+    color: var(--pts-name-color);
+    margin: 0;
+    text-transform: var(--pts-name-transform);
+  }
+
+  /* ─── Dots Navigation ───────────────────────────────────────── */
+  .pts-carousel-dots {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--pts-dot-gap);
+    position: sticky;
+    top: 50%;
+    transform: translateY(-50%);
+    align-self: center;
+    padding-left: var(--pts-dot-offset);
+    flex-shrink: 0;
+  }
+
+  .pts-dot {
+    width: var(--pts-dot-size);
+    height: var(--pts-dot-size);
+    border-radius: 50%;
+    background-color: var(--pts-dot-bg);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+    border: none;
+    padding: 0;
+  }
+
+  .pts-dot.active {
+    background-color: var(--pts-dot-active-bg);
+    width: var(--pts-dot-active-size);
+    height: var(--pts-dot-active-size);
+  }
+
+  .pts-dot:hover { opacity: 0.7; }
+
+  /* ─── Tablet ────────────────────────────────────────────────── */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .pts-section {
+      padding: var(--pts-pad-top-t) 0 var(--pts-pad-bot-t);
+    }
+    .pts-grid {
+      gap: var(--pts-grid-gap-t);
+    }
+    .pts-carousel {
+      height: var(--pts-car-height-t);
+    }
+  }
+
+  /* ─── Desktop ───────────────────────────────────────────────── */
+  @media (min-width: 1024px) {
+    .pts-section {
+      padding: var(--pts-pad-top-d) 0 var(--pts-pad-bot-d);
+    }
+    .pts-heading { font-size: var(--pts-h-size-d); }
+    .pts-description { font-size: var(--pts-d-size-d); }
+
+    .pts-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--pts-grid-gap-d);
+    }
+
+    .pts-image-wrapper {
+      width: 100%;
+      height: var(--pts-img-h-d);
+    }
+
+    .pts-section {
+      padding: var(--pts-pad-top-d) 0 var(--pts-pad-bot-d);
+    }
+
+    .pts-carousel { height: var(--pts-car-height-d); }
+    .pts-carousel-dots { display: flex; }
+
+    .pts-card { padding: var(--pts-card-pad-d); }
+
+    .pts-star {
+      width: var(--pts-star-size-d);
+      height: var(--pts-star-size-d);
+    }
+    .pts-review-title { font-size: var(--pts-rt-size-d); }
+    .pts-review-text { font-size: var(--pts-rtx-size-d); }
+    .pts-customer-name { font-size: var(--pts-name-size-d); }
+  }
+
+  /* ─── Reduced Motion ────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .pts-carousel { scroll-behavior: auto; }
+    .pts-card { transition: none; }
+    .pts-card:hover { transform: none; }
+  }
+{%- endstyle -%}
+
+<section class="pts-section" aria-label="{{ section.settings.heading | escape }}">
+  <div class="pts-container">
+
+    <div class="pts-header">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="pts-heading">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.description != blank -%}
+        <div class="pts-description">{{ section.settings.description }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="pts-grid">
+
+      <!-- Left: Image -->
+      <div class="pts-image-block">
+        <div class="pts-image-wrapper">
+          {%- if section.settings.image != blank -%}
+            <img class="pts-image"
+                 src="{{ section.settings.image | image_url: width: 800 }}"
+                 alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+                 loading="lazy"
+                 width="{{ section.settings.image.width }}"
+                 height="{{ section.settings.image.height }}">
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'pts-image' }}
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Right: Carousel + Dots -->
+      <div class="pts-carousel-block">
+        <div class="pts-carousel-wrapper">
+
+          <div class="pts-carousel"
+               id="pts-carousel-{{ section.id }}"
+               data-autoplay="{{ section.settings.autoplay_enable }}"
+               data-speed="{{ section.settings.autoplay_speed }}"
+               data-loop="{{ section.settings.loop_enable }}"
+               data-pause-hover="{{ section.settings.pause_on_hover }}"
+               data-pause-touch="{{ section.settings.pause_on_touch }}"
+               role="list"
+               tabindex="0"
+               aria-label="Testimonials">
+
+            {%- assign testimonial_count = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'testimonial' -%}
+                {%- assign testimonial_count = testimonial_count | plus: 1 -%}
+                <article class="pts-card"
+                         data-index="{{ testimonial_count | minus: 1 }}"
+                         data-block-id="{{ block.id }}"
+                         role="listitem"
+                         {{ block.shopify_attributes }}>
+
+                  <div class="pts-card-meta">
+                    {%- if block.settings.customer_avatar != blank -%}
+                      <img class="pts-avatar"
+                           src="{{ block.settings.customer_avatar | image_url: width: 150 }}"
+                           alt="{{ block.settings.customer_name | escape }}"
+                           loading="lazy"
+                           width="{{ section.settings.avatar_size }}"
+                           height="{{ section.settings.avatar_size }}">
+                    {%- else -%}
+                      <div class="pts-avatar-placeholder" aria-hidden="true">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                          <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                      </div>
+                    {%- endif -%}
+
+                    <div class="pts-card-info">
+                      <div class="pts-stars" aria-label="{{ block.settings.rating }} out of 5 stars">
+                        {%- for i in (1..5) -%}
+                          <svg class="pts-star{% if i <= block.settings.rating %} active{% endif %}" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                          </svg>
+                        {%- endfor -%}
+                      </div>
+                      <p class="pts-customer-name">{{ block.settings.customer_name | escape }}</p>
+                    </div>
+                  </div>
+
+                  {%- if block.settings.review_title != blank -%}
+                    <h3 class="pts-review-title">{{ block.settings.review_title | escape }}</h3>
+                  {%- endif -%}
+
+                  {%- if block.settings.review_text != blank -%}
+                    <p class="pts-review-text">"{{ block.settings.review_text | escape }}"</p>
+                  {%- endif -%}
+
+                </article>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          <!-- Dots: Desktop only, right side of carousel -->
+          <div class="pts-carousel-dots" id="pts-dots-{{ section.id }}" aria-label="Testimonial navigation" role="tablist">
+            {%- assign dot_index = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'testimonial' -%}
+                <button class="pts-dot"
+                        data-dot-index="{{ dot_index }}"
+                        role="tab"
+                        aria-label="Go to testimonial {{ dot_index | plus: 1 }}"
+                        aria-selected="false">
+                </button>
+                {%- assign dot_index = dot_index | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  const carousel = document.getElementById('pts-carousel-{{ section.id }}');
+  const dotsContainer = document.getElementById('pts-dots-{{ section.id }}');
+  if (!carousel) return;
+
+  const cards = carousel.querySelectorAll('.pts-card');
+  if (cards.length <= 1) return;
+
+  const dots = dotsContainer ? dotsContainer.querySelectorAll('.pts-dot') : [];
+  const autoplay    = carousel.dataset.autoplay === 'true';
+  const speed       = parseInt(carousel.dataset.speed, 10) || 5000;
+  const loop        = carousel.dataset.loop === 'true';
+  const pauseHover  = carousel.dataset.pauseHover === 'true';
+  const pauseTouch  = carousel.dataset.pauseTouch === 'true';
+
+  let currentIndex  = 0;
+  let autoplayTimer = null;
+  let isPaused      = false;
+  let userScrolling = false;
+  let scrollTimer   = null;
+
+  /* ── Determine which card is most visible in the viewport ── */
+  function getMostVisibleCardIndex() {
+    const carouselRect = carousel.getBoundingClientRect();
+    const carouselTop = carouselRect.top;
+    const carouselBottom = carouselRect.bottom;
+    const carouselCenter = carouselTop + (carouselRect.height / 2);
+    
+    let bestIndex = 0;
+    let bestDistance = Infinity;
+    
+    cards.forEach((card, idx) => {
+      const cardRect = card.getBoundingClientRect();
+      const cardCenter = (cardRect.top + cardRect.bottom) / 2;
+      const distance = Math.abs(cardCenter - carouselCenter);
+      
+      // Check if card is within the carousel's visible area
+      const isInView = cardRect.bottom > carouselTop && cardRect.top < carouselBottom;
+      
+      if (isInView && distance < bestDistance) {
+        bestDistance = distance;
+        bestIndex = idx;
+      }
+    });
+    
+    return bestIndex;
+  }
+
+  /* ── Activate a specific card ── */
+  function activate(index) {
+    if (index < 0) index = 0;
+    if (index >= cards.length) index = cards.length - 1;
+    
+    if (currentIndex === index) return;
+    
+    currentIndex = index;
+    
+    cards.forEach((c, i) => {
+      if (i === index) {
+        c.classList.add('active');
+      } else {
+        c.classList.remove('active');
+      }
+    });
+    
+    dots.forEach((d, i) => {
+      if (i === index) {
+        d.classList.add('active');
+        d.setAttribute('aria-selected', 'true');
+      } else {
+        d.classList.remove('active');
+        d.setAttribute('aria-selected', 'false');
+      }
+    });
+  }
+
+  /* ── Update active card based on current scroll position ── */
+  function updateActiveCardFromScroll() {
+    const mostVisibleIndex = getMostVisibleCardIndex();
+    if (mostVisibleIndex !== currentIndex) {
+      activate(mostVisibleIndex);
+    }
+  }
+
+  /* ── Scroll to a specific card ── */
+  function scrollTo(index) {
+    if (index < 0) index = 0;
+    if (index >= cards.length) index = cards.length - 1;
+    
+    const targetCard = cards[index];
+    if (targetCard) {
+      targetCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      activate(index);
+    }
+  }
+
+  /* ── Autoplay functions ── */
+  function startAutoplay() {
+    if (!autoplay || cards.length <= 1) return;
+    stopAutoplay();
+    autoplayTimer = setInterval(() => {
+      if (!userScrolling && !isPaused) {
+        let nextIndex = currentIndex + 1;
+        if (nextIndex >= cards.length) {
+          if (loop) {
+            nextIndex = 0;
+          } else {
+            return;
+          }
+        }
+        scrollTo(nextIndex);
+      }
+    }, speed);
+  }
+  
+  function stopAutoplay() {
+    if (autoplayTimer) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+  }
+
+  /* ── IntersectionObserver as a backup to detect visible cards ── */
+  const observer = new IntersectionObserver(entries => {
+    let bestEntry = null;
+    let bestRatio = 0;
+    
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio > bestRatio) {
+        bestRatio = entry.intersectionRatio;
+        bestEntry = entry;
+      }
+    });
+    
+    if (bestEntry) {
+      const idx = parseInt(bestEntry.target.dataset.index, 10);
+      if (!isNaN(idx) && idx !== currentIndex) {
+        activate(idx);
+      }
+    }
+  }, { root: carousel, threshold: [0.3, 0.5, 0.7], rootMargin: '0px' });
+
+  cards.forEach(c => observer.observe(c));
+
+  /* ── Scroll event listener ── */
+  carousel.addEventListener('scroll', () => {
+    userScrolling = true;
+    
+    // Update active card based on scroll position
+    updateActiveCardFromScroll();
+    
+    if (autoplay) stopAutoplay();
+    
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      userScrolling = false;
+      if (autoplay && !isPaused) startAutoplay();
+    }, 200);
+  }, { passive: true });
+
+  /* ── Hover pause ── */
+  if (pauseHover) {
+    carousel.addEventListener('mouseenter', () => { 
+      isPaused = true; 
+      stopAutoplay(); 
+    });
+    carousel.addEventListener('mouseleave', () => {
+      isPaused = false;
+      if (autoplay && !userScrolling) startAutoplay();
+    });
+  }
+
+  /* ── Touch pause ── */
+  if (pauseTouch) {
+    carousel.addEventListener('touchstart', () => { 
+      isPaused = true; 
+      stopAutoplay(); 
+    }, { passive: true });
+    carousel.addEventListener('touchend', () => {
+      setTimeout(() => {
+        isPaused = false;
+        if (autoplay && !userScrolling) startAutoplay();
+      }, 400);
+    }, { passive: true });
+  }
+
+  /* ── Keyboard navigation ── */
+  carousel.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') { 
+      e.preventDefault(); 
+      scrollTo(currentIndex + 1); 
+    }
+    if (e.key === 'ArrowUp') { 
+      e.preventDefault(); 
+      scrollTo(currentIndex - 1); 
+    }
+  });
+
+  /* ── Dot navigation ── */
+  dots.forEach((dot, idx) => {
+    dot.addEventListener('click', () => {
+      scrollTo(idx);
+      if (autoplay) { 
+        stopAutoplay(); 
+        setTimeout(() => { 
+          if (!isPaused && !userScrolling) startAutoplay(); 
+        }, 3000); 
+      }
+    });
+  });
+
+  /* ── Initialize ── */
+  // Wait a moment for layout to settle, then find which card is most visible
+  setTimeout(() => {
+    const initialIndex = getMostVisibleCardIndex();
+    activate(initialIndex);
+  }, 100);
+  
+  if (autoplay) startAutoplay();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Vertical Testimonial",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Container & Colors"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1800,
+      "step": 10,
+      "default": 1470,
+      "unit": "px",
+      "label": "Container max width"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background",
+      "default": "#FBF7EC"
+    },
+    {
+      "type": "color",
+      "id": "container_bg_color",
+      "label": "Container background",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary accent color",
+      "default": "#234231"
+    },
+    {
+      "type": "range",
+      "id": "section_border_radius",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Container corner radius"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding — Desktop"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 100,
+      "unit": "px",
+      "label": "Top padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 100,
+      "unit": "px",
+      "label": "Bottom padding"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding — Tablet"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_tablet",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 80,
+      "unit": "px",
+      "label": "Top padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_tablet",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 80,
+      "unit": "px",
+      "label": "Bottom padding"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding — Mobile"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Top padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Bottom padding"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading text",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "select",
+      "id": "heading_transform",
+      "label": "Text transform",
+      "options": [
+        { "value": "none", "label": "As typed" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "capitalize", "label": "Title Case" },
+        { "value": "lowercase", "label": "lowercase" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "default": 40,
+      "unit": "px",
+      "label": "Font size — desktop"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "default": 28,
+      "unit": "px",
+      "label": "Font size — mobile"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semibold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extrabold (800)" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#234231"
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "min": -5,
+      "max": 20,
+      "step": 1,
+      "default": 0,
+      "unit": "em",
+      "label": "Letter spacing (×0.01em)"
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "min": 1,
+      "max": 2.4,
+      "step": 0.1,
+      "default": 1.6,
+      "label": "Line height"
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_bottom",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "default": 16,
+      "unit": "px",
+      "label": "Space below heading"
+    },
+    {
+      "type": "header",
+      "content": "Description"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description text",
+      "default": "<p>Real stories from real customers who love our products</p>"
+    },
+    {
+      "type": "range",
+      "id": "desc_size_desktop",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "default": 18,
+      "unit": "px",
+      "label": "Font size — desktop"
+    },
+    {
+      "type": "range",
+      "id": "desc_size_mobile",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px",
+      "label": "Font size — mobile"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description color",
+      "default": "#505050"
+    },
+    {
+      "type": "range",
+      "id": "desc_line_height",
+      "min": 1,
+      "max": 2.4,
+      "step": 0.1,
+      "default": 1.5,
+      "label": "Line height"
+    },
+    {
+      "type": "range",
+      "id": "desc_max_width",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "default": 80,
+      "unit": "%",
+      "label": "Max width"
+    },
+    {
+      "type": "select",
+      "id": "desc_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "desc_margin_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 32,
+      "unit": "px",
+      "label": "Space below description"
+    },
+    {
+      "type": "header",
+      "content": "Header Block"
+    },
+    {
+      "type": "range",
+      "id": "header_margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 40,
+      "unit": "px",
+      "label": "Space below header block"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Feature Image (Left Column)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Feature image"
+    },
+    {
+      "type": "range",
+      "id": "image_width_desktop",
+      "min": 100,
+      "max": 800,
+      "step": 10,
+      "default": 450,
+      "unit": "px",
+      "label": "Image width — desktop"
+    },
+    {
+      "type": "range",
+      "id": "image_width_mobile",
+      "min": 100,
+      "max": 500,
+      "step": 10,
+      "default": 320,
+      "unit": "px",
+      "label": "Image width — mobile"
+    },
+    {
+      "type": "range",
+      "id": "image_height_desktop",
+      "min": 100,
+      "max": 800,
+      "step": 10,
+      "default": 500,
+      "unit": "px",
+      "label": "Image height — desktop"
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "min": 100,
+      "max": 500,
+      "step": 10,
+      "default": 300,
+      "unit": "px",
+      "label": "Image height — mobile"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1/1", "label": "1:1 Square" },
+        { "value": "4/5", "label": "4:5 Portrait" },
+        { "value": "3/4", "label": "3:4 Portrait" },
+        { "value": "16/9", "label": "16:9 Wide" }
+      ],
+      "default": "1/1"
+    },
+    {
+      "type": "select",
+      "id": "image_object_fit",
+      "label": "Image fit",
+      "options": [
+        { "value": "cover", "label": "Cover (crop to fill)" },
+        { "value": "contain", "label": "Contain (show all)" }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 20,
+      "unit": "px",
+      "label": "Corner radius"
+    },
+    {
+      "type": "text",
+      "id": "image_shadow",
+      "label": "Box shadow (CSS value)",
+      "default": "0 20px 40px rgba(0,0,0,0.1)"
+    },
+    {
+      "type": "color",
+      "id": "image_overlay_color",
+      "label": "Overlay color",
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 0,
+      "label": "Overlay opacity (÷10, e.g. 3 = 0.3)"
+    },
+    {
+      "type": "header",
+      "content": "Grid Layout"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Column gap — desktop"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_tablet",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 40,
+      "unit": "px",
+      "label": "Column gap — tablet"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 32,
+      "unit": "px",
+      "label": "Stack gap — mobile"
+    },
+    {
+      "type": "header",
+      "content": "Carousel"
+    },
+    {
+      "type": "range",
+      "id": "carousel_height_desktop",
+      "min": 300,
+      "max": 900,
+      "step": 10,
+      "default": 560,
+      "unit": "px",
+      "label": "Carousel height — desktop"
+    },
+    {
+      "type": "range",
+      "id": "carousel_height_tablet",
+      "min": 250,
+      "max": 700,
+      "step": 10,
+      "default": 460,
+      "unit": "px",
+      "label": "Carousel height — tablet"
+    },
+    {
+      "type": "range",
+      "id": "carousel_height_mobile",
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "default": 360,
+      "unit": "px",
+      "label": "Carousel height — mobile"
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "default": 20,
+      "unit": "px",
+      "label": "Gap between cards"
+    },
+    {
+      "type": "range",
+      "id": "carousel_padding",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 12,
+      "unit": "px",
+      "label": "Inner scroll padding (top/bottom)"
+    },
+    {
+      "type": "header",
+      "content": "Auto-Scroll Behaviour"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay_enable",
+      "label": "Enable auto-scroll",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 1500,
+      "max": 9500,
+      "step": 500,
+      "default": 5000,
+      "unit": "ms",
+      "label": "Auto-scroll interval"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop_enable",
+      "label": "Loop infinitely",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_touch",
+      "label": "Pause on touch (mobile)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Review Card"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "card_border_width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 1,
+      "unit": "px",
+      "label": "Border width"
+    },
+    {
+      "type": "select",
+      "id": "card_border_style",
+      "label": "Border style",
+      "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "dashed", "label": "Dashed" },
+        { "value": "dotted", "label": "Dotted" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Border color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 16,
+      "unit": "px",
+      "label": "Corner radius"
+    },
+    {
+      "type": "range",
+      "id": "card_padding_desktop",
+      "min": 12,
+      "max": 56,
+      "step": 2,
+      "default": 24,
+      "unit": "px",
+      "label": "Inner padding — desktop"
+    },
+    {
+      "type": "range",
+      "id": "card_padding_mobile",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "default": 16,
+      "unit": "px",
+      "label": "Inner padding — mobile"
+    },
+    {
+      "type": "text",
+      "id": "card_shadow",
+      "label": "Card shadow (CSS value)",
+      "default": "0 4px 12px rgba(0,0,0,0.05)"
+    },
+    {
+      "type": "text",
+      "id": "card_hover_shadow",
+      "label": "Card shadow on hover",
+      "default": "0 8px 24px rgba(0,0,0,0.1)"
+    },
+    {
+      "type": "range",
+      "id": "card_hover_scale",
+      "min": 1,
+      "max": 1.3,
+      "step": 0.1,
+      "default": 1.1,
+      "label": "Hover scale"
+    },
+    {
+      "type": "range",
+      "id": "card_transition",
+      "min": 100,
+      "max": 600,
+      "step": 50,
+      "default": 300,
+      "unit": "ms",
+      "label": "Transition speed"
+    },
+    {
+      "type": "color",
+      "id": "card_active_border_color",
+      "label": "Active card highlight color",
+      "default": "#234231"
+    },
+    {
+      "type": "header",
+      "content": "Dots Navigation"
+    },
+    {
+      "type": "range",
+      "id": "dot_size",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 8,
+      "unit": "px",
+      "label": "Dot size"
+    },
+    {
+      "type": "range",
+      "id": "dot_active_size",
+      "min": 6,
+      "max": 24,
+      "step": 1,
+      "default": 12,
+      "unit": "px",
+      "label": "Active dot size"
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Dot color",
+      "default": "#D1D1D1"
+    },
+    {
+      "type": "color",
+      "id": "dot_active_color",
+      "label": "Active dot color",
+      "default": "#234231"
+    },
+    {
+      "type": "range",
+      "id": "dot_gap",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "default": 10,
+      "unit": "px",
+      "label": "Gap between dots"
+    },
+    {
+      "type": "range",
+      "id": "dot_offset",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 12,
+      "unit": "px",
+      "label": "Dots offset from carousel"
+    },
+    {
+      "type": "header",
+      "content": "Customer Avatar"
+    },
+    {
+      "type": "range",
+      "id": "avatar_size",
+      "min": 32,
+      "max": 100,
+      "step": 4,
+      "default": 56,
+      "unit": "px",
+      "label": "Avatar size"
+    },
+    {
+      "type": "range",
+      "id": "avatar_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 50,
+      "unit": "%",
+      "label": "Avatar corner radius (50% = circle)"
+    },
+    {
+      "type": "range",
+      "id": "avatar_border_width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "label": "Avatar border width"
+    },
+    {
+      "type": "color",
+      "id": "avatar_border_color",
+      "label": "Avatar border color",
+      "default": "#234231"
+    },
+    {
+      "type": "header",
+      "content": "Star Ratings"
+    },
+    {
+      "type": "range",
+      "id": "star_size_desktop",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "default": 16,
+      "unit": "px",
+      "label": "Star size — desktop"
+    },
+    {
+      "type": "range",
+      "id": "star_size_mobile",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 14,
+      "unit": "px",
+      "label": "Star size — mobile"
+    },
+    {
+      "type": "color",
+      "id": "star_active_color",
+      "label": "Filled star color",
+      "default": "#F6A313"
+    },
+    {
+      "type": "color",
+      "id": "star_inactive_color",
+      "label": "Empty star color",
+      "default": "#D1D1D1"
+    },
+    {
+      "type": "range",
+      "id": "star_gap",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 3,
+      "unit": "px",
+      "label": "Gap between stars"
+    },
+    {
+      "type": "range",
+      "id": "star_margin_bottom",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 6,
+      "unit": "px",
+      "label": "Space below stars"
+    },
+    {
+      "type": "header",
+      "content": "Review Title Typography"
+    },
+    {
+      "type": "range",
+      "id": "review_title_size_desktop",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "default": 18,
+      "unit": "px",
+      "label": "Font size — desktop"
+    },
+    {
+      "type": "range",
+      "id": "review_title_size_mobile",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px",
+      "label": "Font size — mobile"
+    },
+    {
+      "type": "select",
+      "id": "review_title_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semibold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "review_title_color",
+      "label": "Title color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "select",
+      "id": "review_title_transform",
+      "label": "Text transform",
+      "options": [
+        { "value": "none", "label": "As typed" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "capitalize", "label": "Title Case" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "review_title_margin_bottom",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "default": 8,
+      "unit": "px",
+      "label": "Space below title"
+    },
+    {
+      "type": "header",
+      "content": "Review Text Typography"
+    },
+    {
+      "type": "range",
+      "id": "review_text_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 15,
+      "unit": "px",
+      "label": "Font size — desktop"
+    },
+    {
+      "type": "range",
+      "id": "review_text_size_mobile",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "default": 14,
+      "unit": "px",
+      "label": "Font size — mobile"
+    },
+    {
+      "type": "color",
+      "id": "review_text_color",
+      "label": "Text color",
+      "default": "#505050"
+    },
+    {
+      "type": "range",
+      "id": "review_text_line_height",
+      "min": 1,
+      "max": 2.4,
+      "step": 0.1,
+      "default": 1.6,
+      "label": "Line height"
+    },
+    {
+      "type": "select",
+      "id": "review_text_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "review_text_margin_bottom",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 16,
+      "unit": "px",
+      "label": "Space below review text"
+    },
+    {
+      "type": "header",
+      "content": "Customer Name Typography"
+    },
+    {
+      "type": "range",
+      "id": "name_size_desktop",
+      "min": 11,
+      "max": 22,
+      "step": 1,
+      "default": 14,
+      "unit": "px",
+      "label": "Font size — desktop"
+    },
+    {
+      "type": "range",
+      "id": "name_size_mobile",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "default": 13,
+      "unit": "px",
+      "label": "Font size — mobile"
+    },
+    {
+      "type": "color",
+      "id": "name_color",
+      "label": "Name color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "select",
+      "id": "name_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semibold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "select",
+      "id": "name_transform",
+      "label": "Text transform",
+      "options": [
+        { "value": "none", "label": "As typed" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "capitalize", "label": "Title Case" }
+      ],
+      "default": "uppercase"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "limit": 20,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "customer_avatar",
+          "label": "Customer avatar photo"
+        },
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer name",
+          "default": "Sarah Johnson"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5,
+          "label": "Star rating"
+        },
+        {
+          "type": "text",
+          "id": "review_title",
+          "label": "Review headline",
+          "default": "Absolutely love this!"
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review body text",
+          "default": "The quality is outstanding and the customer service was exceptional. I highly recommend this to anyone looking for premium products."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vertical Testimonial",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "customer_name": "Sarah Johnson",
+            "rating": 5,
+            "review_title": "Absolutely love this!",
+            "review_text": "The quality is outstanding and the customer service was exceptional. Highly recommend to everyone."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "customer_name": "Michael Chen",
+            "rating": 5,
+            "review_title": "Best decision ever",
+            "review_text": "Exceeded all my expectations. Will definitely be purchasing again very soon."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "customer_name": "Emma Davis",
+            "rating": 4,
+            "review_title": "Great experience",
+            "review_text": "Very happy with my purchase. The team was super helpful throughout the whole process."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

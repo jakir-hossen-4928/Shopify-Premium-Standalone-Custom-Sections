@@ -1,0 +1,779 @@
+{%- style -%}
+  /* --- Base Dynamic Styles --- */
+  .fg-cat-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+  .fg-cat-{{ section.id }} .fg-cat-inner {
+    max-width: {{ section.settings.container_max_width }}px;
+    margin: 0 auto;
+    padding: 0 {{ section.settings.side_padding_mobile }}px;
+  }
+  .fg-cat-{{ section.id }} .fg-cat-head {
+    text-align: center;
+    margin-bottom: {{ section.settings.head_margin_bottom_mobile }}px;
+  }
+  .fg-cat-{{ section.id }} .fg-cat-title {
+    font-weight: {{ section.settings.heading_weight }};
+    font-size: {{ section.settings.heading_size_mobile }}px;
+    line-height: {{ section.settings.heading_line_height }};
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: {{ section.settings.heading_color }};
+  }
+  .fg-cat-{{ section.id }} .fg-cat-title em {
+    font-style: italic;
+    color: {{ section.settings.accent_color }};
+  }
+
+  /* --- Grid System --- */
+  .fg-cat-{{ section.id }} .fg-cat-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+    gap: {{ section.settings.grid_gap_mobile }}px;
+  }
+  .fg-cat-{{ section.id }} .fg-cat-card {
+    position: relative;
+    aspect-ratio: {{ section.settings.card_aspect_ratio_mobile }};
+    border-radius: {{ section.settings.card_radius }}px;
+    border: {{ section.settings.card_border_width }}px {{ section.settings.card_border_style }} {{ section.settings.card_border_color }};
+    overflow: hidden;
+    background: {{ section.settings.card_bg_color }};
+    text-decoration: none;
+    color: {{ section.settings.card_text_color }};
+    cursor: pointer;
+    transition: transform {{ section.settings.card_hover_transition }}s ease;
+  }
+  .fg-cat-{{ section.id }} .fg-cat-card:hover {
+    transform: translateY({{ section.settings.card_hover_offset }}px);
+  }
+  .fg-cat-{{ section.id }} .fg-cat-card.fg-tall {
+    grid-row: span {{ section.settings.tall_row_span }};
+    aspect-ratio: {{ section.settings.tall_aspect_ratio_mobile }};
+  }
+  .fg-cat-{{ section.id }} .fg-cat-card img,
+  .fg-cat-{{ section.id }} .fg-cat-card .fg-placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform {{ section.settings.image_hover_transition }}s ease;
+  }
+  .fg-cat-{{ section.id }} .fg-cat-card:hover img {
+    transform: scale({{ section.settings.image_scale_on_hover }});
+  }
+  .fg-cat-{{ section.id }} .fg-cat-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient({{ section.settings.overlay_direction }}, {{ section.settings.overlay_start_color }} {{ section.settings.overlay_start_position }}%, {{ section.settings.overlay_end_color }} {{ section.settings.overlay_end_position }}%);
+    pointer-events: none;
+    opacity: {{ section.settings.overlay_opacity }};
+  }
+  .fg-cat-{{ section.id }} .fg-cat-meta {
+    position: absolute;
+    left: {{ section.settings.meta_padding }}px;
+    right: {{ section.settings.meta_padding }}px;
+    bottom: {{ section.settings.meta_padding }}px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .fg-cat-{{ section.id }} .fg-cat-meta-title {
+    font-size: {{ section.settings.card_title_size_mobile }}rem;
+    font-weight: {{ section.settings.card_title_weight }};
+    margin: 0;
+    letter-spacing: -0.01em;
+    color: {{ section.settings.card_text_color }};
+  }
+  /* --- Arrow Button Styles --- */
+  .fg-cat-{{ section.id }} .fg-cat-arrow {
+    width: {{ section.settings.arrow_size }}px;
+    height: {{ section.settings.arrow_size }}px;
+    border-radius: {{ section.settings.arrow_border_radius }}px;
+    background: {{ section.settings.arrow_bg_color }};
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background {{ section.settings.button_transition }}s ease;
+  }
+  .fg-cat-{{ section.id }} .fg-cat-arrow svg {
+    width: {{ section.settings.arrow_icon_size }}px;
+    height: {{ section.settings.arrow_icon_size }}px;
+    stroke: {{ section.settings.arrow_icon_color }};
+    stroke-width: {{ section.settings.arrow_stroke_width }};
+    fill: none;
+  }
+  .fg-cat-{{ section.id }} .fg-cat-card:hover .fg-cat-arrow {
+    background: {{ section.settings.arrow_hover_bg_color }};
+  }
+  .fg-cat-{{ section.id }} .fg-cat-card:hover .fg-cat-arrow svg {
+    stroke: {{ section.settings.arrow_hover_icon_color }};
+  }
+
+  /* --- Responsive Breakpoints --- */
+  @media (min-width: 768px) {
+    .fg-cat-{{ section.id }} .fg-cat-grid {
+      grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+      gap: {{ section.settings.grid_gap_desktop }}px;
+    }
+    .fg-cat-{{ section.id }} .fg-cat-card {
+      aspect-ratio: {{ section.settings.card_aspect_ratio_desktop }};
+    }
+    .fg-cat-{{ section.id }} .fg-cat-card.fg-tall {
+      aspect-ratio: {{ section.settings.tall_aspect_ratio_desktop }};
+    }
+    .fg-cat-{{ section.id }} .fg-cat-meta-title {
+      font-size: {{ section.settings.card_title_size_desktop }}rem;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .fg-cat-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+    .fg-cat-{{ section.id }} .fg-cat-inner {
+      padding: 0 {{ section.settings.side_padding_desktop }}px;
+    }
+    .fg-cat-{{ section.id }} .fg-cat-head {
+      margin-bottom: {{ section.settings.head_margin_bottom_desktop }}px;
+    }
+    .fg-cat-{{ section.id }} .fg-cat-title {
+      font-size: {{ section.settings.heading_size_desktop }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="fg-cat-{{ section.id }}" id="categories-{{ section.id }}">
+  <div class="fg-cat-inner">
+    <div class="fg-cat-head">
+      {%- if section.settings.heading_text != blank -%}
+        <h2 class="fg-cat-title">{{ section.settings.heading_text }}</h2>
+      {%- endif -%}
+    </div>
+
+    <div class="fg-cat-grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'category' -%}
+          {%- assign collection_link = block.settings.collection -%}
+          {%- assign card_url = block.settings.custom_link -%}
+          {%- if collection_link != blank -%}
+            {%- assign card_url = collection_link.url -%}
+          {%- endif -%}
+          <a href="{{ card_url | default: '#' }}" class="fg-cat-card{% if block.settings.tall %} fg-tall{% endif %}" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 1600 | image_tag: 
+                loading: 'lazy', 
+                sizes: '(min-width: 992px) 25vw, (min-width: 768px) 50vw, 100vw',
+                widths: '300, 600, 900, 1200, 1600',
+                class: 'fg-card-image'
+              }}
+            {%- else -%}
+              <div class="fg-placeholder-svg">
+                {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {%- endif -%}
+            
+            <div class="fg-cat-meta">
+              <h3 class="fg-cat-meta-title">{{ block.settings.title | default: collection_link.title | escape }}</h3>
+              <span class="fg-cat-arrow">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 17L17 7M9 7H17V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom Pantry Grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Container"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 800,
+      "max": 2000,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1480
+    },
+    {
+      "type": "header",
+      "content": "Desktop Sizing & Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 8,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 112
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 8,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 112
+    },
+    {
+      "type": "range",
+      "id": "side_padding_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Side Padding (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "head_margin_bottom_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "label": "Heading Margin Bottom (Desktop)",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_desktop",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Grid Gap (Desktop)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Grid Columns (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Mobile Sizing & Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "side_padding_mobile",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Side Padding (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "head_margin_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Heading Margin Bottom (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_mobile",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Grid Gap (Mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Grid Columns (Mobile)",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#F5EFE0"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Base Text Color",
+      "default": "#1F3A2E"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#234231"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Italic Emphasized Color",
+      "default": "#C9A24B"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Fallback Background",
+      "default": "#2A1F18"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card Text Color",
+      "default": "#F5EFE0"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "transparent"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "Explore the Ethiopian Pantry"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Heading Font Size (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 20,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "text",
+      "id": "heading_line_height",
+      "label": "Heading Line Height",
+      "default": "1.2"
+    },
+    {
+      "type": "header",
+      "content": "Card Styling"
+    },
+    {
+      "type": "text",
+      "id": "card_aspect_ratio_desktop",
+      "label": "Aspect Ratio (Desktop)",
+      "default": "3/4",
+      "info": "Use format like '3/4' or '1/1'"
+    },
+    {
+      "type": "text",
+      "id": "card_aspect_ratio_mobile",
+      "label": "Aspect Ratio (Mobile)",
+      "default": "3/4",
+      "info": "Use format like '3/4' or '1/1'"
+    },
+    {
+      "type": "range",
+      "id": "tall_row_span",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Tall Card Grid Row Span",
+      "default": 2
+    },
+    {
+      "type": "text",
+      "id": "tall_aspect_ratio_desktop",
+      "label": "Tall Aspect Ratio (Desktop)",
+      "default": "3/8"
+    },
+    {
+      "type": "text",
+      "id": "tall_aspect_ratio_mobile",
+      "label": "Tall Aspect Ratio (Mobile)",
+      "default": "3/8"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "card_border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Border Width",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "card_border_style",
+      "label": "Card Border Style",
+      "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "dashed", "label": "Dashed" },
+        { "value": "dotted", "label": "Dotted" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "range",
+      "id": "meta_padding",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Card Content Padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_title_size_desktop",
+      "min": 0.8,
+      "max": 2.5,
+      "step": 0.1,
+      "unit": "rem",
+      "label": "Card Title Size (Desktop)",
+      "default": 1.4
+    },
+    {
+      "type": "range",
+      "id": "card_title_size_mobile",
+      "min": 0.8,
+      "max": 2.5,
+      "step": 0.1,
+      "unit": "rem",
+      "label": "Card Title Size (Mobile)",
+      "default": 1.3
+    },
+    {
+      "type": "select",
+      "id": "card_title_weight",
+      "label": "Card Title Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "header",
+      "content": "Interactive & Hover Effects"
+    },
+    {
+      "type": "range",
+      "id": "card_hover_transition",
+      "min": 0.1,
+      "max": 1,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Card Hover Transition Speed",
+      "default": 0.4
+    },
+    {
+      "type": "range",
+      "id": "card_hover_offset",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Lift on Hover (Y-offset)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "image_hover_transition",
+      "min": 0.2,
+      "max": 1.5,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Image Zoom Transition Speed",
+      "default": 0.6
+    },
+    {
+      "type": "range",
+      "id": "image_scale_on_hover",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "label": "Image Scale on Hover",
+      "default": 1.5
+    },
+    {
+      "type": "range",
+      "id": "button_transition",
+      "min": 0.1,
+      "max": 0.8,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Button Transition Speed",
+      "default": 0.3
+    },
+    {
+      "type": "header",
+      "content": "Overlay Settings"
+    },
+    {
+      "type": "select",
+      "id": "overlay_direction",
+      "label": "Gradient Direction",
+      "options": [
+        { "value": "180deg", "label": "Top to Bottom" },
+        { "value": "0deg", "label": "Bottom to Top" },
+        { "value": "90deg", "label": "Left to Right" },
+        { "value": "-90deg", "label": "Right to Left" },
+        { "value": "135deg", "label": "Diagonal" }
+      ],
+      "default": "180deg"
+    },
+    {
+      "type": "color",
+      "id": "overlay_start_color",
+      "label": "Overlay Start Color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "overlay_start_position",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Overlay Start Position",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "overlay_end_color",
+      "label": "Overlay End Color",
+      "default": "rgba(31,58,46,0.85)"
+    },
+    {
+      "type": "range",
+      "id": "overlay_end_position",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Overlay End Position",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Overlay Opacity",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Arrow Button Customization"
+    },
+    {
+      "type": "range",
+      "id": "arrow_size",
+      "min": 24,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "label": "Button Size (Width & Height)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "arrow_icon_size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Arrow Icon Size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "arrow_border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Button Border Radius",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "arrow_bg_color",
+      "label": "Button Background Color",
+      "default": "#234231"
+    },
+    {
+      "type": "color",
+      "id": "arrow_icon_color",
+      "label": "Arrow Icon Color",
+      "default": "#F5EFE0"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_bg_color",
+      "label": "Button Hover Background Color",
+      "default": "#F5EFE0"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_icon_color",
+      "label": "Arrow Hover Icon Color",
+      "default": "#234231"
+    },
+    {
+      "type": "range",
+      "id": "arrow_stroke_width",
+      "min": 1,
+      "max": 4,
+      "step": 0.5,
+      "label": "Arrow Stroke Width",
+      "default": 2
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Title",
+          "info": "Enter the category name (e.g., Coffee, Spices, Incense)"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Link to Collection",
+          "info": "Select a collection to link this card."
+        },
+        {
+          "type": "url",
+          "id": "custom_link",
+          "label": "Custom Link URL",
+          "info": "Optional: Overrides the collection link if provided."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Category Background Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "tall",
+          "label": "Make Tall Layout Element",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Pantry Grid",
+      "blocks": [
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" }
+      ]
+    }
+  ]
+}
+{% endschema %}
