@@ -172,6 +172,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--pts-grid-gap-m);
+    min-width: 0;
   }
 
   /* ─── Left Image ────────────────────────────────────────────── */
@@ -179,6 +180,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    min-width: 0;
   }
 
   .pts-image-wrapper {
@@ -213,6 +215,8 @@
     width: 100%;
     box-sizing: border-box;
     position: relative;
+    min-width: 0;
+    overflow: hidden;
   }
 
   .pts-carousel-wrapper {
@@ -221,6 +225,9 @@
     flex-direction: row;
     align-items: flex-start;
     gap: 0;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
   }
 
   .pts-carousel {
@@ -228,6 +235,7 @@
     grid-auto-flow: row;
     grid-auto-rows: auto;
     height: var(--pts-car-height-m);
+    min-height: 0;
     overflow-y: auto;
     overflow-x: visible;
     scroll-snap-type: y mandatory;
@@ -266,8 +274,7 @@
   }
 
   .pts-card.active {
-    border-color: var(--pts-card-active-border);
-    box-shadow: 0 0 0 2px var(--pts-card-active-shadow-color);
+    border: 2px green dashed;
   }
 
   /* ─── Card Inner ────────────────────────────────────────────── */
@@ -409,7 +416,12 @@
       padding: var(--pts-pad-top-d) 0 var(--pts-pad-bot-d);
     }
 
-    .pts-carousel { height: var(--pts-car-height-d); }
+    .pts-carousel {
+      height: var(--pts-car-height-d);
+      max-height: var(--pts-car-height-d);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
     .pts-carousel-dots { display: flex; }
 
     .pts-card { padding: var(--pts-card-pad-d); }
@@ -423,7 +435,39 @@
     .pts-customer-name { font-size: var(--pts-name-size-d); }
   }
 
+  /* ─── Mobile only horizontal review cards ─────────────────── */
+  @media (max-width: 767px) {
+    .pts-carousel-dots {
+      display: none;
+    }
+
+    .pts-carousel.pts-mobile-horizontal {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      height: auto;
+      max-height: none;
+      scroll-snap-type: x mandatory;
+      scroll-padding: 0;
+      gap: var(--pts-car-gap);
+      padding: var(--pts-car-pad) 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .pts-carousel.pts-mobile-horizontal .pts-card {
+      flex: 0 0 min(84vw, 380px);
+      min-width: min(84vw, 380px);
+      max-width: min(84vw, 380px);
+      scroll-snap-align: start;
+    }
+  }
+
   /* ─── Reduced Motion ────────────────────────────────────────── */
+
   @media (prefers-reduced-motion: reduce) {
     .pts-carousel { scroll-behavior: auto; }
     .pts-card { transition: none; }
@@ -465,7 +509,7 @@
       <div class="pts-carousel-block">
         <div class="pts-carousel-wrapper">
 
-          <div class="pts-carousel"
+          <div class="pts-carousel{% if section.settings.mobile_horizontal_reviews %} pts-mobile-horizontal{% endif %}"
                id="pts-carousel-{{ section.id }}"
                data-autoplay="{{ section.settings.autoplay_enable }}"
                data-speed="{{ section.settings.autoplay_speed }}"
@@ -1310,6 +1354,13 @@
       "id": "pause_on_touch",
       "label": "Pause on touch (mobile)",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_horizontal_reviews",
+      "label": "Use horizontal review cards on mobile",
+      "default": true,
+      "info": "Enabled by default on mobile. Turn this off to keep the review stack vertical."
     },
     {
       "type": "header",
