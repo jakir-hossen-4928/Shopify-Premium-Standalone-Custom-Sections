@@ -438,6 +438,8 @@ Below is a visual guide to the premium custom sections in this repository. Each 
 ### 29. Custom Navbar with Cart Drawer
 *A complete, standalone navigation system with integrated slide-out cart drawer, predictive search modal, and responsive mobile menu — all in a single file.*
 
+![Custom Navbar](./custom-navbar-with-drawer.liquid)
+
 👉 **Source Code:** [`custom-navbar-with-drawer.liquid`](./custom-navbar-with-drawer.liquid)
 
 *   **Key Features**:
