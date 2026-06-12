@@ -79,7 +79,6 @@
     --pts-card-hover-scale: {{ section.settings.card_hover_scale }};
     --pts-card-transition: {{ section.settings.card_transition }}ms;
     --pts-card-active-border: {{ section.settings.card_active_border_color }};
-    --pts-card-active-shadow-color: {{ section.settings.card_active_border_color }};
 
     /* Review Title */
     --pts-rt-size-d: {{ section.settings.review_title_size_desktop }}px;
@@ -125,6 +124,14 @@
     --pts-dot-active-bg: {{ section.settings.dot_active_color }};
     --pts-dot-gap: {{ section.settings.dot_gap }}px;
     --pts-dot-offset: {{ section.settings.dot_offset }}px;
+
+    /* Mobile Dots Navigation */
+    --pts-mobile-dot-size: {{ section.settings.mobile_dot_size }}px;
+    --pts-mobile-dot-active-size: {{ section.settings.mobile_dot_active_size }}px;
+    --pts-mobile-dot-bg: {{ section.settings.mobile_dot_color }};
+    --pts-mobile-dot-active-bg: {{ section.settings.mobile_dot_active_color }};
+    --pts-mobile-dot-gap: {{ section.settings.mobile_dot_gap }}px;
+    --pts-mobile-dot-mt: {{ section.settings.mobile_dot_margin_top }}px;
   }
 
   /* ─── Base Section ─────────────────────────────────────────── */
@@ -216,18 +223,21 @@
     box-sizing: border-box;
     position: relative;
     min-width: 0;
-    overflow: hidden;
   }
 
   .pts-carousel-wrapper {
     position: relative;
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 0;
+    flex-direction: column;
     width: 100%;
-    min-width: 0;
-    overflow: hidden;
+  }
+
+  /* Desktop: Row layout with dots on right */
+  @media (min-width: 1024px) {
+    .pts-carousel-wrapper {
+      flex-direction: row;
+      align-items: flex-start;
+    }
   }
 
   .pts-carousel {
@@ -246,7 +256,7 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding: var(--pts-car-pad) 4px var(--pts-car-pad) 4px;
-    flex: 1;
+    width: 100%;
   }
 
   .pts-carousel::-webkit-scrollbar { display: none; }
@@ -273,8 +283,11 @@
     z-index: 2;
   }
 
+  /* Active card: uses dashed border style from schema + active color */
   .pts-card.active {
-    border: 2px green dashed;
+    border-color: var(--pts-card-active-border);
+    border-style: var(--pts-card-active-border-style);
+    box-shadow: 0 0 0 2px var(--pts-card-active-border);
   }
 
   /* ─── Card Inner ────────────────────────────────────────────── */
@@ -347,7 +360,7 @@
     text-transform: var(--pts-name-transform);
   }
 
-  /* ─── Dots Navigation ───────────────────────────────────────── */
+  /* ─── Dots Navigation (Desktop - Vertical on right) ─────────── */
   .pts-carousel-dots {
     display: none;
     flex-direction: column;
@@ -381,7 +394,38 @@
 
   .pts-dot:hover { opacity: 0.7; }
 
-  /* ─── Tablet ────────────────────────────────────────────────── */
+  /* ─── Mobile Dots Navigation (Horizontal below cards) ───────── */
+  .pts-mobile-dots {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: var(--pts-mobile-dot-gap);
+    margin-top: var(--pts-mobile-dot-mt);
+    padding: 12px 0 4px;
+    width: 100%;
+  }
+
+  .pts-mobile-dot {
+    width: var(--pts-mobile-dot-size);
+    height: var(--pts-mobile-dot-size);
+    border-radius: 50%;
+    background-color: var(--pts-mobile-dot-bg);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  .pts-mobile-dot.active {
+    background-color: var(--pts-mobile-dot-active-bg);
+    width: var(--pts-mobile-dot-active-size);
+    height: var(--pts-mobile-dot-active-size);
+  }
+
+  .pts-mobile-dot:hover { opacity: 0.7; }
+
+  /* ─── Tablet Styles ─────────────────────────────────────────── */
   @media (min-width: 768px) and (max-width: 1023px) {
     .pts-section {
       padding: var(--pts-pad-top-t) 0 var(--pts-pad-bot-t);
@@ -394,7 +438,7 @@
     }
   }
 
-  /* ─── Desktop ───────────────────────────────────────────────── */
+  /* ─── Desktop Styles ────────────────────────────────────────── */
   @media (min-width: 1024px) {
     .pts-section {
       padding: var(--pts-pad-top-d) 0 var(--pts-pad-bot-d);
@@ -412,17 +456,16 @@
       height: var(--pts-img-h-d);
     }
 
-    .pts-section {
-      padding: var(--pts-pad-top-d) 0 var(--pts-pad-bot-d);
-    }
-
     .pts-carousel {
       height: var(--pts-car-height-d);
       max-height: var(--pts-car-height-d);
       overflow-y: auto;
       overflow-x: hidden;
     }
-    .pts-carousel-dots { display: flex; }
+
+    .pts-carousel-dots {
+      display: flex;
+    }
 
     .pts-card { padding: var(--pts-card-pad-d); }
 
@@ -433,14 +476,21 @@
     .pts-review-title { font-size: var(--pts-rt-size-d); }
     .pts-review-text { font-size: var(--pts-rtx-size-d); }
     .pts-customer-name { font-size: var(--pts-name-size-d); }
+
+    /* Hide mobile dots on desktop */
+    .pts-mobile-dots {
+      display: none !important;
+    }
   }
 
-  /* ─── Mobile only horizontal review cards ─────────────────── */
+  /* ─── Mobile Only Styles (Horizontal slider + bottom dots) ──── */
   @media (max-width: 767px) {
+    /* Hide desktop vertical dots on mobile */
     .pts-carousel-dots {
-      display: none;
+      display: none !important;
     }
 
+    /* When horizontal reviews is enabled */
     .pts-carousel.pts-mobile-horizontal {
       display: flex;
       flex-direction: row;
@@ -450,24 +500,33 @@
       max-width: 100%;
       box-sizing: border-box;
       height: auto;
-      max-height: none;
+      min-height: auto;
       scroll-snap-type: x mandatory;
-      scroll-padding: 0;
+      scroll-padding: 0 var(--pts-car-pad);
       gap: var(--pts-car-gap);
-      padding: var(--pts-car-pad) 0;
+      padding: var(--pts-car-pad) var(--pts-car-pad);
       -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .pts-carousel.pts-mobile-horizontal::-webkit-scrollbar {
+      display: none;
     }
 
     .pts-carousel.pts-mobile-horizontal .pts-card {
-      flex: 0 0 min(84vw, 380px);
-      min-width: min(84vw, 380px);
-      max-width: min(84vw, 380px);
+      flex: 0 0 min(85vw, 360px);
+      min-width: min(85vw, 360px);
+      max-width: min(85vw, 360px);
       scroll-snap-align: start;
+    }
+
+    /* Show mobile dots */
+    .pts-mobile-dots {
+      display: flex;
     }
   }
 
   /* ─── Reduced Motion ────────────────────────────────────────── */
-
   @media (prefers-reduced-motion: reduce) {
     .pts-carousel { scroll-behavior: auto; }
     .pts-card { transition: none; }
@@ -516,6 +575,7 @@
                data-loop="{{ section.settings.loop_enable }}"
                data-pause-hover="{{ section.settings.pause_on_hover }}"
                data-pause-touch="{{ section.settings.pause_on_touch }}"
+               data-active-border-style="{{ section.settings.card_active_border_style }}"
                role="list"
                tabindex="0"
                aria-label="Testimonials">
@@ -572,7 +632,23 @@
             {%- endfor -%}
           </div>
 
-          <!-- Dots: Desktop only, right side of carousel -->
+          <!-- Mobile Dots (visible only on mobile when horizontal slider is active) -->
+          <div class="pts-mobile-dots" id="pts-mobile-dots-{{ section.id }}" aria-label="Testimonial navigation" role="tablist">
+            {%- assign dot_index = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'testimonial' -%}
+                <button class="pts-mobile-dot"
+                        data-mobile-dot-index="{{ dot_index }}"
+                        role="tab"
+                        aria-label="Go to testimonial {{ dot_index | plus: 1 }}"
+                        aria-selected="false">
+                </button>
+                {%- assign dot_index = dot_index | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          <!-- Desktop Dots (vertical on the right side) -->
           <div class="pts-carousel-dots" id="pts-dots-{{ section.id }}" aria-label="Testimonial navigation" role="tablist">
             {%- assign dot_index = 0 -%}
             {%- for block in section.blocks -%}
@@ -596,225 +672,271 @@
 </section>
 
 <script>
-(function () {
-  const carousel = document.getElementById('pts-carousel-{{ section.id }}');
-  const dotsContainer = document.getElementById('pts-dots-{{ section.id }}');
+(function() {
+  'use strict';
+
+  var carousel = document.getElementById('pts-carousel-{{ section.id }}');
+  var desktopDotsContainer = document.getElementById('pts-dots-{{ section.id }}');
+  var mobileDotsContainer = document.getElementById('pts-mobile-dots-{{ section.id }}');
+
   if (!carousel) return;
 
-  const cards = carousel.querySelectorAll('.pts-card');
-  if (cards.length <= 1) return;
+  var cards = Array.prototype.slice.call(carousel.querySelectorAll('.pts-card'));
+  if (cards.length <= 1) {
+    // Still highlight the only card
+    if (cards.length === 1) cards[0].classList.add('active');
+    return;
+  }
 
-  const dots = dotsContainer ? dotsContainer.querySelectorAll('.pts-dot') : [];
-  const autoplay    = carousel.dataset.autoplay === 'true';
-  const speed       = parseInt(carousel.dataset.speed, 10) || 5000;
-  const loop        = carousel.dataset.loop === 'true';
-  const pauseHover  = carousel.dataset.pauseHover === 'true';
-  const pauseTouch  = carousel.dataset.pauseTouch === 'true';
+  var desktopDots = desktopDotsContainer
+    ? Array.prototype.slice.call(desktopDotsContainer.querySelectorAll('.pts-dot'))
+    : [];
+  var mobileDots = mobileDotsContainer
+    ? Array.prototype.slice.call(mobileDotsContainer.querySelectorAll('.pts-mobile-dot'))
+    : [];
 
-  let currentIndex  = 0;
-  let autoplayTimer = null;
-  let isPaused      = false;
-  let userScrolling = false;
-  let scrollTimer   = null;
+  var autoplay     = carousel.dataset.autoplay === 'true';
+  var speed        = parseInt(carousel.dataset.speed, 10) || 5000;
+  var loop         = carousel.dataset.loop === 'true';
+  var pauseHover   = carousel.dataset.pauseHover === 'true';
+  var pauseTouch   = carousel.dataset.pauseTouch === 'true';
 
-  /* ── Determine which card is most visible in the viewport ── */
+  /* ── active border style from data attr (set via Liquid) ─── */
+  var activeBorderStyle = carousel.dataset.activeBorderStyle || 'dashed';
+
+  var currentIndex  = 0;
+  var autoplayTimer = null;
+  var isPaused      = false;
+  var userScrolling = false;
+  var scrollTimeout = null;
+
+  /* ── helpers ──────────────────────────────────────────────── */
+
+  /**
+   * Detect whether we are in the horizontal-mobile layout.
+   * Re-evaluated on every call so resize / orientation changes
+   * are handled correctly.
+   */
+  function isMobileHorizontal() {
+    return window.innerWidth <= 767 &&
+           carousel.classList.contains('pts-mobile-horizontal');
+  }
+
+  /**
+   * Find the index of the card whose centre is closest to the
+   * visible centre of the scrolling carousel element.
+   *
+   * On desktop (vertical scroll) we compare vertical centres
+   * against the carousel element's own viewport, NOT the window.
+   * On mobile-horizontal we compare horizontal centres.
+   */
   function getMostVisibleCardIndex() {
-    const carouselRect = carousel.getBoundingClientRect();
-    const carouselTop = carouselRect.top;
-    const carouselBottom = carouselRect.bottom;
-    const carouselCenter = carouselTop + (carouselRect.height / 2);
-    
-    let bestIndex = 0;
-    let bestDistance = Infinity;
-    
-    cards.forEach((card, idx) => {
-      const cardRect = card.getBoundingClientRect();
-      const cardCenter = (cardRect.top + cardRect.bottom) / 2;
-      const distance = Math.abs(cardCenter - carouselCenter);
-      
-      // Check if card is within the carousel's visible area
-      const isInView = cardRect.bottom > carouselTop && cardRect.top < carouselBottom;
-      
-      if (isInView && distance < bestDistance) {
-        bestDistance = distance;
-        bestIndex = idx;
-      }
-    });
-    
-    return bestIndex;
+    var carouselRect = carousel.getBoundingClientRect();
+
+    if (isMobileHorizontal()) {
+      /* ── horizontal (mobile) ── */
+      var viewCentreX = carouselRect.left + carouselRect.width / 2;
+      var best = 0, bestDist = Infinity;
+      cards.forEach(function(card, idx) {
+        var r = card.getBoundingClientRect();
+        var dist = Math.abs((r.left + r.right) / 2 - viewCentreX);
+        if (dist < bestDist) { bestDist = dist; best = idx; }
+      });
+      return best;
+    } else {
+      /* ── vertical (desktop + tablet + mobile-stack) ──
+         Key fix: measure card centres relative to the carousel
+         element's own bounding rect, accounting for its scroll
+         offset so the comparison is in document space.          */
+      var scrollTop   = carousel.scrollTop;
+      var visibleTop  = scrollTop;
+      var visibleBot  = scrollTop + carousel.clientHeight;
+      var viewCentreY = visibleTop + carousel.clientHeight / 2;
+
+      var best = 0, bestDist = Infinity;
+      cards.forEach(function(card, idx) {
+        /* offsetTop is relative to the carousel (scroll parent) */
+        var cardTop    = card.offsetTop;
+        var cardBot    = cardTop + card.offsetHeight;
+        var cardCentre = (cardTop + cardBot) / 2;
+        var dist       = Math.abs(cardCentre - viewCentreY);
+        if (dist < bestDist) { bestDist = dist; best = idx; }
+      });
+      return best;
+    }
   }
 
-  /* ── Activate a specific card ── */
-  function activate(index) {
+  function setActiveCard(index) {
     if (index < 0) index = 0;
     if (index >= cards.length) index = cards.length - 1;
-    
-    if (currentIndex === index) return;
-    
+
+    cards.forEach(function(card, i) {
+      if (i === index) {
+        card.classList.add('active');
+        /* Apply the schema-controlled active border style */
+        card.style.borderStyle = activeBorderStyle;
+      } else {
+        card.classList.remove('active');
+        /* Restore the base border style from the CSS variable */
+        card.style.borderStyle = '';
+      }
+    });
+
+    desktopDots.forEach(function(dot, i) {
+      var on = i === index;
+      dot.classList.toggle('active', on);
+      dot.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+
+    mobileDots.forEach(function(dot, i) {
+      var on = i === index;
+      dot.classList.toggle('active', on);
+      dot.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+
     currentIndex = index;
-    
-    cards.forEach((c, i) => {
-      if (i === index) {
-        c.classList.add('active');
-      } else {
-        c.classList.remove('active');
-      }
-    });
-    
-    dots.forEach((d, i) => {
-      if (i === index) {
-        d.classList.add('active');
-        d.setAttribute('aria-selected', 'true');
-      } else {
-        d.classList.remove('active');
-        d.setAttribute('aria-selected', 'false');
-      }
-    });
   }
 
-  /* ── Update active card based on current scroll position ── */
-  function updateActiveCardFromScroll() {
-    const mostVisibleIndex = getMostVisibleCardIndex();
-    if (mostVisibleIndex !== currentIndex) {
-      activate(mostVisibleIndex);
-    }
+  function updateActiveFromScroll() {
+    var idx = getMostVisibleCardIndex();
+    if (idx !== currentIndex) setActiveCard(idx);
   }
 
-  /* ── Scroll to a specific card ── */
-  function scrollTo(index) {
+  function scrollToCard(index) {
     if (index < 0) index = 0;
     if (index >= cards.length) index = cards.length - 1;
-    
-    const targetCard = cards[index];
-    if (targetCard) {
-      targetCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      activate(index);
+
+    var target = cards[index];
+    if (!target) return;
+
+    if (isMobileHorizontal()) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    } else {
+      /* Scroll the carousel element itself, not the window */
+      var targetTop = target.offsetTop - parseInt(
+        getComputedStyle(carousel).scrollPaddingTop || '0', 10
+      );
+      carousel.scrollTo({ top: targetTop, behavior: 'smooth' });
     }
+
+    setActiveCard(index);
   }
 
-  /* ── Autoplay functions ── */
+  /* ── autoplay ──────────────────────────────────────────────── */
+
   function startAutoplay() {
     if (!autoplay || cards.length <= 1) return;
     stopAutoplay();
-    autoplayTimer = setInterval(() => {
-      if (!userScrolling && !isPaused) {
-        let nextIndex = currentIndex + 1;
-        if (nextIndex >= cards.length) {
-          if (loop) {
-            nextIndex = 0;
-          } else {
-            return;
-          }
-        }
-        scrollTo(nextIndex);
+    autoplayTimer = setInterval(function() {
+      if (userScrolling || isPaused) return;
+      var next = currentIndex + 1;
+      if (next >= cards.length) {
+        if (loop) { next = 0; } else { return; }
       }
+      scrollToCard(next);
     }, speed);
   }
-  
+
   function stopAutoplay() {
-    if (autoplayTimer) {
-      clearInterval(autoplayTimer);
-      autoplayTimer = null;
-    }
+    if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
   }
 
-  /* ── IntersectionObserver as a backup to detect visible cards ── */
-  const observer = new IntersectionObserver(entries => {
-    let bestEntry = null;
-    let bestRatio = 0;
-    
-    entries.forEach(entry => {
-      if (entry.isIntersecting && entry.intersectionRatio > bestRatio) {
-        bestRatio = entry.intersectionRatio;
-        bestEntry = entry;
-      }
-    });
-    
-    if (bestEntry) {
-      const idx = parseInt(bestEntry.target.dataset.index, 10);
-      if (!isNaN(idx) && idx !== currentIndex) {
-        activate(idx);
-      }
-    }
-  }, { root: carousel, threshold: [0.3, 0.5, 0.7], rootMargin: '0px' });
+  /* ── scroll listener ───────────────────────────────────────── */
 
-  cards.forEach(c => observer.observe(c));
-
-  /* ── Scroll event listener ── */
-  carousel.addEventListener('scroll', () => {
+  carousel.addEventListener('scroll', function() {
     userScrolling = true;
-    
-    // Update active card based on scroll position
-    updateActiveCardFromScroll();
-    
+
+    /* Update active card & dots in real-time during scroll */
+    updateActiveFromScroll();
+
     if (autoplay) stopAutoplay();
-    
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(() => {
+
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(function() {
       userScrolling = false;
+      /* Final snap position check after scroll settles */
+      updateActiveFromScroll();
       if (autoplay && !isPaused) startAutoplay();
     }, 200);
   }, { passive: true });
 
-  /* ── Hover pause ── */
+  /* ── hover / touch pause ───────────────────────────────────── */
+
   if (pauseHover) {
-    carousel.addEventListener('mouseenter', () => { 
-      isPaused = true; 
-      stopAutoplay(); 
+    carousel.addEventListener('mouseenter', function() {
+      isPaused = true; stopAutoplay();
     });
-    carousel.addEventListener('mouseleave', () => {
+    carousel.addEventListener('mouseleave', function() {
       isPaused = false;
       if (autoplay && !userScrolling) startAutoplay();
     });
   }
 
-  /* ── Touch pause ── */
   if (pauseTouch) {
-    carousel.addEventListener('touchstart', () => { 
-      isPaused = true; 
-      stopAutoplay(); 
+    carousel.addEventListener('touchstart', function() {
+      isPaused = true; stopAutoplay();
     }, { passive: true });
-    carousel.addEventListener('touchend', () => {
-      setTimeout(() => {
+    carousel.addEventListener('touchend', function() {
+      setTimeout(function() {
         isPaused = false;
         if (autoplay && !userScrolling) startAutoplay();
       }, 400);
     }, { passive: true });
   }
 
-  /* ── Keyboard navigation ── */
-  carousel.addEventListener('keydown', e => {
-    if (e.key === 'ArrowDown') { 
-      e.preventDefault(); 
-      scrollTo(currentIndex + 1); 
-    }
-    if (e.key === 'ArrowUp') { 
-      e.preventDefault(); 
-      scrollTo(currentIndex - 1); 
-    }
-  });
+  /* ── dot click handlers ────────────────────────────────────── */
 
-  /* ── Dot navigation ── */
-  dots.forEach((dot, idx) => {
-    dot.addEventListener('click', () => {
-      scrollTo(idx);
-      if (autoplay) { 
-        stopAutoplay(); 
-        setTimeout(() => { 
-          if (!isPaused && !userScrolling) startAutoplay(); 
-        }, 3000); 
+  function dotClickHandler(idx) {
+    return function(e) {
+      e.preventDefault();
+      scrollToCard(idx);
+      if (autoplay) {
+        stopAutoplay();
+        setTimeout(function() {
+          if (!isPaused && !userScrolling) startAutoplay();
+        }, 3000);
       }
-    });
+    };
+  }
+
+  desktopDots.forEach(function(dot, idx) {
+    dot.addEventListener('click', dotClickHandler(idx));
+  });
+  mobileDots.forEach(function(dot, idx) {
+    dot.addEventListener('click', dotClickHandler(idx));
   });
 
-  /* ── Initialize ── */
-  // Wait a moment for layout to settle, then find which card is most visible
-  setTimeout(() => {
-    const initialIndex = getMostVisibleCardIndex();
-    activate(initialIndex);
-  }, 100);
-  
-  if (autoplay) startAutoplay();
+  /* ── keyboard navigation ───────────────────────────────────── */
+
+  carousel.addEventListener('keydown', function(e) {
+    if (isMobileHorizontal()) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); scrollToCard(currentIndex + 1); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); scrollToCard(currentIndex - 1); }
+    } else {
+      if (e.key === 'ArrowDown') { e.preventDefault(); scrollToCard(currentIndex + 1); }
+      if (e.key === 'ArrowUp')   { e.preventDefault(); scrollToCard(currentIndex - 1); }
+    }
+  });
+
+  /* ── init ──────────────────────────────────────────────────── */
+
+  /* Wait one frame for layout, then set the first card active */
+  requestAnimationFrame(function() {
+    setTimeout(function() {
+      setActiveCard(getMostVisibleCardIndex());
+      if (autoplay) startAutoplay();
+    }, 100);
+  });
+
+  /* Re-check active card on resize / orientation change */
+  var resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      setActiveCard(getMostVisibleCardIndex());
+    }, 150);
+  });
+
 })();
 </script>
 
@@ -1385,13 +1507,13 @@
     {
       "type": "select",
       "id": "card_border_style",
-      "label": "Border style",
+      "label": "Border style (inactive cards)",
       "options": [
         { "value": "solid", "label": "Solid" },
         { "value": "dashed", "label": "Dashed" },
         { "value": "dotted", "label": "Dotted" }
       ],
-      "default": "solid"
+      "default": "dashed"
     },
     {
       "type": "color",
@@ -1467,8 +1589,20 @@
       "default": "#234231"
     },
     {
+      "type": "select",
+      "id": "card_active_border_style",
+      "label": "Active card border style",
+      "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "dashed", "label": "Dashed" },
+        { "value": "dotted", "label": "Dotted" }
+      ],
+      "default": "dashed",
+      "info": "Border style applied to the currently active card"
+    },
+    {
       "type": "header",
-      "content": "Dots Navigation"
+      "content": "Desktop Dots Navigation (Vertical)"
     },
     {
       "type": "range",
@@ -1521,6 +1655,62 @@
       "default": 12,
       "unit": "px",
       "label": "Dots offset from carousel"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Dots Navigation (Horizontal)"
+    },
+    {
+      "type": "range",
+      "id": "mobile_dot_size",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 8,
+      "unit": "px",
+      "label": "Dot size"
+    },
+    {
+      "type": "range",
+      "id": "mobile_dot_active_size",
+      "min": 6,
+      "max": 24,
+      "step": 1,
+      "default": 12,
+      "unit": "px",
+      "label": "Active dot size"
+    },
+    {
+      "type": "color",
+      "id": "mobile_dot_color",
+      "label": "Dot color",
+      "default": "#D1D1D1"
+    },
+    {
+      "type": "color",
+      "id": "mobile_dot_active_color",
+      "label": "Active dot color",
+      "default": "#234231"
+    },
+    {
+      "type": "range",
+      "id": "mobile_dot_gap",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "default": 10,
+      "unit": "px",
+      "label": "Gap between dots"
+    },
+    {
+      "type": "range",
+      "id": "mobile_dot_margin_top",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 16,
+      "unit": "px",
+      "label": "Margin top above dots"
     },
     {
       "type": "header",

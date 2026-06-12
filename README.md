@@ -435,6 +435,23 @@ Below is a visual guide to the premium custom sections in this repository. Each 
 
 ---
 
+### 29. Custom Navbar with Cart Drawer
+*A complete, standalone navigation system with integrated slide-out cart drawer, predictive search modal, and responsive mobile menu — all in a single file.*
+
+👉 **Source Code:** [`custom-navbar-with-drawer.liquid`](./custom-navbar-with-drawer.liquid)
+
+*   **Key Features**:
+    *   **Sticky / Fixed Navbar**: JS-powered scroll handler that keeps the navbar visible at all times, bypassing Shopify parent `overflow: hidden` issues.
+    *   **Slide-Out Cart Drawer**: Full-viewport-height right-side drawer with real-time cart loading, quantity controls, item removal, and direct `/checkout` navigation.
+    *   **Predictive Search Modal**: Top-sliding search panel using Shopify's `/search/suggest.json` API — shows products, collections, and articles in real time with keyboard support (Enter to navigate).
+    *   **Responsive Mobile Menu**: Left-side slide-out drawer with accordion submenus, account link, and quick cart access.
+    *   **Dropdown Menus**: Hover/click desktop dropdowns with `overflow: visible` chain and high z-index — never clipped by parent containers.
+    *   **Cart Count Bubble**: Animated bump effect on add-to-cart, auto-updates via multiple Shopify event hooks.
+    *   **150+ Theme Editor Controls**: Full color, typography, spacing, and layout customization for every component.
+    *   **Zero Dependencies**: Pure vanilla JS + CSS, no libraries required.
+
+---
+
 ## 🛠️ Step-by-Step Installation Guide
 
 Implementing any of these custom sections on your Shopify store is quick and completely code-free:
@@ -455,6 +472,111 @@ Implementing any of these custom sections on your Shopify store is quick and com
     *   Return to your Shopify Admin and click **Customize** on your theme.
     *   Click **Add Section** in the sidebar.
     *   Search for the section name and add it to your page!
+
+---
+
+## 🔗 Developer Guide: Integrating Add-to-Cart with the Navbar Drawer
+
+The **Custom Navbar with Cart Drawer** section (`custom-navbar-with-drawer.liquid`) listens for standard Shopify cart events. This means any custom product section you build can trigger the drawer to open and update automatically — no extra wiring needed.
+
+### How It Works
+
+The navbar drawer listens for these JavaScript events:
+
+| Event | Triggered When | Drawer Action |
+|---|---|---|
+| `cart:update` | Shopify standard cart update | Updates bubble count + reloads drawer if open, otherwise opens drawer |
+| `cart:updated` | Cart fully updated | Reloads drawer if open, otherwise opens drawer |
+| `cart:open` | External request to open cart | Opens the cart drawer |
+| `cart-drawer:open` | External request to open drawer | Opens the cart drawer |
+| `ajaxProduct:added` | AJAX product added to cart | Reloads drawer + opens if closed |
+
+### Adding a Product to Cart from Your Custom Section
+
+Use the Shopify Cart AJAX API and then dispatch the appropriate event. Here's a complete example you can drop into any custom product section:
+
+```liquid
+{% comment %}
+  Example: Custom product card with Add to Cart button
+  Place this inside your section's HTML
+{% endcomment %}
+
+<button
+  class="my-add-to-cart-btn"
+  data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+  data-quantity="1">
+  Add to Cart
+</button>
+
+<script>
+(function () {
+  var btn = document.querySelector('.my-add-to-cart-btn');
+  if (!btn) return;
+
+  btn.addEventListener('click', function () {
+    var variantId = this.dataset.variantId;
+    var quantity  = parseInt(this.dataset.quantity) || 1;
+
+    /* Step 1: Add product to cart via Shopify AJAX API */
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify({
+        items: [{ id: variantId, quantity: quantity }]
+      })
+    })
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+
+      /* Step 2: Dispatch event so the navbar drawer opens & updates */
+      document.dispatchEvent(new CustomEvent('cart:update', {
+        detail: {
+          itemCount: data.items ? data.items.length : 1,
+          data: data
+        },
+        bubbles: true
+      }));
+
+      /* Optional: Also fire ajaxProduct:added for broader compatibility */
+      document.dispatchEvent(new CustomEvent('ajaxProduct:added', {
+        bubbles: true
+      }));
+
+      /* Optional: Show success feedback */
+      btn.textContent = 'Added!';
+      setTimeout(function () { btn.textContent = 'Add to Cart'; }, 1500);
+    })
+    .catch(function (err) {
+      console.error('Add to cart failed:', err);
+      btn.textContent = 'Error — Try Again';
+      setTimeout(function () { btn.textContent = 'Add to Cart'; }, 2000);
+    });
+  });
+})();
+</script>
+```
+
+### Opening the Drawer Without Adding a Product
+
+If you want a custom button (e.g. a "View Cart" link in another section) to simply open the drawer:
+
+```javascript
+/* Option 1: Dispatch cart:open event */
+document.dispatchEvent(new CustomEvent('cart:open', { bubbles: true }));
+
+/* Option 2: Dispatch cart-drawer:open event */
+document.dispatchEvent(new CustomEvent('cart-drawer:open', { bubbles: true }));
+```
+
+### Important Notes
+
+*   **Cart must have items for checkout**: The `/checkout` link in the drawer only works when there is at least 1 item in the cart. If the cart is empty, Shopify redirects back to the cart page.
+*   **No ID conflicts**: The navbar uses section-scoped IDs (`nbDrawer-{{ section.id }}`), so it works alongside other sections without collisions.
+*   **Works with Horizon theme**: The event listeners are compatible with Shopify's Horizon theme and other AJAX-based add-to-cart implementations.
+*   **Variant ID required**: Always use the variant ID (not the product ID) when calling `/cart/add.js`. Use `{{ product.selected_or_first_available_variant.id }}` in Liquid.
 
 ---
 

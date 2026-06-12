@@ -1,0 +1,3725 @@
+ {% comment %}
+ navbar-drawer.liquid
+  Place in: sections/navbar-drawer.liquid
+{% endcomment %}
+
+{%- liquid
+  assign nav_bg = section.settings.nav_bg
+  assign nav_text = section.settings.nav_text
+  assign nav_border = section.settings.nav_border
+  assign logo_color = section.settings.logo_color
+  assign menu_color = section.settings.menu_color
+  assign menu_hover_color = section.settings.menu_hover_color
+  assign dropdown_bg = section.settings.dropdown_bg
+  assign dropdown_text = section.settings.dropdown_text
+  assign dropdown_border = section.settings.dropdown_border
+  assign icon_color = section.settings.icon_color
+  assign icon_hover_color = section.settings.icon_hover_color
+  assign cart_bubble_bg = section.settings.cart_bubble_bg
+  assign cart_bubble_text = section.settings.cart_bubble_text
+  assign drawer_bg = section.settings.drawer_bg
+  assign drawer_text = section.settings.drawer_text
+  assign drawer_border = section.settings.drawer_border
+  assign drawer_header_bg = section.settings.drawer_header_bg
+  assign drawer_header_text = section.settings.drawer_header_text
+  assign button_bg = section.settings.checkout_btn_bg
+  assign button_text = section.settings.checkout_btn_text
+  assign search_bg = section.settings.search_bg
+  assign search_text = section.settings.search_text
+  assign search_border = section.settings.search_border
+  assign search_result_bg = section.settings.search_result_bg
+  assign search_result_text = section.settings.search_result_text
+  assign mobile_menu_bg = section.settings.mobile_menu_bg
+  assign mobile_menu_text = section.settings.mobile_menu_text
+  assign overlay_color = section.settings.overlay_color
+  assign main_menu = section.settings.main_menu
+-%}
+
+<style>
+  /* =====================
+     CSS VARIABLES
+  ===================== */
+  #shopify-section-{{ section.id }} {
+    --nav-bg: {{ nav_bg }};
+    --nav-text: {{ nav_text }};
+    --nav-border: {{ nav_border }};
+    --logo-color: {{ logo_color }};
+    --menu-color: {{ menu_color }};
+    --menu-hover-color: {{ menu_hover_color }};
+    --dropdown-bg: {{ dropdown_bg }};
+    --dropdown-text: {{ dropdown_text }};
+    --dropdown-border: {{ dropdown_border }};
+    --icon-color: {{ icon_color }};
+    --icon-hover-color: {{ icon_hover_color }};
+    --cart-bubble-bg: {{ cart_bubble_bg }};
+    --cart-bubble-text: {{ cart_bubble_text }};
+    --drawer-bg: {{ drawer_bg }};
+    --drawer-text: {{ drawer_text }};
+    --drawer-border: {{ drawer_border }};
+    --drawer-header-bg: {{ drawer_header_bg }};
+    --drawer-header-text: {{ drawer_header_text }};
+    --checkout-btn-bg: {{ button_bg }};
+    --checkout-btn-text: {{ button_text }};
+    --search-bg: {{ search_bg }};
+    --search-text: {{ search_text }};
+    --search-border: {{ search_border }};
+    --search-result-bg: {{ search_result_bg }};
+    --search-result-text: {{ search_result_text }};
+    --mobile-menu-bg: {{ mobile_menu_bg }};
+    --mobile-menu-text: {{ mobile_menu_text }};
+    --overlay-color: {{ overlay_color }};
+    --nav-height-desktop: {{ section.settings.nav_height_desktop }}px;
+    --nav-height-mobile: {{ section.settings.nav_height_mobile }}px;
+    --nav-border-width: {{ section.settings.nav_border_width }}px;
+    --nav-border-style: {{ section.settings.nav_border_style }};
+    --nav-border-radius: {{ section.settings.nav_border_radius }}px;
+    --container-max-width: {{ section.settings.container_max_width }}px;
+    --nav-padding-desktop: {{ section.settings.nav_padding_desktop }}px;
+    --nav-padding-mobile: {{ section.settings.nav_padding_mobile }}px;
+    --nav-shadow: {{ section.settings.nav_shadow }};
+    --nav-position: {{ section.settings.nav_position }};
+    --nav-top-offset: {{ section.settings.nav_top_offset }}px;
+    --nav-z-index: {{ section.settings.nav_z_index }};
+    --logo-font-size-desktop: {{ section.settings.logo_font_size_desktop }}px;
+    --logo-font-size-mobile: {{ section.settings.logo_font_size_mobile }}px;
+    --logo-font-weight: {{ section.settings.logo_font_weight }};
+    --logo-letter-spacing: {{ section.settings.logo_letter_spacing }}px;
+    --logo-text-transform: {{ section.settings.logo_text_transform }};
+    --logo-img-width-desktop: {{ section.settings.logo_img_width_desktop }}px;
+    --logo-img-width-mobile: {{ section.settings.logo_img_width_mobile }}px;
+    --logo-img-height: {{ section.settings.logo_img_height }}px;
+    --menu-font-size: {{ section.settings.menu_font_size }}px;
+    --menu-font-weight: {{ section.settings.menu_font_weight }};
+    --menu-letter-spacing: {{ section.settings.menu_letter_spacing }}px;
+    --menu-text-transform: {{ section.settings.menu_text_transform }};
+    --menu-gap: {{ section.settings.menu_gap }}px;
+    --menu-item-padding: {{ section.settings.menu_item_padding }}px;
+    --menu-underline-height: {{ section.settings.menu_underline_height }}px;
+    --dropdown-font-size: {{ section.settings.dropdown_font_size }}px;
+    --dropdown-font-weight: {{ section.settings.dropdown_font_weight }};
+    --dropdown-border-radius: {{ section.settings.dropdown_border_radius }}px;
+    --dropdown-padding: {{ section.settings.dropdown_padding }}px;
+    --dropdown-item-padding: {{ section.settings.dropdown_item_padding }}px;
+    --dropdown-min-width: {{ section.settings.dropdown_min_width }}px;
+    --dropdown-shadow: {{ section.settings.dropdown_shadow }};
+    --icon-size-desktop: {{ section.settings.icon_size_desktop }}px;
+    --icon-size-mobile: {{ section.settings.icon_size_mobile }}px;
+    --icon-gap: {{ section.settings.icon_gap }}px;
+    --icon-btn-size: {{ section.settings.icon_btn_size }}px;
+    --icon-btn-radius: {{ section.settings.icon_btn_radius }}px;
+    --icon-btn-bg: {{ section.settings.icon_btn_bg }};
+    --bubble-size: {{ section.settings.bubble_size }}px;
+    --bubble-font-size: {{ section.settings.bubble_font_size }}px;
+    --bubble-offset-top: {{ section.settings.bubble_offset_top }}px;
+    --bubble-offset-right: {{ section.settings.bubble_offset_right }}px;
+    --drawer-width-desktop: {{ section.settings.drawer_width_desktop }}px;
+    --drawer-width-mobile: {{ section.settings.drawer_width_mobile }};
+    --drawer-header-height: {{ section.settings.drawer_header_height }}px;
+    --drawer-footer-height: {{ section.settings.drawer_footer_height }}px;
+    --drawer-padding: {{ section.settings.drawer_padding }}px;
+    --drawer-border-radius: {{ section.settings.drawer_border_radius }}px;
+    --drawer-item-img-size: {{ section.settings.drawer_item_img_size }}px;
+    --drawer-item-radius: {{ section.settings.drawer_item_radius }}px;
+    --drawer-title-size: {{ section.settings.drawer_title_size }}px;
+    --drawer-title-weight: {{ section.settings.drawer_title_weight }};
+    --drawer-price-size: {{ section.settings.drawer_price_size }}px;
+    --drawer-price-weight: {{ section.settings.drawer_price_weight }};
+    --drawer-price-color: {{ section.settings.drawer_price_color }};
+    --drawer-vendor-size: {{ section.settings.drawer_vendor_size }}px;
+    --drawer-vendor-color: {{ section.settings.drawer_vendor_color }};
+    --qty-btn-size: {{ section.settings.qty_btn_size }}px;
+    --qty-btn-bg: {{ section.settings.qty_btn_bg }};
+    --qty-btn-color: {{ section.settings.qty_btn_color }};
+    --qty-btn-border: {{ section.settings.qty_btn_border }};
+    --qty-btn-radius: {{ section.settings.qty_btn_radius }}px;
+    --qty-font-size: {{ section.settings.qty_font_size }}px;
+    --checkout-btn-radius: {{ section.settings.checkout_btn_radius }}px;
+    --checkout-btn-height: {{ section.settings.checkout_btn_height }}px;
+    --checkout-btn-font-size: {{ section.settings.checkout_btn_font_size }}px;
+    --checkout-btn-font-weight: {{ section.settings.checkout_btn_font_weight }};
+    --checkout-btn-letter-spacing: {{ section.settings.checkout_btn_letter_spacing }}px;
+    --search-bar-height: {{ section.settings.search_bar_height }}px;
+    --search-bar-radius: {{ section.settings.search_bar_radius }}px;
+    --search-font-size: {{ section.settings.search_font_size }}px;
+    --search-result-radius: {{ section.settings.search_result_radius }}px;
+    --search-result-img-size: {{ section.settings.search_result_img_size }}px;
+    --search-result-font-size: {{ section.settings.search_result_font_size }}px;
+    --search-result-price-size: {{ section.settings.search_result_price_size }}px;
+    --search-result-price-color: {{ section.settings.search_result_price_color }};
+    --mobile-menu-width: {{ section.settings.mobile_menu_width }};
+    --mobile-menu-font-size: {{ section.settings.mobile_menu_font_size }}px;
+    --mobile-menu-font-weight: {{ section.settings.mobile_menu_font_weight }};
+    --mobile-submenu-font-size: {{ section.settings.mobile_submenu_font_size }}px;
+    --mobile-item-height: {{ section.settings.mobile_item_height }}px;
+  }
+
+  /* =====================
+     RESET & BASE
+  ===================== */
+  .nb-{{ section.id }} *,
+  .nb-{{ section.id }} *::before,
+  .nb-{{ section.id }} *::after {
+    box-sizing: border-box;
+  }
+
+  /* =====================
+     SECTION WRAPPER FIX
+  ===================== */
+  #shopify-section-{{ section.id }} {
+    position: relative;
+    z-index: var(--nav-z-index);
+  }
+
+  /* =====================
+     NAVBAR WRAPPER
+  ===================== */
+  .nb-{{ section.id }} {
+    background: var(--nav-bg);
+    border-bottom: var(--nav-border-width) var(--nav-border-style) var(--nav-border);
+    border-radius: var(--nav-border-radius);
+    box-shadow: var(--nav-shadow);
+    position: sticky;
+    top: var(--nav-top-offset);
+    left: 0;
+    right: 0;
+    z-index: var(--nav-z-index);
+    width: 100%;
+    font-family: inherit;
+    overflow: visible;
+  }
+
+  /* JS-applied fixed fallback when sticky fails */
+  .nb-{{ section.id }}.nb-is-fixed {
+    position: fixed;
+    top: var(--nav-top-offset);
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  /* Spacer to prevent content jump when navbar is fixed */
+  .nb-sticky-spacer-{{ section.id }} {
+    display: none;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  .nb-sticky-spacer-{{ section.id }}.nb-spacer-active {
+    display: block;
+  }
+
+  .nb-inner-{{ section.id }} {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0;
+    height: var(--nav-height-mobile);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+    overflow: visible;
+  }
+
+  /* =====================
+     LEFT
+  ===================== */
+  .nb-left-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .nb-hamburger-{{ section.id }} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: var(--icon-btn-size);
+    height: var(--icon-btn-size);
+    background: var(--icon-btn-bg);
+    border: none;
+    border-radius: var(--icon-btn-radius);
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .nb-hamburger-{{ section.id }} span {
+    display: block;
+    width: var(--icon-size-mobile);
+    height: 2px;
+    background: var(--icon-color);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  .nb-hamburger-{{ section.id }}.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nb-hamburger-{{ section.id }}.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nb-hamburger-{{ section.id }}.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nb-logo-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .nb-logo-img-{{ section.id }} {
+    width: var(--logo-img-width-mobile);
+    height: var(--logo-img-height);
+    object-fit: contain;
+    display: block;
+  }
+
+  .nb-logo-text-{{ section.id }} {
+    font-size: var(--logo-font-size-mobile);
+    font-weight: var(--logo-font-weight);
+    color: var(--logo-color);
+    letter-spacing: var(--logo-letter-spacing);
+    text-transform: var(--logo-text-transform);
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  /* =====================
+     CENTER — DESKTOP MENU
+  ===================== */
+  .nb-center-{{ section.id }} {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    overflow: visible;
+  }
+
+  .nb-menu-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: var(--menu-gap);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nb-menu-item-{{ section.id }} { position: relative; }
+
+  .nb-menu-link-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--menu-font-size);
+    font-weight: var(--menu-font-weight);
+    letter-spacing: var(--menu-letter-spacing);
+    text-transform: var(--menu-text-transform);
+    color: var(--menu-color);
+    text-decoration: none;
+    padding: var(--menu-item-padding) 0;
+    position: relative;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+  }
+
+  .nb-menu-link-{{ section.id }}::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: var(--menu-underline-height);
+    background: var(--menu-hover-color);
+    transition: width 0.25s ease;
+    border-radius: 2px;
+  }
+
+  .nb-menu-link-{{ section.id }}:hover,
+  .nb-menu-link-{{ section.id }}.is-active { color: var(--menu-hover-color); }
+
+  .nb-menu-link-{{ section.id }}:hover::after,
+  .nb-menu-link-{{ section.id }}.is-active::after { width: 100%; }
+
+  .nb-menu-arrow-{{ section.id }} {
+    width: 12px;
+    height: 12px;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .nb-menu-item-{{ section.id }}:hover .nb-menu-arrow-{{ section.id }},
+  .nb-menu-item-{{ section.id }}.is-open .nb-menu-arrow-{{ section.id }} { transform: rotate(180deg); }
+
+  /* =====================
+     DROPDOWN
+  ===================== */
+  .nb-dropdown-{{ section.id }} {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    min-width: var(--dropdown-min-width);
+    background: var(--dropdown-bg);
+    border: 1px solid var(--dropdown-border);
+    border-radius: var(--dropdown-border-radius);
+    box-shadow: var(--dropdown-shadow);
+    padding: var(--dropdown-padding) 0;
+    list-style: none;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.22s ease;
+    z-index: 9999;
+  }
+
+  .nb-menu-item-{{ section.id }}:hover .nb-dropdown-{{ section.id }},
+  .nb-menu-item-{{ section.id }}.is-open .nb-dropdown-{{ section.id }} {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .nb-dropdown-item-{{ section.id }} { display: block; }
+
+  .nb-dropdown-link-{{ section.id }} {
+    display: block;
+    padding: var(--dropdown-item-padding) calc(var(--dropdown-padding) + 8px);
+    font-size: var(--dropdown-font-size);
+    font-weight: var(--dropdown-font-weight);
+    color: var(--dropdown-text);
+    text-decoration: none;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .nb-dropdown-link-{{ section.id }}:hover {
+    background: rgba(0,0,0,0.04);
+    color: var(--menu-hover-color);
+    padding-left: calc(var(--dropdown-padding) + 14px);
+  }
+
+  /* =====================
+     RIGHT — ICONS
+  ===================== */
+  .nb-right-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: var(--icon-gap);
+    flex-shrink: 0;
+  }
+
+  .nb-icon-btn-{{ section.id }} {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--icon-btn-size);
+    height: var(--icon-btn-size);
+    background: var(--icon-btn-bg);
+    border: none;
+    border-radius: var(--icon-btn-radius);
+    cursor: pointer;
+    color: var(--icon-color);
+    transition: all 0.2s ease;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .nb-icon-btn-{{ section.id }}:hover {
+    color: var(--icon-hover-color);
+    background: rgba(0,0,0,0.05);
+  }
+
+  .nb-icon-btn-{{ section.id }} svg {
+    width: var(--icon-size-mobile);
+    height: var(--icon-size-mobile);
+    display: block;
+    flex-shrink: 0;
+  }
+
+  /* Cart Bubble */
+  .nb-cart-bubble-{{ section.id }} {
+    position: absolute;
+    top: var(--bubble-offset-top);
+    right: var(--bubble-offset-right);
+    width: var(--bubble-size);
+    height: var(--bubble-size);
+    background: var(--cart-bubble-bg);
+    color: var(--cart-bubble-text);
+    font-size: var(--bubble-font-size);
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    pointer-events: none;
+    transition: transform 0.2s ease;
+  }
+
+  .nb-cart-bubble-{{ section.id }}.is-hidden { display: none; }
+
+  .nb-cart-bubble-{{ section.id }}.bump {
+    animation: nbBubbleBump-{{ section.id }} 0.35s ease;
+  }
+
+  @keyframes nbBubbleBump-{{ section.id }} {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+
+  /* =====================
+     SEARCH MODAL OVERLAY
+  ===================== */
+  .nb-search-modal-overlay-{{ section.id }} {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+
+  .nb-search-modal-overlay-{{ section.id }}.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Search Modal Panel */
+  .nb-search-modal-{{ section.id }} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+    background: var(--search-bg);
+    padding: 16px;
+    transform: translateY(-100%);
+    transition: transform 0.32s cubic-bezier(0.32, 0, 0.15, 1);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  }
+
+  .nb-search-modal-{{ section.id }}.is-open {
+    transform: translateY(0);
+  }
+
+  .nb-search-modal-inner-{{ section.id }} {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+  }
+
+  .nb-search-modal-top-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
+    width: 100%;
+  }
+
+  .nb-search-modal-form-{{ section.id }} {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--nav-bg);
+    border: 2px solid var(--search-border);
+    border-radius: var(--search-bar-radius);
+    padding: 0 12px;
+    height: var(--search-bar-height);
+    transition: border-color 0.2s;
+  }
+
+  .nb-search-modal-form-{{ section.id }}:focus-within {
+    border-color: var(--menu-hover-color);
+  }
+
+  .nb-search-modal-input-{{ section.id }} {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent !important;
+    background-color: transparent !important;
+    font-size: var(--search-font-size);
+    color: var(--search-text);
+    outline: none;
+    font-family: inherit;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
+  }
+
+  /* Hide native browser clear button */
+  .nb-search-modal-input-{{ section.id }}::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  .nb-search-modal-input-{{ section.id }}::-webkit-search-decoration {
+    -webkit-appearance: none;
+    display: none;
+  }
+
+  .nb-search-modal-input-{{ section.id }}::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    display: none;
+  }
+
+  .nb-search-modal-input-{{ section.id }}::-webkit-search-results-button {
+    -webkit-appearance: none;
+    display: none;
+  }
+
+  .nb-search-modal-input-{{ section.id }}::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  .nb-search-modal-input-{{ section.id }}::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  .nb-search-modal-input-{{ section.id }}::placeholder {
+    color: var(--search-text);
+    opacity: 0.4;
+    font-weight: 400;
+  }
+
+  .nb-search-modal-clear-{{ section.id }} {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--search-text);
+    opacity: 0.5;
+    padding: 4px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .nb-search-modal-clear-{{ section.id }}.is-visible {
+    display: inline-flex;
+  }
+
+  .nb-search-modal-clear-{{ section.id }}:hover {
+    opacity: 1;
+    background: rgba(0,0,0,0.06);
+  }
+
+  .nb-search-modal-close-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--search-bar-height);
+    background: rgba(0,0,0,0.06);
+    border: none;
+    border-radius: var(--search-bar-radius);
+    cursor: pointer;
+    color: var(--search-text);
+    flex-shrink: 0;
+    transition: background 0.2s;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    white-space: nowrap;
+    padding: 0 14px;
+    min-width: auto;
+  }
+
+  .nb-search-modal-close-{{ section.id }}:hover {
+    background: rgba(0,0,0,0.12);
+  }
+
+  /* Search Results Panel inside modal */
+  .nb-search-modal-results-{{ section.id }} {
+    margin-top: 10px;
+    background: var(--search-result-bg);
+    border: 1px solid var(--search-border);
+    border-radius: var(--search-result-radius);
+    max-height: min(420px, 55vh);
+    overflow-y: auto;
+    display: none;
+  }
+
+  .nb-search-modal-results-{{ section.id }}.is-visible {
+    display: block;
+  }
+
+  .nb-search-modal-results-{{ section.id }}::-webkit-scrollbar { width: 4px; }
+  .nb-search-modal-results-{{ section.id }}::-webkit-scrollbar-thumb {
+    background: var(--search-border);
+    border-radius: 4px;
+  }
+
+  /* Search result sections */
+  .nb-search-section-label-{{ section.id }} {
+    padding: 10px 16px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--search-result-text);
+    opacity: 0.45;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+
+  .nb-search-result-item-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    text-decoration: none;
+    color: var(--search-result-text);
+    transition: background 0.15s;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+
+  .nb-search-result-item-{{ section.id }}:last-child { border-bottom: none; }
+
+  .nb-search-result-item-{{ section.id }}:hover { background: rgba(0,0,0,0.03); }
+
+  .nb-search-result-img-{{ section.id }} {
+    width: var(--search-result-img-size);
+    height: var(--search-result-img-size);
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+    background: rgba(0,0,0,0.05);
+  }
+
+  .nb-search-result-img-placeholder-{{ section.id }} {
+    width: var(--search-result-img-size);
+    height: var(--search-result-img-size);
+    border-radius: 6px;
+    flex-shrink: 0;
+    background: rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nb-search-result-info-{{ section.id }} {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .nb-search-result-title-{{ section.id }} {
+    font-size: var(--search-result-font-size);
+    font-weight: 500;
+    color: var(--search-result-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 0 3px;
+  }
+
+  .nb-search-result-vendor-{{ section.id }} {
+    font-size: 11px;
+    color: var(--search-result-text);
+    opacity: 0.5;
+    margin: 0 0 2px;
+  }
+
+  .nb-search-result-price-{{ section.id }} {
+    font-size: var(--search-result-price-size);
+    font-weight: 700;
+    color: var(--search-result-price-color);
+  }
+
+  .nb-search-empty-{{ section.id }} {
+    padding: 32px 24px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--search-result-text);
+    opacity: 0.55;
+  }
+
+  .nb-search-loading-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 24px;
+    font-size: 13px;
+    color: var(--search-result-text);
+    opacity: 0.5;
+  }
+
+  .nb-search-spinner-{{ section.id }} {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--search-border);
+    border-top-color: var(--menu-hover-color);
+    border-radius: 50%;
+    animation: nbSearchSpin-{{ section.id }} 0.65s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes nbSearchSpin-{{ section.id }} {
+    to { transform: rotate(360deg); }
+  }
+
+  /* View all results link */
+  .nb-search-view-all-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--menu-hover-color);
+    text-decoration: none;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    transition: background 0.15s;
+    background: rgba(0,0,0,0.01);
+  }
+
+  .nb-search-view-all-{{ section.id }}:hover {
+    background: rgba(0,0,0,0.04);
+    text-decoration: underline;
+  }
+
+  /* =====================
+     CART DRAWER — FIXED RIGHT SIDE
+  ===================== */
+  .nb-drawer-overlay-{{ section.id }} {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay-color);
+    z-index: 9000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
+  }
+
+  .nb-drawer-overlay-{{ section.id }}.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .nb-drawer-{{ section.id }} {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: auto;
+    width: min({{ section.settings.drawer_width_mobile }}vw, {{ section.settings.drawer_width_desktop }}px);
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: var(--drawer-bg);
+    color: var(--drawer-text);
+    z-index: 9001;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.32, 0, 0.15, 1);
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--drawer-border);
+    border-radius: var(--drawer-border-radius) 0 0 var(--drawer-border-radius);
+    box-shadow: -8px 0 40px rgba(0,0,0,0.12);
+    overflow: hidden;
+  }
+
+  .nb-drawer-{{ section.id }}.is-open {
+    transform: translateX(0);
+  }
+
+  /* Drawer Header */
+  .nb-drawer-head-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--drawer-padding);
+    height: var(--drawer-header-height);
+    background: var(--drawer-header-bg);
+    border-bottom: 1px solid var(--drawer-border);
+    flex-shrink: 0;
+  }
+
+  .nb-drawer-title-{{ section.id }} {
+    font-size: var(--drawer-title-size);
+    font-weight: var(--drawer-title-weight);
+    color: var(--drawer-header-text);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nb-drawer-count-badge-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--cart-bubble-bg);
+    color: var(--cart-bubble-text);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    min-width: 20px;
+  }
+
+  .nb-drawer-close-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: 1px solid var(--drawer-border);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--drawer-header-text);
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .nb-drawer-close-{{ section.id }}:hover { background: var(--drawer-border); }
+
+  /* Drawer Body */
+  .nb-drawer-body-{{ section.id }} {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--drawer-padding);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nb-drawer-body-{{ section.id }}::-webkit-scrollbar { width: 4px; }
+  .nb-drawer-body-{{ section.id }}::-webkit-scrollbar-thumb {
+    background: var(--drawer-border);
+    border-radius: 4px;
+  }
+
+  /* Empty Cart */
+  .nb-drawer-empty-{{ section.id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .nb-drawer-empty-{{ section.id }} svg { opacity: 0.2; }
+
+  .nb-drawer-empty-title-{{ section.id }} {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--drawer-text);
+    margin: 0;
+  }
+
+  .nb-drawer-empty-desc-{{ section.id }} {
+    font-size: 13px;
+    color: var(--drawer-text);
+    opacity: 0.6;
+    margin: 0;
+  }
+
+  /* Cart Item */
+  .nb-cart-item-{{ section.id }} {
+    display: flex;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--drawer-border);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .nb-cart-item-{{ section.id }}:last-child { border-bottom: none; }
+
+  .nb-item-img-wrap-{{ section.id }} { flex-shrink: 0; }
+
+  .nb-item-img-{{ section.id }} {
+    width: var(--drawer-item-img-size);
+    height: var(--drawer-item-img-size);
+    object-fit: cover;
+    border-radius: var(--drawer-item-radius);
+    display: block;
+    background: rgba(0,0,0,0.04);
+  }
+
+  .nb-item-info-{{ section.id }} {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nb-item-vendor-{{ section.id }} {
+    font-size: var(--drawer-vendor-size);
+    color: var(--drawer-vendor-color);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+
+  .nb-item-title-{{ section.id }} {
+    font-size: var(--drawer-title-size);
+    font-weight: 500;
+    color: var(--drawer-text);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .nb-item-title-{{ section.id }}:hover { text-decoration: underline; }
+
+  .nb-item-variant-{{ section.id }} {
+    font-size: 12px;
+    color: var(--drawer-text);
+    opacity: 0.55;
+  }
+
+  .nb-item-bottom-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 6px;
+  }
+
+  .nb-item-price-{{ section.id }} {
+    font-size: var(--drawer-price-size);
+    font-weight: var(--drawer-price-weight);
+    color: var(--drawer-price-color);
+  }
+
+  .nb-qty-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nb-qty-btn-{{ section.id }} {
+    width: var(--qty-btn-size);
+    height: var(--qty-btn-size);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--qty-btn-bg);
+    color: var(--qty-btn-color);
+    border: 1px solid var(--qty-btn-border);
+    border-radius: var(--qty-btn-radius);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.15s;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .nb-qty-btn-{{ section.id }}:hover {
+    background: var(--checkout-btn-bg);
+    color: var(--checkout-btn-text);
+    border-color: var(--checkout-btn-bg);
+  }
+
+  .nb-qty-btn-{{ section.id }}.is-loading { opacity: 0.5; pointer-events: none; }
+
+  .nb-qty-num-{{ section.id }} {
+    font-size: var(--qty-font-size);
+    font-weight: 600;
+    color: var(--drawer-text);
+    min-width: 24px;
+    text-align: center;
+  }
+
+  .nb-item-remove-{{ section.id }} {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--drawer-text);
+    opacity: 0.35;
+    padding: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .nb-item-remove-{{ section.id }}:hover {
+    opacity: 1;
+    background: rgba(220,38,38,0.08);
+    color: #dc2626;
+  }
+
+  /* Drawer Footer */
+  .nb-drawer-foot-{{ section.id }} {
+    padding: var(--drawer-padding);
+    padding-bottom: calc(var(--drawer-padding) * 0.75);
+    border-top: 1px solid var(--drawer-border);
+    background: var(--drawer-bg);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .nb-drawer-subtotal-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+  }
+
+  .nb-subtotal-label-{{ section.id }} {
+    font-weight: 500;
+    color: var(--drawer-text);
+    opacity: 0.75;
+  }
+
+  .nb-subtotal-price-{{ section.id }} {
+    font-size: var(--drawer-price-size);
+    font-weight: var(--drawer-price-weight);
+    color: var(--drawer-price-color);
+  }
+
+  .nb-checkout-btn-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: var(--checkout-btn-height);
+    background: var(--checkout-btn-bg);
+    color: var(--checkout-btn-text);
+    border: none;
+    border-radius: var(--checkout-btn-radius);
+    font-size: var(--checkout-btn-font-size);
+    font-weight: var(--checkout-btn-font-weight);
+    letter-spacing: var(--checkout-btn-letter-spacing);
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .nb-checkout-btn-{{ section.id }}:hover { opacity: 0.88; }
+
+  .nb-continue-btn-{{ section.id }} {
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    color: var(--drawer-text);
+    opacity: 0.6;
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+    width: 100%;
+    padding: 0;
+  }
+
+  .nb-continue-btn-{{ section.id }}:hover { opacity: 1; }
+
+  /* Loading overlay for drawer */
+  .nb-drawer-loading-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .nb-drawer-loading-{{ section.id }}.is-active { display: flex; }
+
+  .nb-spinner-{{ section.id }} {
+    width: 28px;
+    height: 28px;
+    border: 3px solid var(--drawer-border);
+    border-top-color: var(--checkout-btn-bg);
+    border-radius: 50%;
+    animation: nbSpin-{{ section.id }} 0.7s linear infinite;
+  }
+
+  @keyframes nbSpin-{{ section.id }} { to { transform: rotate(360deg); } }
+
+  /* =====================
+     MOBILE MENU DRAWER
+  ===================== */
+  .nb-mobile-overlay-{{ section.id }} {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay-color);
+    z-index: 8000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
+  }
+
+  .nb-mobile-overlay-{{ section.id }}.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .nb-mobile-menu-{{ section.id }} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: min({{ section.settings.mobile_menu_width }}vw, 320px);
+    height: 100%;
+    height: 100dvh;
+    background: var(--mobile-menu-bg);
+    color: var(--mobile-menu-text);
+    z-index: 8001;
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.32, 0, 0.15, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 30px rgba(0,0,0,0.12);
+    overflow-y: auto;
+  }
+
+  .nb-mobile-menu-{{ section.id }}.is-open { transform: translateX(0); }
+
+  .nb-mobile-head-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    background: var(--mobile-menu-bg);
+    z-index: 1;
+    flex-shrink: 0;
+  }
+
+  .nb-mobile-head-title-{{ section.id }} {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--mobile-menu-text);
+  }
+
+  .nb-mobile-close-{{ section.id }} {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--mobile-menu-text);
+    transition: all 0.2s;
+  }
+
+  .nb-mobile-close-{{ section.id }}:hover { background: rgba(0,0,0,0.06); }
+
+  .nb-mobile-nav-{{ section.id }} {
+    flex: 1;
+    padding: 8px 0;
+    list-style: none;
+    margin: 0;
+  }
+
+  .nb-mobile-link-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: var(--mobile-item-height);
+    font-size: var(--mobile-menu-font-size);
+    font-weight: var(--mobile-menu-font-weight);
+    color: var(--mobile-menu-text);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: background 0.15s;
+    background: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+  }
+
+  .nb-mobile-link-{{ section.id }}:hover {
+    background: rgba(0,0,0,0.04);
+    color: var(--menu-hover-color);
+  }
+
+  .nb-mobile-arrow-{{ section.id }} { transition: transform 0.25s; flex-shrink: 0; }
+  .nb-mobile-link-{{ section.id }}.is-open .nb-mobile-arrow-{{ section.id }} { transform: rotate(90deg); }
+
+  .nb-mobile-sub-{{ section.id }} {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: rgba(0,0,0,0.025);
+  }
+
+  .nb-mobile-sub-{{ section.id }}.is-open { max-height: 500px; }
+
+  .nb-mobile-sub-link-{{ section.id }} {
+    display: block;
+    padding: 0 20px 0 36px;
+    height: calc(var(--mobile-item-height) - 6px);
+    line-height: calc(var(--mobile-item-height) - 6px);
+    font-size: var(--mobile-submenu-font-size);
+    color: var(--mobile-menu-text);
+    opacity: 0.8;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    transition: all 0.15s;
+  }
+
+  .nb-mobile-sub-link-{{ section.id }}:hover {
+    opacity: 1;
+    color: var(--menu-hover-color);
+    padding-left: 42px;
+  }
+
+  .nb-mobile-foot-{{ section.id }} {
+    padding: 16px 20px 8px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .nb-mobile-account-{{ section.id }},
+  .nb-mobile-cart-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--mobile-menu-text);
+    text-decoration: none;
+    transition: background 0.15s;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  .nb-mobile-account-{{ section.id }}:hover,
+  .nb-mobile-cart-{{ section.id }}:hover { background: rgba(0,0,0,0.04); }
+
+  /* =====================
+     RESPONSIVE — DESKTOP
+  ===================== */
+  @media (min-width: 1024px) {
+    .nb-inner-{{ section.id }} {
+      padding: 0;
+      height: var(--nav-height-desktop);
+    }
+
+    .nb-hamburger-{{ section.id }} { display: none; }
+    .nb-center-{{ section.id }} { display: flex; }
+
+    .nb-logo-img-{{ section.id }} { width: var(--logo-img-width-desktop); }
+    .nb-logo-text-{{ section.id }} { font-size: var(--logo-font-size-desktop); }
+
+    .nb-icon-btn-{{ section.id }} svg {
+      width: var(--icon-size-desktop);
+      height: var(--icon-size-desktop);
+    }
+
+    .nb-search-modal-{{ section.id }} {
+      padding: 20px var(--nav-padding-desktop);
+    }
+
+    .nb-search-modal-top-{{ section.id }} {
+      gap: 12px;
+    }
+
+    .nb-search-modal-form-{{ section.id }} {
+      padding: 0 16px;
+      gap: 10px;
+    }
+  }
+
+  /* Mobile search responsive fixes */
+  @media (max-width: 480px) {
+    .nb-search-modal-{{ section.id }} {
+      padding: 12px 10px;
+    }
+
+    .nb-search-modal-close-{{ section.id }} {
+      padding: 0 10px;
+      font-size: 12px;
+    }
+
+    .nb-search-modal-form-{{ section.id }} {
+      padding: 0 8px;
+      gap: 6px;
+    }
+
+    .nb-search-modal-results-{{ section.id }} {
+      max-height: min(320px, 50vh);
+    }
+  }
+</style>
+
+{%- comment -%} ===== NAVBAR HTML ===== {%- endcomment -%}
+
+<div class="nb-sticky-spacer-{{ section.id }}" id="nbStickySpacer-{{ section.id }}"></div>
+<div class="nb-{{ section.id }}" id="nb-{{ section.id }}" role="navigation" aria-label="Main navigation">
+  <div class="nb-inner-{{ section.id }}">
+
+    {%- comment -%} LEFT {%- endcomment -%}
+    <div class="nb-left-{{ section.id }}">
+      <button
+        class="nb-hamburger-{{ section.id }}"
+        id="nbHamburger-{{ section.id }}"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="nbMobileMenu-{{ section.id }}">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <a href="{{ routes.root_url }}" class="nb-logo-{{ section.id }}" aria-label="{{ shop.name }}">
+        {% if section.settings.logo_image %}
+          <img
+            class="nb-logo-img-{{ section.id }}"
+            src="{{ section.settings.logo_image | image_url: width: section.settings.logo_img_width_desktop }}"
+            alt="{{ shop.name }}"
+            width="{{ section.settings.logo_img_width_desktop }}"
+            height="{{ section.settings.logo_img_height }}"
+            loading="eager">
+        {% else %}
+          <span class="nb-logo-text-{{ section.id }}">
+            {{ section.settings.logo_text | default: shop.name }}
+          </span>
+        {% endif %}
+      </a>
+    </div>
+
+    {%- comment -%} CENTER — Desktop Menu {%- endcomment -%}
+    <nav class="nb-center-{{ section.id }}" aria-label="Desktop navigation">
+      {% if main_menu != blank %}
+        <ul class="nb-menu-{{ section.id }}" role="menubar">
+          {% for link in linklists[main_menu].links %}
+            <li class="nb-menu-item-{{ section.id }}" role="none">
+              {% if link.links.size > 0 %}
+                <button
+                  class="nb-menu-link-{{ section.id }}"
+                  role="menuitem"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  data-nb-menu-toggle>
+                  {{ link.title }}
+                  <svg class="nb-menu-arrow-{{ section.id }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 9l6 6 6-6"/>
+                  </svg>
+                </button>
+                <ul class="nb-dropdown-{{ section.id }}" role="menu">
+                  {% for child in link.links %}
+                    <li class="nb-dropdown-item-{{ section.id }}" role="none">
+                      <a class="nb-dropdown-link-{{ section.id }}" href="{{ child.url }}" role="menuitem">
+                        {{ child.title }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <a
+                  class="nb-menu-link-{{ section.id }}{% if link.active %} is-active{% endif %}"
+                  href="{{ link.url }}"
+                  role="menuitem"
+                  {% if link.active %}aria-current="page"{% endif %}>
+                  {{ link.title }}
+                </a>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </nav>
+
+    {%- comment -%} RIGHT — Icons {%- endcomment -%}
+    <div class="nb-right-{{ section.id }}">
+
+      {% if section.settings.show_search %}
+      <button
+        class="nb-icon-btn-{{ section.id }}"
+        id="nbSearchToggle-{{ section.id }}"
+        aria-label="Open search"
+        aria-expanded="false"
+        aria-controls="nbSearchModal-{{ section.id }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+      {% endif %}
+
+      {% if section.settings.show_account %}
+      <a class="nb-icon-btn-{{ section.id }}" href="{{ routes.account_url }}" aria-label="Account">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </a>
+      {% endif %}
+
+      {% if section.settings.show_cart %}
+      <button
+        class="nb-icon-btn-{{ section.id }}"
+        id="nbCartToggle-{{ section.id }}"
+        aria-label="Open cart"
+        aria-expanded="false"
+        aria-controls="nbDrawer-{{ section.id }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span
+          class="nb-cart-bubble-{{ section.id }} is-hidden"
+          id="nbCartBubble-{{ section.id }}"
+          aria-live="polite"
+          aria-label="Cart item count">0</span>
+      </button>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{%- comment -%} ===== SEARCH MODAL ===== {%- endcomment -%}
+<div
+  class="nb-search-modal-overlay-{{ section.id }}"
+  id="nbSearchModalOverlay-{{ section.id }}"
+  aria-hidden="true">
+</div>
+
+<div
+  class="nb-search-modal-{{ section.id }}"
+  id="nbSearchModal-{{ section.id }}"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Search"
+  aria-hidden="true">
+  <div class="nb-search-modal-inner-{{ section.id }}">
+    <div class="nb-search-modal-top-{{ section.id }}">
+      <div class="nb-search-modal-form-{{ section.id }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.4;flex-shrink:0">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input
+          type="search"
+          class="nb-search-modal-input-{{ section.id }}"
+          id="nbSearchModalInput-{{ section.id }}"
+          placeholder="{{ section.settings.search_placeholder | default: 'Search products, collections...' }}"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-label="Search"
+          aria-autocomplete="list"
+          aria-controls="nbSearchModalResults-{{ section.id }}">
+        <button
+          class="nb-search-modal-clear-{{ section.id }}"
+          id="nbSearchModalClear-{{ section.id }}"
+          aria-label="Clear search"
+          type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <button
+        class="nb-search-modal-close-{{ section.id }}"
+        id="nbSearchModalClose-{{ section.id }}"
+        aria-label="Close search"
+        type="button">
+        Cancel
+      </button>
+    </div>
+    <div
+      class="nb-search-modal-results-{{ section.id }}"
+      id="nbSearchModalResults-{{ section.id }}"
+      role="listbox"
+      aria-label="Search results">
+    </div>
+  </div>
+</div>
+
+{%- comment -%} ===== CART DRAWER ===== {%- endcomment -%}
+<div
+  class="nb-drawer-overlay-{{ section.id }}"
+  id="nbDrawerOverlay-{{ section.id }}"
+  aria-hidden="true">
+</div>
+
+<div
+  class="nb-drawer-{{ section.id }}"
+  id="nbDrawer-{{ section.id }}"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Shopping cart"
+  aria-hidden="true">
+
+  <div class="nb-drawer-loading-{{ section.id }}" id="nbDrawerLoading-{{ section.id }}" aria-hidden="true">
+    <div class="nb-spinner-{{ section.id }}"></div>
+  </div>
+
+  <div class="nb-drawer-head-{{ section.id }}">
+    <h2 class="nb-drawer-title-{{ section.id }}">
+      {{ section.settings.drawer_title | default: 'Your Cart' }}
+      <span class="nb-drawer-count-badge-{{ section.id }}" id="nbDrawerCountBadge-{{ section.id }}">0</span>
+    </h2>
+    <button
+      class="nb-drawer-close-{{ section.id }}"
+      id="nbDrawerClose-{{ section.id }}"
+      aria-label="Close cart"
+      type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="nb-drawer-body-{{ section.id }}" id="nbDrawerBody-{{ section.id }}">
+    <div class="nb-drawer-empty-{{ section.id }}" id="nbDrawerEmpty-{{ section.id }}">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      <p class="nb-drawer-empty-title-{{ section.id }}">{{ section.settings.empty_cart_title | default: 'Your cart is empty' }}</p>
+      <p class="nb-drawer-empty-desc-{{ section.id }}">{{ section.settings.empty_cart_desc | default: 'Add some products to get started' }}</p>
+    </div>
+    <div id="nbCartItems-{{ section.id }}"></div>
+  </div>
+
+  <div class="nb-drawer-foot-{{ section.id }}" id="nbDrawerFoot-{{ section.id }}" style="display:none">
+    <div class="nb-drawer-subtotal-{{ section.id }}">
+      <span class="nb-subtotal-label-{{ section.id }}">{{ section.settings.subtotal_label | default: 'Subtotal' }}</span>
+      <span class="nb-subtotal-price-{{ section.id }}" id="nbSubtotal-{{ section.id }}">$0.00</span>
+    </div>
+    <a href="/checkout" class="nb-checkout-btn-{{ section.id }}" id="nbCheckoutBtn-{{ section.id }}">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+      {{ section.settings.checkout_btn_label | default: 'Checkout' }}
+    </a>
+    <button class="nb-continue-btn-{{ section.id }}" id="nbContinue-{{ section.id }}" type="button">
+      {{ section.settings.continue_label | default: 'Continue Shopping' }}
+    </button>
+  </div>
+
+</div>
+
+{%- comment -%} ===== MOBILE MENU ===== {%- endcomment -%}
+<div
+  class="nb-mobile-overlay-{{ section.id }}"
+  id="nbMobileOverlay-{{ section.id }}"
+  aria-hidden="true">
+</div>
+
+<div
+  class="nb-mobile-menu-{{ section.id }}"
+  id="nbMobileMenu-{{ section.id }}"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Mobile navigation"
+  aria-hidden="true">
+  <div class="nb-mobile-head-{{ section.id }}">
+    <span class="nb-mobile-head-title-{{ section.id }}">{{ section.settings.mobile_menu_title | default: 'Menu' }}</span>
+    <button
+      class="nb-mobile-close-{{ section.id }}"
+      id="nbMobileClose-{{ section.id }}"
+      aria-label="Close menu"
+      type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  {% if main_menu != blank %}
+  <ul class="nb-mobile-nav-{{ section.id }}" role="menu">
+    {% for link in linklists[main_menu].links %}
+      <li role="none">
+        {% if link.links.size > 0 %}
+          <button
+            class="nb-mobile-link-{{ section.id }}"
+            role="menuitem"
+            aria-expanded="false"
+            aria-haspopup="true"
+            data-nb-mobile-toggle
+            type="button">
+            {{ link.title }}
+            <svg class="nb-mobile-arrow-{{ section.id }}" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 6l6 6-6 6"/>
+            </svg>
+          </button>
+          <ul class="nb-mobile-sub-{{ section.id }}" role="menu">
+            {% for child in link.links %}
+              <li role="none">
+                <a class="nb-mobile-sub-link-{{ section.id }}" href="{{ child.url }}" role="menuitem">
+                  {{ child.title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <a
+            class="nb-mobile-link-{{ section.id }}"
+            href="{{ link.url }}"
+            role="menuitem"
+            {% if link.active %}aria-current="page"{% endif %}>
+            {{ link.title }}
+          </a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div class="nb-mobile-foot-{{ section.id }}">
+    {% if section.settings.show_account %}
+    <a href="{{ routes.account_url }}" class="nb-mobile-account-{{ section.id }}">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      {{ section.settings.account_label | default: 'My Account' }}
+    </a>
+    {% endif %}
+    {% if section.settings.show_cart %}
+    <button
+      class="nb-mobile-cart-{{ section.id }}"
+      id="nbMobileCartBtn-{{ section.id }}"
+      type="button"
+      style="cursor:pointer;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      {{ section.settings.drawer_title | default: 'Cart' }}
+    </button>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var SID = '{{ section.id }}';
+
+  /* ===================== DOM REFS ===================== */
+  var $drawer           = document.getElementById('nbDrawer-' + SID);
+  var $drawerOverlay    = document.getElementById('nbDrawerOverlay-' + SID);
+  var $drawerClose      = document.getElementById('nbDrawerClose-' + SID);
+  var $drawerFoot       = document.getElementById('nbDrawerFoot-' + SID);
+  var $drawerEmpty      = document.getElementById('nbDrawerEmpty-' + SID);
+  var $cartItems        = document.getElementById('nbCartItems-' + SID);
+  var $cartBubble       = document.getElementById('nbCartBubble-' + SID);
+  var $drawerCountBadge = document.getElementById('nbDrawerCountBadge-' + SID);
+  var $subtotal         = document.getElementById('nbSubtotal-' + SID);
+  var $cartToggle       = document.getElementById('nbCartToggle-' + SID);
+  var $continue         = document.getElementById('nbContinue-' + SID);
+  var $drawerLoading    = document.getElementById('nbDrawerLoading-' + SID);
+  var $mobileCartBtn    = document.getElementById('nbMobileCartBtn-' + SID);
+
+  var $searchToggle     = document.getElementById('nbSearchToggle-' + SID);
+  var $searchModal      = document.getElementById('nbSearchModal-' + SID);
+  var $searchModalOverlay = document.getElementById('nbSearchModalOverlay-' + SID);
+  var $searchModalInput = document.getElementById('nbSearchModalInput-' + SID);
+  var $searchModalResults = document.getElementById('nbSearchModalResults-' + SID);
+  var $searchModalClear = document.getElementById('nbSearchModalClear-' + SID);
+  var $searchModalClose = document.getElementById('nbSearchModalClose-' + SID);
+
+  var $hamburger        = document.getElementById('nbHamburger-' + SID);
+  var $mobileMenu       = document.getElementById('nbMobileMenu-' + SID);
+  var $mobileOverlay    = document.getElementById('nbMobileOverlay-' + SID);
+  var $mobileClose      = document.getElementById('nbMobileClose-' + SID);
+
+  /* ===================== STATE ===================== */
+  var cartDrawerOpen   = false;
+  var searchModalOpen  = false;
+  var mobileMenuOpen   = false;
+  var searchDebounce   = null;
+  var lastSearchQuery  = '';
+  var isUpdatingCart   = false;
+
+  /* ===================== MONEY FORMAT ===================== */
+  function formatMoney(cents) {
+    if (typeof cents !== 'number') cents = parseInt(cents) || 0;
+    return '$' + (cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  /* =====================
+     CART DRAWER
+  ===================== */
+  function openCartDrawer() {
+    if (cartDrawerOpen) return;
+    cartDrawerOpen = true;
+
+    if ($drawer) {
+      $drawer.classList.add('is-open');
+      $drawer.setAttribute('aria-hidden', 'false');
+    }
+    if ($drawerOverlay) {
+      $drawerOverlay.classList.add('is-open');
+      $drawerOverlay.setAttribute('aria-hidden', 'false');
+    }
+    if ($cartToggle) $cartToggle.setAttribute('aria-expanded', 'true');
+
+    document.body.style.overflow = 'hidden';
+    loadCart();
+  }
+
+  function closeCartDrawer() {
+    if (!cartDrawerOpen) return;
+    cartDrawerOpen = false;
+
+    if ($drawer) {
+      $drawer.classList.remove('is-open');
+      $drawer.setAttribute('aria-hidden', 'true');
+    }
+    if ($drawerOverlay) {
+      $drawerOverlay.classList.remove('is-open');
+      $drawerOverlay.setAttribute('aria-hidden', 'true');
+    }
+    if ($cartToggle) $cartToggle.setAttribute('aria-expanded', 'false');
+
+    if (!mobileMenuOpen && !searchModalOpen) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  /* Cart toggle button */
+  if ($cartToggle) {
+    $cartToggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      cartDrawerOpen ? closeCartDrawer() : openCartDrawer();
+    });
+  }
+
+  /* Close button inside drawer */
+  if ($drawerClose) {
+    $drawerClose.addEventListener('click', function (e) {
+      e.stopPropagation();
+      closeCartDrawer();
+    });
+  }
+
+  /* Overlay click */
+  if ($drawerOverlay) {
+    $drawerOverlay.addEventListener('click', function () {
+      closeCartDrawer();
+    });
+  }
+
+  /* Continue shopping */
+  if ($continue) {
+    $continue.addEventListener('click', function () {
+      closeCartDrawer();
+    });
+  }
+
+  /* Mobile cart button */
+  if ($mobileCartBtn) {
+    $mobileCartBtn.addEventListener('click', function () {
+      closeMobileMenu();
+      setTimeout(function () { openCartDrawer(); }, 100);
+    });
+  }
+
+  /* =====================
+     LOAD CART
+  ===================== */
+  function loadCart(showLoading) {
+    if (showLoading && $drawerLoading) $drawerLoading.classList.add('is-active');
+
+    var root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) ? window.Shopify.routes.root : '/';
+
+    fetch(root + 'cart.js')
+      .then(function (res) { return res.json(); })
+      .then(function (cart) { renderCart(cart); })
+      .catch(function (err) { console.error('[NavDrawer] Cart load error:', err); })
+      .finally(function () {
+        if ($drawerLoading) $drawerLoading.classList.remove('is-active');
+      });
+  }
+
+  /* =====================
+     RENDER CART
+  ===================== */
+  function renderCart(cart) {
+    var count = cart.item_count || 0;
+    var total = cart.total_price || 0;
+    var items = cart.items || [];
+
+    updateBubble(count);
+    if ($drawerCountBadge) $drawerCountBadge.textContent = count;
+    if ($subtotal) $subtotal.textContent = formatMoney(total);
+
+    if (count === 0) {
+      if ($drawerEmpty)  { $drawerEmpty.style.display  = 'flex'; }
+      if ($cartItems)    { $cartItems.innerHTML = ''; }
+      if ($drawerFoot)   { $drawerFoot.style.display = 'none'; }
+    } else {
+      if ($drawerEmpty)  { $drawerEmpty.style.display  = 'none'; }
+      if ($drawerFoot)   { $drawerFoot.style.display = 'flex'; }
+      if ($cartItems) {
+        $cartItems.innerHTML = items.map(renderCartItem).join('');
+        attachCartItemEvents();
+      }
+    }
+  }
+
+  /* =====================
+     RENDER SINGLE ITEM
+  ===================== */
+  function renderCartItem(item) {
+    var imgHTML = (item.featured_image && item.featured_image.url)
+      ? '<img class="nb-item-img-' + SID + '" src="' + item.featured_image.url + '" alt="' + (item.title || '') + '" loading="lazy">'
+      : '<div class="nb-item-img-' + SID + '" style="background:rgba(0,0,0,0.06)"></div>';
+
+    var variantText = (item.variant_title && item.variant_title !== 'Default Title')
+      ? '<span class="nb-item-variant-' + SID + '">' + item.variant_title + '</span>' : '';
+
+    var vendorHTML = item.vendor
+      ? '<span class="nb-item-vendor-' + SID + '">' + item.vendor + '</span>' : '';
+
+    return '<div class="nb-cart-item-' + SID + '" data-key="' + item.key + '">' +
+      '<div class="nb-item-img-wrap-' + SID + '">' +
+        '<a href="' + item.url + '">' + imgHTML + '</a>' +
+      '</div>' +
+      '<div class="nb-item-info-' + SID + '">' +
+        vendorHTML +
+        '<a class="nb-item-title-' + SID + '" href="' + item.url + '">' + (item.product_title || item.title) + '</a>' +
+        variantText +
+        '<div class="nb-item-bottom-' + SID + '">' +
+          '<span class="nb-item-price-' + SID + '">' + formatMoney(item.final_line_price) + '</span>' +
+          '<div class="nb-qty-' + SID + '">' +
+            '<button class="nb-qty-btn-' + SID + '" data-action="decrease" aria-label="Decrease quantity" type="button">' +
+              '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+            '</button>' +
+            '<span class="nb-qty-num-' + SID + '">' + item.quantity + '</span>' +
+            '<button class="nb-qty-btn-' + SID + '" data-action="increase" aria-label="Increase quantity" type="button">' +
+              '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>' +
+            '</button>' +
+          '</div>' +
+          '<button class="nb-item-remove-' + SID + '" aria-label="Remove item" type="button">' +
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+              '<polyline points="3 6 5 6 21 6"/>' +
+              '<path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>' +
+              '<path d="M10 11v6M14 11v6"/>' +
+              '<path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>' +
+            '</svg>' +
+          '</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  /* =====================
+     CART ITEM EVENTS
+  ===================== */
+  function attachCartItemEvents() {
+    if (!$cartItems) return;
+
+    $cartItems.querySelectorAll('.nb-qty-btn-' + SID).forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (isUpdatingCart) return;
+        var item    = this.closest('.nb-cart-item-' + SID);
+        var key     = item ? item.dataset.key : null;
+        var numEl   = item ? item.querySelector('.nb-qty-num-' + SID) : null;
+        var action  = this.dataset.action;
+        var current = numEl ? parseInt(numEl.textContent) || 1 : 1;
+        var newQty  = action === 'increase' ? current + 1 : Math.max(0, current - 1);
+
+        if (numEl) numEl.textContent = newQty;
+        updateCartItem(key, newQty);
+      });
+    });
+
+    $cartItems.querySelectorAll('.nb-item-remove-' + SID).forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (isUpdatingCart) return;
+        var item = this.closest('.nb-cart-item-' + SID);
+        var key  = item ? item.dataset.key : null;
+
+        if (item) {
+          item.style.opacity   = '0';
+          item.style.transform = 'translateX(24px)';
+          setTimeout(function () {
+            if (item.parentNode) item.parentNode.removeChild(item);
+          }, 220);
+        }
+
+        updateCartItem(key, 0);
+      });
+    });
+  }
+
+  /* =====================
+     UPDATE CART ITEM
+  ===================== */
+  function updateCartItem(key, quantity) {
+    if (!key) return;
+    isUpdatingCart = true;
+    if ($drawerLoading) $drawerLoading.classList.add('is-active');
+
+    var root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) ? window.Shopify.routes.root : '/';
+
+    fetch(root + 'cart/change.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify({ id: key, quantity: quantity })
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (cart) { renderCart(cart); })
+      .catch(function (err) {
+        console.error('[NavDrawer] Cart update error:', err);
+        loadCart(false);
+      })
+      .finally(function () {
+        isUpdatingCart = false;
+        if ($drawerLoading) $drawerLoading.classList.remove('is-active');
+      });
+  }
+
+  /* =====================
+     BUBBLE
+  ===================== */
+  function updateBubble(count) {
+    if (!$cartBubble) return;
+    if (count > 0) {
+      $cartBubble.textContent = count > 99 ? '99+' : String(count);
+      $cartBubble.classList.remove('is-hidden');
+      $cartBubble.classList.remove('bump');
+      /* Force reflow for animation */
+      void $cartBubble.offsetWidth;
+      $cartBubble.classList.add('bump');
+      setTimeout(function () { $cartBubble.classList.remove('bump'); }, 400);
+    } else {
+      $cartBubble.classList.add('is-hidden');
+    }
+  }
+
+  /* =====================
+     CART EVENT LISTENERS
+     (ATC from other sections)
+  ===================== */
+  function setupCartListeners() {
+    /* Horizon / standard events */
+    document.addEventListener('cart:update', function (e) {
+      var count = 0;
+      if (e.detail) {
+        count = e.detail.itemCount || (e.detail.data && e.detail.data.itemCount) || (e.detail.resource && e.detail.resource.item_count) || 0;
+      }
+      updateBubble(count);
+      if (cartDrawerOpen) loadCart(false);
+      else openCartDrawer();
+    });
+
+    window.addEventListener('cart:updated', function () {
+      if (cartDrawerOpen) loadCart(false);
+      else openCartDrawer();
+    });
+
+    window.addEventListener('cart:open', function () { openCartDrawer(); });
+    window.addEventListener('cart-drawer:open', function () { openCartDrawer(); });
+
+    document.addEventListener('ajaxProduct:added', function () {
+      loadCart(false);
+      if (!cartDrawerOpen) openCartDrawer();
+    });
+  }
+
+  /* =====================
+     SEARCH MODAL — OPEN / CLOSE
+  ===================== */
+  function openSearchModal() {
+    if (searchModalOpen) return;
+    searchModalOpen = true;
+
+    if ($searchModal) {
+      $searchModal.classList.add('is-open');
+      $searchModal.setAttribute('aria-hidden', 'false');
+    }
+    if ($searchModalOverlay) {
+      $searchModalOverlay.classList.add('is-open');
+      $searchModalOverlay.setAttribute('aria-hidden', 'false');
+    }
+    if ($searchToggle) $searchToggle.setAttribute('aria-expanded', 'true');
+
+    document.body.style.overflow = 'hidden';
+
+    /* Focus input after transition */
+    setTimeout(function () {
+      if ($searchModalInput) $searchModalInput.focus();
+    }, 180);
+  }
+
+  function closeSearchModal() {
+    if (!searchModalOpen) return;
+    searchModalOpen = false;
+
+    if ($searchModal) {
+      $searchModal.classList.remove('is-open');
+      $searchModal.setAttribute('aria-hidden', 'true');
+    }
+    if ($searchModalOverlay) {
+      $searchModalOverlay.classList.remove('is-open');
+      $searchModalOverlay.setAttribute('aria-hidden', 'true');
+    }
+    if ($searchToggle) $searchToggle.setAttribute('aria-expanded', 'false');
+
+    /* Reset */
+    if ($searchModalInput) $searchModalInput.value = '';
+    if ($searchModalClear) $searchModalClear.classList.remove('is-visible');
+    clearSearchModalResults();
+    lastSearchQuery = '';
+
+    if (!cartDrawerOpen && !mobileMenuOpen) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  function clearSearchModalResults() {
+    if ($searchModalResults) {
+      $searchModalResults.innerHTML = '';
+      $searchModalResults.classList.remove('is-visible');
+    }
+  }
+
+  if ($searchToggle) {
+    $searchToggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      searchModalOpen ? closeSearchModal() : openSearchModal();
+    });
+  }
+
+  if ($searchModalClose) {
+    $searchModalClose.addEventListener('click', function () {
+      closeSearchModal();
+    });
+  }
+
+  if ($searchModalOverlay) {
+    $searchModalOverlay.addEventListener('click', function () {
+      closeSearchModal();
+    });
+  }
+
+  if ($searchModalClear) {
+    $searchModalClear.addEventListener('click', function () {
+      if ($searchModalInput) {
+        $searchModalInput.value = '';
+        $searchModalInput.focus();
+      }
+      $searchModalClear.classList.remove('is-visible');
+      clearSearchModalResults();
+      lastSearchQuery = '';
+    });
+  }
+
+  /* =====================
+     SEARCH — REAL TIME (Predictive API)
+  ===================== */
+  if ($searchModalInput) {
+    $searchModalInput.addEventListener('input', function () {
+      var query = this.value.trim();
+
+      if ($searchModalClear) {
+        query.length > 0
+          ? $searchModalClear.classList.add('is-visible')
+          : $searchModalClear.classList.remove('is-visible');
+      }
+
+      clearTimeout(searchDebounce);
+
+      if (query.length < 2) {
+        clearSearchModalResults();
+        lastSearchQuery = '';
+        return;
+      }
+
+      if (query === lastSearchQuery) return;
+
+      /* Show loading state */
+      if ($searchModalResults) {
+        $searchModalResults.innerHTML =
+          '<div class="nb-search-loading-' + SID + '">' +
+            '<div class="nb-search-spinner-' + SID + '"></div>' +
+            'Searching...' +
+          '</div>';
+        $searchModalResults.classList.add('is-visible');
+      }
+
+      searchDebounce = setTimeout(function () {
+        performSearch(query);
+      }, 280);
+    });
+
+    /* Handle Enter key → go to search results page */
+    $searchModalInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        var query = this.value.trim();
+        if (query.length > 0) {
+          window.location.href = '/search?q=' + encodeURIComponent(query) + '&type=product';
+        }
+      }
+    });
+  }
+
+  /* =====================
+     PERFORM SEARCH (Predictive Search API)
+  ===================== */
+  function performSearch(query) {
+    lastSearchQuery = query;
+
+    var url = '/search/suggest.json' +
+      '?q=' + encodeURIComponent(query) +
+      '&resources[type]=product,collection,article' +
+      '&resources[limit]=6' +
+      '&resources[options][unavailable_products]=last' +
+      '&resources[options][fields]=title,product_type,variants.title,vendor,tag';
+
+    fetch(url)
+      .then(function (res) {
+        if (!res.ok) throw new Error('Search API error: ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        /* Only render if query still matches */
+        if (query !== lastSearchQuery) return;
+        renderSearchResults(data, query);
+      })
+      .catch(function (err) {
+        console.error('[NavDrawer] Search error:', err);
+        if ($searchModalResults) {
+          $searchModalResults.innerHTML =
+            '<div class="nb-search-empty-' + SID + '">Something went wrong. Please try again.</div>';
+        }
+      });
+  }
+
+  /* =====================
+     RENDER SEARCH RESULTS
+  ===================== */
+  function renderSearchResults(data, query) {
+    if (!$searchModalResults) return;
+
+    var resources = (data && data.resources && data.resources.results) ? data.resources.results : {};
+    var products    = resources.products    || [];
+    var collections = resources.collections || [];
+    var articles    = resources.articles    || [];
+
+    var totalResults = products.length + collections.length + articles.length;
+
+    if (totalResults === 0) {
+      $searchModalResults.innerHTML =
+        '<div class="nb-search-empty-' + SID + '">' +
+          'No results found for "<strong>' + escapeHtml(query) + '</strong>"' +
+        '</div>';
+      $searchModalResults.classList.add('is-visible');
+      return;
+    }
+
+    var html = '';
+
+    /* Products */
+    if (products.length > 0) {
+      if (collections.length > 0 || articles.length > 0) {
+        html += '<div class="nb-search-section-label-' + SID + '">Products</div>';
+      }
+      products.forEach(function (product) {
+        var imgHTML = (product.featured_image && product.featured_image.url)
+          ? '<img class="nb-search-result-img-' + SID + '" src="' + product.featured_image.url + '" alt="' + escapeHtml(product.title) + '" loading="lazy">'
+          : '<div class="nb-search-result-img-placeholder-' + SID + '">' +
+              '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>' +
+            '</div>';
+
+        var priceHTML = '';
+        if (product.price) {
+          priceHTML = '<span class="nb-search-result-price-' + SID + '">' + formatMoney(product.price) + '</span>';
+        }
+
+        var vendorHTML = product.vendor
+          ? '<p class="nb-search-result-vendor-' + SID + '">' + escapeHtml(product.vendor) + '</p>' : '';
+
+        html += '<a class="nb-search-result-item-' + SID + '" href="' + product.url + '">' +
+          imgHTML +
+          '<div class="nb-search-result-info-' + SID + '">' +
+            vendorHTML +
+            '<p class="nb-search-result-title-' + SID + '">' + escapeHtml(product.title) + '</p>' +
+            priceHTML +
+          '</div>' +
+        '</a>';
+      });
+    }
+
+    /* Collections */
+    if (collections.length > 0) {
+      html += '<div class="nb-search-section-label-' + SID + '">Collections</div>';
+      collections.forEach(function (col) {
+        var imgHTML = (col.featured_image && col.featured_image.url)
+          ? '<img class="nb-search-result-img-' + SID + '" src="' + col.featured_image.url + '" alt="' + escapeHtml(col.title) + '" loading="lazy">'
+          : '<div class="nb-search-result-img-placeholder-' + SID + '">' +
+              '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>' +
+            '</div>';
+
+        html += '<a class="nb-search-result-item-' + SID + '" href="' + col.url + '">' +
+          imgHTML +
+          '<div class="nb-search-result-info-' + SID + '">' +
+            '<p class="nb-search-result-title-' + SID + '">' + escapeHtml(col.title) + '</p>' +
+          '</div>' +
+        '</a>';
+      });
+    }
+
+    /* Articles */
+    if (articles.length > 0) {
+      html += '<div class="nb-search-section-label-' + SID + '">Articles</div>';
+      articles.forEach(function (article) {
+        var imgHTML = (article.image && article.image.url)
+          ? '<img class="nb-search-result-img-' + SID + '" src="' + article.image.url + '" alt="' + escapeHtml(article.title) + '" loading="lazy">'
+          : '<div class="nb-search-result-img-placeholder-' + SID + '">' +
+              '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
+            '</div>';
+
+        html += '<a class="nb-search-result-item-' + SID + '" href="' + article.url + '">' +
+          imgHTML +
+          '<div class="nb-search-result-info-' + SID + '">' +
+            '<p class="nb-search-result-title-' + SID + '">' + escapeHtml(article.title) + '</p>' +
+          '</div>' +
+        '</a>';
+      });
+    }
+
+    /* View all link */
+    html += '<a class="nb-search-view-all-' + SID + '" href="/search?q=' + encodeURIComponent(query) + '&type=product">' +
+      'View all results for "' + escapeHtml(query) + '"' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>' +
+    '</a>';
+
+    $searchModalResults.innerHTML = html;
+    $searchModalResults.classList.add('is-visible');
+  }
+
+  /* =====================
+     ESCAPE HTML HELPER
+  ===================== */
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  /* =====================
+     DESKTOP MENU DROPDOWNS
+  ===================== */
+  var $navbar = document.getElementById('nb-' + SID);
+
+  if ($navbar) {
+    $navbar.querySelectorAll('[data-nb-menu-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var item   = this.closest('.nb-menu-item-' + SID);
+        var isOpen = item ? item.classList.contains('is-open') : false;
+
+        /* Close all */
+        $navbar.querySelectorAll('.nb-menu-item-' + SID).forEach(function (i) {
+          i.classList.remove('is-open');
+          var t = i.querySelector('[data-nb-menu-toggle]');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
+
+        if (!isOpen && item) {
+          item.classList.add('is-open');
+          this.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  }
+
+  /* Close dropdown on outside click */
+  document.addEventListener('click', function (e) {
+    if ($navbar && !e.target.closest('.nb-menu-item-' + SID)) {
+      $navbar.querySelectorAll('.nb-menu-item-' + SID).forEach(function (i) {
+        i.classList.remove('is-open');
+        var t = i.querySelector('[data-nb-menu-toggle]');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+
+  /* =====================
+     MOBILE MENU
+  ===================== */
+  function openMobileMenu() {
+    if (mobileMenuOpen) return;
+    mobileMenuOpen = true;
+    if ($mobileMenu) {
+      $mobileMenu.classList.add('is-open');
+      $mobileMenu.setAttribute('aria-hidden', 'false');
+    }
+    if ($mobileOverlay) {
+      $mobileOverlay.classList.add('is-open');
+      $mobileOverlay.setAttribute('aria-hidden', 'false');
+    }
+    if ($hamburger) {
+      $hamburger.classList.add('is-open');
+      $hamburger.setAttribute('aria-expanded', 'true');
+    }
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMobileMenu() {
+    if (!mobileMenuOpen) return;
+    mobileMenuOpen = false;
+    if ($mobileMenu) {
+      $mobileMenu.classList.remove('is-open');
+      $mobileMenu.setAttribute('aria-hidden', 'true');
+    }
+    if ($mobileOverlay) {
+      $mobileOverlay.classList.remove('is-open');
+      $mobileOverlay.setAttribute('aria-hidden', 'true');
+    }
+    if ($hamburger) {
+      $hamburger.classList.remove('is-open');
+      $hamburger.setAttribute('aria-expanded', 'false');
+    }
+    if (!cartDrawerOpen && !searchModalOpen) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  if ($hamburger) {
+    $hamburger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      mobileMenuOpen ? closeMobileMenu() : openMobileMenu();
+    });
+  }
+
+  if ($mobileClose)   { $mobileClose.addEventListener('click',   function () { closeMobileMenu(); }); }
+  if ($mobileOverlay) { $mobileOverlay.addEventListener('click', function () { closeMobileMenu(); }); }
+
+  /* Mobile submenu toggles */
+  if ($mobileMenu) {
+    $mobileMenu.querySelectorAll('[data-nb-mobile-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var sub    = this.nextElementSibling;
+        var isOpen = sub && sub.classList.contains('is-open');
+
+        /* Close all submenus */
+        if ($mobileMenu) {
+          $mobileMenu.querySelectorAll('.nb-mobile-sub-' + SID).forEach(function (s) {
+            s.classList.remove('is-open');
+          });
+          $mobileMenu.querySelectorAll('[data-nb-mobile-toggle]').forEach(function (b) {
+            b.classList.remove('is-open');
+            b.setAttribute('aria-expanded', 'false');
+          });
+        }
+
+        if (!isOpen && sub) {
+          sub.classList.add('is-open');
+          this.classList.add('is-open');
+          this.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  }
+
+  /* =====================
+     ESC KEY — close everything
+  ===================== */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      if (searchModalOpen) { closeSearchModal(); return; }
+      if (cartDrawerOpen)  { closeCartDrawer();  return; }
+      if (mobileMenuOpen)  { closeMobileMenu();  return; }
+    }
+  });
+
+  /* =====================
+     INIT — LOAD CART COUNT (NO DRAWER OPEN)
+  ===================== */
+  function initCartCount() {
+    var root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) ? window.Shopify.routes.root : '/';
+    fetch(root + 'cart.js')
+      .then(function (res) { return res.json(); })
+      .then(function (cart) { updateBubble(cart.item_count || 0); })
+      .catch(function (err) { console.error('[NavDrawer] Init cart count error:', err); });
+  }
+
+  /* =====================
+     STICKY NAVBAR (JS SCROLL HANDLER)
+  ===================== */
+  function initStickyNavbar() {
+    var navPosition = '{{ section.settings.nav_position }}';
+    if (navPosition === 'static') return;
+
+    var $nav = document.getElementById('nb-' + SID);
+    var $spacer = document.getElementById('nbStickySpacer-' + SID);
+    if (!$nav) return;
+
+    var navHeight = $nav.offsetHeight;
+    var isFixed = false;
+    var ticking = false;
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollY > navHeight && !isFixed) {
+          isFixed = true;
+          $nav.classList.add('nb-is-fixed');
+          if ($spacer) {
+            $spacer.style.height = navHeight + 'px';
+            $spacer.classList.add('nb-spacer-active');
+          }
+        } else if (scrollY <= navHeight && isFixed) {
+          isFixed = false;
+          $nav.classList.remove('nb-is-fixed');
+          if ($spacer) {
+            $spacer.classList.remove('nb-spacer-active');
+          }
+        }
+        ticking = false;
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function () {
+      navHeight = $nav.offsetHeight;
+    }, { passive: true });
+  }
+
+  /* =====================
+     STARTUP
+  ===================== */
+  setupCartListeners();
+  initCartCount();
+  initStickyNavbar();
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Navbar with Cart Drawer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Navigation & Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Main Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo Image"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text (if no image)",
+      "default": "My Store"
+    },
+    {
+      "type": "header",
+      "content": "Feature Toggles"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show Search Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show Account Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show Cart Icon",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Cart Drawer Content"
+    },
+    {
+      "type": "text",
+      "id": "drawer_title",
+      "label": "Drawer Title",
+      "default": "Your Cart"
+    },
+    {
+      "type": "text",
+      "id": "empty_cart_title",
+      "label": "Empty Cart Title",
+      "default": "Your cart is empty"
+    },
+    {
+      "type": "text",
+      "id": "empty_cart_desc",
+      "label": "Empty Cart Description",
+      "default": "Add some products to get started"
+    },
+    {
+      "type": "text",
+      "id": "subtotal_label",
+      "label": "Subtotal Label",
+      "default": "Subtotal"
+    },
+    {
+      "type": "text",
+      "id": "checkout_btn_label",
+      "label": "Checkout Button Label",
+      "default": "Checkout"
+    },
+    {
+      "type": "text",
+      "id": "continue_label",
+      "label": "Continue Shopping Label",
+      "default": "Continue Shopping"
+    },
+    {
+      "type": "header",
+      "content": "Search"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search Placeholder",
+      "default": "Search products, collections..."
+    },
+    {
+      "type": "header",
+      "content": "Mobile Menu Content"
+    },
+    {
+      "type": "text",
+      "id": "mobile_menu_title",
+      "label": "Mobile Menu Title",
+      "default": "Menu"
+    },
+    {
+      "type": "text",
+      "id": "account_label",
+      "label": "Account Label (Mobile)",
+      "default": "My Account"
+    },
+    {
+      "type": "header",
+      "content": "Typography – Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size_desktop",
+      "min": 14,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Logo Font Size (Desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size_mobile",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Logo Font Size (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "logo_font_weight",
+      "min": 300,
+      "max": 900,
+      "step": 100,
+      "label": "Logo Font Weight",
+      "default": 700
+    },
+    {
+      "type": "range",
+      "id": "logo_letter_spacing",
+      "min": -2,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Logo Letter Spacing",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "logo_text_transform",
+      "label": "Logo Text Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "logo_img_width_desktop",
+      "min": 60,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo Image Width (Desktop)",
+      "default": 140
+    },
+    {
+      "type": "range",
+      "id": "logo_img_width_mobile",
+      "min": 40,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo Image Width (Mobile)",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "logo_img_height",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo Image Height",
+      "default": 44
+    },
+    {
+      "type": "header",
+      "content": "Typography – Menu"
+    },
+    {
+      "type": "range",
+      "id": "menu_font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Menu Font Size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "menu_font_weight",
+      "min": 300,
+      "max": 900,
+      "step": 100,
+      "label": "Menu Font Weight",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "menu_letter_spacing",
+      "min": -1,
+      "max": 6,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Menu Letter Spacing",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "menu_text_transform",
+      "label": "Menu Text Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "menu_gap",
+      "min": 4,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Menu Item Gap",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "menu_item_padding",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Menu Item Vertical Padding",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "menu_underline_height",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "label": "Menu Hover Underline Height",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Typography – Dropdown"
+    },
+    {
+      "type": "range",
+      "id": "dropdown_font_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Dropdown Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "dropdown_font_weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "label": "Dropdown Font Weight",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "dropdown_min_width",
+      "min": 120,
+      "max": 320,
+      "step": 10,
+      "unit": "px",
+      "label": "Dropdown Min Width",
+      "default": 180
+    },
+    {
+      "type": "range",
+      "id": "dropdown_padding",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Dropdown Vertical Padding",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "dropdown_item_padding",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Dropdown Item Padding",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "dropdown_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Dropdown Border Radius",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Typography – Cart Drawer"
+    },
+    {
+      "type": "range",
+      "id": "drawer_title_size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Drawer Title / Item Title Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "drawer_title_weight",
+      "min": 300,
+      "max": 900,
+      "step": 100,
+      "label": "Drawer Title Font Weight",
+      "default": 700
+    },
+    {
+      "type": "range",
+      "id": "drawer_price_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Item Price Size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "drawer_price_weight",
+      "min": 400,
+      "max": 900,
+      "step": 100,
+      "label": "Item Price Weight",
+      "default": 700
+    },
+    {
+      "type": "range",
+      "id": "drawer_vendor_size",
+      "min": 9,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Item Vendor Size",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "qty_font_size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Quantity Number Font Size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Typography – Checkout Button"
+    },
+    {
+      "type": "range",
+      "id": "checkout_btn_font_size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Checkout Button Font Size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "checkout_btn_font_weight",
+      "min": 400,
+      "max": 900,
+      "step": 100,
+      "label": "Checkout Button Font Weight",
+      "default": 700
+    },
+    {
+      "type": "range",
+      "id": "checkout_btn_letter_spacing",
+      "min": 0,
+      "max": 6,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Checkout Button Letter Spacing",
+      "default": 0.5
+    },
+    {
+      "type": "header",
+      "content": "Typography – Mobile Menu"
+    },
+    {
+      "type": "range",
+      "id": "mobile_menu_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Menu Font Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_menu_font_weight",
+      "min": 300,
+      "max": 900,
+      "step": 100,
+      "label": "Mobile Menu Font Weight",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "mobile_submenu_font_size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Submenu Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_item_height",
+      "min": 40,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Menu Item Height",
+      "default": 52
+    },
+    {
+      "type": "header",
+      "content": "Typography – Search"
+    },
+    {
+      "type": "range",
+      "id": "search_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Search Input Font Size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "search_result_font_size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Search Result Title Size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "search_result_price_size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Search Result Price Size",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Colors – Navbar"
+    },
+    {
+      "type": "color",
+      "id": "nav_bg",
+      "label": "Navbar Background",
+      "default": "#FBF7EC"
+    },
+    {
+      "type": "color",
+      "id": "nav_text",
+      "label": "Navbar Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "nav_border",
+      "label": "Navbar Border Color",
+      "default": "#E2E2E2"
+    },
+    {
+      "type": "color",
+      "id": "logo_color",
+      "label": "Logo Text Color",
+      "default": "#228B22"
+    },
+    {
+      "type": "color",
+      "id": "menu_color",
+      "label": "Menu Link Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "menu_hover_color",
+      "label": "Menu Link Hover Color",
+      "default": "#228B22"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "icon_hover_color",
+      "label": "Icon Hover Color",
+      "default": "#228B22"
+    },
+    {
+      "type": "color",
+      "id": "icon_btn_bg",
+      "label": "Icon Button Background",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "cart_bubble_bg",
+      "label": "Cart Bubble Background",
+      "default": "#228B22"
+    },
+    {
+      "type": "color",
+      "id": "cart_bubble_text",
+      "label": "Cart Bubble Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Colors – Dropdown"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_bg",
+      "label": "Dropdown Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_text",
+      "label": "Dropdown Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_border",
+      "label": "Dropdown Border Color",
+      "default": "#E2E2E2"
+    },
+    {
+      "type": "header",
+      "content": "Colors – Cart Drawer"
+    },
+    {
+      "type": "color",
+      "id": "drawer_bg",
+      "label": "Drawer Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "drawer_text",
+      "label": "Drawer Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "drawer_border",
+      "label": "Drawer Border Color",
+      "default": "#E2E2E2"
+    },
+    {
+      "type": "color",
+      "id": "drawer_header_bg",
+      "label": "Drawer Header Background",
+      "default": "#FBF7EC"
+    },
+    {
+      "type": "color",
+      "id": "drawer_header_text",
+      "label": "Drawer Header Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "drawer_price_color",
+      "label": "Item Price Color",
+      "default": "#228B22"
+    },
+    {
+      "type": "color",
+      "id": "drawer_vendor_color",
+      "label": "Item Vendor Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "qty_btn_bg",
+      "label": "Quantity Button Background",
+      "default": "#F5F5F5"
+    },
+    {
+      "type": "color",
+      "id": "qty_btn_color",
+      "label": "Quantity Button Icon Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "qty_btn_border",
+      "label": "Quantity Button Border",
+      "default": "#E2E2E2"
+    },
+    {
+      "type": "color",
+      "id": "checkout_btn_bg",
+      "label": "Checkout Button Background",
+      "default": "#228B22"
+    },
+    {
+      "type": "color",
+      "id": "checkout_btn_text",
+      "label": "Checkout Button Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Colors – Search"
+    },
+    {
+      "type": "color",
+      "id": "search_bg",
+      "label": "Search Modal Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "search_text",
+      "label": "Search Input Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "search_border",
+      "label": "Search Input Border",
+      "default": "#D8D8D8"
+    },
+    {
+      "type": "color",
+      "id": "search_result_bg",
+      "label": "Search Result Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "search_result_text",
+      "label": "Search Result Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "search_result_price_color",
+      "label": "Search Result Price Color",
+      "default": "#228B22"
+    },
+    {
+      "type": "header",
+      "content": "Colors – Mobile Menu"
+    },
+    {
+      "type": "color",
+      "id": "mobile_menu_bg",
+      "label": "Mobile Menu Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "mobile_menu_text",
+      "label": "Mobile Menu Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#00000066"
+    },
+    {
+      "type": "header",
+      "content": "Layout – Navbar"
+    },
+    {
+      "type": "select",
+      "id": "nav_position",
+      "label": "Navbar Position",
+      "options": [
+        { "value": "sticky", "label": "Sticky (stays on scroll)" },
+        { "value": "fixed", "label": "Fixed (always on top)" },
+        { "value": "static", "label": "Static (scrolls with page)" }
+      ],
+      "default": "sticky"
+    },
+    {
+      "type": "range",
+      "id": "nav_top_offset",
+      "min": -10,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Top Offset (for sticky/fixed)",
+      "default": 0
+    },
+ {
+  "type": "range",
+  "id": "nav_z_index",
+  "min": 100,
+  "max": 9900,
+  "step": 100,
+  "label": "Z-Index (stacking order)",
+  "default": 1000
+},
+    {
+      "type": "range",
+      "id": "nav_height_desktop",
+      "min": 50,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Navbar Height (Desktop)",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "nav_height_mobile",
+      "min": 44,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "label": "Navbar Height (Mobile)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "nav_padding_desktop",
+      "min": 8,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Navbar Horizontal Padding (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "nav_padding_mobile",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Navbar Horizontal Padding (Mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "nav_border_width",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "label": "Navbar Border Width",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "nav_border_style",
+      "label": "Navbar Border Style",
+      "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "dashed", "label": "Dashed" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "range",
+      "id": "nav_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Navbar Border Radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 1000,
+      "max": 1920,
+      "step": 10,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1570
+    },
+    {
+      "type": "select",
+      "id": "nav_shadow",
+      "label": "Navbar Shadow",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "0 1px 4px rgba(0,0,0,0.06)", "label": "Subtle" },
+        { "value": "0 2px 12px rgba(0,0,0,0.1)", "label": "Medium" },
+        { "value": "0 4px 24px rgba(0,0,0,0.15)", "label": "Strong" }
+      ],
+      "default": "0 1px 4px rgba(0,0,0,0.06)"
+    },
+    {
+      "type": "header",
+      "content": "Layout – Icons"
+    },
+    {
+      "type": "range",
+      "id": "icon_size_desktop",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon Size (Desktop)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "icon_size_mobile",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon Size (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "icon_gap",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon Gap",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "icon_btn_size",
+      "min": 28,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon Button Size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "icon_btn_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon Button Border Radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Layout – Cart Bubble"
+    },
+    {
+      "type": "range",
+      "id": "bubble_size",
+      "min": 14,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "label": "Bubble Size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "bubble_font_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Bubble Font Size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "bubble_offset_top",
+      "min": -8,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "label": "Bubble Top Offset",
+      "default": -4
+    },
+    {
+      "type": "range",
+      "id": "bubble_offset_right",
+      "min": -8,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "label": "Bubble Right Offset",
+      "default": -4
+    },
+    {
+      "type": "header",
+      "content": "Layout – Cart Drawer"
+    },
+    {
+      "type": "range",
+      "id": "drawer_width_desktop",
+      "min": 280,
+      "max": 560,
+      "step": 10,
+      "unit": "px",
+      "label": "Drawer Max Width (Desktop)",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "drawer_width_mobile",
+      "min": 70,
+      "max": 100,
+      "step": 1,
+      "unit": "vw",
+      "label": "Drawer Width (Mobile vw)",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "drawer_header_height",
+      "min": 48,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Drawer Header Height",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "drawer_padding",
+      "min": 10,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Drawer Inner Padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "drawer_border_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Drawer Border Radius (left corners)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "drawer_item_img_size",
+      "min": 60,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Cart Item Image Size",
+      "default": 84
+    },
+    {
+      "type": "range",
+      "id": "drawer_item_radius",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Cart Item Image Radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "qty_btn_size",
+      "min": 22,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Quantity Button Size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "qty_btn_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Quantity Button Border Radius",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "checkout_btn_height",
+      "min": 40,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Checkout Button Height",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "checkout_btn_radius",
+      "min": 0,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Checkout Button Border Radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Layout – Search"
+    },
+    {
+      "type": "range",
+      "id": "search_bar_height",
+      "min": 36,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Search Bar Height",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "search_bar_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Search Bar Border Radius",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "search_result_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Search Results Border Radius",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "search_result_img_size",
+      "min": 36,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Search Result Image Size",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Layout – Mobile Menu"
+    },
+    {
+      "type": "range",
+      "id": "mobile_menu_width",
+      "min": 60,
+      "max": 100,
+      "step": 1,
+      "unit": "vw",
+      "label": "Mobile Menu Width (vw)",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Dropdown Shadows"
+    },
+    {
+      "type": "select",
+      "id": "dropdown_shadow",
+      "label": "Dropdown Shadow",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "0 4px 12px rgba(0,0,0,0.08)", "label": "Subtle" },
+        { "value": "0 8px 24px rgba(0,0,0,0.12)", "label": "Medium" },
+        { "value": "0 12px 40px rgba(0,0,0,0.18)", "label": "Strong" }
+      ],
+      "default": "0 8px 24px rgba(0,0,0,0.12)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Navbar with Cart Drawer",
+      "category": "Header"
+    }
+  ]
+}
+{% endschema %}
