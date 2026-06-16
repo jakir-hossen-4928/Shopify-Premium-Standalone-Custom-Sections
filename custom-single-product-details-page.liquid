@@ -979,6 +979,7 @@
       {%- for v in product.variants -%}
         {
           "id": {{ v.id }},
+          "product_id": {{ product.id }},
           "title": {{ v.title | json }},
           "available": {{ v.available }},
           "price": {{ v.price }},
@@ -1259,24 +1260,17 @@
                       <div class="upd-swatches" role="group" aria-label="{{ option.name }}">
                         {%- for val in option.values -%}
                           {%- liquid
-                            assign sw_avail = false
-                            for sv in product.variants
-                              if sv.options[forloop.parentloop.index0] == val and sv.available
-                                assign sw_avail = true
-                                break
-                              endif
-                            endfor
                             assign is_sel = false
                             if val == option.selected_value
                               assign is_sel = true
                             endif
                           -%}
                           <button
-                            class="upd-swatch {% if is_sel %}is-on{% endif %} {% unless sw_avail %}upd-swatch--oos{% endunless %}"
+                            class="upd-swatch {% if is_sel %}is-on{% endif %}"
                             type="button"
                             data-opt-idx="{{ forloop.parentloop.index0 }}"
                             data-val="{{ val | escape }}"
-                            aria-label="{{ val | escape }}{% unless sw_avail %} – Sold out{% endunless %}"
+                            aria-label="{{ val | escape }}"
                             aria-pressed="{{ is_sel }}"
                             title="{{ val | escape }}"
                             style="background-color:{{ val | downcase | replace: ' ', '' }};background-image:url({{ val | downcase | replace: ' ', '-' | prepend: 'swatch-' | append: '.png' | asset_url }});"
@@ -1288,25 +1282,17 @@
                       <div class="upd-pills" role="group" aria-label="{{ option.name }}">
                         {%- for val in option.values -%}
                           {%- liquid
-                            assign pill_avail = false
-                            for sv in product.variants
-                              if sv.options[forloop.parentloop.index0] == val and sv.available
-                                assign pill_avail = true
-                                break
-                              endif
-                            endfor
                             assign is_sel = false
                             if val == option.selected_value
                               assign is_sel = true
                             endif
                           -%}
                           <button
-                            class="upd-pill {% if is_sel %}is-on{% endif %} {% unless pill_avail %}upd-pill--oos{% endunless %}"
+                            class="upd-pill {% if is_sel %}is-on{% endif %}"
                             type="button"
                             data-opt-idx="{{ forloop.parentloop.index0 }}"
                             data-val="{{ val | escape }}"
                             aria-pressed="{{ is_sel }}"
-                            {% unless pill_avail %}aria-disabled="true"{% endunless %}
                           >{{ val }}</button>
                         {%- endfor -%}
                       </div>
@@ -1700,6 +1686,72 @@
   /* ═══════════════════════════════════════
      VARIANT SYSTEM
   ═══════════════════════════════════════ */
+
+  /* Normalize strings for robust comparison */
+  function norm(s) {
+    return typeof s === 'string' ? s.trim() : String(s);
+  }
+
+  function findVariant(opts) {
+    var normOpts = opts.map(norm);
+    return VARIANTS.find(function(v) {
+      return normOpts.every(function(o, i) { return norm(v.options[i]) === o; });
+    }) || null;
+  }
+
+  function findVariantById(id) {
+    return VARIANTS.find(function(v) { return v.id == id; }) || null;
+  }
+
+  /* Programmatically select a variant by its ID — updates ALL UI */
+  function selectVariantById(variantId) {
+    var v = findVariantById(variantId);
+    if (!v) return;
+    curVariant = v;
+    selOptions = v.options.slice();
+
+    /* Update swatches / pills */
+    $sec.querySelectorAll('.upd-option').forEach(function(optEl) {
+      var idx = parseInt(optEl.dataset.optIdx, 10);
+      var targetVal = norm(v.options[idx]);
+
+      optEl.querySelectorAll('.upd-swatch, .upd-pill').forEach(function(btn) {
+        var isMatch = norm(btn.dataset.val) === targetVal;
+        btn.classList.toggle('is-on', isMatch);
+        btn.setAttribute('aria-pressed', String(isMatch));
+      });
+
+      var selEl = optEl.querySelector('.upd-select');
+      if (selEl) selEl.value = v.options[idx];
+
+      var lblEl = document.getElementById('upd-sel-' + SID + '-' + idx);
+      if (lblEl) lblEl.textContent = v.options[idx];
+    });
+
+    /* Update hidden form input */
+    if ($vidInput) $vidInput.value = v.id;
+
+    /* Sync all UI */
+    updatePrice();
+    updateStock();
+    updateButton();
+    updateGallery();
+    updateSticky();
+    updateQtyRules();
+    if ($skuEl) $skuEl.textContent = v.sku || '';
+    updateOOSMarkers();
+  }
+
+  /* Read ?variant= from current URL */
+  function getVariantIdFromUrl() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      return params.get('variant') || null;
+    } catch(e) {
+      return null;
+    }
+  }
+
   function initVariants() {
     var optEls = $sec.querySelectorAll('.upd-option');
     optEls.forEach(function(optEl) {
@@ -1714,8 +1766,8 @@
       /* Buttons (swatches / pills) */
       var btns = optEl.querySelectorAll('.upd-swatch, .upd-pill');
       btns.forEach(function(btn) {
-        if (btn.getAttribute('aria-disabled') === 'true') return;
         btn.addEventListener('click', function() {
+          var prevSelected = selOptions.slice();
           btns.forEach(function(b) {
             b.classList.remove('is-on');
             b.setAttribute('aria-pressed', 'false');
@@ -1725,32 +1777,48 @@
           selOptions[idx] = this.dataset.val;
           var lblEl = document.getElementById('upd-sel-' + SID + '-' + idx);
           if (lblEl) lblEl.textContent = this.dataset.val;
-          onVariantChange();
+          onVariantChange(prevSelected);
         });
       });
 
       /* Dropdown */
       if (selEl) {
         selEl.addEventListener('change', function() {
+          var prevSelected = selOptions.slice();
           selOptions[idx] = this.value;
           var lblEl = document.getElementById('upd-sel-' + SID + '-' + idx);
           if (lblEl) lblEl.textContent = this.value;
-          onVariantChange();
+          onVariantChange(prevSelected);
         });
       }
     });
 
+    /* Check URL for variant param — override Liquid's selection if needed */
+    var urlVariantId = getVariantIdFromUrl();
+    if (urlVariantId) {
+      var urlVariant = findVariantById(urlVariantId);
+      if (urlVariant) {
+        selectVariantById(urlVariantId);
+        return;
+      }
+    }
+
     onVariantChange();
   }
 
-  function findVariant(opts) {
-    return VARIANTS.find(function(v) {
-      return opts.every(function(o, i) { return v.options[i] === o; });
-    }) || null;
-  }
-
-  function onVariantChange() {
+  function onVariantChange(prevOptions) {
     curVariant = findVariant(selOptions);
+
+    /* If no variant found, try auto-adjusting other options to find a valid combo */
+    if (!curVariant && prevOptions) {
+      var adjusted = autoAdjustOptions(selOptions, prevOptions);
+      if (adjusted) {
+        selOptions = adjusted;
+        curVariant = findVariant(selOptions);
+        if (curVariant) syncUIFromOptions();
+      }
+    }
+
     if (!curVariant) return;
 
     /* Update hidden form input */
@@ -1770,7 +1838,80 @@
     updateSticky();
     updateQtyRules();
     if ($skuEl) $skuEl.textContent = curVariant.sku || '';
+    updateOOSMarkers();
   }
+
+  /* Auto-adjust: when clicked option creates invalid combo, find first variant
+     with the clicked option value and adopt its other option values */
+  function autoAdjustOptions(current, previous) {
+    /* Find which option index changed */
+    var changedIdx = -1;
+    for (var i = 0; i < current.length; i++) {
+      if (norm(current[i]) !== norm(previous[i])) { changedIdx = i; break; }
+    }
+    if (changedIdx === -1) return null;
+
+    /* Find first available variant that has the clicked option value */
+    var targetVal = norm(current[changedIdx]);
+    var match = VARIANTS.find(function(v) {
+      return v.available && norm(v.options[changedIdx]) === targetVal;
+    });
+    if (!match) return null;
+
+    return match.options.slice();
+  }
+
+  /* Sync all swatch/pill/dropdown UI to match current selOptions */
+  function syncUIFromOptions() {
+    $sec.querySelectorAll('.upd-option').forEach(function(optEl) {
+      var idx = parseInt(optEl.dataset.optIdx, 10);
+      var targetVal = norm(selOptions[idx]);
+
+      optEl.querySelectorAll('.upd-swatch, .upd-pill').forEach(function(btn) {
+        var isMatch = norm(btn.dataset.val) === targetVal;
+        btn.classList.toggle('is-on', isMatch);
+        btn.setAttribute('aria-pressed', String(isMatch));
+      });
+
+      var selEl = optEl.querySelector('.upd-select');
+      if (selEl) selEl.value = selOptions[idx];
+
+      var lblEl = document.getElementById('upd-sel-' + SID + '-' + idx);
+      if (lblEl) lblEl.textContent = selOptions[idx];
+    });
+  }
+
+  /* Dynamically mark swatches/pills as OOS based on real variant data */
+  function updateOOSMarkers() {
+    $sec.querySelectorAll('.upd-option').forEach(function(optEl) {
+      var idx = parseInt(optEl.dataset.optIdx, 10);
+      optEl.querySelectorAll('.upd-swatch, .upd-pill').forEach(function(btn) {
+        var val = norm(btn.dataset.val);
+        /* Check if ANY available variant has this option value at this index */
+        var hasAvailable = VARIANTS.some(function(v) {
+          return v.available && norm(v.options[idx]) === val;
+        });
+        btn.classList.toggle('upd-swatch--oos', !hasAvailable && btn.classList.contains('upd-swatch'));
+        btn.classList.toggle('upd-pill--oos', !hasAvailable && btn.classList.contains('upd-pill'));
+      });
+    });
+  }
+
+  /* Listen for URL changes (back/forward navigation, external variant links) */
+  window.addEventListener('popstate', function() {
+    var vid = getVariantIdFromUrl();
+    if (vid && curVariant && String(curVariant.id) !== String(vid)) {
+      selectVariantById(vid);
+    }
+  });
+
+  /* Listen for Shopify theme variant change events */
+  document.addEventListener('variant:change', function(e) {
+    var vid = e.detail && (e.detail.variant_id || (e.detail.variant && e.detail.variant.id));
+    if (vid && curVariant && String(curVariant.id) !== String(vid)) {
+      selectVariantById(vid);
+    }
+  });
 
   function updatePrice() {
     if (!$priceRow || !curVariant) return;

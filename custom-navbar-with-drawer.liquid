@@ -325,7 +325,7 @@
     cursor: pointer;
     background: none;
     border: none;
-    font-family: inherit;
+   
   }
 
   .nb-menu-link-{{ section.id }}::after {
@@ -361,7 +361,7 @@
   ===================== */
   .nb-dropdown-{{ section.id }} {
     position: absolute;
-    top: calc(100% + 8px);
+    top: 100%;
     left: 50%;
     transform: translateX(-50%) translateY(-8px);
     min-width: var(--dropdown-min-width);
@@ -375,8 +375,18 @@
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: all 0.22s ease;
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s linear 0.18s;
     z-index: 9999;
+  }
+
+  /* Invisible hover bridge to prevent dropdown closing when cursor crosses gap */
+  .nb-dropdown-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: 0;
+    right: 0;
+    height: 14px;
   }
 
   .nb-menu-item-{{ section.id }}:hover .nb-dropdown-{{ section.id }},
@@ -385,6 +395,7 @@
     visibility: visible;
     pointer-events: auto;
     transform: translateX(-50%) translateY(0);
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s linear 0s;
   }
 
   .nb-dropdown-item-{{ section.id }} { display: block; }
@@ -414,6 +425,7 @@
     align-items: center;
     gap: var(--icon-gap);
     flex-shrink: 0;
+    padding-right: 6px;
   }
 
   .nb-icon-btn-{{ section.id }} {
@@ -836,10 +848,8 @@
     bottom: 0;
     left: auto;
     width: min({{ section.settings.drawer_width_mobile }}vw, {{ section.settings.drawer_width_desktop }}px);
-    height: 100vh;
-    height: 100dvh;
-    min-height: 100vh;
-    min-height: 100dvh;
+    height: 100%;
+    min-height: 100%;
     background: var(--drawer-bg);
     color: var(--drawer-text);
     z-index: 9001;
@@ -848,7 +858,7 @@
     display: flex;
     flex-direction: column;
     border-left: 1px solid var(--drawer-border);
-    border-radius: var(--drawer-border-radius) 0 0 var(--drawer-border-radius);
+    border-radius: 0;
     box-shadow: -8px 0 40px rgba(0,0,0,0.12);
     overflow: hidden;
   }
@@ -1207,7 +1217,6 @@
     left: 0;
     width: min({{ section.settings.mobile_menu_width }}vw, 320px);
     height: 100%;
-    height: 100dvh;
     background: var(--mobile-menu-bg);
     color: var(--mobile-menu-text);
     z-index: 8001;
@@ -1371,6 +1380,10 @@
       height: var(--icon-size-desktop);
     }
 
+    .nb-right-{{ section.id }} {
+      padding-right: 0;
+    }
+
     .nb-search-modal-{{ section.id }} {
       padding: 20px var(--nav-padding-desktop);
     }
@@ -1387,6 +1400,11 @@
 
   /* Mobile search responsive fixes */
   @media (max-width: 480px) {
+    .nb-right-{{ section.id }} {
+      gap: 2px;
+      padding-right: 8px;
+    }
+
     .nb-search-modal-{{ section.id }} {
       padding: 12px 10px;
     }
@@ -1450,9 +1468,10 @@
           {% for link in linklists[main_menu].links %}
             <li class="nb-menu-item-{{ section.id }}" role="none">
               {% if link.links.size > 0 %}
-                <button
+                <a
                   class="nb-menu-link-{{ section.id }}"
                   role="menuitem"
+                  href="{{ link.url }}"
                   aria-haspopup="true"
                   aria-expanded="false"
                   data-nb-menu-toggle>
@@ -1460,7 +1479,7 @@
                   <svg class="nb-menu-arrow-{{ section.id }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M6 9l6 6 6-6"/>
                   </svg>
-                </button>
+                </a>
                 <ul class="nb-dropdown-{{ section.id }}" role="menu">
                   {% for child in link.links %}
                     <li class="nb-dropdown-item-{{ section.id }}" role="none">
@@ -3577,7 +3596,7 @@
       "step": 2,
       "unit": "px",
       "label": "Drawer Border Radius (left corners)",
-      "default": 12
+      "default": 0
     },
     {
       "type": "range",
