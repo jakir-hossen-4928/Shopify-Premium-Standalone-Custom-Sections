@@ -33,6 +33,8 @@
   assign mobile_menu_text = section.settings.mobile_menu_text
   assign overlay_color = section.settings.overlay_color
   assign main_menu = section.settings.main_menu
+  assign logo_img_width_desktop = section.settings.logo_img_width_desktop | times: 2
+  assign logo_img_width_mobile = section.settings.logo_img_width_mobile
 -%}
 
 <style>
@@ -87,7 +89,6 @@
     --logo-text-transform: {{ section.settings.logo_text_transform }};
     --logo-img-width-desktop: {{ section.settings.logo_img_width_desktop }}px;
     --logo-img-width-mobile: {{ section.settings.logo_img_width_mobile }}px;
-    --logo-img-height: {{ section.settings.logo_img_height }}px;
     --menu-font-size: {{ section.settings.menu_font_size }}px;
     --menu-font-weight: {{ section.settings.menu_font_weight }};
     --menu-letter-spacing: {{ section.settings.menu_letter_spacing }}px;
@@ -207,29 +208,44 @@
     display: block;
   }
 
+  /* =====================
+     NAVBAR GRID - 3 columns
+     Col 1: hamburger + logo (start)
+     Col 2: menus (center)
+     Col 3: icons (end)
+  ===================== */
   .nb-inner-{{ section.id }} {
     max-width: var(--container-max-width);
     margin: 0 auto;
-    padding: 0;
-    height: var(--nav-height-mobile);
-    display: flex;
+    padding: 8px 0;
+    min-height: var(--nav-height-mobile);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    justify-content: space-between;
     gap: 12px;
     position: relative;
     overflow: visible;
   }
 
-  /* =====================
-     LEFT
-  ===================== */
-  .nb-left-{{ section.id }} {
+  /* Col 1 - hamburger + logo group */
+  .nb-logo-group-{{ section.id }} {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
+    justify-content: flex-start;
+    gap: 8px;
+    min-width: 0;
   }
 
+  /* Col 3 - icons group */
+  .nb-icons-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--icon-gap);
+    justify-self: end;
+  }
+
+  /* Hamburger - mobile only */
   .nb-hamburger-{{ section.id }} {
     display: flex;
     flex-direction: column;
@@ -261,16 +277,22 @@
   .nb-hamburger-{{ section.id }}.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
   .nb-hamburger-{{ section.id }}.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+  /* Logo - centered on mobile via absolute positioning */
   .nb-logo-{{ section.id }} {
     display: flex;
     align-items: center;
+    justify-content: center;
     text-decoration: none;
     flex-shrink: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
   }
 
   .nb-logo-img-{{ section.id }} {
     width: var(--logo-img-width-mobile);
-    height: var(--logo-img-height);
+    height: auto;
     object-fit: contain;
     display: block;
   }
@@ -286,15 +308,10 @@
     text-decoration: none;
   }
 
-  /* =====================
-     CENTER — DESKTOP MENU
-  ===================== */
-  .nb-center-{{ section.id }} {
+  /* Nav - column 2, centered */
+  .nb-nav-{{ section.id }} {
     display: none;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    overflow: visible;
+    justify-self: center;
   }
 
   .nb-menu-{{ section.id }} {
@@ -418,16 +435,8 @@
   }
 
   /* =====================
-     RIGHT — ICONS
+     ICONS (column 3)
   ===================== */
-  .nb-right-{{ section.id }} {
-    display: flex;
-    align-items: center;
-    gap: var(--icon-gap);
-    flex-shrink: 0;
-    padding-right: 6px;
-  }
-
   .nb-icon-btn-{{ section.id }} {
     position: relative;
     display: inline-flex;
@@ -822,7 +831,7 @@
   }
 
   /* =====================
-     CART DRAWER — FIXED RIGHT SIDE
+     CART DRAWER - FIXED RIGHT SIDE
   ===================== */
   .nb-drawer-overlay-{{ section.id }} {
     position: fixed;
@@ -1361,18 +1370,29 @@
   .nb-mobile-cart-{{ section.id }}:hover { background: rgba(0,0,0,0.04); }
 
   /* =====================
-     RESPONSIVE — DESKTOP
+     RESPONSIVE - DESKTOP
   ===================== */
   @media (min-width: 1024px) {
     .nb-inner-{{ section.id }} {
-      padding: 0;
-      height: var(--nav-height-desktop);
+      grid-template-columns: auto 1fr auto;
+      padding: 8px 0;
+      min-height: var(--nav-height-desktop);
+      gap: 16px;
     }
 
+    /* Hide hamburger, show nav */
     .nb-hamburger-{{ section.id }} { display: none; }
-    .nb-center-{{ section.id }} { display: flex; }
+    .nb-nav-{{ section.id }} { display: flex; justify-self: center; }
 
-    .nb-logo-img-{{ section.id }} { width: var(--logo-img-width-desktop); }
+    /* Desktop logo width + normal positioning */
+    .nb-logo-{{ section.id }} {
+      position: static;
+      transform: none;
+    }
+    .nb-logo-img-{{ section.id }} {
+      width: var(--logo-img-width-desktop);
+    }
+
     .nb-logo-text-{{ section.id }} { font-size: var(--logo-font-size-desktop); }
 
     .nb-icon-btn-{{ section.id }} svg {
@@ -1380,8 +1400,8 @@
       height: var(--icon-size-desktop);
     }
 
-    .nb-right-{{ section.id }} {
-      padding-right: 0;
+    .nb-account-icon-{{ section.id }} {
+      display: inline-flex !important;
     }
 
     .nb-search-modal-{{ section.id }} {
@@ -1398,11 +1418,58 @@
     }
   }
 
+  /* =====================
+     TABLET BREAKPOINT
+  ===================== */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .nb-inner-{{ section.id }} {
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+    }
+
+    .nb-hamburger-{{ section.id }} { display: none; }
+    .nb-nav-{{ section.id }} { display: flex; justify-self: center; }
+
+    .nb-logo-{{ section.id }} {
+      position: static;
+      transform: none;
+    }
+    .nb-logo-img-{{ section.id }} {
+      width: var(--logo-img-width-desktop);
+    }
+
+    .nb-account-icon-{{ section.id }} {
+      display: inline-flex !important;
+    }
+
+    .nb-menu-{{ section.id }} {
+      gap: calc(var(--menu-gap) / 2);
+    }
+  }
+
+  /* Hide account icon on mobile (available in sidebar drawer) */
+  @media (max-width: 1023px) {
+    .nb-account-icon-{{ section.id }} {
+      display: none !important;
+    }
+  }
+
   /* Mobile search responsive fixes */
   @media (max-width: 480px) {
-    .nb-right-{{ section.id }} {
+    .nb-inner-{{ section.id }} {
+      gap: 6px;
+    }
+
+    .nb-icons-{{ section.id }} {
       gap: 2px;
-      padding-right: 8px;
+    }
+
+    .nb-logo-group-{{ section.id }} {
+      gap: 4px;
+    }
+
+    .nb-logo-img-{{ section.id }} {
+      max-width: calc(100vw - 160px);
     }
 
     .nb-search-modal-{{ section.id }} {
@@ -1423,6 +1490,22 @@
       max-height: min(320px, 50vh);
     }
   }
+
+  /* Extra small screens */
+  @media (max-width: 360px) {
+    .nb-inner-{{ section.id }} {
+      gap: 4px;
+    }
+
+    .nb-icon-btn-{{ section.id }} {
+      width: calc(var(--icon-btn-size) - 4px);
+      height: calc(var(--icon-btn-size) - 4px);
+    }
+
+    .nb-logo-img-{{ section.id }} {
+      max-width: calc(100vw - 140px);
+    }
+  }
 </style>
 
 {%- comment -%} ===== NAVBAR HTML ===== {%- endcomment -%}
@@ -1431,8 +1514,8 @@
 <div class="nb-{{ section.id }}" id="nb-{{ section.id }}" role="navigation" aria-label="Main navigation">
   <div class="nb-inner-{{ section.id }}">
 
-    {%- comment -%} LEFT {%- endcomment -%}
-    <div class="nb-left-{{ section.id }}">
+    {%- comment -%} COL 1 - Hamburger (mobile) + Logo (start) {%- endcomment -%}
+    <div class="nb-logo-group-{{ section.id }}">
       <button
         class="nb-hamburger-{{ section.id }}"
         id="nbHamburger-{{ section.id }}"
@@ -1448,10 +1531,8 @@
         {% if section.settings.logo_image %}
           <img
             class="nb-logo-img-{{ section.id }}"
-            src="{{ section.settings.logo_image | image_url: width: section.settings.logo_img_width_desktop }}"
+            src="{{ section.settings.logo_image | image_url: width: logo_img_width_desktop }}"
             alt="{{ shop.name }}"
-            width="{{ section.settings.logo_img_width_desktop }}"
-            height="{{ section.settings.logo_img_height }}"
             loading="eager">
         {% else %}
           <span class="nb-logo-text-{{ section.id }}">
@@ -1461,51 +1542,51 @@
       </a>
     </div>
 
-    {%- comment -%} CENTER — Desktop Menu {%- endcomment -%}
-    <nav class="nb-center-{{ section.id }}" aria-label="Desktop navigation">
-      {% if main_menu != blank %}
+    {%- comment -%} COL 2 - Navigation menus (center) {%- endcomment -%}
+    {% if main_menu != blank %}
+      <nav class="nb-nav-{{ section.id }}" aria-label="Main navigation">
         <ul class="nb-menu-{{ section.id }}" role="menubar">
-          {% for link in linklists[main_menu].links %}
-            <li class="nb-menu-item-{{ section.id }}" role="none">
-              {% if link.links.size > 0 %}
-                <a
-                  class="nb-menu-link-{{ section.id }}"
-                  role="menuitem"
-                  href="{{ link.url }}"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  data-nb-menu-toggle>
-                  {{ link.title }}
-                  <svg class="nb-menu-arrow-{{ section.id }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M6 9l6 6 6-6"/>
-                  </svg>
-                </a>
-                <ul class="nb-dropdown-{{ section.id }}" role="menu">
-                  {% for child in link.links %}
-                    <li class="nb-dropdown-item-{{ section.id }}" role="none">
-                      <a class="nb-dropdown-link-{{ section.id }}" href="{{ child.url }}" role="menuitem">
-                        {{ child.title }}
-                      </a>
-                    </li>
-                  {% endfor %}
-                </ul>
-              {% else %}
-                <a
-                  class="nb-menu-link-{{ section.id }}{% if link.active %} is-active{% endif %}"
-                  href="{{ link.url }}"
-                  role="menuitem"
-                  {% if link.active %}aria-current="page"{% endif %}>
-                  {{ link.title }}
-                </a>
-              {% endif %}
-            </li>
-          {% endfor %}
+        {% for link in linklists[main_menu].links %}
+          <li class="nb-menu-item-{{ section.id }}" role="none">
+            {% if link.links.size > 0 %}
+              <a
+                class="nb-menu-link-{{ section.id }}"
+                role="menuitem"
+                href="{{ link.url }}"
+                aria-haspopup="true"
+                aria-expanded="false"
+                data-nb-menu-toggle>
+                {{ link.title }}
+                <svg class="nb-menu-arrow-{{ section.id }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </a>
+              <ul class="nb-dropdown-{{ section.id }}" role="menu">
+                {% for child in link.links %}
+                  <li class="nb-dropdown-item-{{ section.id }}" role="none">
+                    <a class="nb-dropdown-link-{{ section.id }}" href="{{ child.url }}" role="menuitem">
+                      {{ child.title }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <a
+                class="nb-menu-link-{{ section.id }}{% if link.active %} is-active{% endif %}"
+                href="{{ link.url }}"
+                role="menuitem"
+                {% if link.active %}aria-current="page"{% endif %}>
+                {{ link.title }}
+              </a>
+            {% endif %}
+          </li>
+        {% endfor %}
         </ul>
-      {% endif %}
-    </nav>
+      </nav>
+    {% endif %}
 
-    {%- comment -%} RIGHT — Icons {%- endcomment -%}
-    <div class="nb-right-{{ section.id }}">
+    {%- comment -%} COL 3 - Icons (end) {%- endcomment -%}
+    <div class="nb-icons-{{ section.id }}">
 
       {% if section.settings.show_search %}
       <button
@@ -1521,7 +1602,7 @@
       {% endif %}
 
       {% if section.settings.show_account %}
-      <a class="nb-icon-btn-{{ section.id }}" href="{{ routes.account_url }}" aria-label="Account">
+      <a class="nb-icon-btn-{{ section.id }} nb-account-icon-{{ section.id }}" href="{{ routes.account_url }}" aria-label="Account">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
           <circle cx="12" cy="7" r="4"/>
@@ -2106,7 +2187,7 @@
   }
 
   /* =====================
-     SEARCH MODAL — OPEN / CLOSE
+     SEARCH MODAL - OPEN / CLOSE
   ===================== */
   function openSearchModal() {
     if (searchModalOpen) return;
@@ -2194,7 +2275,7 @@
   }
 
   /* =====================
-     SEARCH — REAL TIME (Predictive API)
+     SEARCH - REAL TIME (Predictive API)
   ===================== */
   if ($searchModalInput) {
     $searchModalInput.addEventListener('input', function () {
@@ -2508,7 +2589,7 @@
   }
 
   /* =====================
-     ESC KEY — close everything
+     ESC KEY - close everything
   ===================== */
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
@@ -2519,7 +2600,7 @@
   });
 
   /* =====================
-     INIT — LOAD CART COUNT (NO DRAWER OPEN)
+     INIT - LOAD CART COUNT (NO DRAWER OPEN)
   ===================== */
   function initCartCount() {
     var root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) ? window.Shopify.routes.root : '/';
@@ -2621,8 +2702,9 @@
     {
       "type": "checkbox",
       "id": "show_account",
-      "label": "Show Account Icon",
-      "default": true
+      "label": "Show Account Icon (desktop only)",
+      "info": "Hidden on mobile - available in sidebar drawer",
+      "default": false
     },
     {
       "type": "checkbox",
@@ -2698,7 +2780,7 @@
     },
     {
       "type": "header",
-      "content": "Typography – Logo"
+      "content": "Typography - Logo"
     },
     {
       "type": "range",
@@ -2771,18 +2853,8 @@
       "default": 100
     },
     {
-      "type": "range",
-      "id": "logo_img_height",
-      "min": 20,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Logo Image Height",
-      "default": 44
-    },
-    {
       "type": "header",
-      "content": "Typography – Menu"
+      "content": "Typography - Menu"
     },
     {
       "type": "range",
@@ -2856,7 +2928,7 @@
     },
     {
       "type": "header",
-      "content": "Typography – Dropdown"
+      "content": "Typography - Dropdown"
     },
     {
       "type": "range",
@@ -2919,7 +2991,7 @@
     },
     {
       "type": "header",
-      "content": "Typography – Cart Drawer"
+      "content": "Typography - Cart Drawer"
     },
     {
       "type": "range",
@@ -2981,7 +3053,7 @@
     },
     {
       "type": "header",
-      "content": "Typography – Checkout Button"
+      "content": "Typography - Checkout Button"
     },
     {
       "type": "range",
@@ -3014,7 +3086,7 @@
     },
     {
       "type": "header",
-      "content": "Typography – Mobile Menu"
+      "content": "Typography - Mobile Menu"
     },
     {
       "type": "range",
@@ -3057,7 +3129,7 @@
     },
     {
       "type": "header",
-      "content": "Typography – Search"
+      "content": "Typography - Search"
     },
     {
       "type": "range",
@@ -3091,7 +3163,7 @@
     },
     {
       "type": "header",
-      "content": "Colors – Navbar"
+      "content": "Colors - Navbar"
     },
     {
       "type": "color",
@@ -3161,7 +3233,7 @@
     },
     {
       "type": "header",
-      "content": "Colors – Dropdown"
+      "content": "Colors - Dropdown"
     },
     {
       "type": "color",
@@ -3183,7 +3255,7 @@
     },
     {
       "type": "header",
-      "content": "Colors – Cart Drawer"
+      "content": "Colors - Cart Drawer"
     },
     {
       "type": "color",
@@ -3259,7 +3331,7 @@
     },
     {
       "type": "header",
-      "content": "Colors – Search"
+      "content": "Colors - Search"
     },
     {
       "type": "color",
@@ -3299,7 +3371,7 @@
     },
     {
       "type": "header",
-      "content": "Colors – Mobile Menu"
+      "content": "Colors - Mobile Menu"
     },
     {
       "type": "color",
@@ -3321,7 +3393,7 @@
     },
     {
       "type": "header",
-      "content": "Layout – Navbar"
+      "content": "Layout - Navbar"
     },
     {
       "type": "select",
@@ -3448,7 +3520,7 @@
     },
     {
       "type": "header",
-      "content": "Layout – Icons"
+      "content": "Layout - Icons"
     },
     {
       "type": "range",
@@ -3502,7 +3574,7 @@
     },
     {
       "type": "header",
-      "content": "Layout – Cart Bubble"
+      "content": "Layout - Cart Bubble"
     },
     {
       "type": "range",
@@ -3546,7 +3618,7 @@
     },
     {
       "type": "header",
-      "content": "Layout – Cart Drawer"
+      "content": "Layout - Cart Drawer"
     },
     {
       "type": "range",
@@ -3660,7 +3732,7 @@
     },
     {
       "type": "header",
-      "content": "Layout – Search"
+      "content": "Layout - Search"
     },
     {
       "type": "range",
@@ -3704,7 +3776,7 @@
     },
     {
       "type": "header",
-      "content": "Layout – Mobile Menu"
+      "content": "Layout - Mobile Menu"
     },
     {
       "type": "range",
