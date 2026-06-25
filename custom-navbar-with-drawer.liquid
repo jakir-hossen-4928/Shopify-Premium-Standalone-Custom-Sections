@@ -918,11 +918,8 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  .nb-drawer-body-{{ section.id }}::-webkit-scrollbar { width: 4px; }
-  .nb-drawer-body-{{ section.id }}::-webkit-scrollbar-thumb {
-    background: var(--drawer-border);
-    border-radius: 4px;
-  }
+  .nb-drawer-body-{{ section.id }} { scrollbar-width: none; -ms-overflow-style: none; }
+  .nb-drawer-body-{{ section.id }}::-webkit-scrollbar { display: none; }
 
   /* Empty Cart */
   .nb-drawer-empty-{{ section.id }} {
@@ -956,7 +953,7 @@
   .nb-cart-item-{{ section.id }} {
     display: flex;
     gap: 12px;
-    padding-bottom: 16px;
+    padding: 16px 0;
     border-bottom: 1px solid var(--drawer-border);
     transition: opacity 0.2s, transform 0.2s;
   }
