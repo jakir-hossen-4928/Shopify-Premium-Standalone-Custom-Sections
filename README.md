@@ -199,22 +199,7 @@ Below is a visual guide to the premium custom sections in this repository. Each 
 
 ---
 
-### 14. MossVida Premium FAQ
-*A clean, card-based FAQ section with smooth grid-row animations.*
-
-![MossVida FAQ](./images/custom-faq-section.png)
-
-👉 **Source Code:** [`custome-fqa.liquid`](./custome-fqa.liquid)
-
-*   **Key Features**:
-    *   **Grid-Row Transitions**: Ultra-smooth opening/closing animations using modern CSS grid techniques.
-    *   **Card-Based Layout**: Each question is housed in a distinct, styled card for clarity.
-    *   **Icon Customization**: Choose between plus, chevron, or arrow icons with rotation effects.
-    *   **Fully Responsive**: Optimized for mobile with adjustable padding and font sizes.
-
----
-
-### 15. Animated Image Gallery
+### 14. Animated Image Gallery
 *A smooth, interactive slider gallery for showcasing products or brand imagery.*
 
 ![Animated Gallery](./images/animated-gallry-and-collection-multiple-section.png)
@@ -471,23 +456,6 @@ Below is a visual guide to the premium custom sections in this repository. Each 
 
 ---
 
-### 31. Service Trust Section with Icon
-*An enhanced service/trust card section with icon imagery and optional mobile carousel for brand storytelling.*
-
-![Service Trust with Icon](./images/custom-sevice-block-with-trust-icon.png)
-
-👉 **Source Code:** [`custom-sevice-block-with-trust-icon.liquid`](./custom-sevice-block-with-trust-icon.liquid)
-
-*   **Key Features**:
-    *   **4 Service Cards**: Configure image icons, titles, and descriptions via theme editor settings.
-    *   **Flexible Grid Layout**: Adjustable desktop, tablet, and mobile column counts.
-    *   **Mobile Carousel**: Horizontal swipe carousel with scroll-snap, hidden scrollbar option, and configurable card width.
-    *   **Interactive Hover States**: Card lift and image scale animations with customizable shadow, speed, and intensity.
-    *   **Touch & Mouse Support**: Built-in drag-to-scroll with configurable swipe sensitivity.
-    *   **Comprehensive Styling**: Custom section background, container width, card borders, box shadows, and alignment per breakpoint.
-
----
-
 ### 32. SilVet Info Table
 *A detailed ingredient information table that switches to card layout on mobile — ideal for product ingredient breakdowns or specification sheets.*
 
@@ -630,6 +598,292 @@ document.dispatchEvent(new CustomEvent('cart-drawer:open', { bubbles: true }));
 *   **No ID conflicts**: The navbar uses section-scoped IDs (`nbDrawer-{{ section.id }}`), so it works alongside other sections without collisions.
 *   **Works with Horizon theme**: The event listeners are compatible with Shopify's Horizon theme and other AJAX-based add-to-cart implementations.
 *   **Variant ID required**: Always use the variant ID (not the product ID) when calling `/cart/add.js`. Use `{{ product.selected_or_first_available_variant.id }}` in Liquid.
+
+---
+
+## 📐 Development Guidelines
+
+### Section Architecture
+
+Each section is a **completely separate, self-contained module**. All styles must be defined within the same section file — no centralized or global styling. Every section must be fully responsive across mobile and desktop with modern, production-quality design.
+
+### CSS Scoping Pattern
+
+```css
+#section-id-{{ section.id }} .my-class { ... }
+```
+
+All CSS is scoped to the section using `{% style %}` or `<style>` tags with a section-specific ID prefix, ensuring complete isolation and no dependency on shared/global styles.
+
+### Image Requirements
+
+All images should be high-resolution, optimized, and responsive across different screen sizes.
+
+---
+
+## 🛒 Add-to-Cart Integration Patterns
+
+### Pattern 1: Horizon Theme (cart-drawer-component)
+
+For themes using `<cart-drawer-component>` (Horizon-based):
+
+```liquid
+<script>
+(function() {
+  function dvbInit_{{ section.id | replace: '-', '_' }}() {
+    var form = document.getElementById('dvb-form-{{ section.id }}');
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var btn = form.querySelector('[data-dvb-atc]');
+      var variantId = btn.getAttribute('data-variant-id');
+      if (!variantId || btn.disabled) return;
+
+      var textEl = btn.querySelector('.dvb-btn-text');
+      var origHTML = textEl.innerHTML;
+
+      btn.classList.add('is-loading');
+      btn.disabled = true;
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({ id: parseInt(variantId), quantity: 1 })
+      })
+      .then(function(res) {
+        if (!res.ok) throw new Error('Cart add failed: ' + res.status);
+        return res.json();
+      })
+      .then(function() {
+        return fetch('/cart.js').then(function(r) { return r.json(); });
+      })
+      .then(function(cart) {
+        btn.classList.remove('is-loading');
+        textEl.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true" style="font-size:20px;line-height:1;">check_circle</span>';
+        btn.classList.add('is-success');
+
+        var drawerEl = document.querySelector('cart-drawer-component');
+        if (drawerEl) drawerEl.open = true;
+
+        document.dispatchEvent(new CustomEvent('cart:update', {
+          bubbles: true,
+          detail: { data: { itemCount: cart.item_count, source: 'product-form-component' } }
+        }));
+
+        setTimeout(function() {
+          btn.classList.remove('is-success');
+          textEl.innerHTML = origHTML;
+          btn.disabled = false;
+        }, 2500);
+      })
+      .catch(function(err) {
+        console.error('ATC error:', err);
+        btn.classList.remove('is-loading');
+        btn.disabled = false;
+        form.submit();
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', dvbInit_{{ section.id | replace: '-', '_' }});
+  } else {
+    dvbInit_{{ section.id | replace: '-', '_' }}();
+  }
+
+  document.addEventListener('shopify:section:load', function(e) {
+    if (e.detail && e.detail.sectionId === '{{ section.id }}') {
+      dvbInit_{{ section.id | replace: '-', '_' }}();
+    }
+  });
+})();
+</script>
+```
+
+### Pattern 2: Ella Theme (sharedFunctions.updateSidebarCart)
+
+For Ella-based themes that expose `window.sharedFunctions.updateSidebarCart`:
+
+```liquid
+<script>
+(function() {
+  function dvbInit_{{ section.id | replace: '-', '_' }}() {
+    var form = document.getElementById('dvb-form-{{ section.id }}');
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var btn = form.querySelector('[data-dvb-atc]');
+      var variantId = btn.getAttribute('data-variant-id');
+      if (!variantId || btn.disabled) return;
+
+      btn.classList.add('is-loading');
+      btn.disabled = true;
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({ id: parseInt(variantId), quantity: 1 })
+      })
+      .then(function(res) {
+        if (!res.ok) throw new Error('Cart add failed: ' + res.status);
+        return res.json();
+      })
+      .then(function() {
+        return fetch('/cart.js').then(function(r) { return r.json(); });
+      })
+      .then(function(cart) {
+        btn.classList.remove('is-loading');
+        btn.classList.add('is-success');
+
+        // Ella theme cart drawer integration
+        function onCartUpdate() {
+          document.removeEventListener('cart-update', onCartUpdate);
+          document.body.classList.add('cart-sidebar-show');
+        }
+        document.addEventListener('cart-update', onCartUpdate);
+
+        setTimeout(function() {
+          document.removeEventListener('cart-update', onCartUpdate);
+          document.body.classList.add('cart-sidebar-show');
+        }, 2000);
+
+        if (window.sharedFunctions && typeof window.sharedFunctions.updateSidebarCart === 'function') {
+          window.sharedFunctions.updateSidebarCart(cart);
+        }
+
+        setTimeout(function() {
+          btn.classList.remove('is-success');
+          btn.disabled = false;
+        }, 2500);
+      })
+      .catch(function(err) {
+        console.error('ATC error:', err);
+        btn.classList.remove('is-loading');
+        btn.disabled = false;
+        form.submit();
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', dvbInit_{{ section.id | replace: '-', '_' }});
+  } else {
+    dvbInit_{{ section.id | replace: '-', '_' }}();
+  }
+
+  document.addEventListener('shopify:section:load', function(e) {
+    if (e.detail && e.detail.sectionId === '{{ section.id }}') {
+      dvbInit_{{ section.id | replace: '-', '_' }}();
+    }
+  });
+})();
+</script>
+```
+
+---
+
+## 📖 Shopify Liquid Quick Reference
+
+### Cart Object
+
+```liquid
+{{ cart.item_count }} items
+{{ cart.total_price | money_with_currency }}
+
+{% for item in cart.items %}
+  <img src="{{ item.image | image_url: width: 100 }}">
+  <h3>{{ item.product.title }}</h3>
+  <p>Qty: {{ item.quantity }}</p>
+  <p>{{ item.final_line_price | money }}</p>
+{% endfor %}
+
+{% if cart.item_count == 0 %}
+  <p>Your cart is empty.</p>
+{% endif %}
+```
+
+### Product Object
+
+```liquid
+{% assign current_variant = product.selected_or_first_available_variant %}
+{{ product.title }}
+{{ product.price | money }}
+{{ product.compare_at_price | money }}
+{{ product.description | strip_html | truncate: 120 }}
+
+{% if product.available %}
+  <button type="submit" name="add">Add to cart</button>
+{% else %}
+  <button disabled>Sold out</button>
+{% endif %}
+
+{% for variant in product.variants %}
+  <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>
+    {{ variant.title }} — {{ variant.price | money }}
+  </option>
+{% endfor %}
+```
+
+### Metafields
+
+```liquid
+{{ product.metafields.custom.care_instructions }}
+{{ product.metafields.custom.details | metafield_tag }}
+{{ collection.metafields.custom.seo_intro }}
+{{ shop.metafields.custom.announcement_text }}
+
+{% if article.metafields.custom.reading_time != blank %}
+  <span>{{ article.metafields.custom.reading_time }} min read</span>
+{% endif %}
+```
+
+---
+
+## ⚙️ Section Customization Conventions
+
+Every element within a section should be fully dynamic and configurable through `section.settings`:
+
+| Category | Customizable Properties |
+|---|---|
+| **Typography** | Font size, font weight, line height, letter spacing, text transform |
+| **Colors** | Text, background, borders, gradients, overlays, hover states |
+| **Spacing** | Padding (top/bottom/sides), margins, gaps between elements |
+| **Layout** | Grid columns, flex alignment, container max-width, image position |
+| **Images** | Size, aspect ratio, object-fit, border radius, hover zoom, focal point |
+| **Buttons** | Padding, border radius, colors (default + hover), icon, min-width, full-width mobile |
+
+### Mobile & Responsive Convention
+
+- Separate settings for desktop, tablet, and mobile breakpoints
+- Layout changes (e.g., 2-column → 1-column on mobile)
+- Independent control of typography, spacing, image sizing, and button behavior per breakpoint
+- Default breakpoints: `max-width: 1024px` (tablet), `max-width: 768px` (mobile)
+
+---
+
+## 📚 Documentation Resources
+
+The [`documentation/`](./documentation) folder contains supplementary reference files for development and AI-assisted section building:
+
+| File | Description |
+|---|---|
+| [`Shopify Liquid Knowledge Base Prompt.md`](./documentation/Shopify%20Liquid%20Knowledge%20Base%20Prompt.md) | Comprehensive Liquid reference: cart, product, collection, metafield objects, filters, and best practices (316 lines) |
+| [`Custom-section-creating-prompt.md`](./documentation/Custom-section-creating-prompt.md) | Prompt template for AI tools to generate fully dynamic, customizable sections with no hardcoded values |
+| [`custome-section-responsive-creating-prompt.md`](./documentation/custome-section-responsive-creating-prompt.md) | Extension of the section prompt with mobile/responsive customization requirements per breakpoint |
+| [`shopify lovable site.md`](./documentation/shopify%20lovable%20site.md) | Architectural guidelines for building modular, scoped sections (Lovable-style workflow) |
+| [`add-to-cart javascript (horizon).md`](./documentation/add-to-cart%20javascript%20(horizon).md) | Standalone JavaScript snippet for Horizon theme — patches `<cart-drawer-component>`, adds loading/success states, fetches updated cart, and opens the drawer (170 lines) |
+| [`add-to-cart javascript (ella).md`](./documentation/add-to-cart%20javascript%20(ella).md) | Standalone JavaScript snippet for Ella theme — uses `window.sharedFunctions.updateSidebarCart`, adds loading/success states, and triggers sidebar cart (89 lines) |
+| [`add-to-cart + cart-drawer open section (horizon).md`](./documentation/add-to-cart%20+%20cart-drawer%20open%20section%20(horizon).md) | Full, ready-to-paste Liquid section template for Horizon — hero banner with ATC + cart-drawer integration (1,765 lines) |
 
 ---
 
