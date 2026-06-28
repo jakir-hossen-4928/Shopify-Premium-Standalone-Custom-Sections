@@ -454,6 +454,57 @@ Below is a visual guide to the premium custom sections in this repository. Each 
 
 ---
 
+### 30. Service Trust Section
+*A flexible service/trust card grid for showcasing brand features or benefits with optional mobile carousel.*
+
+![Service Trust](./images/custom-service-block.png)
+
+👉 **Source Code:** [`custom-service-block.liquid`](./custom-service-block.liquid)
+
+*   **Key Features**:
+    *   **Up to 4 Service Cards**: Each with image, title, and description fields managed through the theme editor.
+    *   **Responsive Grid**: Configurable column counts for desktop (1–6), tablet, and mobile breakpoints.
+    *   **Mobile Carousel Mode**: Transforms the grid into a horizontal swipeable carousel with scroll-snap and drag support.
+    *   **Hover Effects**: Configurable card lift and image scale on hover with custom shadows and transition speed.
+    *   **Custom Web Component**: `<service-trust-carousel>` element handles drag-to-scroll on desktop and touch on mobile.
+    *   **Full Theme Control**: Section background, card colors, borders, shadows, and image styling fully customizable.
+
+---
+
+### 31. Service Trust Section with Icon
+*An enhanced service/trust card section with icon imagery and optional mobile carousel for brand storytelling.*
+
+![Service Trust with Icon](./images/custom-sevice-block-with-trust-icon.png)
+
+👉 **Source Code:** [`custom-sevice-block-with-trust-icon.liquid`](./custom-sevice-block-with-trust-icon.liquid)
+
+*   **Key Features**:
+    *   **4 Service Cards**: Configure image icons, titles, and descriptions via theme editor settings.
+    *   **Flexible Grid Layout**: Adjustable desktop, tablet, and mobile column counts.
+    *   **Mobile Carousel**: Horizontal swipe carousel with scroll-snap, hidden scrollbar option, and configurable card width.
+    *   **Interactive Hover States**: Card lift and image scale animations with customizable shadow, speed, and intensity.
+    *   **Touch & Mouse Support**: Built-in drag-to-scroll with configurable swipe sensitivity.
+    *   **Comprehensive Styling**: Custom section background, container width, card borders, box shadows, and alignment per breakpoint.
+
+---
+
+### 32. SilVet Info Table
+*A detailed ingredient information table that switches to card layout on mobile — ideal for product ingredient breakdowns or specification sheets.*
+
+![SilVet Info Table](./images/silvet-info-table.png)
+
+👉 **Source Code:** [`silvet-info-table.liquid`](./silvet-info-table.liquid)
+
+*   **Key Features**:
+    *   **Three-Column Table**: Clean desktop table layout with customizable column labels for ingredient, action, and description.
+    *   **Mobile Card Layout**: Automatically converts to a vertically stacked card design on smaller screens for better readability.
+    *   **Schema Block Rows**: Add unlimited ingredient rows via Shopify's block system with preset defaults.
+    *   **Row Styling**: Even/odd row background colors and hover highlight for improved scanability.
+    *   **Full Color Control**: Customize table header, border, row backgrounds, card colors, and text colors independently.
+    *   **Table on Mobile Option**: Optionally force the table view on mobile with horizontal scrolling.
+
+---
+
 ## 🛠️ Step-by-Step Installation Guide
 
 Implementing any of these custom sections on your Shopify store is quick and completely code-free:
