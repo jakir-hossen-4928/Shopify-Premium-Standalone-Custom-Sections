@@ -221,6 +221,14 @@
     }
   }
 
+  /* ── No thumbnails — main image takes full space ── */
+  #upd-{{ section.id }} .upd-gallery--no-thumbs {
+    display: block !important;
+  }
+  #upd-{{ section.id }} .upd-gallery--no-thumbs .upd-gallery-main {
+    grid-column: auto;
+  }
+
   /* Main image */
   #upd-{{ section.id }} .upd-gallery-main {
     position: relative;
@@ -1061,6 +1069,324 @@
   }
 
   /* ================================================================
+     BUNDLE PRODUCTS DISPLAY
+  ================================================================ */
+  #upd-{{ section.id }} .upd-bundle {
+    background: var(--bundle-bg);
+    border: 2px solid var(--upd-green);
+    border-radius: var(--bundle-border);
+    padding: 20px;
+    margin-top: var(--bundle-spacing);
+  }
+  #upd-{{ section.id }} .upd-bundle-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--bundle-heading-clr);
+    margin: 0 0 16px;
+    text-align: center;
+  }
+  #upd-{{ section.id }} .upd-bundle-items {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* ── Layout: Grid ── */
+  #upd-{{ section.id }} .upd-bundle--grid .upd-bundle-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--bundle-img), 1fr));
+    gap: 14px;
+  }
+  #upd-{{ section.id }} .upd-bundle--grid .upd-bundle-item {
+    flex: unset;
+  }
+  #upd-{{ section.id }} .upd-bundle--grid .upd-bundle-plus {
+    display: none;
+  }
+
+  /* ── Layout: Horizontal ── */
+  #upd-{{ section.id }} .upd-bundle--horizontal .upd-bundle-items {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    gap: 12px;
+    padding-bottom: 4px;
+  }
+  #upd-{{ section.id }} .upd-bundle--horizontal .upd-bundle-item {
+    scroll-snap-align: center;
+  }
+
+  /* ── Layout: Compact ── */
+  #upd-{{ section.id }} .upd-bundle--compact .upd-bundle-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  #upd-{{ section.id }} .upd-bundle--compact .upd-bundle-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--upd-white);
+    border: 1px solid var(--upd-border);
+    border-radius: 8px;
+    padding: 6px 12px 6px 6px;
+    flex: 0 0 auto;
+  }
+  #upd-{{ section.id }} .upd-bundle--compact .upd-bundle-item-img-wrap {
+    width: 36px !important;
+    height: 36px !important;
+    margin-bottom: 0 !important;
+  }
+  #upd-{{ section.id }} .upd-bundle--compact .upd-bundle-item-info {
+    text-align: left;
+  }
+  #upd-{{ section.id }} .upd-bundle--compact .upd-bundle-item-title {
+    font-size: 12px;
+  }
+  #upd-{{ section.id }} .upd-bundle--compact .upd-bundle-item-price {
+    font-size: 11px;
+  }
+  #upd-{{ section.id }} .upd-bundle--compact .upd-bundle-plus {
+    font-size: 14px;
+  }
+
+  /* ── Common Item Styles ── */
+  #upd-{{ section.id }} .upd-bundle-item {
+    text-align: center;
+  }
+  #upd-{{ section.id }} .upd-bundle-item-img-wrap {
+    width: var(--bundle-img);
+    height: var(--bundle-img);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--upd-white);
+    border: 1px solid var(--upd-border);
+    margin: 0 auto 8px;
+    transition: transform 0.2s ease;
+  }
+  #upd-{{ section.id }} .upd-bundle-item:hover .upd-bundle-item-img-wrap {
+    transform: scale(1.05);
+  }
+  #upd-{{ section.id }} .upd-bundle-item-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #upd-{{ section.id }} .upd-bundle-item-img--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--upd-surface2);
+  }
+  #upd-{{ section.id }} .upd-bundle-item-img--placeholder svg {
+    width: 50%;
+    height: 50%;
+    opacity: 0.3;
+  }
+  #upd-{{ section.id }} .upd-bundle-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  #upd-{{ section.id }} .upd-bundle-item-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--upd-black);
+    text-decoration: none;
+    line-height: 1.3;
+    transition: color 0.2s;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    hyphens: auto;
+    max-width: var(--bundle-img);
+  }
+  #upd-{{ section.id }} .upd-bundle-item-title:hover {
+    color: var(--bundle-heading-clr);
+  }
+  #upd-{{ section.id }} .upd-bundle-item-price {
+    font-size: 12px;
+    color: var(--upd-gray-md);
+    text-decoration: line-through;
+  }
+  #upd-{{ section.id }} .upd-bundle-plus {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--bundle-heading-clr);
+    opacity: 0.4;
+    flex-shrink: 0;
+    user-select: none;
+    align-self: center;
+  }
+  #upd-{{ section.id }} .upd-bundle-savings {
+    text-align: center;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--upd-border);
+  }
+  #upd-{{ section.id }} .upd-bundle-savings-badge {
+    display: inline-block;
+    background: var(--bundle-savings-bg);
+    color: var(--bundle-savings-clr);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 16px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── Mobile: 767px ── */
+  @media (max-width: 767px) {
+    #upd-{{ section.id }} .upd-bundle {
+      padding: 16px;
+      margin-top: calc(var(--bundle-spacing) * 0.8);
+    }
+    #upd-{{ section.id }} .upd-bundle-heading {
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    /* Grid layout */
+    #upd-{{ section.id }} .upd-bundle--grid .upd-bundle-items {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    #upd-{{ section.id }} .upd-bundle--grid .upd-bundle-item {
+      min-width: 0;
+      max-width: 100%;
+    }
+    #upd-{{ section.id }} .upd-bundle--grid .upd-bundle-item-img-wrap {
+      width: 100% !important;
+      max-width: var(--bundle-img);
+      height: auto !important;
+      aspect-ratio: 1;
+    }
+
+    /* Horizontal layout — convert to wrapping grid on mobile */
+    #upd-{{ section.id }} .upd-bundle--horizontal .upd-bundle-items {
+      display: flex;
+      flex-wrap: wrap;
+      overflow-x: visible;
+      scroll-snap-type: none;
+      gap: 8px;
+      justify-content: center;
+    }
+    #upd-{{ section.id }} .upd-bundle--horizontal .upd-bundle-item {
+      flex: 0 0 auto;
+      min-width: 90px;
+      max-width: 110px;
+    }
+    #upd-{{ section.id }} .upd-bundle--horizontal .upd-bundle-item-img-wrap {
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 1;
+    }
+
+    /* Compact layout */
+    #upd-{{ section.id }} .upd-bundle--compact .upd-bundle-item {
+      flex: 0 0 auto;
+    }
+
+    /* Shared */
+    #upd-{{ section.id }} .upd-bundle-item {
+      flex: 0 1 auto;
+      min-width: 0;
+      max-width: 100%;
+    }
+    #upd-{{ section.id }} .upd-bundle-item-title {
+      font-size: 12px;
+      max-width: 100%;
+    }
+    #upd-{{ section.id }} .upd-bundle-item-price {
+      font-size: 11px;
+    }
+    #upd-{{ section.id }} .upd-bundle-plus {
+      font-size: 16px;
+    }
+    #upd-{{ section.id }} .upd-bundle-savings-badge {
+      font-size: 11px;
+      padding: 4px 12px;
+    }
+  }
+
+  /* ── Mobile: 480px ── */
+  @media (max-width: 480px) {
+    #upd-{{ section.id }} .upd-bundle {
+      padding: 14px;
+      margin-top: 12px;
+      border-radius: 8px;
+    }
+    #upd-{{ section.id }} .upd-bundle-heading {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    /* Grid layout */
+    #upd-{{ section.id }} .upd-bundle--grid .upd-bundle-items {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    #upd-{{ section.id }} .upd-bundle--grid .upd-bundle-item-img-wrap {
+      width: 100% !important;
+      max-width: 60px;
+      height: auto !important;
+      aspect-ratio: 1;
+    }
+
+    /* Horizontal layout — convert to wrapping grid on mobile */
+    #upd-{{ section.id }} .upd-bundle--horizontal .upd-bundle-items {
+      display: flex;
+      flex-wrap: wrap;
+      overflow-x: visible;
+      scroll-snap-type: none;
+      gap: 6px;
+      justify-content: center;
+    }
+    #upd-{{ section.id }} .upd-bundle--horizontal .upd-bundle-item {
+      flex: 0 0 auto;
+      min-width: 70px;
+      max-width: 90px;
+    }
+    #upd-{{ section.id }} .upd-bundle--horizontal .upd-bundle-item-img-wrap {
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 1;
+    }
+
+    /* Compact layout */
+    #upd-{{ section.id }} .upd-bundle--compact .upd-bundle-items {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    #upd-{{ section.id }} .upd-bundle--compact .upd-bundle-item {
+      justify-content: flex-start;
+    }
+    #upd-{{ section.id }} .upd-bundle--compact .upd-bundle-item-img-wrap {
+      width: 36px !important;
+      height: 36px !important;
+    }
+
+    /* Shared */
+    #upd-{{ section.id }} .upd-bundle-item-title {
+      font-size: 11px;
+      max-width: 100%;
+      word-break: break-word;
+    }
+    #upd-{{ section.id }} .upd-bundle-item {
+      overflow: hidden;
+    }
+  }
+
+  /* ================================================================
      TOAST NOTIFICATION
   ================================================================ */
   #upd-toast-{{ section.id }} {
@@ -1159,7 +1485,7 @@
         ══════════════════════════════
       {%- endcomment -%}
       <div class="upd-col-media">
-        <div class="upd-gallery" id="{{ gallery_id }}">
+        <div class="upd-gallery{% if product.media.size <= 1 or section.settings.show_thumbs == false %} upd-gallery--no-thumbs{% endif %}" id="{{ gallery_id }}">
           {%- comment -%} THUMBNAILS {%- endcomment -%}
           {% if product.media.size > 1 and section.settings.show_thumbs %}
             <div class="upd-thumbs" role="list">
@@ -1303,310 +1629,287 @@
       {%- endcomment -%}
       <div class="upd-col-detail">
         <div class="upd-detail-stack">
-          {%- comment -%} VENDOR {%- endcomment -%}
-          {% if section.settings.show_vendor and product.vendor != blank %}
-            <div class="upd-vendor">
-              <a href="{{ routes.collections_url }}/vendors?q={{ product.vendor | url_encode }}">
-                {{- product.vendor -}}
-              </a>
-            </div>
-          {% endif %}
-
-          {%- comment -%} TITLE {%- endcomment -%}
-          <h1 class="upd-title">{{ product.title }}</h1>
-
-          {%- comment -%} RATING {%- endcomment -%}
-          {% if section.settings.show_rating %}
-            <div class="upd-rating-row">
-              <div class="upd-stars" aria-label="{{ section.settings.demo_rating }} out of 5 stars">
-                {%- for i in (1..5) -%}
-                  <svg class="upd-star" viewBox="0 0 24 24">
-                    <path fill="{% if i <= section.settings.demo_rating %}{{ section.settings.star_color }}{% else %}{{ section.settings.star_empty_color }}{% endif %}" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                  </svg>
-                {%- endfor -%}
-              </div>
-              <span class="upd-review-ct"
-                >({{ section.settings.demo_review_count }}
-                {{ section.settings.review_label }})</span
-              >
-            </div>
-          {% endif %}
-
-          {%- comment -%} PRICE {%- endcomment -%}
-          <div class="upd-price-row" id="upd-price-{{ section.id }}">
-            {%- liquid
-              assign on_sale = false
-              if current_variant.compare_at_price > current_variant.price
-                assign on_sale = true
-              endif
-            -%}
-            {% if on_sale %}
-              <span class="upd-price upd-price--sale">{{ current_variant.price | money }}</span>
-              <span class="upd-price upd-price--compare">{{ current_variant.compare_at_price | money }}</span>
-              {%- assign save_amt = current_variant.compare_at_price | minus: current_variant.price | money -%}
-              <span class="upd-save-pill">
-                {{- section.settings.save_label }}
-                {{ save_amt -}}
-              </span>
-            {% else %}
-              <span class="upd-price">{{ current_variant.price | money }}</span>
-            {% endif %}
-          </div>
-
-          {% if section.settings.show_tax_note %}
-            <p class="upd-tax-note">
-              {% if cart.taxes_included %}Tax included.{% else %}Tax excluded.{% endif %}
-              {% if shop.shipping_policy.body != blank -%}
-                <a href="{{ shop.shipping_policy.url }}">Shipping</a> calculated at checkout.
-              {%- endif %}
-            </p>
-          {% endif %}
-
-          <hr class="upd-hr">
-
-          {%- comment -%} PRODUCT FORM {%- endcomment -%}
-          {% form 'product', product, id: product_form_id, data-product-form: section.id, novalidate: 'novalidate' %}
-            <input type="hidden" name="id" id="upd-vid-{{ section.id }}" value="{{ current_variant.id }}">
-
-            {%- comment -%} VARIANT OPTIONS {%- endcomment -%}
-            {% if has_variants %}
-              <div class="upd-options" id="upd-opts-{{ section.id }}">
-                {%- for option in product.options_with_values -%}
-                  {%- liquid
-                    assign opt_lower = option.name | downcase
-                    assign is_color = false
-                    assign color_names = section.settings.color_option_names | split: ','
-                    for cn in color_names
-                      assign cn_trim = cn | strip | downcase
-                      if opt_lower == cn_trim
-                        assign is_color = true
-                        break
-                      endif
-                    endfor
-                    assign display = section.settings.variant_style
-                    if is_color
-                      assign display = 'swatches'
-                    endif
-                  -%}
-                  <div
-                    class="upd-option"
-                    data-opt-idx="{{ forloop.index0 }}"
-                    data-opt-name="{{ option.name | downcase | escape }}"
-                  >
-                    <div class="upd-option-label">
-                      {{ option.name }}:
-                      <span class="upd-opt-selected" id="upd-sel-{{ section.id }}-{{ forloop.index0 }}">
-                        {{- option.selected_value -}}
-                      </span>
-                    </div>
-                    {%- if display == 'swatches' -%}
-                      <div class="upd-swatches" role="group" aria-label="{{ option.name }}">
-                        {%- for val in option.values -%}
-                          {%- liquid
-                            assign is_sel = false
-                            if val == option.selected_value
-                              assign is_sel = true
-                            endif
-                          -%}
-                          <button
-                            class="upd-swatch {% if is_sel %}is-on{% endif %}"
-                            type="button"
-                            data-opt-idx="{{ forloop.parentloop.index0 }}"
-                            data-val="{{ val | escape }}"
-                            aria-label="{{ val | escape }}"
-                            aria-pressed="{{ is_sel }}"
-                            title="{{ val | escape }}"
-                            style="background-color:{{ val | downcase | replace: ' ', '' }};background-image:url({{ val | downcase | replace: ' ', '-' | prepend: 'swatch-' | append: '.png' | asset_url }});"
-                          ></button>
-                        {%- endfor -%}
-                      </div>
-                    {%- elsif display == 'pills' -%}
-                      <div class="upd-pills" role="group" aria-label="{{ option.name }}">
-                        {%- for val in option.values -%}
-                          {%- liquid
-                            assign is_sel = false
-                            if val == option.selected_value
-                              assign is_sel = true
-                            endif
-                          -%}
-                          <button
-                            class="upd-pill {% if is_sel %}is-on{% endif %}"
-                            type="button"
-                            data-opt-idx="{{ forloop.parentloop.index0 }}"
-                            data-val="{{ val | escape }}"
-                            aria-pressed="{{ is_sel }}"
-                          >
-                            {{ val }}
-                          </button>
-                        {%- endfor -%}
-                      </div>
-                    {%- else -%}
-                      <div class="upd-sel-wrap">
-                        <select class="upd-select" data-opt-idx="{{ forloop.index0 }}" aria-label="{{ option.name }}">
-                          {%- for val in option.values -%}
-                            <option
-                              value="{{ val | escape }}"
-                              {% if val == option.selected_value %}
-                                selected
-                              {% endif %}
-                            >
-                              {{ val }}
-                            </option>
-                          {%- endfor -%}
-                        </select>
-                        <svg
-                          class="upd-sel-arrow"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                        >
-                          <polyline points="6,9 12,15 18,9"/>
-                        </svg>
-                      </div>
-                    {%- endif -%}
-                  </div>
-                {%- endfor -%}
-              </div>
-            {% endif %}
-
-            {%- comment -%} STOCK {%- endcomment -%}
-            {% if section.settings.show_stock %}
-              <div class="upd-stock" id="upd-stock-{{ section.id }}">
-                {%- liquid
-                  assign st = 'in'
-                  if current_variant.available == false
-                    assign st = 'out'
-                  elsif current_variant.inventory_policy == 'deny' and current_variant.inventory_quantity <= section.settings.low_stock_threshold and current_variant.inventory_quantity > 0
-                    assign st = 'low'
-                  endif
-                -%}
-                <span class="upd-stock-dot upd-stock-dot--{{ st }}"></span>
-                <span id="upd-stock-txt-{{ section.id }}">
-                  {%- if st == 'in' -%}
-                    {{ section.settings.stock_in_text }}
-                  {%- elsif st == 'low' -%}
-                    {{ section.settings.stock_low_prefix }}
-                    {{ current_variant.inventory_quantity }}
-                    {{ section.settings.stock_low_suffix }}
-                  {%- else -%}
-                    {{ section.settings.stock_out_text }}
-                  {%- endif -%}
-                </span>
-              </div>
-            {% endif %}
-
-            {%- comment -%} QUANTITY + BUTTONS {%- endcomment -%}
-            <div class="upd-purchase-block">
-              <div class="upd-qty-row">
-                {% if section.settings.show_qty %}
-                  <div class="upd-qty" role="group" aria-label="Quantity">
-                    <button class="upd-qty-btn" type="button" data-upd-minus="{{ section.id }}" aria-label="Decrease">
-                      −
-                    </button>
-                    <input
-                      class="upd-qty-input"
-                      type="number"
-                      id="upd-qty-{{ section.id }}"
-                      value="{{ initial_qty }}"
-                      min="{{ current_variant.quantity_rule.min | default: 1 }}"
-                      max="{{ current_variant.quantity_rule.max | default: 9999 }}"
-                      step="{{ current_variant.quantity_rule.increment | default: 1 }}"
-                      aria-label="Quantity"
-                    >
-                    <button class="upd-qty-btn" type="button" data-upd-plus="{{ section.id }}" aria-label="Increase">
-                      +
-                    </button>
-                  </div>
-                {% endif %}
-                <div class="upd-btn-group">
-                  <button
-                    type="button"
-                    class="upd-atc-btn"
-                    id="upd-atc-{{ section.id }}"
-                    data-upd-atc="{{ section.id }}"
-                    {% unless current_variant.available %}
-                      disabled
-                    {% endunless %}
-                    aria-label="{{ 'products.product.add_to_cart' | t }}"
-                  >
-                    <span class="upd-atc-label">
-                      <svg viewBox="0 0 24 24">
-                        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.98 1.61h9.72a2 2 0 001.98-1.69L23 6H6"/>
-                      </svg>
-                      <span id="upd-atc-txt-{{ section.id }}">
-                        {%- if current_variant.available -%}
-                          {{ section.settings.atc_text }}
-                        {%- else -%}
-                          {{ section.settings.sold_out_text }}
-                        {%- endif -%}
-                      </span>
-                    </span>
-                    <span class="upd-atc-spinner" aria-hidden="true"></span>
-                  </button>
-                </div>
-              </div>
-
-              {% if section.settings.show_buy_now %}
-                <div class="upd-dyn-btn">{{ form | payment_button }}</div>
-              {% endif %}
-            </div>
-
-            {% if section.settings.show_payment_icons %}
-              <div style="margin-top:8px;">{{ form | payment_terms }}</div>
-            {% endif %}
-          {% endform %}
-
-          {%- comment -%} ── BLOCKS ── {%- endcomment -%}
+          {%- comment -%} ── ALL BLOCKS ── {%- endcomment -%}
           {%- for block in section.blocks -%}
             {%- case block.type -%}
+              {%- when 'vendor' -%}
+                {% if product.vendor != blank %}
+                  <div class="upd-vendor" {{ block.shopify_attributes }}>
+                    <a href="{{ routes.collections_url }}/vendors?q={{ product.vendor | url_encode }}">
+                      {{- product.vendor -}}
+                    </a>
+                  </div>
+                {% endif %}
+
+              {%- when 'title' -%}
+                <h1 class="upd-title" {{ block.shopify_attributes }}>{{ product.title }}</h1>
+
+              {%- when 'rating' -%}
+                <div class="upd-rating-row" {{ block.shopify_attributes }}>
+                  <div class="upd-stars" aria-label="{{ section.settings.demo_rating }} out of 5 stars">
+                    {%- for i in (1..5) -%}
+                      <svg class="upd-star" viewBox="0 0 24 24">
+                        <path fill="{% if i <= section.settings.demo_rating %}{{ section.settings.star_color }}{% else %}{{ section.settings.star_empty_color }}{% endif %}" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                    {%- endfor -%}
+                  </div>
+                  <span class="upd-review-ct"
+                    >({{ section.settings.demo_review_count }}
+                    {{ section.settings.review_label }})</span
+                  >
+                </div>
+
+              {%- when 'price' -%}
+                <div class="upd-price-row" id="upd-price-{{ section.id }}" {{ block.shopify_attributes }}>
+                  {%- liquid
+                    assign on_sale = false
+                    if current_variant.compare_at_price > current_variant.price
+                      assign on_sale = true
+                    endif
+                  -%}
+                  {% if on_sale %}
+                    <span class="upd-price upd-price--sale">{{ current_variant.price | money }}</span>
+                    <span class="upd-price upd-price--compare">{{ current_variant.compare_at_price | money }}</span>
+                    {%- assign save_amt = current_variant.compare_at_price | minus: current_variant.price | money -%}
+                    <span class="upd-save-pill">
+                      {{- section.settings.save_label }}
+                      {{ save_amt -}}
+                    </span>
+                  {% else %}
+                    <span class="upd-price">{{ current_variant.price | money }}</span>
+                  {% endif %}
+                </div>
+                {% if block.settings.show_tax_note %}
+                  <p class="upd-tax-note">
+                    {% if cart.taxes_included %}Tax included.{% else %}Tax excluded.{% endif %}
+                    {% if shop.shipping_policy.body != blank -%}
+                      <a href="{{ shop.shipping_policy.url }}">Shipping</a> calculated at checkout.
+                    {%- endif %}
+                  </p>
+                {% endif %}
+
+              {%- when 'product_form' -%}
+                {% form 'product', product, id: product_form_id, data-product-form: section.id, novalidate: 'novalidate' %}
+                  <input type="hidden" name="id" id="upd-vid-{{ section.id }}" value="{{ current_variant.id }}">
+
+                  {%- comment -%} VARIANT OPTIONS {%- endcomment -%}
+                  {% if has_variants %}
+                    <div class="upd-options" id="upd-opts-{{ section.id }}">
+                      {%- for option in product.options_with_values -%}
+                        {%- liquid
+                          assign opt_lower = option.name | downcase
+                          assign is_color = false
+                          assign color_names = section.settings.color_option_names | split: ','
+                          for cn in color_names
+                            assign cn_trim = cn | strip | downcase
+                            if opt_lower == cn_trim
+                              assign is_color = true
+                              break
+                            endif
+                          endfor
+                          assign display = section.settings.variant_style
+                          if is_color
+                            assign display = 'swatches'
+                          endif
+                        -%}
+                        <div
+                          class="upd-option"
+                          data-opt-idx="{{ forloop.index0 }}"
+                          data-opt-name="{{ option.name | downcase | escape }}"
+                        >
+                          <div class="upd-option-label">
+                            {{ option.name }}:
+                            <span class="upd-opt-selected" id="upd-sel-{{ section.id }}-{{ forloop.index0 }}">
+                              {{- option.selected_value -}}
+                            </span>
+                          </div>
+                          {%- if display == 'swatches' -%}
+                            <div class="upd-swatches" role="group" aria-label="{{ option.name }}">
+                              {%- for val in option.values -%}
+                                {%- liquid
+                                  assign is_sel = false
+                                  if val == option.selected_value
+                                    assign is_sel = true
+                                  endif
+                                -%}
+                                <button
+                                  class="upd-swatch {% if is_sel %}is-on{% endif %}"
+                                  type="button"
+                                  data-opt-idx="{{ forloop.parentloop.index0 }}"
+                                  data-val="{{ val | escape }}"
+                                  aria-label="{{ val | escape }}"
+                                  aria-pressed="{{ is_sel }}"
+                                  title="{{ val | escape }}"
+                                  style="background-color:{{ val | downcase | replace: ' ', '' }};background-image:url({{ val | downcase | replace: ' ', '-' | prepend: 'swatch-' | append: '.png' | asset_url }});"
+                                ></button>
+                              {%- endfor -%}
+                            </div>
+                          {%- elsif display == 'pills' -%}
+                            <div class="upd-pills" role="group" aria-label="{{ option.name }}">
+                              {%- for val in option.values -%}
+                                {%- liquid
+                                  assign is_sel = false
+                                  if val == option.selected_value
+                                    assign is_sel = true
+                                  endif
+                                -%}
+                                <button
+                                  class="upd-pill {% if is_sel %}is-on{% endif %}"
+                                  type="button"
+                                  data-opt-idx="{{ forloop.parentloop.index0 }}"
+                                  data-val="{{ val | escape }}"
+                                  aria-pressed="{{ is_sel }}"
+                                >
+                                  {{ val }}
+                                </button>
+                              {%- endfor -%}
+                            </div>
+                          {%- else -%}
+                            <div class="upd-sel-wrap">
+                              <select class="upd-select" data-opt-idx="{{ forloop.index0 }}" aria-label="{{ option.name }}">
+                                {%- for val in option.values -%}
+                                  <option
+                                    value="{{ val | escape }}"
+                                    {% if val == option.selected_value %}
+                                      selected
+                                    {% endif %}
+                                  >
+                                    {{ val }}
+                                  </option>
+                                {%- endfor -%}
+                              </select>
+                              <svg
+                                class="upd-sel-arrow"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                              >
+                                <polyline points="6,9 12,15 18,9"/>
+                              </svg>
+                            </div>
+                          {%- endif -%}
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  {% endif %}
+
+                  {%- comment -%} STOCK {%- endcomment -%}
+                  {% if section.settings.show_stock %}
+                    <div class="upd-stock" id="upd-stock-{{ section.id }}">
+                      {%- liquid
+                        assign st = 'in'
+                        if current_variant.available == false
+                          assign st = 'out'
+                        elsif current_variant.inventory_policy == 'deny' and current_variant.inventory_quantity <= section.settings.low_stock_threshold and current_variant.inventory_quantity > 0
+                          assign st = 'low'
+                        endif
+                      -%}
+                      <span class="upd-stock-dot upd-stock-dot--{{ st }}"></span>
+                      <span id="upd-stock-txt-{{ section.id }}">
+                        {%- if st == 'in' -%}
+                          {{ section.settings.stock_in_text }}
+                        {%- elsif st == 'low' -%}
+                          {{ section.settings.stock_low_prefix }}
+                          {{ current_variant.inventory_quantity }}
+                          {{ section.settings.stock_low_suffix }}
+                        {%- else -%}
+                          {{ section.settings.stock_out_text }}
+                        {%- endif -%}
+                      </span>
+                    </div>
+                  {% endif %}
+
+                  {%- comment -%} QUANTITY + BUTTONS {%- endcomment -%}
+                  <div class="upd-purchase-block">
+                    <div class="upd-qty-row">
+                      {% if section.settings.show_qty %}
+                        <div class="upd-qty" role="group" aria-label="Quantity">
+                          <button class="upd-qty-btn" type="button" data-upd-minus="{{ section.id }}" aria-label="Decrease">
+                            −
+                          </button>
+                          <input
+                            class="upd-qty-input"
+                            type="number"
+                            id="upd-qty-{{ section.id }}"
+                            value="{{ initial_qty }}"
+                            min="{{ current_variant.quantity_rule.min | default: 1 }}"
+                            max="{{ current_variant.quantity_rule.max | default: 9999 }}"
+                            step="{{ current_variant.quantity_rule.increment | default: 1 }}"
+                            aria-label="Quantity"
+                          >
+                          <button class="upd-qty-btn" type="button" data-upd-plus="{{ section.id }}" aria-label="Increase">
+                            +
+                          </button>
+                        </div>
+                      {% endif %}
+                      <div class="upd-btn-group">
+                        <button
+                          type="button"
+                          class="upd-atc-btn"
+                          id="upd-atc-{{ section.id }}"
+                          data-upd-atc="{{ section.id }}"
+                          {% unless current_variant.available %}
+                            disabled
+                          {% endunless %}
+                          aria-label="{{ 'products.product.add_to_cart' | t }}"
+                        >
+                          <span class="upd-atc-label">
+                            <svg viewBox="0 0 24 24">
+                              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.98 1.61h9.72a2 2 0 001.98-1.69L23 6H6"/>
+                            </svg>
+                            <span id="upd-atc-txt-{{ section.id }}">
+                              {%- if current_variant.available -%}
+                                {{ section.settings.atc_text }}
+                              {%- else -%}
+                                {{ section.settings.sold_out_text }}
+                              {%- endif -%}
+                            </span>
+                          </span>
+                          <span class="upd-atc-spinner" aria-hidden="true"></span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {% if section.settings.show_buy_now %}
+                      <div class="upd-dyn-btn">{{ form | payment_button }}</div>
+                    {% endif %}
+                  </div>
+
+                  {% if section.settings.show_payment_icons %}
+                    <div style="margin-top:8px;">{{ form | payment_terms }}</div>
+                  {% endif %}
+                {% endform %}
+
               {%- when 'trust_bar' -%}
                 <div class="upd-trust" {{ block.shopify_attributes }}>
                   {%- for i in (1..4) -%}
                     {%- liquid
                       case i
                         when 1; assign t_text = block.settings.item_1_text; assign t_icon = block.settings.item_1_icon
-
                         when 2; assign t_text = block.settings.item_2_text; assign t_icon = block.settings.item_2_icon
-
                         when 3; assign t_text = block.settings.item_3_text; assign t_icon = block.settings.item_3_icon
-
                         when 4; assign t_text = block.settings.item_4_text; assign t_icon = block.settings.item_4_icon
-
                       endcase
                     -%}
                     {%- if t_text != blank -%}
                       <div class="upd-trust-item">
                         {%- if t_icon == 'shield' -%}
-                          <svg class="upd-trust-icon" viewBox="0 0 24 24">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                          </svg>
+                          <svg class="upd-trust-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                         {%- elsif t_icon == 'truck' -%}
-                          <svg class="upd-trust-icon" viewBox="0 0 24 24">
-                            <rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16,8 20,8 23,11 23,16 16,16 16,8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
-                          </svg>
+                          <svg class="upd-trust-icon" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16,8 20,8 23,11 23,16 16,16 16,8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
                         {%- elsif t_icon == 'refresh' -%}
-                          <svg class="upd-trust-icon" viewBox="0 0 24 24">
-                            <polyline points="1,4 1,10 7,10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
-                          </svg>
+                          <svg class="upd-trust-icon" viewBox="0 0 24 24"><polyline points="1,4 1,10 7,10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
                         {%- elsif t_icon == 'gift' -%}
-                          <svg class="upd-trust-icon" viewBox="0 0 24 24">
-                            <polyline points="20,12 20,22 4,22 4,12"/><rect x="2" y="7" width="20" height="5" rx="1"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/>
-                          </svg>
+                          <svg class="upd-trust-icon" viewBox="0 0 24 24"><polyline points="20,12 20,22 4,22 4,12"/><rect x="2" y="7" width="20" height="5" rx="1"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
                         {%- elsif t_icon == 'lock' -%}
-                          <svg class="upd-trust-icon" viewBox="0 0 24 24">
-                            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
-                          </svg>
+                          <svg class="upd-trust-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
                         {%- elsif t_icon == 'star' -%}
-                          <svg class="upd-trust-icon" viewBox="0 0 24 24">
-                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
-                          </svg>
+                          <svg class="upd-trust-icon" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
                         {%- else -%}
-                          <svg class="upd-trust-icon" viewBox="0 0 24 24">
-                            <polyline points="20,6 9,17 4,12"/>
-                          </svg>
+                          <svg class="upd-trust-icon" viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg>
                         {%- endif -%}
                         <span class="upd-trust-text">{{ t_text }}</span>
                       </div>
@@ -1615,21 +1918,14 @@
                 </div>
 
               {%- when 'qr_code' -%}
-                {%- comment -%} QR CODE BLOCK {%- endcomment -%}
                 {%- liquid
                   assign qr_url = block.settings.qr_custom_url
                   if qr_url == blank
                     assign qr_url = shop.url | append: product.url
                   endif
                 -%}
-                <div
-                  class="upd-qr-block"
-                  {{ block.shopify_attributes }}
-                  id="upd-qr-wrap-{{ section.id }}-{{ block.id }}"
-                >
-                  <div class="upd-qr-canvas-wrap" id="upd-qr-canvas-{{ section.id }}-{{ block.id }}">
-                    {%- comment -%} Canvas rendered by JS {%- endcomment -%}
-                  </div>
+                <div class="upd-qr-block" {{ block.shopify_attributes }} id="upd-qr-wrap-{{ section.id }}-{{ block.id }}">
+                  <div class="upd-qr-canvas-wrap" id="upd-qr-canvas-{{ section.id }}-{{ block.id }}"></div>
                   <div class="upd-qr-info">
                     {% if block.settings.qr_title != blank %}
                       <p class="upd-qr-title">{{ block.settings.qr_title }}</p>
@@ -1638,15 +1934,8 @@
                       <p class="upd-qr-subtitle">{{ block.settings.qr_subtitle }}</p>
                     {% endif %}
                     {% if block.settings.show_qr_download %}
-                      <button
-                        class="upd-qr-download"
-                        type="button"
-                        id="upd-qr-dl-{{ section.id }}-{{ block.id }}"
-                        aria-label="Download QR Code"
-                      >
-                        <svg viewBox="0 0 24 24">
-                          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/>
-                        </svg>
+                      <button class="upd-qr-download" type="button" id="upd-qr-dl-{{ section.id }}-{{ block.id }}" aria-label="Download QR Code">
+                        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         {{ block.settings.qr_download_label }}
                       </button>
                     {% endif %}
@@ -1661,7 +1950,6 @@
                     var QR_FG    = {{ block.settings.qr_fg_color | json }};
                     var QR_BG    = {{ block.settings.qr_bg_color | json }};
                     var PROD_TITLE = {{ product.title | json }};
-
                     function loadQRLib(cb) {
                       if (window.QRCode) { cb(); return; }
                       var s = document.createElement('script');
@@ -1669,21 +1957,14 @@
                       s.onload = cb;
                       document.head.appendChild(s);
                     }
-
                     function initQR() {
                       var wrap = document.getElementById(WRAP_ID);
                       if (!wrap) return;
                       wrap.innerHTML = '';
                       var qr = new QRCode(wrap, {
-                        text: QR_URL,
-                        width: QR_SIZE,
-                        height: QR_SIZE,
-                        colorDark: QR_FG,
-                        colorLight: QR_BG,
-                        correctLevel: QRCode.CorrectLevel.H
+                        text: QR_URL, width: QR_SIZE, height: QR_SIZE,
+                        colorDark: QR_FG, colorLight: QR_BG, correctLevel: QRCode.CorrectLevel.H
                       });
-
-                      /* Download button */
                       var dlBtn = document.getElementById(DL_ID);
                       if (dlBtn) {
                         dlBtn.addEventListener('click', function() {
@@ -1698,12 +1979,9 @@
                         });
                       }
                     }
-
                     if (document.readyState === 'loading') {
                       document.addEventListener('DOMContentLoaded', function() { loadQRLib(initQR); });
-                    } else {
-                      loadQRLib(initQR);
-                    }
+                    } else { loadQRLib(initQR); }
                   })();
                 </script>
 
@@ -1733,64 +2011,90 @@
                 <div class="upd-share" {{ block.shopify_attributes }}>
                   <span class="upd-share-label">{{ block.settings.share_label }}</span>
                   <div class="upd-share-btns">
-                    <a
-                      class="upd-share-btn"
-                      href="https://www.facebook.com/sharer.php?u={{ shop.url }}{{ product.url }}"
-                      target="_blank"
-                      rel="noopener"
-                      aria-label="Share on Facebook"
-                    >
-                      <svg viewBox="0 0 24 24">
-                        <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
-                      </svg>
+                    <a class="upd-share-btn" href="https://www.facebook.com/sharer.php?u={{ shop.url }}{{ product.url }}" target="_blank" rel="noopener" aria-label="Share on Facebook">
+                      <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
                     </a>
-                    <a
-                      class="upd-share-btn"
-                      href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ product.url }}&text={{ product.title | url_encode }}"
-                      target="_blank"
-                      rel="noopener"
-                      aria-label="Share on X"
-                    >
-                      <svg viewBox="0 0 24 24">
-                        <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
-                      </svg>
+                    <a class="upd-share-btn" href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ product.url }}&text={{ product.title | url_encode }}" target="_blank" rel="noopener" aria-label="Share on X">
+                      <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
                     </a>
-                    <a
-                      class="upd-share-btn"
-                      href="https://pinterest.com/pin/create/button/?url={{ shop.url }}{{ product.url }}&media={{ product.featured_image | image_url: width: 1200 }}"
-                      target="_blank"
-                      rel="noopener"
-                      aria-label="Share on Pinterest"
-                    >
-                      <svg viewBox="0 0 24 24">
-                        <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
-                      </svg>
+                    <a class="upd-share-btn" href="https://pinterest.com/pin/create/button/?url={{ shop.url }}{{ product.url }}&media={{ product.featured_image | image_url: width: 1200 }}" target="_blank" rel="noopener" aria-label="Share on Pinterest">
+                      <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
                     </a>
                     <button class="upd-share-btn" type="button" id="upd-copy-{{ section.id }}" aria-label="Copy link">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
-                      </svg>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
                     </button>
                   </div>
                 </div>
 
               {%- when 'custom_text' -%}
                 {% if block.settings.text != blank %}
-                  <div
-                    class="rte"
-                    style="font-size:{{ block.settings.font_size }}px;color:{{ block.settings.text_color }};background:{{ block.settings.bg_color }};padding:{{ block.settings.padding }}px;border-radius:{{ block.settings.radius }}px;{% if block.settings.border_width > 0 %}border:{{ block.settings.border_width }}px solid {{ block.settings.border_color }};{% endif %}"
-                    {{ block.shopify_attributes }}
-                  >
+                  <div class="rte" style="font-size:{{ block.settings.font_size }}px;color:{{ block.settings.text_color }};background:{{ block.settings.bg_color }};padding:{{ block.settings.padding }}px;border-radius:{{ block.settings.radius }}px;{% if block.settings.border_width > 0 %}border:{{ block.settings.border_width }}px solid {{ block.settings.border_color }};{% endif %}" {{ block.shopify_attributes }}>
                     {{ block.settings.text }}
                   </div>
                 {% endif %}
 
               {%- when 'divider' -%}
-                <hr
-                  class="upd-hr"
-                  style="border-color:{{ block.settings.divider_color }};margin-top:{{ block.settings.margin_v }}px;margin-bottom:{{ block.settings.margin_v }}px;"
-                  {{ block.shopify_attributes }}
-                >
+                <hr class="upd-hr" style="border-color:{{ block.settings.divider_color }};margin-top:{{ block.settings.margin_v }}px;margin-bottom:{{ block.settings.margin_v }}px;" {{ block.shopify_attributes }}>
+
+              {%- when 'bundle_display' -%}
+                {%- liquid
+                  assign bundle_products = product.metafields.custom.bundle_components.value
+                  assign bundle_count = 0
+                  assign total_compare = 0
+                  if bundle_products != blank
+                    for bp in bundle_products
+                      assign bundle_count = bundle_count | plus: 1
+                      assign total_compare = total_compare | plus: bp.price
+                    endfor
+                  endif
+                  assign savings = total_compare | minus: product.price
+                  if savings < 0
+                    assign savings = 0
+                  endif
+                  assign savings_pct = 0
+                  if total_compare > 0
+                    assign savings_pct = savings | times: 100 | divided_by: total_compare | round
+                  endif
+                  assign img_sz = 80
+                  case block.settings.img_size
+                    when 'small'; assign img_sz = 60
+                    when 'large'; assign img_sz = 100
+                  endcase
+                -%}
+                {% if bundle_count > 0 %}
+                  <div class="upd-bundle upd-bundle--{{ block.settings.bundle_layout }}" style="--bundle-bg:{{ block.settings.bundle_bg }};--bundle-border:{{ block.settings.border_radius }}px;--bundle-spacing:{{ block.settings.spacing }}px;--bundle-img:{{ img_sz }}px;--bundle-heading-clr:{{ block.settings.heading_color }};--bundle-savings-bg:{{ block.settings.savings_bg }};--bundle-savings-clr:{{ block.settings.savings_color }};" {{ block.shopify_attributes }}>
+                    {% if block.settings.bundle_heading != blank %}
+                      <div class="upd-bundle-heading">{{ block.settings.bundle_heading }}</div>
+                    {% endif %}
+                    <div class="upd-bundle-items">
+                      {%- for bp in bundle_products -%}
+                        <div class="upd-bundle-item">
+                          <div class="upd-bundle-item-img-wrap">
+                            {% if bp.featured_image %}
+                              <img class="upd-bundle-item-img" src="{{ bp.featured_image | image_url: width: 200 }}" alt="{{ bp.featured_image.alt | default: bp.title | escape }}" width="{{ img_sz }}" height="{{ img_sz }}" loading="lazy">
+                            {% else %}
+                              <div class="upd-bundle-item-img upd-bundle-item-img--placeholder">{{ 'product-1' | placeholder_svg_tag }}</div>
+                            {% endif %}
+                          </div>
+                          <div class="upd-bundle-item-info">
+                            <a href="{{ bp.url }}" class="upd-bundle-item-title">{{ bp.title }}</a>
+                            {% if block.settings.show_individual_prices %}
+                              <span class="upd-bundle-item-price">{{ bp.price | money }}</span>
+                            {% endif %}
+                          </div>
+                        </div>
+                        {%- if block.settings.show_plus and forloop.last == false -%}
+                          <span class="upd-bundle-plus" aria-hidden="true">+</span>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                    {% if block.settings.show_savings and savings > 0 %}
+                      <div class="upd-bundle-savings">
+                        <span class="upd-bundle-savings-badge">Save {{ savings_pct }}%</span>
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endif %}
 
               {%- when '@app' -%}
                 {% render block %}
@@ -2654,7 +2958,6 @@
       "unit": "px",
       "default": 16
     },
-    { "type": "checkbox", "id": "show_vendor", "label": "Show Vendor", "default": true },
     {
       "type": "range",
       "id": "vendor_font_size",
@@ -2754,7 +3057,6 @@
     },
 
     { "type": "header", "content": "⭐ Star Rating" },
-    { "type": "checkbox", "id": "show_rating", "label": "Show Star Rating", "default": true },
     { "type": "range", "id": "demo_rating", "label": "Star Count (demo)", "min": 1, "max": 5, "step": 1, "default": 5 },
     { "type": "number", "id": "demo_review_count", "label": "Review Count (demo)", "default": 124 },
     { "type": "text", "id": "review_label", "label": "Review Count Label", "default": "reviews" },
@@ -2817,7 +3119,6 @@
     { "type": "text", "id": "save_label", "label": "Save Label", "default": "Save" },
     { "type": "color", "id": "save_pill_bg", "label": "Save Pill Background", "default": "#FEF2F2" },
     { "type": "color", "id": "save_pill_text", "label": "Save Pill Text", "default": "#E63946" },
-    { "type": "checkbox", "id": "show_tax_note", "label": "Show Tax Note", "default": true },
 
     { "type": "header", "content": "🎛️ Variant Options" },
     {
@@ -3576,6 +3877,71 @@
           "default": 4
         }
       ]
+    },
+    {
+      "type": "vendor",
+      "name": "Vendor",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "rating",
+      "name": "Star Rating",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_tax_note",
+          "label": "Show Tax & Shipping Note",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "product_form",
+      "name": "Product Form",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "bundle_display",
+      "name": "Bundle Products",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "bundle_heading", "label": "Heading", "default": "This Bundle Includes" },
+        { "type": "checkbox", "id": "show_savings", "label": "Show Savings Badge", "default": true },
+        { "type": "checkbox", "id": "show_individual_prices", "label": "Show Individual Prices", "default": true },
+        { "type": "checkbox", "id": "show_plus", "label": "Show '+' Between Products", "default": true },
+        { "type": "select", "id": "bundle_layout", "label": "Layout", "options": [
+          { "value": "grid", "label": "Grid (Cards)" },
+          { "value": "horizontal", "label": "Horizontal Row" },
+          { "value": "compact", "label": "Compact (Thumbnails)" }
+        ], "default": "horizontal" },
+        { "type": "select", "id": "img_size", "label": "Image Size", "options": [
+          { "value": "small", "label": "Small (60px)" },
+          { "value": "medium", "label": "Medium (80px)" },
+          { "value": "large", "label": "Large (100px)" }
+        ], "default": "medium" },
+        { "type": "color", "id": "bundle_bg", "label": "Background Color", "default": "#F0F7F0" },
+        { "type": "color", "id": "bundle_border", "label": "Border Color", "default": "#228B22" },
+        { "type": "color", "id": "heading_color", "label": "Heading Color", "default": "#228B22" },
+        { "type": "color", "id": "savings_bg", "label": "Savings Badge Background", "default": "#228B22" },
+        { "type": "color", "id": "savings_color", "label": "Savings Badge Text", "default": "#FFFFFF" },
+        { "type": "range", "id": "border_radius", "label": "Border Radius (px)", "min": 0, "max": 24, "step": 2, "default": 12 },
+        { "type": "range", "id": "spacing", "label": "Section Spacing (px)", "min": 0, "max": 48, "step": 4, "default": 20 }
+      ]
     }
   ],
 
@@ -3583,6 +3949,12 @@
     {
       "name": "Product Page",
       "blocks": [
+        { "type": "vendor" },
+        { "type": "title" },
+        { "type": "rating" },
+        { "type": "price" },
+        { "type": "bundle_display" },
+        { "type": "product_form" },
         { "type": "trust_bar" },
         { "type": "qr_code" },
         { "type": "content_tab", "settings": { "tab_label": "Description" } },
